@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 97519517}
   - component: {fileID: 97519516}
   - component: {fileID: 97519515}
+  - component: {fileID: 97519519}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -224,6 +225,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &97519519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97519514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660606dbaf2564446834654f66e7055d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StoryView
+  imgBackground: {fileID: 720474249}
+  txtCharacterName: {fileID: 1962201610}
+  txtCharacterLevel: {fileID: 873632008}
+  txtCharacterHP: {fileID: 958056397}
+  txtCharacterGold: {fileID: 1912078564}
+  storyScrollRect: {fileID: 2047586760}
+  txtStoryLog: {fileID: 2023726305}
+  btnAdvance: {fileID: 969280151}
+  iconNextIndicator: {fileID: 703299904}
+  choiceButtons:
+  - {fileID: 1052582583}
+  - {fileID: 1050764650}
+  - {fileID: 1378306470}
+  choiceTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &209292287
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,8 +292,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -711.00006, y: -12.699982}
-  m_SizeDelta: {x: -1542.24, y: -88.160095}
+  m_AnchoredPosition: {x: -711.00006, y: 5.550003}
+  m_SizeDelta: {x: -1542.24, y: -51.66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &209292289
 MonoBehaviour:
@@ -515,6 +545,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 372565979}
   m_CullTransparentMesh: 1
+--- !u!1 &514578127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 514578129}
+  - component: {fileID: 514578128}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &514578128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514578127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c60b3e9c7f1ed47938e25b9f055eb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StoryPresenter
+  view: {fileID: 97519519}
+  useMockStoryOnStart: 1
+  characterDelay: 0.03
+  linePause: 0.6
+  chunkSize: 70
+  richTextOpeningTag: 
+  richTextClosingTag: 
+--- !u!4 &514578129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514578127}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.27225, y: -0.65399, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2678,7 +2759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -500, y: -93.77}
+  m_AnchoredPosition: {x: -502.99994, y: -93.76999}
   m_SizeDelta: {x: -1700.07, y: -250.29999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1930830818
@@ -3025,10 +3106,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1227138601}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -766, y: -75}
-  m_SizeDelta: {x: 218.86, y: 51.37}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 9.285095, y: -72.31}
+  m_SizeDelta: {x: -18.57, y: 77.02}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2023726305
 MonoBehaviour:
@@ -3324,3 +3405,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 97519518}
   - {fileID: 1186634980}
+  - {fileID: 514578129}

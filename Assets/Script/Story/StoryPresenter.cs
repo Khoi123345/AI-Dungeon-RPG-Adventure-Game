@@ -35,6 +35,8 @@ public class StoryPresenter : MonoBehaviour
             view.BindAdvance(HandleAdvancePressed);
         }
 
+        GameProgressService.EnsureInstance();
+
         if (useMockStoryOnStart)
         {
             StartMockStory();
@@ -59,7 +61,11 @@ public class StoryPresenter : MonoBehaviour
 
     public void StartMockStory()
     {
-        StartStory(CreateMockData());
+        StoryData storyData = GameProgressService.Instance != null
+            ? GameProgressService.Instance.CreateStoryDemoData()
+            : CreateMockData();
+
+        StartStory(storyData);
     }
 
     public void StartStory(StoryData data)
@@ -211,6 +217,12 @@ public class StoryPresenter : MonoBehaviour
         }
 
         StoryChoiceData choice = currentData.node.choices[choiceIndex];
+        if (GameProgressService.Instance != null)
+        {
+            string aiResponse = $"Bạn đã chọn: {choice.label}. Nhánh mới: {choice.nextNodeId}.";
+            GameProgressService.Instance.RecordStoryAction(choiceIndex, choice.description, aiResponse);
+        }
+
         Debug.Log("Story choice selected: " + choice.label + " -> " + choice.nextNodeId);
     }
 

@@ -11,9 +11,13 @@ public class BattlePresenter : MonoBehaviour
 
     private void Start()
     {
-        // Khi Scene bắt đầu, ta giả lập việc gọi API và nhận được data.
-        // Thực tế sau này bạn sẽ thay đoạn này bằng: NetworkService.GetBattleResult(OnDataReceived);
-        BattleData mockData = CreateMockData();
+        GameProgressService.EnsureInstance();
+
+        // Khi Scene bắt đầu, lấy data từ runtime service mô phỏng CSDL.
+        BattleData mockData = GameProgressService.Instance != null
+            ? GameProgressService.Instance.CreateBattleDemoData()
+            : CreateMockData();
+
         StartPlayback(mockData);
     }
 
@@ -50,6 +54,11 @@ public class BattlePresenter : MonoBehaviour
         // Đợi thêm chút rồi hiện kết quả
         yield return new WaitForSeconds(0.5f);
         view.ShowResult(data.isPlayerVictory);
+
+        if (GameProgressService.Instance != null)
+        {
+            GameProgressService.Instance.RecordBattleResult(data, data.isPlayerVictory);
+        }
     }
 
     // --- HÀM TẠO DỮ LIỆU GIẢ ĐỂ TEST UI TRƯỚC KHI CÓ BACKEND ---
