@@ -24,12 +24,10 @@ public class GameCharacterRecord
     public int experience;
     public int hp;
     public int maxHp;
-    public int mp;
-    public int maxMp;
     public int attack;
     public int defense;
-    public float criticalRate;
-    public float luckyRate;
+    public float critical_rate;
+    public float lucky_rate;
     public int gold;
     public string className;
     public string status;
@@ -83,6 +81,7 @@ public class GameStorySessionRecord
     public DateTime updatedAt;
     public DateTime? endedAt;
     public string storyVersion;
+    public string storySummary;
     public string sourceType;
 }
 
@@ -91,12 +90,9 @@ public class GameStoryActionRecord
 {
     public string actionId;
     public string sessionId;
-    public int sequenceNo;
     public string playerInput;
     public string aiResponse;
-    public string modelName;
     public int choiceIndex;
-    public string nodeId;
     public string actionType;
     public string metadataJson;
     public DateTime createdAt;
