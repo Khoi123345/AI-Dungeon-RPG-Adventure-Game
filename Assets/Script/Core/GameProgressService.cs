@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using GameShared.Models;
 
 public class GameProgressService : MonoBehaviour
 {
@@ -19,17 +20,17 @@ public class GameProgressService : MonoBehaviour
         }
     }
 
-    public GameUserRecord CurrentUser { get; private set; }
-    public GameCharacterRecord CurrentCharacter { get; private set; }
-    public GameStorySessionRecord CurrentStorySession { get; private set; }
-    public GameBossRecord CurrentBoss { get; private set; }
+    public User CurrentUser { get; private set; }
+    public Character CurrentCharacter { get; private set; }
+    public StorySession CurrentStorySession { get; private set; }
+    public Boss CurrentBoss { get; private set; }
 
-    private readonly List<GameItemRecord> items = new List<GameItemRecord>();
-    private readonly List<GameInventoryRecord> inventory = new List<GameInventoryRecord>();
-    private readonly List<GameStoryActionRecord> storyActions = new List<GameStoryActionRecord>();
-    private readonly List<GameLootDropRecord> lootDrops = new List<GameLootDropRecord>();
-    private readonly List<GameBattleRecord> battles = new List<GameBattleRecord>();
-    private readonly List<GameBossEncounterRecord> encounters = new List<GameBossEncounterRecord>();
+    private readonly List<Item> items = new List<Item>();
+    private readonly List<Inventory> inventory = new List<Inventory>();
+    private readonly List<StoryAction> storyActions = new List<StoryAction>();
+    private readonly List<LootDrop> lootDrops = new List<LootDrop>();
+    private readonly List<Battle> battles = new List<Battle>();
+    private readonly List<BossEncounter> encounters = new List<BossEncounter>();
 
     private bool initialized;
 
@@ -131,23 +132,20 @@ public class GameProgressService : MonoBehaviour
         return storyData;
     }
 
-    public GameStoryActionRecord RecordStoryAction(int choiceIndex, string playerInput, string aiResponse)
+    public StoryAction RecordStoryAction(int choiceIndex, string playerInput, string aiResponse)
     {
         InitializeIfNeeded();
 
-        GameStoryChoiceRecord choice = GetChoice(choiceIndex);
+        StoryChoice choice = GetChoice(choiceIndex);
         ApplyChoiceEffect(choice);
 
-        GameStoryActionRecord action = new GameStoryActionRecord
+        StoryAction action = new StoryAction
         {
             actionId = Guid.NewGuid().ToString("N"),
             sessionId = CurrentStorySession.sessionId,
-            sequenceNo = storyActions.Count + 1,
             playerInput = playerInput,
             aiResponse = aiResponse,
-            modelName = "local-mock",
             choiceIndex = choiceIndex,
-            nodeId = CurrentStorySession.currentNodeId,
             actionType = "choice",
             metadataJson = "{}",
             createdAt = DateTime.UtcNow
@@ -231,7 +229,7 @@ public class GameProgressService : MonoBehaviour
     {
         InitializeIfNeeded();
 
-        GameBossEncounterRecord encounter = new GameBossEncounterRecord
+        BossEncounter encounter = new BossEncounter
         {
             encounterId = Guid.NewGuid().ToString("N"),
             characterId = CurrentCharacter.characterId,
@@ -247,7 +245,7 @@ public class GameProgressService : MonoBehaviour
 
         encounters.Add(encounter);
 
-        GameBattleRecord battle = new GameBattleRecord
+        Battle battle = new Battle
         {
             battleId = Guid.NewGuid().ToString("N"),
             encounterId = encounter.encounterId,
@@ -272,7 +270,7 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.experience += CurrentBoss.expReward;
             HandleLevelUpIfNeeded();
 
-            GameLootDropRecord loot = new GameLootDropRecord
+            LootDrop loot = new LootDrop
             {
                 lootId = Guid.NewGuid().ToString("N"),
                 battleId = battle.battleId,
@@ -299,14 +297,14 @@ public class GameProgressService : MonoBehaviour
         CurrentCharacter.hp = Mathf.Clamp(resolvedPlayerHp, 0, CurrentCharacter.maxHp);
     }
 
-    public IReadOnlyList<GameInventoryRecord> GetInventory()
+    public IReadOnlyList<Inventory> GetInventory()
     {
         return inventory;
     }
 
     private void SeedMockWorld()
     {
-        CurrentUser = new GameUserRecord
+        CurrentUser = new User
         {
             userId = Guid.NewGuid().ToString("N"),
             username = "player01",
@@ -318,7 +316,7 @@ public class GameProgressService : MonoBehaviour
             lastLoginAt = DateTime.UtcNow
         };
 
-        CurrentCharacter = new GameCharacterRecord
+        CurrentCharacter = new Character
         {
             characterId = Guid.NewGuid().ToString("N"),
             userId = CurrentUser.userId,
@@ -341,7 +339,7 @@ public class GameProgressService : MonoBehaviour
         };
 
         items.Clear();
-        items.Add(new GameItemRecord
+        items.Add(new Item
         {
             itemId = Guid.NewGuid().ToString("N"),
             name = "Rusty Sword",
@@ -362,7 +360,7 @@ public class GameProgressService : MonoBehaviour
         });
 
         inventory.Clear();
-        inventory.Add(new GameInventoryRecord
+        inventory.Add(new Inventory
         {
             inventoryId = Guid.NewGuid().ToString("N"),
             characterId = CurrentCharacter.characterId,
@@ -374,7 +372,7 @@ public class GameProgressService : MonoBehaviour
             acquiredAt = DateTime.UtcNow.AddDays(-1)
         });
 
-        CurrentBoss = new GameBossRecord
+        CurrentBoss = new Boss
         {
             bossId = Guid.NewGuid().ToString("N"),
             name = "Shadow Demon",
@@ -391,7 +389,7 @@ public class GameProgressService : MonoBehaviour
             skillSetJson = "[]"
         };
 
-        CurrentStorySession = new GameStorySessionRecord
+        CurrentStorySession = new StorySession
         {
             sessionId = Guid.NewGuid().ToString("N"),
             characterId = CurrentCharacter.characterId,
@@ -410,7 +408,7 @@ public class GameProgressService : MonoBehaviour
         battles.Clear();
     }
 
-    private void ApplyChoiceEffect(GameStoryChoiceRecord choice)
+    private void ApplyChoiceEffect(StoryChoice choice)
     {
         if (choice == null)
         {
@@ -423,11 +421,11 @@ public class GameProgressService : MonoBehaviour
         HandleLevelUpIfNeeded();
     }
 
-    private GameStoryChoiceRecord GetChoice(int choiceIndex)
+    private StoryChoice GetChoice(int choiceIndex)
     {
         if (choiceIndex == 0)
         {
-            return new GameStoryChoiceRecord
+            return new StoryChoice
             {
                 label = "Tấn công",
                 description = "Đi sang nhánh chiến đấu",
@@ -440,7 +438,7 @@ public class GameProgressService : MonoBehaviour
 
         if (choiceIndex == 1)
         {
-            return new GameStoryChoiceRecord
+            return new StoryChoice
             {
                 label = "Điều tra",
                 description = "Tăng gold và exp nếu thành công",
@@ -451,7 +449,7 @@ public class GameProgressService : MonoBehaviour
             };
         }
 
-        return new GameStoryChoiceRecord
+        return new StoryChoice
         {
             label = "Nghỉ ngơi",
             description = "Hồi phục HP và MP",
@@ -481,14 +479,14 @@ public class GameProgressService : MonoBehaviour
 
     private void AddItemToInventory(string itemId, int quantity, bool equipped)
     {
-        GameInventoryRecord existing = inventory.Find(entry => entry.itemId == itemId && entry.equipped == equipped);
+        Inventory existing = inventory.Find(entry => entry.itemId == itemId && entry.equipped == equipped);
         if (existing != null)
         {
             existing.quantity += quantity;
             return;
         }
 
-        inventory.Add(new GameInventoryRecord
+        inventory.Add(new Inventory
         {
             inventoryId = Guid.NewGuid().ToString("N"),
             characterId = CurrentCharacter.characterId,

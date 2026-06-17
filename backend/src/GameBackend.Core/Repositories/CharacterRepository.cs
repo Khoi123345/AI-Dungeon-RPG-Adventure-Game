@@ -1,0 +1,39 @@
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DocumentModel;
+using GameBackend.Core.Repositories.Interfaces;
+using GameShared.Models;
+using System.Text.Json;
+
+namespace GameBackend.Core.Repositories
+{
+    public class CharacterRepository : ICharacterRepository
+    {
+        private readonly Table _table;
+
+        public CharacterRepository(IAmazonDynamoDB dynamoDbClient)
+        {
+            _table = Table.LoadTable(dynamoDbClient, AppSettings.CharactersTableName);
+        }
+
+        public async Task<Character?> GetByIdAsync(string characterId)
+        {
+            var doc = await _table.GetItemAsync(characterId);
+            return doc != null ? JsonSerializer.Deserialize<Character>(doc.ToJson()) : null;
+        }
+
+        public async Task<List<Character>> GetByUserIdAsync(string userId)
+        {
+            var filter = new ScanFilter();
+            filter.AddCondition("userId", ScanOperator.Equal, userId);
+            var search = _table.Scan(filter);
+            var docs = await search.GetNextSetAsync();
+            return docs.Select(d => JsonSerializer.Deserialize<Character>(d.ToJson())!).ToList();
+        }
+
+        public async Task SaveAsync(Character character)
+        {
+            var doc = Document.FromJson(JsonSerializer.Serialize(character));
+            await _table.PutItemAsync(doc);
+        }
+    }
+}

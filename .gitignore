@@ -49,8 +49,15 @@
 ExportedObj/
 .consulo/
 *.csproj
+# Exception: track backend/shared/infrastructure .csproj files
+!backend/**/*.csproj
+!shared/**/*.csproj
+!infrastructure/**/*.csproj
 *.unityproj
 *.sln
+!backend/**/*.sln
+!shared/**/*.sln
+!infrastructure/**/*.sln
 *.suo
 *.tmp
 *.user

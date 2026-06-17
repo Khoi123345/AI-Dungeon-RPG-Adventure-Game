@@ -1,0 +1,16 @@
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.csproj.AssemblyReference.cache
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.AssemblyInfoInputs.cache
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.AssemblyInfo.cs
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.csproj.CoreCompileInputs.cache
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.sourcelink.json
+D:\My project\backend\src\GameBackend.Core\bin\Debug\net8.0\GameBackend.Core.deps.json
+D:\My project\backend\src\GameBackend.Core\bin\Debug\net8.0\GameBackend.Core.dll
+D:\My project\backend\src\GameBackend.Core\bin\Debug\net8.0\GameBackend.Core.pdb
+D:\My project\backend\src\GameBackend.Core\bin\Debug\net8.0\GameShared.dll
+D:\My project\backend\src\GameBackend.Core\bin\Debug\net8.0\GameShared.pdb
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBack.085C180F.Up2Date
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.dll
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\refint\GameBackend.Core.dll
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.pdb
+D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\ref\GameBackend.Core.dll
