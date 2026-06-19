@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 697937ed8c05fbe47a84a931a9db8027
+guid: eeef7e3e194841f45bdaea6ccafe5c9d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8387190611249750733
-    second: tuido_0
+      213: -3326629582822116958
+    second: background-4_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tuido_0
+      name: background-4_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 899
+        width: 1536
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: dc268077c69456470800000000000000
-      internalID: 8387190611249750733
+      spriteID: 2a1f498050075d1d0800000000000000
+      internalID: -3326629582822116958
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tuido_0: 8387190611249750733
+      background-4_0: -3326629582822116958
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1117,35 +1117,37 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Hoquo\\.nuget\\packages\\": {}
+    "C:\\Users\\HP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\My project\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
+      "projectUniqueName": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
       "projectName": "GameBackend.Handlers",
-      "projectPath": "D:\\My project\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
-      "packagesPath": "C:\\Users\\Hoquo\\.nuget\\packages\\",
-      "outputPath": "D:\\My project\\backend\\src\\GameBackend.Handlers\\obj\\",
+      "projectPath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Hoquo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\My project\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj": {
-              "projectPath": "D:\\My project\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj"
+            "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj": {
+              "projectPath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj"
             },
-            "D:\\My project\\shared\\GameShared.csproj": {
-              "projectPath": "D:\\My project\\shared\\GameShared.csproj"
+            "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj": {
+              "projectPath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj"
             }
           }
         }
@@ -1159,8 +1161,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "10.0.100"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -1202,26 +1203,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
