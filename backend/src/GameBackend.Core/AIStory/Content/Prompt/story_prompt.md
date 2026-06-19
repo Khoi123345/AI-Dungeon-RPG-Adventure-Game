@@ -30,39 +30,34 @@ Never change game state.
 Never create items.
 Never decide battles.
 
+WORLD
+------
+{{world}}
+
 CHARACTER
 ----------
-Level: 12
-HP: 350
-Attack: 80
+{{character}}
 
 INVENTORY
 ----------
-Dragon Sword
-Health Potion
+{{inventory}}
 
+CHAPTER
+----------
+{{chapter}}
 
 CURRENT LOCATION
 ----------------
-Ancient Cave
-
-BOSS HISTORY
-------------
-Defeated:
-- Goblin King
+{{location}}
 
 STORY SUMMARY
 -------------
-Player defeated Goblin King and entered Ancient Cave.
+{{summary}}
 
 RECENT TURNS
 ------------
-User: Open chest
-AI: You found an old map
-
-User: Continue deeper
-AI: You hear dragon roars
+{{recentTurns}}
 
 CURRENT ACTION
 --------------
-Talk to the dragon
+{{action}}

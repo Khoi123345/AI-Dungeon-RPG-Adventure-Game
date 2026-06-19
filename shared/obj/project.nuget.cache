@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "iOjq2KjJxss=",
+  "dgSpecHash": "WfnVo0/iOEY=",
   "success": true,
-  "projectFilePath": "D:\\My project\\shared\\GameShared.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ACER\\.nuget\\packages\\netstandard.library.ref\\2.1.0\\netstandard.library.ref.2.1.0.nupkg.sha512"
+  ],
   "logs": []
 }

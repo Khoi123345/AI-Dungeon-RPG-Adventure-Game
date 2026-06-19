@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net8.0": {
       "AWSSDK.BedrockRuntime/3.7.400": {
@@ -309,19 +309,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Hoquo\\.nuget\\packages\\": {}
+    "C:\\Users\\ACER\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\My project\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj",
+      "projectUniqueName": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj",
       "projectName": "GameBackend.Core",
-      "projectPath": "D:\\My project\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj",
-      "packagesPath": "C:\\Users\\Hoquo\\.nuget\\packages\\",
-      "outputPath": "D:\\My project\\backend\\src\\GameBackend.Core\\obj\\",
+      "projectPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj",
+      "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Hoquo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -331,10 +331,11 @@
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\My project\\shared\\GameShared.csproj": {
-              "projectPath": "D:\\My project\\shared\\GameShared.csproj"
+            "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj": {
+              "projectPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj"
             }
           }
         }
@@ -349,10 +350,11 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net8.0": {
+        "framework": "net8.0",
         "targetAlias": "net8.0",
         "dependencies": {
           "AWSSDK.BedrockRuntime": {
@@ -386,15 +388,15 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.28, 8.0.28]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.28, 8.0.28]"
           },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.28, 8.0.28]"
           }
         ],
         "frameworkReferences": {
@@ -402,7 +404,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -8,8 +8,7 @@ namespace GameShared.Models
         public string sessionId;
         public string characterId;
         public string currentLocation;
-        public string currentNodeId;
-        public string storyContext;
+        public string currentChapterId;
         public string status;
         public DateTime updatedAt;
         public DateTime? endedAt;

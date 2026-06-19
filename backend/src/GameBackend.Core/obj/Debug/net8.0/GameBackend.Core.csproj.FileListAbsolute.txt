@@ -14,3 +14,11 @@ D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.dll
 D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\refint\GameBackend.Core.dll
 D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.pdb
 D:\My project\backend\src\GameBackend.Core\obj\Debug\net8.0\ref\GameBackend.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.csproj.AssemblyReference.cache
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.AssemblyInfoInputs.cache
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.AssemblyInfo.cs
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.csproj.CoreCompileInputs.cache
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.sourcelink.json
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\refint\GameBackend.Core.dll
