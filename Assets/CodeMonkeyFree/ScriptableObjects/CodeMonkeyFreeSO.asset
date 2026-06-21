@@ -14,39 +14,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
-  lastShownTimestamp: 1781680553
+  lastShownTimestamp: 1781767325
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1781680553
+  checkedLastUpdateTimestamp: 1781767325
   lastQOTDResponse:
-    questionId: 312
-    questionText: How much time per frame do you have in order to hit 60FPS?
-    answerA: 60ms
-    answerB: 33ms
-    answerC: 16ms
-    answerD: 6ms
+    questionId: 313
+    questionText: What will happen on January 19, 2038 at 03:14:07?
+    answerA: Armagedon
+    answerB: End of Unix Time
+    answerC: Half-Life 3 release date
+    answerD: 
     answerE: 
-  lastQotdTimestamp: 1781680553
+  lastQotdTimestamp: 1781767325
   lastDynamicHeaderResponse:
-    topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/humbleJun26Synty.png
-    topText: Synty is BACK with a HumbleBundle 95% OFF! Don't miss this one!
-    topLink: humblebundle
-    bottomText: My 10+ Years of C# Knowledge in 1 Course!
-    bottomLink: csharpcourse
-  lastDynamicHeaderTimestamp: 1781680553
+    topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle.png
+    topText: Get 80% OFF on ALL my Courses and Games!!!
+    topLink: summerbundle
+    bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
+      Newsletter!
+    bottomLink: gamedevreport
+  lastDynamicHeaderTimestamp: 1781767325
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1781680553
+  websiteLatestMessageTimestamp: 1781767325
   websiteLatestVideos:
     videos:
+    - youTubeId: tEmH8kAvGgk
+      title: Unity 6.5 is OUT!
     - youTubeId: H36i5K3tTy8
       title: TOP 10 NEW Games, Made with Unity! (MAY 2026)
     - youTubeId: NYBe2xkcscA
       title: Unity Summer Sale is live up to 90% OFF!
     - youTubeId: m0s3IUrWzVQ
       title: How to Write High Quality Code that doesn't fall apart.
-    - youTubeId: NZfIxeK463o
-      title: Steam update just DESTROYED indie devs?!
-  websiteLatestVideosTimestamp: 1781680553
+  websiteLatestVideosTimestamp: 1781767325
