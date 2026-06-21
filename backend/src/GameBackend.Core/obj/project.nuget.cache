@@ -1,17 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "+T5e8FpA2xY=",
+  "dgSpecHash": "mmMLl5h1XZs=",
   "success": true,
-  "projectFilePath": "D:\\My project\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj",
+  "projectFilePath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Hoquo\\.nuget\\packages\\awssdk.bedrockruntime\\3.7.400\\awssdk.bedrockruntime.3.7.400.nupkg.sha512",
-    "C:\\Users\\Hoquo\\.nuget\\packages\\awssdk.core\\3.7.400\\awssdk.core.3.7.400.nupkg.sha512",
-    "C:\\Users\\Hoquo\\.nuget\\packages\\awssdk.dynamodbv2\\3.7.300.2\\awssdk.dynamodbv2.3.7.300.2.nupkg.sha512",
-    "C:\\Users\\Hoquo\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\Hoquo\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
-    "C:\\Users\\Hoquo\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.22\\microsoft.netcore.app.ref.8.0.22.nupkg.sha512",
-    "C:\\Users\\Hoquo\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.22\\microsoft.windowsdesktop.app.ref.8.0.22.nupkg.sha512",
-    "C:\\Users\\Hoquo\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.22\\microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512"
+    "C:\\Users\\HP\\.nuget\\packages\\awssdk.bedrockruntime\\3.7.400\\awssdk.bedrockruntime.3.7.400.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\awssdk.core\\3.7.400\\awssdk.core.3.7.400.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\awssdk.dynamodbv2\\3.7.300.2\\awssdk.dynamodbv2.3.7.300.2.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }

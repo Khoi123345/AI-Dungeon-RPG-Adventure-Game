@@ -14,11 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
+<<<<<<< HEAD
   lastShownTimestamp: 1781767325
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
   checkedLastUpdateTimestamp: 1781767325
+=======
+  lastShownTimestamp: 1781770436
+  lastUpdateResponse:
+    version: 1.00
+    versionUrl: https://unitycodemonkey.com
+  checkedLastUpdateTimestamp: 1781770436
+>>>>>>> c271753451b62b0b3f32ebc4aba44d60bc27333c
   lastQOTDResponse:
     questionId: 313
     questionText: What will happen on January 19, 2038 at 03:14:07?
@@ -27,7 +35,11 @@ MonoBehaviour:
     answerC: Half-Life 3 release date
     answerD: 
     answerE: 
+<<<<<<< HEAD
   lastQotdTimestamp: 1781767325
+=======
+  lastQotdTimestamp: 1781770436
+>>>>>>> c271753451b62b0b3f32ebc4aba44d60bc27333c
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle.png
     topText: Get 80% OFF on ALL my Courses and Games!!!
@@ -35,11 +47,19 @@ MonoBehaviour:
     bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
       Newsletter!
     bottomLink: gamedevreport
+<<<<<<< HEAD
   lastDynamicHeaderTimestamp: 1781767325
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
   websiteLatestMessageTimestamp: 1781767325
+=======
+  lastDynamicHeaderTimestamp: 1781770436
+  websiteLatestMessage:
+    text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
+      Click here!</a>
+  websiteLatestMessageTimestamp: 1781770436
+>>>>>>> c271753451b62b0b3f32ebc4aba44d60bc27333c
   websiteLatestVideos:
     videos:
     - youTubeId: tEmH8kAvGgk
@@ -50,4 +70,8 @@ MonoBehaviour:
       title: Unity Summer Sale is live up to 90% OFF!
     - youTubeId: m0s3IUrWzVQ
       title: How to Write High Quality Code that doesn't fall apart.
+<<<<<<< HEAD
   websiteLatestVideosTimestamp: 1781767325
+=======
+  websiteLatestVideosTimestamp: 1781770436
+>>>>>>> c271753451b62b0b3f32ebc4aba44d60bc27333c

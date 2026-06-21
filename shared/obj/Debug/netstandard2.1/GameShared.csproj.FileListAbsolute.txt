@@ -8,3 +8,13 @@ D:\My project\shared\obj\Debug\netstandard2.1\GameShared.csproj.CoreCompileInput
 D:\My project\shared\obj\Debug\netstandard2.1\GameShared.sourcelink.json
 D:\My project\shared\obj\Debug\netstandard2.1\GameShared.dll
 D:\My project\shared\obj\Debug\netstandard2.1\GameShared.pdb
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\bin\Debug\netstandard2.1\GameShared.deps.json
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\bin\Debug\netstandard2.1\GameShared.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\bin\Debug\netstandard2.1\GameShared.pdb
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\obj\Debug\netstandard2.1\GameShared.GeneratedMSBuildEditorConfig.editorconfig
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\obj\Debug\netstandard2.1\GameShared.AssemblyInfoInputs.cache
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\obj\Debug\netstandard2.1\GameShared.AssemblyInfo.cs
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\obj\Debug\netstandard2.1\GameShared.csproj.CoreCompileInputs.cache
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\obj\Debug\netstandard2.1\GameShared.sourcelink.json
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\obj\Debug\netstandard2.1\GameShared.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\shared\obj\Debug\netstandard2.1\GameShared.pdb
