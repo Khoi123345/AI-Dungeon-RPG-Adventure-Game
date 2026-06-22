@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
-  lastShownTimestamp: 1781770436
+  lastShownTimestamp: 1782093449
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1781770436
+  checkedLastUpdateTimestamp: 1782093449
   lastQOTDResponse:
-    questionId: 313
-    questionText: What will happen on January 19, 2038 at 03:14:07?
-    answerA: Armagedon
-    answerB: End of Unix Time
-    answerC: Half-Life 3 release date
+    questionId: 314
+    questionText: The Profiler is useful for...
+    answerA: Balancing difficulty
+    answerB: Level Design
+    answerC: Indentifying performance bottlenecks
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1781770436
+  lastQotdTimestamp: 1782093449
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle.png
     topText: Get 80% OFF on ALL my Courses and Games!!!
@@ -35,19 +35,19 @@ MonoBehaviour:
     bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
       Newsletter!
     bottomLink: gamedevreport
-  lastDynamicHeaderTimestamp: 1781770436
+  lastDynamicHeaderTimestamp: 1782093449
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1781770436
+  websiteLatestMessageTimestamp: 1782093449
   websiteLatestVideos:
     videos:
+    - youTubeId: xDeGnrX1ds4
+      title: TOP 10 FREE NEW Assets JUNE 2026!
+    - youTubeId: l8haAb6CPCI
+      title: AWESOME Bundle 80% OFF for Beginners and Intermediates!
     - youTubeId: tEmH8kAvGgk
       title: Unity 6.5 is OUT!
     - youTubeId: H36i5K3tTy8
       title: TOP 10 NEW Games, Made with Unity! (MAY 2026)
-    - youTubeId: NYBe2xkcscA
-      title: Unity Summer Sale is live up to 90% OFF!
-    - youTubeId: m0s3IUrWzVQ
-      title: How to Write High Quality Code that doesn't fall apart.
-  websiteLatestVideosTimestamp: 1781770436
+  websiteLatestVideosTimestamp: 1782093449
