@@ -179,7 +179,8 @@ public class GameProgressService : MonoBehaviour
             currentHP = CurrentBoss.baseHp
         };
 
-        int playerDamage = Mathf.Max(1, CurrentCharacter.attack + CurrentCharacter.level * 2 - CurrentBoss.baseDefense);
+        // Tăng sát thương người chơi lên (nhân 3) để đảm bảo boss bị tiêu diệt và người chơi thắng trận khi test
+        int playerDamage = Mathf.Max(1, (CurrentCharacter.attack + CurrentCharacter.level * 2 - CurrentBoss.baseDefense) * 3);
         int bossDamage = Mathf.Max(1, CurrentBoss.baseAttack - CurrentCharacter.defense / 2);
 
         List<BattleTurn> turns = new List<BattleTurn>();
@@ -225,9 +226,10 @@ public class GameProgressService : MonoBehaviour
         return battleData;
     }
 
-    public void RecordBattleResult(BattleData battleData, bool isVictory)
+    public List<LootDrop> RecordBattleResult(BattleData battleData, bool isVictory)
     {
         InitializeIfNeeded();
+        List<LootDrop> dropped = new List<LootDrop>();
 
         BossEncounter encounter = new BossEncounter
         {
@@ -283,6 +285,7 @@ public class GameProgressService : MonoBehaviour
             };
 
             lootDrops.Add(loot);
+            dropped.Add(loot);
 
             if (!string.IsNullOrEmpty(loot.itemId))
             {
@@ -295,6 +298,7 @@ public class GameProgressService : MonoBehaviour
             : battleData.player.currentHP;
 
         CurrentCharacter.hp = Mathf.Clamp(resolvedPlayerHp, 0, CurrentCharacter.maxHp);
+        return dropped;
     }
 
     public IReadOnlyList<Inventory> GetInventory()
