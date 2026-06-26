@@ -30,6 +30,24 @@ namespace GameBackend.Core.Repositories
             return docs.Count > 0 ? JsonSerializer.Deserialize<User>(docs[0].ToJson()) : null;
         }
 
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            var filter = new ScanFilter();
+            filter.AddCondition("email", ScanOperator.Equal, email.ToLowerInvariant());
+            var search = _table.Scan(filter);
+            var docs   = await search.GetNextSetAsync();
+            return docs.Count > 0 ? JsonSerializer.Deserialize<User>(docs[0].ToJson()) : null;
+        }
+
+        public async Task<User?> GetByCognitoSubAsync(string cognitoSub)
+        {
+            var filter = new ScanFilter();
+            filter.AddCondition("cognitoSub", ScanOperator.Equal, cognitoSub);
+            var search = _table.Scan(filter);
+            var docs   = await search.GetNextSetAsync();
+            return docs.Count > 0 ? JsonSerializer.Deserialize<User>(docs[0].ToJson()) : null;
+        }
+
         public async Task SaveAsync(User user)
         {
             var doc = Document.FromJson(JsonSerializer.Serialize(user));

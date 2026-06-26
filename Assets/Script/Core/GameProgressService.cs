@@ -79,6 +79,28 @@ public class GameProgressService : MonoBehaviour
         initialized = true;
     }
 
+    /// <summary>
+    /// Cập nhật CurrentUser sau khi đăng nhập thành công (từ AuthManager).
+    /// Giữ nguyên Character, Boss, StorySession nếu đã có.
+    /// </summary>
+    public void SetCurrentUser(GameShared.Models.User user)
+    {
+        if (user == null) return;
+        CurrentUser = user;
+        Debug.Log($"[GameProgressService] CurrentUser set: {user.displayName} (id={user.userId})");
+    }
+
+    /// <summary>Xóa session khi logout.</summary>
+    public void ClearUser()
+    {
+        CurrentUser = null;
+        CurrentCharacter = null;
+        CurrentStorySession = null;
+        CurrentBoss = null;
+        initialized = false;
+        Debug.Log("[GameProgressService] Session cleared.");
+    }
+
     public StoryData CreateStoryDemoData()
     {
         InitializeIfNeeded();

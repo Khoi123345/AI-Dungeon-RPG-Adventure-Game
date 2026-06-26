@@ -1,3 +1,4 @@
+using BCrypt.Net;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Services.Interfaces;
 using GameBackend.Core.Utils;
@@ -7,6 +8,10 @@ using Microsoft.Extensions.Logging;
 
 namespace GameBackend.Core.Services
 {
+    /// <summary>
+    /// AuthService — Plan A (Self-managed auth với BCrypt + JWT HS256).
+    /// Plan B (Cognito): Thay bằng CognitoAuthService.cs.
+    /// </summary>
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
@@ -22,76 +27,94 @@ namespace GameBackend.Core.Services
 
         public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
-            var user = await _userRepository.GetByUsernameAsync(request.username);
+            if (string.IsNullOrWhiteSpace(request.username) || string.IsNullOrWhiteSpace(request.password))
+                throw new GameValidationException("Username and password are required.");
+
+            var user = await _userRepository.GetByUsernameAsync(request.username.Trim());
             if (user == null)
-            {
-                throw new GameNotFoundException("User not found");
-            }
+                throw new GameNotFoundException("User not found.");
 
             if (!VerifyPassword(request.password, user.passwordHash))
-            {
-                throw new GameUnauthorizedException("Invalid credentials");
-            }
+                throw new GameUnauthorizedException("Invalid credentials.");
+
+            if (user.status != "Active")
+                throw new GameUnauthorizedException("Account is disabled.");
 
             user.lastLoginAt = DateTime.UtcNow;
             await _userRepository.SaveAsync(user);
 
+            _logger.LogInformation("User {Username} logged in successfully.", user.username);
+
+            long expiresAt = DateTimeOffset.UtcNow.AddHours(24).ToUnixTimeSeconds();
             return new LoginResponse
             {
-                token = _jwtHelper.GenerateToken(user.userId, user.username),
-                userId = user.userId,
+                token       = _jwtHelper.GenerateToken(user.userId, user.username),
+                userId      = user.userId,
                 displayName = user.displayName,
-                expiresAt = DateTimeOffset.UtcNow.AddHours(24).ToUnixTimeSeconds()
+                expiresAt   = expiresAt
             };
         }
 
         public async Task<LoginResponse> RegisterAsync(string username, string email, string password)
         {
-            var existingUser = await _userRepository.GetByUsernameAsync(username);
-            if (existingUser != null)
-            {
-                throw new GameConflictException("Username already exists");
-            }
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                throw new GameValidationException("Username, email, and password are required.");
+
+            if (password.Length < 6)
+                throw new GameValidationException("Password must be at least 6 characters.");
+
+            // Check username duplicate
+            var existingByUsername = await _userRepository.GetByUsernameAsync(username.Trim());
+            if (existingByUsername != null)
+                throw new GameConflictException("Username already exists.");
+
+            // Check email duplicate
+            var existingByEmail = await _userRepository.GetByEmailAsync(email.Trim().ToLowerInvariant());
+            if (existingByEmail != null)
+                throw new GameConflictException("Email already registered.");
 
             var user = new User
             {
-                userId = Guid.NewGuid().ToString("N"),
-                username = username,
-                email = email,
+                userId       = Guid.NewGuid().ToString("N"),
+                username     = username.Trim(),
+                email        = email.Trim().ToLowerInvariant(),
                 passwordHash = HashPassword(password),
-                displayName = username,
-                status = "Active",
-                createdAt = DateTime.UtcNow,
-                lastLoginAt = DateTime.UtcNow
+                displayName  = username.Trim(),
+                status       = "Active",
+                createdAt    = DateTime.UtcNow,
+                lastLoginAt  = DateTime.UtcNow
             };
 
             await _userRepository.SaveAsync(user);
+            _logger.LogInformation("User {Username} registered successfully.", user.username);
 
+            long expiresAt = DateTimeOffset.UtcNow.AddHours(24).ToUnixTimeSeconds();
             return new LoginResponse
             {
-                token = _jwtHelper.GenerateToken(user.userId, user.username),
-                userId = user.userId,
+                token       = _jwtHelper.GenerateToken(user.userId, user.username),
+                userId      = user.userId,
                 displayName = user.displayName,
-                expiresAt = DateTimeOffset.UtcNow.AddHours(24).ToUnixTimeSeconds()
+                expiresAt   = expiresAt
             };
         }
 
         public Task<bool> ValidateTokenAsync(string token)
         {
-            return Task.FromResult(_jwtHelper.ValidateToken(token));
+            return Task.FromResult(_jwtHelper.IsTokenValid(token));
         }
 
-        private static string HashPassword(string password)
-        {
-            // TODO: Sử dụng BCrypt hoặc Argon2 cho production
-            using var sha = System.Security.Cryptography.SHA256.Create();
-            var bytes = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(bytes);
-        }
+        // ── Password (BCrypt) ─────────────────────────────────────
 
+        /// <summary>Hash password dùng BCrypt với work factor 12.</summary>
+        private static string HashPassword(string password) =>
+            BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12);
+
+        /// <summary>Verify password so với BCrypt hash.</summary>
         private static bool VerifyPassword(string password, string hash)
         {
-            return HashPassword(password) == hash;
+            try { return BCrypt.Net.BCrypt.Verify(password, hash); }
+            catch { return false; }
         }
     }
 }
+
