@@ -45,6 +45,7 @@ public class RegisterPanelController : MonoBehaviour
     [SerializeField] private string loginScene    = "Login";
     [SerializeField] private string mainMenuScene = "DemoMenu";
     [SerializeField] private string confirmScene  = ""; // Plan B: scene nhập OTP (để trống nếu chưa có)
+    [SerializeField] private string welcomeScene  = "Welcome";
 
     // ── State ─────────────────────────────────────────────────────
     private bool   _isLoading;
@@ -95,7 +96,7 @@ public class RegisterPanelController : MonoBehaviour
         if (btnCancel != null)
         {
             btnCancel.onClick.RemoveAllListeners();
-            btnCancel.onClick.AddListener(() => SceneManager.LoadScene(loginScene));
+            btnCancel.onClick.AddListener(() => SceneManager.LoadScene(welcomeScene));
         }
 
         if (btnGoToLogin != null)

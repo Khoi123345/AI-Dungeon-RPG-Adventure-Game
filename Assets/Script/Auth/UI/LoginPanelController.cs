@@ -40,6 +40,7 @@ public class LoginPanelController : MonoBehaviour
     [Header("Scene Navigation")]
     [SerializeField] private string mainMenuScene   = "DemoMenu";
     [SerializeField] private string registerScene   = "Register";
+    [SerializeField] private string welcomeScene    = "Welcome";
 
     // ── State ─────────────────────────────────────────────────────
     private bool _isLoading;
@@ -156,11 +157,7 @@ public class LoginPanelController : MonoBehaviour
 
     private void OnCancelClicked()
     {
-        // Về màn hình trước (MainMenu nếu đang trong game) hoặc thoát
-        if (SceneManager.sceneCountInBuildSettings > 1)
-            SceneManager.LoadScene(0);
-        else
-            Application.Quit();
+        SceneManager.LoadScene(welcomeScene);
     }
 
     // ══════════════════════════════════════════════════════════════
