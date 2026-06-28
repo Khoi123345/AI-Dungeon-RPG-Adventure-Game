@@ -130,11 +130,7 @@ public class MockAuthService : IUnityAuthService
     {
         _currentToken = null;
         _currentUser  = null;
-        PlayerPrefs.DeleteKey(KEY_AUTH_TOKEN);
-        PlayerPrefs.DeleteKey(KEY_AUTH_USER_ID);
-        PlayerPrefs.DeleteKey(KEY_AUTH_DISPLAY);
-        PlayerPrefs.DeleteKey(KEY_AUTH_EXPIRES);
-        PlayerPrefs.Save();
+        ApiClient.Instance.ClearAuth();
         Debug.Log("[MockAuth] Logged out.");
         return Task.CompletedTask;
     }
@@ -142,33 +138,8 @@ public class MockAuthService : IUnityAuthService
     public async Task<bool> TryRestoreSessionAsync()
     {
         await Task.Yield();
-
-        string token = PlayerPrefs.GetString(KEY_AUTH_TOKEN, null);
-        if (string.IsNullOrEmpty(token)) return false;
-
-        long expiresAt = long.Parse(PlayerPrefs.GetString(KEY_AUTH_EXPIRES, "0"));
-        if (DateTimeOffset.UtcNow.ToUnixTimeSeconds() >= expiresAt)
-        {
-            // Token hết hạn — xóa
-            await LogoutAsync();
-            Debug.Log("[MockAuth] Saved token expired, cleared.");
-            return false;
-        }
-
-        string userId      = PlayerPrefs.GetString(KEY_AUTH_USER_ID, null);
-        string displayName = PlayerPrefs.GetString(KEY_AUTH_DISPLAY, null);
-
-        // Tải lại user từ mock storage
-        var users = LoadUsers();
-        var user  = users.Find(u => u.userId == userId);
-        if (user == null) return false;
-
-        _currentToken = token;
-        _currentUser  = ToUser(user);
-        ApiClient.Instance.SetAuth(token);
-
-        Debug.Log($"[MockAuth] Session restored: {user.username}");
-        return true;
+        // Không tự động phục hồi phiên đăng nhập khi chạy thử tạm thời
+        return false;
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -180,12 +151,7 @@ public class MockAuthService : IUnityAuthService
         _currentToken = token;
         _currentUser  = user;
 
-        PlayerPrefs.SetString(KEY_AUTH_TOKEN,   token);
-        PlayerPrefs.SetString(KEY_AUTH_USER_ID, user.userId);
-        PlayerPrefs.SetString(KEY_AUTH_DISPLAY, user.displayName);
-        PlayerPrefs.SetString(KEY_AUTH_EXPIRES, expiresAt.ToString());
-        PlayerPrefs.Save();
-
+        // Chỉ lưu trong bộ nhớ tạm (runtime), không ghi xuống PlayerPrefs
         ApiClient.Instance.SetAuth(token);
     }
 
@@ -200,26 +166,21 @@ public class MockAuthService : IUnityAuthService
         }
     }
 
-    // ── Mock User Storage (PlayerPrefs JSON) ──────────────────────
+    // ── Mock User Storage (In-Memory Static List) ─────────────────
+    private static List<MockUserRecord> _inMemoryUsers;
 
     private List<MockUserRecord> LoadUsers()
     {
-        string json = PlayerPrefs.GetString(KEY_MOCK_USERS, "[]");
-        try
+        if (_inMemoryUsers == null)
         {
-            return JsonUtility.FromJson<MockUserListWrapper>(json)?.users ?? new List<MockUserRecord>();
+            _inMemoryUsers = new List<MockUserRecord>();
         }
-        catch
-        {
-            return new List<MockUserRecord>();
-        }
+        return _inMemoryUsers;
     }
 
     private void SaveUsers(List<MockUserRecord> users)
     {
-        string json = JsonUtility.ToJson(new MockUserListWrapper { users = users });
-        PlayerPrefs.SetString(KEY_MOCK_USERS, json);
-        PlayerPrefs.Save();
+        _inMemoryUsers = users;
     }
 
     private void EnsureDemoUserExists()
@@ -240,7 +201,7 @@ public class MockAuthService : IUnityAuthService
         });
 
         SaveUsers(users);
-        Debug.Log("[MockAuth] Demo user created: username=demo, password=password123");
+        Debug.Log("[MockAuth] Demo user created in-memory: username=demo, password=password123");
     }
 
     // ── Token ─────────────────────────────────────────────────────
