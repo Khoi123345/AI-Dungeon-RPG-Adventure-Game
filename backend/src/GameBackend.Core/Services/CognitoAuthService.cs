@@ -149,7 +149,7 @@ namespace GameBackend.Core.Services
 
         public async Task ConfirmSignUpAsync(string username, string confirmationCode)
         {
-            var confirmRequest = new ConfirmSignUpRequest
+            var confirmRequest = new Amazon.CognitoIdentityProvider.Model.ConfirmSignUpRequest
             {
                 ClientId         = _clientId,
                 Username         = username.Trim(),

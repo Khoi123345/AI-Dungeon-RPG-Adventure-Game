@@ -1,0 +1,1852 @@
+{
+ "Resources": {
+  "LoginFunctionServiceRole74B42ABA": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/LoginFunction/ServiceRole/Resource"
+   }
+  },
+  "LoginFunctionServiceRoleDefaultPolicy2FE1C77C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": "cognito-idp:InitiateAuth",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LoginFunctionServiceRoleDefaultPolicy2FE1C77C",
+    "Roles": [
+     {
+      "Ref": "LoginFunctionServiceRole74B42ABA"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/LoginFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LoginFunction66F090C6": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "LoginFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Auth.LoginHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "LoginFunctionServiceRole74B42ABA",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "LoginFunctionServiceRoleDefaultPolicy2FE1C77C",
+    "LoginFunctionServiceRole74B42ABA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/LoginFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "RegisterFunctionServiceRoleDB8F6C89": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/RegisterFunction/ServiceRole/Resource"
+   }
+  },
+  "RegisterFunctionServiceRoleDefaultPolicyC4352E3C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": "cognito-idp:SignUp",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "RegisterFunctionServiceRoleDefaultPolicyC4352E3C",
+    "Roles": [
+     {
+      "Ref": "RegisterFunctionServiceRoleDB8F6C89"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/RegisterFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "RegisterFunction735506DF": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "RegisterFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Auth.RegisterHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "RegisterFunctionServiceRoleDB8F6C89",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "RegisterFunctionServiceRoleDefaultPolicyC4352E3C",
+    "RegisterFunctionServiceRoleDB8F6C89"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/RegisterFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ConfirmSignUpFunctionServiceRole42DEE451": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/ConfirmSignUpFunction/ServiceRole/Resource"
+   }
+  },
+  "ConfirmSignUpFunctionServiceRoleDefaultPolicy584C9FAF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": "cognito-idp:ConfirmSignUp",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ConfirmSignUpFunctionServiceRoleDefaultPolicy584C9FAF",
+    "Roles": [
+     {
+      "Ref": "ConfirmSignUpFunctionServiceRole42DEE451"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/ConfirmSignUpFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ConfirmSignUpFunction5B772372": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "ConfirmSignUpFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Auth.ConfirmSignUpHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "ConfirmSignUpFunctionServiceRole42DEE451",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "ConfirmSignUpFunctionServiceRoleDefaultPolicy584C9FAF",
+    "ConfirmSignUpFunctionServiceRole42DEE451"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/ConfirmSignUpFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "RefreshTokenFunctionServiceRole7D6AF27F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/RefreshTokenFunction/ServiceRole/Resource"
+   }
+  },
+  "RefreshTokenFunctionServiceRoleDefaultPolicy47C7EF3C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": "cognito-idp:InitiateAuth",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "RefreshTokenFunctionServiceRoleDefaultPolicy47C7EF3C",
+    "Roles": [
+     {
+      "Ref": "RefreshTokenFunctionServiceRole7D6AF27F"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/RefreshTokenFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "RefreshTokenFunction37E34807": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "RefreshTokenFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Auth.RefreshTokenHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "RefreshTokenFunctionServiceRole7D6AF27F",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "RefreshTokenFunctionServiceRoleDefaultPolicy47C7EF3C",
+    "RefreshTokenFunctionServiceRole7D6AF27F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/RefreshTokenFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "GetCharacterFunctionServiceRoleF363AF91": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/GetCharacterFunction/ServiceRole/Resource"
+   }
+  },
+  "GetCharacterFunctionServiceRoleDefaultPolicy61C39FF0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "GetCharacterFunctionServiceRoleDefaultPolicy61C39FF0",
+    "Roles": [
+     {
+      "Ref": "GetCharacterFunctionServiceRoleF363AF91"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/GetCharacterFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "GetCharacterFunction1397D5D5": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "GetCharacterFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Character.GetCharacterHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "GetCharacterFunctionServiceRoleF363AF91",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "GetCharacterFunctionServiceRoleDefaultPolicy61C39FF0",
+    "GetCharacterFunctionServiceRoleF363AF91"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/GetCharacterFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CreateCharacterFunctionServiceRole8EE50BDF": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/CreateCharacterFunction/ServiceRole/Resource"
+   }
+  },
+  "CreateCharacterFunctionServiceRoleDefaultPolicyDD611EDE": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CreateCharacterFunctionServiceRoleDefaultPolicyDD611EDE",
+    "Roles": [
+     {
+      "Ref": "CreateCharacterFunctionServiceRole8EE50BDF"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/CreateCharacterFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CreateCharacterFunctionA2BD2B88": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "CreateCharacterFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Character.CreateCharacterHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "CreateCharacterFunctionServiceRole8EE50BDF",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "CreateCharacterFunctionServiceRoleDefaultPolicyDD611EDE",
+    "CreateCharacterFunctionServiceRole8EE50BDF"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/CreateCharacterFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "StartStoryFunctionServiceRole3ED6565D": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/StartStoryFunction/ServiceRole/Resource"
+   }
+  },
+  "StartStoryFunctionServiceRoleDefaultPolicyFB94EC83": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StartStoryFunctionServiceRoleDefaultPolicyFB94EC83",
+    "Roles": [
+     {
+      "Ref": "StartStoryFunctionServiceRole3ED6565D"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/StartStoryFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "StartStoryFunction8BB4630D": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "StartStoryFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Story.StartStoryHandler::Handler",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "StartStoryFunctionServiceRole3ED6565D",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "StartStoryFunctionServiceRoleDefaultPolicyFB94EC83",
+    "StartStoryFunctionServiceRole3ED6565D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/StartStoryFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "StoryActionFunctionServiceRoleD0E16671": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/StoryActionFunction/ServiceRole/Resource"
+   }
+  },
+  "StoryActionFunctionServiceRoleDefaultPolicy797AD7DA": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StoryActionFunctionServiceRoleDefaultPolicy797AD7DA",
+    "Roles": [
+     {
+      "Ref": "StoryActionFunctionServiceRoleD0E16671"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/StoryActionFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "StoryActionFunction26A06B16": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "StoryActionFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Story.StoryActionHandler::Handler",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "StoryActionFunctionServiceRoleD0E16671",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "StoryActionFunctionServiceRoleDefaultPolicy797AD7DA",
+    "StoryActionFunctionServiceRoleD0E16671"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/StoryActionFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "SpawnBossFunctionServiceRole749B1EFA": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/SpawnBossFunction/ServiceRole/Resource"
+   }
+  },
+  "SpawnBossFunctionServiceRoleDefaultPolicyB649FA4E": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SpawnBossFunctionServiceRoleDefaultPolicyB649FA4E",
+    "Roles": [
+     {
+      "Ref": "SpawnBossFunctionServiceRole749B1EFA"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/SpawnBossFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "SpawnBossFunctionB3B7CB62": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "SpawnBossFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Battle.SpawnBossHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "SpawnBossFunctionServiceRole749B1EFA",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "SpawnBossFunctionServiceRoleDefaultPolicyB649FA4E",
+    "SpawnBossFunctionServiceRole749B1EFA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/SpawnBossFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ResolveBattleFunctionServiceRole71923DE4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/ResolveBattleFunction/ServiceRole/Resource"
+   }
+  },
+  "ResolveBattleFunctionServiceRoleDefaultPolicy9839EF68": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ResolveBattleFunctionServiceRoleDefaultPolicy9839EF68",
+    "Roles": [
+     {
+      "Ref": "ResolveBattleFunctionServiceRole71923DE4"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/ResolveBattleFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ResolveBattleFunctionD8D0C938": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "ResolveBattleFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Battle.ResolveBattleHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "ResolveBattleFunctionServiceRole71923DE4",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "ResolveBattleFunctionServiceRoleDefaultPolicy9839EF68",
+    "ResolveBattleFunctionServiceRole71923DE4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/ResolveBattleFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "GetInventoryFunctionServiceRoleF38EE79B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/GetInventoryFunction/ServiceRole/Resource"
+   }
+  },
+  "GetInventoryFunctionServiceRoleDefaultPolicyC1C0289C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "GetInventoryFunctionServiceRoleDefaultPolicyC1C0289C",
+    "Roles": [
+     {
+      "Ref": "GetInventoryFunctionServiceRoleF38EE79B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/GetInventoryFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "GetInventoryFunction1F023FCC": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
+     },
+     "S3Key": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "USERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+      },
+      "CHARACTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+      },
+      "ENCOUNTERS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+      },
+      "BATTLES_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+      },
+      "STORY_SESSIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+      },
+      "STORY_ACTIONS_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+      },
+      "INVENTORY_TABLE": {
+       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+      },
+      "COGNITO_USER_POOL_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+      }
+     }
+    },
+    "FunctionName": "GetInventoryFunction",
+    "Handler": "GameBackend.Handlers::GameBackend.Handlers.Inventory.GetInventoryHandler::Handler",
+    "MemorySize": 512,
+    "Role": {
+     "Fn::GetAtt": [
+      "GetInventoryFunctionServiceRoleF38EE79B",
+      "Arn"
+     ]
+    },
+    "Runtime": "dotnet8",
+    "Timeout": 29
+   },
+   "DependsOn": [
+    "GetInventoryFunctionServiceRoleDefaultPolicyC1C0289C",
+    "GetInventoryFunctionServiceRoleF38EE79B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/GetInventoryFunction/Resource",
+    "aws:asset:path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWMSwuCQBSFf0v78apJ0KaFvZYRFm3lNt3i5jgTc8ckxP8eanEW33nAmUO6SCCZYSuRvlWR4St0p4C6UthK2RmsrzeEbt9YHdhZtbnbv+8VYw1d4QwN9cijM6w/Q5xcryQrUYSCQD5ASQbrRlcU1ijUq4LENV6TGtdTwAfbx3j3G3q1deFAIV5CAmkWw2F33jhP+esVXcgLO7t6Z5DGKSSDZk9hjnxjA9cExcQvdmZpTecAAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameLambdaStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ExportsOutputFnGetAttLoginFunction66F090C6Arn235F881E": {
+   "Value": {
+    "Fn::GetAtt": [
+     "LoginFunction66F090C6",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttLoginFunction66F090C6Arn235F881E"
+   }
+  },
+  "ExportsOutputFnGetAttRegisterFunction735506DFArnF4321A6C": {
+   "Value": {
+    "Fn::GetAtt": [
+     "RegisterFunction735506DF",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttRegisterFunction735506DFArnF4321A6C"
+   }
+  },
+  "ExportsOutputFnGetAttConfirmSignUpFunction5B772372Arn86E7F313": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ConfirmSignUpFunction5B772372",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttConfirmSignUpFunction5B772372Arn86E7F313"
+   }
+  },
+  "ExportsOutputFnGetAttRefreshTokenFunction37E34807Arn4D44462E": {
+   "Value": {
+    "Fn::GetAtt": [
+     "RefreshTokenFunction37E34807",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttRefreshTokenFunction37E34807Arn4D44462E"
+   }
+  },
+  "ExportsOutputFnGetAttCreateCharacterFunctionA2BD2B88ArnC04826B4": {
+   "Value": {
+    "Fn::GetAtt": [
+     "CreateCharacterFunctionA2BD2B88",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttCreateCharacterFunctionA2BD2B88ArnC04826B4"
+   }
+  },
+  "ExportsOutputFnGetAttGetCharacterFunction1397D5D5Arn077B3D1E": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GetCharacterFunction1397D5D5",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttGetCharacterFunction1397D5D5Arn077B3D1E"
+   }
+  },
+  "ExportsOutputFnGetAttStartStoryFunction8BB4630DArnCA83375B": {
+   "Value": {
+    "Fn::GetAtt": [
+     "StartStoryFunction8BB4630D",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttStartStoryFunction8BB4630DArnCA83375B"
+   }
+  },
+  "ExportsOutputFnGetAttStoryActionFunction26A06B16Arn85749762": {
+   "Value": {
+    "Fn::GetAtt": [
+     "StoryActionFunction26A06B16",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttStoryActionFunction26A06B16Arn85749762"
+   }
+  },
+  "ExportsOutputFnGetAttSpawnBossFunctionB3B7CB62ArnE6ED4FAD": {
+   "Value": {
+    "Fn::GetAtt": [
+     "SpawnBossFunctionB3B7CB62",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttSpawnBossFunctionB3B7CB62ArnE6ED4FAD"
+   }
+  },
+  "ExportsOutputFnGetAttResolveBattleFunctionD8D0C938Arn33345BDD": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ResolveBattleFunctionD8D0C938",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttResolveBattleFunctionD8D0C938Arn33345BDD"
+   }
+  },
+  "ExportsOutputFnGetAttGetInventoryFunction1F023FCCArn5054D3D2": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GetInventoryFunction1F023FCC",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameLambdaStack:ExportsOutputFnGetAttGetInventoryFunction1F023FCCArn5054D3D2"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

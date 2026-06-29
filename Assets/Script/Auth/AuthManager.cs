@@ -58,6 +58,9 @@ public class AuthManager : MonoBehaviour
     [Tooltip("Tên scene Login")]
     [SerializeField] private string loginScene = "Login";
 
+    [Tooltip("Tên scene Welcome để quay về khi logout")]
+    [SerializeField] private string welcomeScene = "Welcome";
+
     // ══════════════════════════════════════════════════════════════
     // LIFECYCLE
     // ══════════════════════════════════════════════════════════════
@@ -132,15 +135,15 @@ public class AuthManager : MonoBehaviour
         return result;
     }
 
-    /// <summary>Đăng xuất và về màn hình Login.</summary>
+    /// <summary>Đăng xuất và về màn hình Welcome.</summary>
     public async Task LogoutAsync()
     {
         await _authService.LogoutAsync();
         GameProgressService.Instance?.ClearUser();
         OnLogout?.Invoke();
 
-        if (SceneManager.GetActiveScene().name != loginScene)
-            SceneManager.LoadScene(loginScene);
+        if (SceneManager.GetActiveScene().name != welcomeScene)
+            SceneManager.LoadScene(welcomeScene);
     }
 
     // ══════════════════════════════════════════════════════════════

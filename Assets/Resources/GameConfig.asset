@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d415a81241b31d4990f2602512fbeeb, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfigSO
-  apiBaseUrl: https://your-api-gateway-url.execute-api.ap-southeast-1.amazonaws.com/prod
+  apiBaseUrl: https://ne6hi09ope.execute-api.ap-southeast-1.amazonaws.com/prod
   apiTimeoutSeconds: 30
-  useMockMode: 1
+  awsCognitoUserPoolId: ap-southeast-1_o5iVEr53m
+  awsCognitoClientId: 6gbr2dsh2ks5enlana5dqrdoob
+  awsCognitoRegion: ap-southeast-1
+  useMockMode: 0
   enableApiLogging: 1

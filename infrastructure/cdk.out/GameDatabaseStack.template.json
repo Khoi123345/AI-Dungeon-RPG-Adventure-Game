@@ -1,0 +1,407 @@
+{
+ "Resources": {
+  "GameUsers2CC13EA4": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameUsers"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameUsers/Resource"
+   }
+  },
+  "GameCharactersADC68954": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "characterId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "userId-index",
+      "KeySchema": [
+       {
+        "AttributeName": "userId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "characterId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameCharacters"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameCharacters/Resource"
+   }
+  },
+  "GameBossEncounters2BCD1172": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "encounterId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "encounterId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameBossEncounters"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameBossEncounters/Resource"
+   }
+  },
+  "GameBattles72B8D8BA": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "battleId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "battleId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameBattles"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameBattles/Resource"
+   }
+  },
+  "GameStorySessions94D664C0": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "sessionId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "characterId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "characterId-index",
+      "KeySchema": [
+       {
+        "AttributeName": "characterId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "sessionId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameStorySessions"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameStorySessions/Resource"
+   }
+  },
+  "GameStoryActionsBCC1CDD7": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "actionId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "actionId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameStoryActions"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameStoryActions/Resource"
+   }
+  },
+  "GameInventory125E1F12": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "inventoryId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "inventoryId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameInventory"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameInventory/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWIPQvCMBQAf0v35CWxCC4OUl071OIq+XhCbJtXktQipf9drMgNd9wO1F6CLPScuHUd772B5Zq17Zie0929gx7IGVhabXpk1SNssbIGE03RbuvfKztTrjGLA0hQpYD60lYU8TSO/IYxeQrHVwlKKJBfimfynscpZD8gND9/AG8RQo+SAAAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameUsers2CC13EA4",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+   }
+  },
+  "ExportsOutputRefGameUsers2CC13EA41B7C299D": {
+   "Value": {
+    "Ref": "GameUsers2CC13EA4"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameUsers2CC13EA41B7C299D"
+   }
+  },
+  "ExportsOutputRefGameCharactersADC68954AE125476": {
+   "Value": {
+    "Ref": "GameCharactersADC68954"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameCharactersADC68954AE125476"
+   }
+  },
+  "ExportsOutputRefGameBossEncounters2BCD1172C094C43A": {
+   "Value": {
+    "Ref": "GameBossEncounters2BCD1172"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+   }
+  },
+  "ExportsOutputRefGameBattles72B8D8BAA03F3C07": {
+   "Value": {
+    "Ref": "GameBattles72B8D8BA"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+   }
+  },
+  "ExportsOutputRefGameStorySessions94D664C0E4F24ACB": {
+   "Value": {
+    "Ref": "GameStorySessions94D664C0"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+   }
+  },
+  "ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236": {
+   "Value": {
+    "Ref": "GameStoryActionsBCC1CDD7"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+   }
+  },
+  "ExportsOutputRefGameInventory125E1F128FE2DC96": {
+   "Value": {
+    "Ref": "GameInventory125E1F12"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+   }
+  },
+  "ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameCharactersADC68954",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+   }
+  },
+  "ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameStorySessions94D664C0",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+   }
+  },
+  "ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameStoryActionsBCC1CDD7",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+   }
+  },
+  "ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameBossEncounters2BCD1172",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+   }
+  },
+  "ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameBattles72B8D8BA",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+   }
+  },
+  "ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameInventory125E1F12",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

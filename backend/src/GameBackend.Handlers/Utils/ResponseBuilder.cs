@@ -25,7 +25,7 @@ namespace GameBackend.Handlers.Utils
             {
                 StatusCode = 200,
                 Headers = CorsHeaders,
-                Body = JsonSerializer.Serialize(body)
+                Body = GameBackend.Core.Utils.JsonUtils.Serialize(body)
             };
         }
 
@@ -36,7 +36,7 @@ namespace GameBackend.Handlers.Utils
             {
                 StatusCode = statusCode,
                 Headers = CorsHeaders,
-                Body = JsonSerializer.Serialize(body)
+                Body = GameBackend.Core.Utils.JsonUtils.Serialize(body)
             };
         }
 

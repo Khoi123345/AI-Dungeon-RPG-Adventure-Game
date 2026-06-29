@@ -31,7 +31,7 @@ namespace GameBackend.Handlers.Auth
 
             try
             {
-                var registerRequest = JsonSerializer.Deserialize<RegisterRequest>(request.Body);
+                var registerRequest = JsonUtils.Deserialize<RegisterRequest>(request.Body);
 
                 if (registerRequest == null ||
                     string.IsNullOrWhiteSpace(registerRequest.username) ||

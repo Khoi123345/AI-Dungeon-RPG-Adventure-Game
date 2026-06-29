@@ -1,0 +1,1266 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "GameDatabaseStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "GameDatabaseStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "GameDatabaseStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/ap-southeast-1",
+      "properties": {
+        "templateFile": "GameDatabaseStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/76d6bcd6b2edf8ed0ed15f6a3f943b58855a681ec05cb2f27cb3cc12110cfd6d.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "GameDatabaseStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-ap-southeast-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "GameDatabaseStack.assets"
+      ],
+      "metadata": {
+        "/GameDatabaseStack/GameUsers": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameUsers2CC13EA4"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameUsers/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameUsers2CC13EA4"
+          }
+        ],
+        "/GameDatabaseStack/GameCharacters": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameCharactersADC68954"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameCharacters/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameCharactersADC68954"
+          }
+        ],
+        "/GameDatabaseStack/GameBossEncounters": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameBossEncounters2BCD1172"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameBossEncounters/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameBossEncounters2BCD1172"
+          }
+        ],
+        "/GameDatabaseStack/GameBattles": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameBattles72B8D8BA"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameBattles/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameBattles72B8D8BA"
+          }
+        ],
+        "/GameDatabaseStack/GameStorySessions": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameStorySessions94D664C0"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameStorySessions/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameStorySessions94D664C0"
+          }
+        ],
+        "/GameDatabaseStack/GameStoryActions": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameStoryActionsBCC1CDD7"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameStoryActions/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameStoryActionsBCC1CDD7"
+          }
+        ],
+        "/GameDatabaseStack/GameInventory": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameInventory125E1F12"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameInventory/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameInventory125E1F12"
+          }
+        ],
+        "/GameDatabaseStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameUsers2CC13EA4\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameUsers2CC13EA4\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameUsers2CC13EA41B7C299D"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameCharactersADC68954\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameCharactersADC68954AE125476"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameBossEncounters2BCD1172\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameBossEncounters2BCD1172C094C43A"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameBattles72B8D8BA\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameBattles72B8D8BAA03F3C07"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameStorySessions94D664C0\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameStorySessions94D664C0E4F24ACB"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameStoryActionsBCC1CDD7\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameStoryActionsBCC1CDD7DB41D236"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameInventory125E1F12\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameInventory125E1F128FE2DC96"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameCharactersADC68954\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameBossEncounters2BCD1172\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameBattles72B8D8BA\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameInventory125E1F12\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+          }
+        ],
+        "/GameDatabaseStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/GameDatabaseStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "GameDatabaseStack"
+    },
+    "GameCognitoStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "GameCognitoStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "GameCognitoStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/ap-southeast-1",
+      "properties": {
+        "templateFile": "GameCognitoStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/a95ad16885245f5dfc04b25e6d457cc9876fe039f64e712098b803ee38762460.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "GameCognitoStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-ap-southeast-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "GameCognitoStack.assets"
+      ],
+      "metadata": {
+        "/GameCognitoStack/GameUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameUserPoolA8C3B0A9"
+          }
+        ],
+        "/GameCognitoStack/GameUserPool/GameMobileClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameUserPoolGameMobileClient9B1B90A0"
+          }
+        ],
+        "/GameCognitoStack/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/GameCognitoStack/UserPoolClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClientId"
+          }
+        ],
+        "/GameCognitoStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/GameCognitoStack/Exports/Output{\"Fn::GetAtt\":[\"GameUserPoolA8C3B0A9\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
+          }
+        ],
+        "/GameCognitoStack/Exports/Output{\"Ref\":\"GameUserPoolA8C3B0A9\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
+          }
+        ],
+        "/GameCognitoStack/Exports/Output{\"Ref\":\"GameUserPoolGameMobileClient9B1B90A0\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
+          }
+        ],
+        "/GameCognitoStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/GameCognitoStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "GameCognitoStack"
+    },
+    "GameLambdaStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "GameLambdaStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "GameLambdaStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/ap-southeast-1",
+      "properties": {
+        "templateFile": "GameLambdaStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/f5398391c03fb4b1c562af4a24306dbb14ba2e54d00a419eae3e9fd0a1bdf69b.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "GameLambdaStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-ap-southeast-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "GameDatabaseStack",
+        "GameCognitoStack",
+        "GameLambdaStack.assets"
+      ],
+      "metadata": {
+        "/GameLambdaStack/LoginFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoginFunctionServiceRole74B42ABA"
+          }
+        ],
+        "/GameLambdaStack/LoginFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoginFunctionServiceRoleDefaultPolicy2FE1C77C"
+          }
+        ],
+        "/GameLambdaStack/LoginFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoginFunction66F090C6"
+          }
+        ],
+        "/GameLambdaStack/RegisterFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RegisterFunctionServiceRoleDB8F6C89"
+          }
+        ],
+        "/GameLambdaStack/RegisterFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RegisterFunctionServiceRoleDefaultPolicyC4352E3C"
+          }
+        ],
+        "/GameLambdaStack/RegisterFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RegisterFunction735506DF"
+          }
+        ],
+        "/GameLambdaStack/ConfirmSignUpFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ConfirmSignUpFunctionServiceRole42DEE451"
+          }
+        ],
+        "/GameLambdaStack/ConfirmSignUpFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ConfirmSignUpFunctionServiceRoleDefaultPolicy584C9FAF"
+          }
+        ],
+        "/GameLambdaStack/ConfirmSignUpFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ConfirmSignUpFunction5B772372"
+          }
+        ],
+        "/GameLambdaStack/RefreshTokenFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RefreshTokenFunctionServiceRole7D6AF27F"
+          }
+        ],
+        "/GameLambdaStack/RefreshTokenFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RefreshTokenFunctionServiceRoleDefaultPolicy47C7EF3C"
+          }
+        ],
+        "/GameLambdaStack/RefreshTokenFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RefreshTokenFunction37E34807"
+          }
+        ],
+        "/GameLambdaStack/GetCharacterFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetCharacterFunctionServiceRoleF363AF91"
+          }
+        ],
+        "/GameLambdaStack/GetCharacterFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetCharacterFunctionServiceRoleDefaultPolicy61C39FF0"
+          }
+        ],
+        "/GameLambdaStack/GetCharacterFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetCharacterFunction1397D5D5"
+          }
+        ],
+        "/GameLambdaStack/CreateCharacterFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateCharacterFunctionServiceRole8EE50BDF"
+          }
+        ],
+        "/GameLambdaStack/CreateCharacterFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateCharacterFunctionServiceRoleDefaultPolicyDD611EDE"
+          }
+        ],
+        "/GameLambdaStack/CreateCharacterFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateCharacterFunctionA2BD2B88"
+          }
+        ],
+        "/GameLambdaStack/StartStoryFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartStoryFunctionServiceRole3ED6565D"
+          }
+        ],
+        "/GameLambdaStack/StartStoryFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartStoryFunctionServiceRoleDefaultPolicyFB94EC83"
+          }
+        ],
+        "/GameLambdaStack/StartStoryFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartStoryFunction8BB4630D"
+          }
+        ],
+        "/GameLambdaStack/StoryActionFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StoryActionFunctionServiceRoleD0E16671"
+          }
+        ],
+        "/GameLambdaStack/StoryActionFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StoryActionFunctionServiceRoleDefaultPolicy797AD7DA"
+          }
+        ],
+        "/GameLambdaStack/StoryActionFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StoryActionFunction26A06B16"
+          }
+        ],
+        "/GameLambdaStack/SpawnBossFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpawnBossFunctionServiceRole749B1EFA"
+          }
+        ],
+        "/GameLambdaStack/SpawnBossFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpawnBossFunctionServiceRoleDefaultPolicyB649FA4E"
+          }
+        ],
+        "/GameLambdaStack/SpawnBossFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpawnBossFunctionB3B7CB62"
+          }
+        ],
+        "/GameLambdaStack/ResolveBattleFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResolveBattleFunctionServiceRole71923DE4"
+          }
+        ],
+        "/GameLambdaStack/ResolveBattleFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResolveBattleFunctionServiceRoleDefaultPolicy9839EF68"
+          }
+        ],
+        "/GameLambdaStack/ResolveBattleFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResolveBattleFunctionD8D0C938"
+          }
+        ],
+        "/GameLambdaStack/GetInventoryFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetInventoryFunctionServiceRoleF38EE79B"
+          }
+        ],
+        "/GameLambdaStack/GetInventoryFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetInventoryFunctionServiceRoleDefaultPolicyC1C0289C"
+          }
+        ],
+        "/GameLambdaStack/GetInventoryFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetInventoryFunction1F023FCC"
+          }
+        ],
+        "/GameLambdaStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"LoginFunction66F090C6\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttLoginFunction66F090C6Arn235F881E"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"RegisterFunction735506DF\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttRegisterFunction735506DFArnF4321A6C"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"ConfirmSignUpFunction5B772372\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttConfirmSignUpFunction5B772372Arn86E7F313"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"RefreshTokenFunction37E34807\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttRefreshTokenFunction37E34807Arn4D44462E"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"CreateCharacterFunctionA2BD2B88\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttCreateCharacterFunctionA2BD2B88ArnC04826B4"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"GetCharacterFunction1397D5D5\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGetCharacterFunction1397D5D5Arn077B3D1E"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"StartStoryFunction8BB4630D\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttStartStoryFunction8BB4630DArnCA83375B"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"StoryActionFunction26A06B16\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttStoryActionFunction26A06B16Arn85749762"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"SpawnBossFunctionB3B7CB62\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttSpawnBossFunctionB3B7CB62ArnE6ED4FAD"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"ResolveBattleFunctionD8D0C938\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttResolveBattleFunctionD8D0C938Arn33345BDD"
+          }
+        ],
+        "/GameLambdaStack/Exports/Output{\"Fn::GetAtt\":[\"GetInventoryFunction1F023FCC\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGetInventoryFunction1F023FCCArn5054D3D2"
+          }
+        ],
+        "/GameLambdaStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/GameLambdaStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "GameLambdaStack"
+    },
+    "GameApiStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "GameApiStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "GameApiStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/ap-southeast-1",
+      "properties": {
+        "templateFile": "GameApiStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/eca60a683d162862ca9c58145550a6724dcedd07cebb0bcd8dcada763b872736.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "GameApiStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-ap-southeast-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "GameLambdaStack",
+        "GameCognitoStack",
+        "GameApiStack.assets"
+      ],
+      "metadata": {
+        "/GameApiStack/GameApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApi48D02DE3"
+          }
+        ],
+        "/GameApiStack/GameApi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiCloudWatchRoleA44130A4"
+          }
+        ],
+        "/GameApiStack/GameApi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiAccount26F35C17"
+          }
+        ],
+        "/GameApiStack/GameApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiDeploymentA549419007da9aab1462fd58d8279831655ff0b4"
+          }
+        ],
+        "/GameApiStack/GameApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiDeploymentStageprodD6F3C6E9"
+          }
+        ],
+        "/GameApiStack/GameApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiEndpoint25A6DEFC"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiOPTIONSBA144EA8"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthC4A7EF3B"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthOPTIONS0DF9CC7C"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/login/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthloginA4801B43"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/login/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthloginOPTIONSE62AE64B"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/login/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..auth.login": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthloginPOSTApiPermissionGameApiStackGameApi38DB2726POSTauthloginBD15447A"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/login/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..auth.login": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthloginPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTauthloginD519DEAD"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/login/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthloginPOSTE956A81B"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/register/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthregister2989B32B"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/register/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthregisterOPTIONS79FB09B9"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/register/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..auth.register": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthregisterPOSTApiPermissionGameApiStackGameApi38DB2726POSTauthregisterA18F2D99"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/register/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..auth.register": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthregisterPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTauthregisterE098A15B"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/register/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthregisterPOSTA748B0AB"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/confirm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthconfirm4195ED8A"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/confirm/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthconfirmOPTIONSBFC92660"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/confirm/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..auth.confirm": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthconfirmPOSTApiPermissionGameApiStackGameApi38DB2726POSTauthconfirmC30DA294"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/confirm/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..auth.confirm": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthconfirmPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTauthconfirm3452B999"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/confirm/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthconfirmPOSTB8F7E60E"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/refresh/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthrefreshE912F516"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/refresh/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthrefreshOPTIONS33753DAF"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/refresh/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..auth.refresh": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthrefreshPOSTApiPermissionGameApiStackGameApi38DB2726POSTauthrefreshFA1DAA49"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/refresh/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..auth.refresh": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthrefreshPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTauthrefreshCEEBBBF3"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/auth/refresh/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiauthrefreshPOSTB81B9B3A"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharacter79028747"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharacterOPTIONS77BD81EE"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..character": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharacterPOSTApiPermissionGameApiStackGameApi38DB2726POSTcharacter05030A02"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..character": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharacterPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTcharacter273E74DC"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharacterPOST772068B4"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/{characterId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharactercharacterIdF950AABB"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/{characterId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharactercharacterIdOPTIONS655CBCB8"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/{characterId}/GET/ApiPermission.GameApiStackGameApi38DB2726.GET..character.{characterId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharactercharacterIdGETApiPermissionGameApiStackGameApi38DB2726GETcharactercharacterId42FBFB70"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/{characterId}/GET/ApiPermission.Test.GameApiStackGameApi38DB2726.GET..character.{characterId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharactercharacterIdGETApiPermissionTestGameApiStackGameApi38DB2726GETcharactercharacterId00811040"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/character/{characterId}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApicharactercharacterIdGET00FAB3C5"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistory509F26BD"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistoryOPTIONSF3B028D6"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/start/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistorystart940B8EBF"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/start/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistorystartOPTIONSCC8BAA33"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/start/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..story.start": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistorystartPOSTApiPermissionGameApiStackGameApi38DB2726POSTstorystart5AE9814F"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/start/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..story.start": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistorystartPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTstorystartC90DE0B6"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/start/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistorystartPOST6F243989"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/action/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistoryaction89619897"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/action/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistoryactionOPTIONS33799F07"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/action/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..story.action": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistoryactionPOSTApiPermissionGameApiStackGameApi38DB2726POSTstoryaction625C9790"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/action/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..story.action": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistoryactionPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTstoryaction3C530892"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/story/action/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApistoryactionPOST56B30F81"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattleBDF7A7F1"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattleOPTIONS23DC3542"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/spawn-boss/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattlespawnboss3E7F6105"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/spawn-boss/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattlespawnbossOPTIONSB5912723"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/spawn-boss/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..battle.spawn-boss": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattlespawnbossPOSTApiPermissionGameApiStackGameApi38DB2726POSTbattlespawnbossB0D4073C"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/spawn-boss/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..battle.spawn-boss": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattlespawnbossPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTbattlespawnboss6E1DB631"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/spawn-boss/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattlespawnbossPOSTEC2117AC"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/resolve/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattleresolveA8822260"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/resolve/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattleresolveOPTIONSCCCDBFC0"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/resolve/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..battle.resolve": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattleresolvePOSTApiPermissionGameApiStackGameApi38DB2726POSTbattleresolve125E643A"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/resolve/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..battle.resolve": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattleresolvePOSTApiPermissionTestGameApiStackGameApi38DB2726POSTbattleresolveDE5C0E0C"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/battle/resolve/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApibattleresolvePOST8C986B7E"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/inventory/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiinventory36B892F1"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/inventory/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiinventoryOPTIONS5F9B28DD"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/inventory/{characterId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiinventorycharacterId14E46CDA"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/inventory/{characterId}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiinventorycharacterIdOPTIONSEF6623EF"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/inventory/{characterId}/GET/ApiPermission.GameApiStackGameApi38DB2726.GET..inventory.{characterId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiinventorycharacterIdGETApiPermissionGameApiStackGameApi38DB2726GETinventorycharacterId98C0C751"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/inventory/{characterId}/GET/ApiPermission.Test.GameApiStackGameApi38DB2726.GET..inventory.{characterId}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiinventorycharacterIdGETApiPermissionTestGameApiStackGameApi38DB2726GETinventorycharacterId239DEDCB"
+          }
+        ],
+        "/GameApiStack/GameApi/Default/inventory/{characterId}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameApiinventorycharacterIdGET0FC203C2"
+          }
+        ],
+        "/GameApiStack/GameCognitoAuthorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameCognitoAuthorizer0A3A2AA5"
+          }
+        ],
+        "/GameApiStack/ApiUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiUrl"
+          }
+        ],
+        "/GameApiStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/GameApiStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/GameApiStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "GameApiStack"
+    },
+    "GameMonitoringStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "GameMonitoringStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "GameMonitoringStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/ap-southeast-1",
+      "properties": {
+        "templateFile": "GameMonitoringStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/f003d63d41a3946080dfc7f6997498a2a29d0a3b08a4f484e420c11e2ed7c562.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "GameMonitoringStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-ap-southeast-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "GameLambdaStack",
+        "GameMonitoringStack.assets"
+      ],
+      "metadata": {
+        "/GameMonitoringStack/GameDashboard/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameDashboard03EC31B4"
+          }
+        ],
+        "/GameMonitoringStack/LoginFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoginFunctionErrorAlarm39F9FFAD"
+          }
+        ],
+        "/GameMonitoringStack/RegisterFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RegisterFunctionErrorAlarmE7FF3E10"
+          }
+        ],
+        "/GameMonitoringStack/GetCharacterFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetCharacterFunctionErrorAlarm84E6DCCE"
+          }
+        ],
+        "/GameMonitoringStack/CreateCharacterFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateCharacterFunctionErrorAlarmBCB6EE27"
+          }
+        ],
+        "/GameMonitoringStack/StartStoryFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartStoryFunctionErrorAlarm7E0A52BC"
+          }
+        ],
+        "/GameMonitoringStack/StoryActionFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StoryActionFunctionErrorAlarm5CC2301C"
+          }
+        ],
+        "/GameMonitoringStack/SpawnBossFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpawnBossFunctionErrorAlarm52F4ABAA"
+          }
+        ],
+        "/GameMonitoringStack/ResolveBattleFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ResolveBattleFunctionErrorAlarm9826C5FC"
+          }
+        ],
+        "/GameMonitoringStack/GetInventoryFunctionErrorAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetInventoryFunctionErrorAlarm3A8EEBF1"
+          }
+        ],
+        "/GameMonitoringStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/GameMonitoringStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/GameMonitoringStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "GameMonitoringStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

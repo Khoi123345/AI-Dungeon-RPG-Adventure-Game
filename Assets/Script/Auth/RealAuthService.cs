@@ -45,7 +45,7 @@ public class RealAuthService : IUnityAuthService
             if (wrapper == null || !wrapper.success)
             {
                 string errCode = wrapper?.errorCode ?? "SERVER_ERROR";
-                string errMsg  = MapErrorCode(errCode);
+                string errMsg  = GetErrorMessage(wrapper);
                 return AuthResult.Fail(errCode, errMsg);
             }
 
@@ -102,7 +102,7 @@ public class RealAuthService : IUnityAuthService
                 if (errCode == "USER_NOT_CONFIRMED")
                     return AuthResult.PendingConfirmation(username);
 
-                return AuthResult.Fail(errCode, MapErrorCode(errCode));
+                return AuthResult.Fail(errCode, GetErrorMessage(wrapper));
             }
 
             var data = wrapper.data;
@@ -146,7 +146,10 @@ public class RealAuthService : IUnityAuthService
             var wrapper = JsonUtility.FromJson<ApiResponseWrapper<LoginResponsePayload>>(json);
 
             if (wrapper == null || !wrapper.success)
-                return AuthResult.Fail(wrapper?.errorCode ?? "SERVER_ERROR", "Xác nhận thất bại.");
+            {
+                string errCode = wrapper?.errorCode ?? "SERVER_ERROR";
+                return AuthResult.Fail(errCode, GetErrorMessage(wrapper));
+            }
 
             Debug.Log($"[RealAuth] ConfirmSignUp success: {username}");
             return new AuthResult { success = true };
@@ -276,6 +279,20 @@ public class RealAuthService : IUnityAuthService
         "WEAK_PASSWORD"        => "Mật khẩu quá yếu. Cần ít nhất 8 ký tự, có số.",
         _                      => "Đã có lỗi xảy ra. Vui lòng thử lại."
     };
+
+    private static string GetErrorMessage<T>(ApiResponseWrapper<T> wrapper) where T : class
+    {
+        if (wrapper == null) return "Đã có lỗi xảy ra. Vui lòng thử lại.";
+        string errCode = wrapper.errorCode ?? "SERVER_ERROR";
+        string mappedMsg = MapErrorCode(errCode);
+
+        // Nếu thông báo mặc định nhưng server trả về thông báo chi tiết
+        if (mappedMsg == "Đã có lỗi xảy ra. Vui lòng thử lại." && !string.IsNullOrEmpty(wrapper.message))
+        {
+            return wrapper.message;
+        }
+        return mappedMsg;
+    }
 
     // ── Serializable Payloads ─────────────────────────────────────
 
