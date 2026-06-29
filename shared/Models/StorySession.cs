@@ -9,6 +9,7 @@ namespace GameShared.Models
         public string characterId;
         public string currentLocation;
         public string currentNodeId;
+        public string currentChapterId;
         public string storyContext;
         public string status;
         public DateTime updatedAt;
