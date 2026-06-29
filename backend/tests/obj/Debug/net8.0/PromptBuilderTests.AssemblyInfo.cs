@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PromptBuilderTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ca9be0fdbae5cedc604a07d407f5bfe1ee62cf6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9327ef73026aaa3a3cebf9774ed242a133a429bc")]
 [assembly: System.Reflection.AssemblyProductAttribute("PromptBuilderTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PromptBuilderTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

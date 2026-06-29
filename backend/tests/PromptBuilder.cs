@@ -10,7 +10,7 @@ public class PromptBuilder
         _templatePath = templatePath;
     }
 
-    public string Build(PromptContext context)
+    public string Build(GamePromptContext context)
     {
         string systemPrompt = string.Empty;
         string storyTemplate = string.Empty;

@@ -97,3 +97,13 @@ C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\obj\Debu
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\obj\Debug\net8.0\PromptBuilderTests.pdb
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\obj\Debug\net8.0\PromptBuilderTests.genruntimeconfig.cache
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\obj\Debug\net8.0\ref\PromptBuilderTests.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\.msCoverageSourceRootsMapping_PromptBuilderTests
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\AWSSDK.BedrockRuntime.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\AWSSDK.DynamoDBv2.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\GameBackend.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\GameShared.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\GameBackend.Core.pdb
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\tests\bin\Debug\net8.0\GameShared.pdb

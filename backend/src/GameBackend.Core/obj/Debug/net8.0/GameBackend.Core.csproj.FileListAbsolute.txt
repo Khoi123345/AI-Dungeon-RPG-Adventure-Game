@@ -22,3 +22,11 @@ C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBacken
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.sourcelink.json
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.dll
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\refint\GameBackend.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\bin\Debug\net8.0\GameBackend.Core.deps.json
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\bin\Debug\net8.0\GameBackend.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\bin\Debug\net8.0\GameBackend.Core.pdb
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\bin\Debug\net8.0\GameShared.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\bin\Debug\net8.0\GameShared.pdb
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBack.085C180F.Up2Date
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\GameBackend.Core.pdb
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Core\obj\Debug\net8.0\ref\GameBackend.Core.dll

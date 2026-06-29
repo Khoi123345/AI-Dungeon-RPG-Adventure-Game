@@ -10,14 +10,14 @@ public class CharacterFormatter : ICharacterFormatter
     {
         var sb = new StringBuilder();
 
-        sb.AppendLine($"Name: {character.Name}");
-        sb.AppendLine($"Level: {character.Level}");
-        sb.AppendLine($"HP: {character.HP}");
-        sb.AppendLine($"Attack: {character.Attack}");
-        sb.AppendLine($"Defense: {character.Defense}");
-        sb.AppendLine($"Critical Rate: {character.CriticalRate}");
-        sb.AppendLine($"Lucky Rate: {character.LuckyRate}");
-        sb.AppendLine($"Gold: {character.Gold}");
+        sb.AppendLine($"Name: {character.name}");
+        sb.AppendLine($"Level: {character.level}");
+        sb.AppendLine($"HP: {character.hp}");
+        sb.AppendLine($"Attack: {character.attack}");
+        sb.AppendLine($"Defense: {character.defense}");
+        sb.AppendLine($"Critical Rate: {character.criticalRate}");
+        sb.AppendLine($"Lucky Rate: {character.luckyRate}");
+        sb.AppendLine($"Gold: {character.gold}");
 
         return sb.ToString();
     }

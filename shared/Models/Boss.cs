@@ -5,18 +5,18 @@ namespace GameShared.Models
     [Serializable]
     public class Boss
     {
-        public string bossId;
-        public string name;
-        public string rarity;
-        public int level;
-        public int baseHp;
-        public int baseAttack;
-        public int baseDefense;
-        public int speed;
-        public float criticalRate;
-        public string imageUrl;
-        public int expReward;
-        public int goldReward;
-        public string skillSetJson;
+        public string bossId { get; set; }
+        public string name { get; set; }
+        public string rarity { get; set; }
+        public int level { get; set; }
+        public int baseHp { get; set; }
+        public int baseAttack { get; set; }
+        public int baseDefense { get; set; }
+        public int speed { get; set; }
+        public float criticalRate { get; set; }
+        public string imageUrl { get; set; }
+        public int expReward { get; set; }
+        public int goldReward { get; set; }
+        public string skillSetJson { get; set; }
     }
 }

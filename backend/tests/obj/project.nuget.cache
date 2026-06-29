@@ -1,10 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "d+c4p+GgVfM=",
+  "dgSpecHash": "59O7l1SCWuA=",
   "success": true,
   "projectFilePath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\tests\\PromptBuilderTests.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ACER\\.nuget\\packages\\awssdk.bedrockruntime\\3.7.400\\awssdk.bedrockruntime.3.7.400.nupkg.sha512",
+    "C:\\Users\\ACER\\.nuget\\packages\\awssdk.core\\3.7.400\\awssdk.core.3.7.400.nupkg.sha512",
+    "C:\\Users\\ACER\\.nuget\\packages\\awssdk.dynamodbv2\\3.7.300.2\\awssdk.dynamodbv2.3.7.300.2.nupkg.sha512",
     "C:\\Users\\ACER\\.nuget\\packages\\microsoft.codecoverage\\18.6.0\\microsoft.codecoverage.18.6.0.nupkg.sha512",
+    "C:\\Users\\ACER\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\ACER\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\ACER\\.nuget\\packages\\microsoft.net.test.sdk\\18.6.0\\microsoft.net.test.sdk.18.6.0.nupkg.sha512",
     "C:\\Users\\ACER\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\ACER\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",

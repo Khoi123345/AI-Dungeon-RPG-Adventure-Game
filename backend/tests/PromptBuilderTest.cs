@@ -17,7 +17,7 @@ public class PromptBuilderTests
     {
         var builder = CreatePromptBuilder();
 
-        var context = new PromptContext
+        var context = new GamePromptContext
         {
             World = "Dragon World",
             CharacterInfo = "Level: 12",

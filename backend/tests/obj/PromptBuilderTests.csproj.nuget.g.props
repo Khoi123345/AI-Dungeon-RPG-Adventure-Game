@@ -21,5 +21,8 @@
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Pkgxunit_analyzers Condition=" '$(Pkgxunit_analyzers)' == '' ">C:\Users\ACER\.nuget\packages\xunit.analyzers\1.4.0</Pkgxunit_analyzers>
+    <PkgAWSSDK_Core Condition=" '$(PkgAWSSDK_Core)' == '' ">C:\Users\ACER\.nuget\packages\awssdk.core\3.7.400</PkgAWSSDK_Core>
+    <PkgAWSSDK_DynamoDBv2 Condition=" '$(PkgAWSSDK_DynamoDBv2)' == '' ">C:\Users\ACER\.nuget\packages\awssdk.dynamodbv2\3.7.300.2</PkgAWSSDK_DynamoDBv2>
+    <PkgAWSSDK_BedrockRuntime Condition=" '$(PkgAWSSDK_BedrockRuntime)' == '' ">C:\Users\ACER\.nuget\packages\awssdk.bedrockruntime\3.7.400</PkgAWSSDK_BedrockRuntime>
   </PropertyGroup>
 </Project>

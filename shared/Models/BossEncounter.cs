@@ -5,15 +5,15 @@ namespace GameShared.Models
     [Serializable]
     public class BossEncounter
     {
-        public string encounterId;
-        public string characterId;
-        public string bossId;
-        public int bossLevel;
-        public int playerHpBefore;
-        public int playerHpAfter;
-        public int bossHpBefore;
-        public int bossHpAfter;
-        public string status;
-        public DateTime encounterTime;
+        public string encounterId { get; set; }
+        public string characterId { get; set; }
+        public string bossId { get; set; }
+        public int bossLevel { get; set; }
+        public int playerHpBefore { get; set; }
+        public int playerHpAfter { get; set; }
+        public int bossHpBefore { get; set; }
+        public int bossHpAfter { get; set; }
+        public string status { get; set; }
+        public DateTime encounterTime { get; set; }
     }
 }

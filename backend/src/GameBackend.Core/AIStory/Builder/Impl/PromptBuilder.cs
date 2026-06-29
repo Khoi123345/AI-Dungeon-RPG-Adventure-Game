@@ -12,7 +12,7 @@ namespace GameBackend.Core.AIStory
             _templatePath = templatePath;
         }
 
-        public string Build(PromptContext context)
+        public string Build(GamePromptContext context)
         {
             // Support passing either a file path (legacy) or a directory that contains the Prompt files.
             string systemPrompt = string.Empty;
