@@ -103,6 +103,18 @@ namespace GameBackend.Core.Services
             return Task.FromResult(_jwtHelper.IsTokenValid(token));
         }
 
+        public Task ConfirmSignUpAsync(string username, string confirmationCode)
+        {
+            // Plan A local mock doesn't require confirmation
+            return Task.CompletedTask;
+        }
+
+        public Task<LoginResponse> RefreshTokenAsync(string refreshToken)
+        {
+            // Plan A local mock doesn't support refresh token
+            throw new NotSupportedException("Refresh token is only supported in Cognito mode (Plan B).");
+        }
+
         // ── Password (BCrypt) ─────────────────────────────────────
 
         /// <summary>Hash password dùng BCrypt với work factor 12.</summary>

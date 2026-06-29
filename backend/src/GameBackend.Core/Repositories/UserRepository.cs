@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
 using GameShared.Models;
 using System.Text.Json;
+using GameBackend.Core.Utils;
 
 namespace GameBackend.Core.Repositories
 {
@@ -18,7 +19,7 @@ namespace GameBackend.Core.Repositories
         public async Task<User?> GetByIdAsync(string userId)
         {
             var doc = await _table.GetItemAsync(userId);
-            return doc != null ? JsonSerializer.Deserialize<User>(doc.ToJson()) : null;
+            return doc != null ? JsonUtils.Deserialize<User>(doc.ToJson()) : null;
         }
 
         public async Task<User?> GetByUsernameAsync(string username)
@@ -27,7 +28,7 @@ namespace GameBackend.Core.Repositories
             filter.AddCondition("username", ScanOperator.Equal, username);
             var search = _table.Scan(filter);
             var docs = await search.GetNextSetAsync();
-            return docs.Count > 0 ? JsonSerializer.Deserialize<User>(docs[0].ToJson()) : null;
+            return docs.Count > 0 ? JsonUtils.Deserialize<User>(docs[0].ToJson()) : null;
         }
 
         public async Task<User?> GetByEmailAsync(string email)
@@ -36,7 +37,7 @@ namespace GameBackend.Core.Repositories
             filter.AddCondition("email", ScanOperator.Equal, email.ToLowerInvariant());
             var search = _table.Scan(filter);
             var docs   = await search.GetNextSetAsync();
-            return docs.Count > 0 ? JsonSerializer.Deserialize<User>(docs[0].ToJson()) : null;
+            return docs.Count > 0 ? JsonUtils.Deserialize<User>(docs[0].ToJson()) : null;
         }
 
         public async Task<User?> GetByCognitoSubAsync(string cognitoSub)
@@ -45,12 +46,12 @@ namespace GameBackend.Core.Repositories
             filter.AddCondition("cognitoSub", ScanOperator.Equal, cognitoSub);
             var search = _table.Scan(filter);
             var docs   = await search.GetNextSetAsync();
-            return docs.Count > 0 ? JsonSerializer.Deserialize<User>(docs[0].ToJson()) : null;
+            return docs.Count > 0 ? JsonUtils.Deserialize<User>(docs[0].ToJson()) : null;
         }
 
         public async Task SaveAsync(User user)
         {
-            var doc = Document.FromJson(JsonSerializer.Serialize(user));
+            var doc = Document.FromJson(JsonUtils.Serialize(user));
             await _table.PutItemAsync(doc);
         }
     }

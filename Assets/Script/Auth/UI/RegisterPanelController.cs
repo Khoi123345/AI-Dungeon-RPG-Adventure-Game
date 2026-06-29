@@ -41,6 +41,12 @@ public class RegisterPanelController : MonoBehaviour
     [Tooltip("Loading overlay khi đang gọi API")]
     [SerializeField] private GameObject loadingIndicator;
 
+    [Header("In-Scene Panels (Optional - Plan B)")]
+    [Tooltip("Kéo thả Register Panel vào đây nếu ConfirmSignUp nằm cùng scene")]
+    [SerializeField] private GameObject registerPanel;
+    [Tooltip("Kéo thả ConfirmSignUp Panel vào đây nếu nằm cùng scene")]
+    [SerializeField] private GameObject confirmSignUpPanel;
+
     [Header("Scene Navigation")]
     [SerializeField] private string loginScene    = "Login";
     [SerializeField] private string mainMenuScene = "DemoMenu";
@@ -251,11 +257,19 @@ public class RegisterPanelController : MonoBehaviour
         _pendingConfirmUsername = username;
         SetLoading(false);
 
-        if (!string.IsNullOrEmpty(confirmScene))
+        // Lưu username chờ xác nhận vào PlayerPrefs
+        PlayerPrefs.SetString("pending_confirm_username", username);
+        PlayerPrefs.Save();
+
+        if (confirmSignUpPanel != null)
         {
-            // Plan B: redirect sang màn hình nhập OTP
-            PlayerPrefs.SetString("pending_confirm_username", username);
-            PlayerPrefs.Save();
+            // Bật Confirm Panel và tắt Register Panel
+            if (registerPanel != null) registerPanel.SetActive(false);
+            confirmSignUpPanel.SetActive(true);
+        }
+        else if (!string.IsNullOrEmpty(confirmScene))
+        {
+            // Plan B: redirect sang màn hình nhập OTP ở scene khác
             SceneManager.LoadScene(confirmScene);
         }
         else

@@ -34,7 +34,7 @@ namespace GameBackend.Handlers.Auth
 
             try
             {
-                var loginRequest = JsonSerializer.Deserialize<LoginRequest>(request.Body);
+                var loginRequest = JsonUtils.Deserialize<LoginRequest>(request.Body);
                 if (loginRequest == null || string.IsNullOrWhiteSpace(loginRequest.username))
                     return ResponseBuilder.Error(400, "Invalid request payload", "INVALID_REQUEST");
 

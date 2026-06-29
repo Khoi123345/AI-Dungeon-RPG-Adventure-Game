@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
 using GameShared.Models;
 using System.Text.Json;
+using GameBackend.Core.Utils;
 
 namespace GameBackend.Core.Repositories
 {
@@ -20,7 +21,7 @@ namespace GameBackend.Core.Repositories
         public async Task<StorySession?> GetSessionByIdAsync(string sessionId)
         {
             var doc = await _sessionTable.GetItemAsync(sessionId);
-            return doc != null ? JsonSerializer.Deserialize<StorySession>(doc.ToJson()) : null;
+            return doc != null ? JsonUtils.Deserialize<StorySession>(doc.ToJson()) : null;
         }
 
         public async Task<StorySession?> GetSessionByCharacterIdAsync(string characterId)
@@ -30,18 +31,18 @@ namespace GameBackend.Core.Repositories
             filter.AddCondition("status", ScanOperator.Equal, "Active");
             var search = _sessionTable.Scan(filter);
             var docs = await search.GetNextSetAsync();
-            return docs.Count > 0 ? JsonSerializer.Deserialize<StorySession>(docs[0].ToJson()) : null;
+            return docs.Count > 0 ? JsonUtils.Deserialize<StorySession>(docs[0].ToJson()) : null;
         }
 
         public async Task SaveSessionAsync(StorySession session)
         {
-            var doc = Document.FromJson(JsonSerializer.Serialize(session));
+            var doc = Document.FromJson(JsonUtils.Serialize(session));
             await _sessionTable.PutItemAsync(doc);
         }
 
         public async Task SaveActionAsync(StoryAction action)
         {
-            var doc = Document.FromJson(JsonSerializer.Serialize(action));
+            var doc = Document.FromJson(JsonUtils.Serialize(action));
             await _actionTable.PutItemAsync(doc);
         }
 
@@ -51,7 +52,7 @@ namespace GameBackend.Core.Repositories
             filter.AddCondition("sessionId", ScanOperator.Equal, sessionId);
             var search = _actionTable.Scan(filter);
             var docs = await search.GetNextSetAsync();
-            return docs.Select(d => JsonSerializer.Deserialize<StoryAction>(d.ToJson())!).ToList();
+            return docs.Select(d => JsonUtils.Deserialize<StoryAction>(d.ToJson())!).ToList();
         }
     }
 }

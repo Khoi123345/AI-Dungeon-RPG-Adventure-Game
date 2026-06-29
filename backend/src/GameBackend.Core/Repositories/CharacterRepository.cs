@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
 using GameShared.Models;
 using System.Text.Json;
+using GameBackend.Core.Utils;
 
 namespace GameBackend.Core.Repositories
 {
@@ -18,7 +19,7 @@ namespace GameBackend.Core.Repositories
         public async Task<Character?> GetByIdAsync(string characterId)
         {
             var doc = await _table.GetItemAsync(characterId);
-            return doc != null ? JsonSerializer.Deserialize<Character>(doc.ToJson()) : null;
+            return doc != null ? JsonUtils.Deserialize<Character>(doc.ToJson()) : null;
         }
 
         public async Task<List<Character>> GetByUserIdAsync(string userId)
@@ -27,12 +28,12 @@ namespace GameBackend.Core.Repositories
             filter.AddCondition("userId", ScanOperator.Equal, userId);
             var search = _table.Scan(filter);
             var docs = await search.GetNextSetAsync();
-            return docs.Select(d => JsonSerializer.Deserialize<Character>(d.ToJson())!).ToList();
+            return docs.Select(d => JsonUtils.Deserialize<Character>(d.ToJson())!).ToList();
         }
 
         public async Task SaveAsync(Character character)
         {
-            var doc = Document.FromJson(JsonSerializer.Serialize(character));
+            var doc = Document.FromJson(JsonUtils.Serialize(character));
             await _table.PutItemAsync(doc);
         }
     }
