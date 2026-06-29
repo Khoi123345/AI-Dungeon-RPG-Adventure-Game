@@ -4,75 +4,99 @@ using Microsoft.Extensions.Logging;
 namespace GameBackend.Core.Services
 {
     /// <summary>
-    /// Tích hợp Amazon Bedrock (Claude) để sinh narrative cốt truyện.
-    /// Có retry logic (exponential backoff) và fallback response khi Bedrock không khả dụng.
+    /// Mock Bedrock service cho giai đoạn chưa kết nối AWS thật.
+    /// Có thể tắt mock bằng biến môi trường BEDROCK_USE_MOCK=false.
     /// </summary>
     public class BedrockService : IBedrockService
     {
         private readonly ILogger<BedrockService> _logger;
-        private const int MaxRetries = 3;
-        private const int BaseDelayMs = 500;
+        private readonly bool _useMockResponses;
+        private const int SimulatedLatencyMs = 120;
 
         public BedrockService(ILogger<BedrockService> logger)
         {
             _logger = logger;
+            _useMockResponses = !string.Equals(
+                Environment.GetEnvironmentVariable("BEDROCK_USE_MOCK"),
+                "false",
+                StringComparison.OrdinalIgnoreCase);
         }
 
         public async Task<string> GenerateNarrativeAsync(string systemPrompt, string userPrompt)
         {
-            int retryCount = 0;
-
-            while (retryCount < MaxRetries)
+            if (!_useMockResponses)
             {
-                try
-                {
-                    // TODO: Thay thế bằng AWS SDK Bedrock Runtime call thực tế
-                    // var client = new AmazonBedrockRuntimeClient();
-                    // var request = new InvokeModelRequest { ... };
-                    // var response = await client.InvokeModelAsync(request);
-
-                    _logger.LogInformation("Bedrock AI call attempt {Attempt} for prompt: {Prompt}", retryCount + 1, userPrompt[..Math.Min(50, userPrompt.Length)]);
-
-                    // Placeholder: trả về fallback response cho đến khi cấu hình Bedrock thực tế
-                    await Task.Delay(100); // Simulate network latency
-                    return GenerateFallbackNarrative(userPrompt);
-                }
-                catch (Exception ex) when (retryCount < MaxRetries - 1)
-                {
-                    retryCount++;
-                    int delay = BaseDelayMs * (int)Math.Pow(2, retryCount);
-                    _logger.LogWarning(ex, "Bedrock call failed, retrying in {Delay}ms (attempt {Attempt}/{MaxRetries})", delay, retryCount, MaxRetries);
-                    await Task.Delay(delay);
-                }
+                _logger.LogWarning("BEDROCK_USE_MOCK is disabled, but real AWS integration is not wired yet. Falling back to mock response.");
             }
 
-            _logger.LogError("Bedrock exhausted all retries, returning fallback narrative");
-            return GenerateFallbackNarrative(userPrompt);
+            await Task.Delay(SimulatedLatencyMs);
+
+            var narrative = GenerateMockNarrative(systemPrompt, userPrompt);
+            _logger.LogInformation("Mock Bedrock response generated for prompt: {Prompt}", Truncate(userPrompt, 80));
+            return narrative;
         }
 
         public Task<bool> IsAvailableAsync()
         {
-            // TODO: Implement health check khi có Bedrock client thực tế
-            // Hiện tại trả false để luôn dùng fallback
-            return Task.FromResult(false);
+            return Task.FromResult(true);
         }
 
-        /// <summary>
-        /// Fallback narrative templates khi Bedrock không khả dụng.
-        /// Đảm bảo game không bao giờ bị treo vì AI service.
-        /// </summary>
-        private static string GenerateFallbackNarrative(string context)
+        private static string GenerateMockNarrative(string systemPrompt, string userPrompt)
         {
             var templates = new[]
             {
-                "Bóng tối dày đặc bao phủ con đường phía trước. Bạn siết chặt vũ khí và bước tiếp.",
-                "Một luồng gió lạnh thổi qua hành lang đá. Tiếng vang từ xa báo hiệu nguy hiểm đang đến gần.",
-                "Ánh sáng yếu ớt từ những viên đá rune chiếu lên khuôn mặt bạn. Con đường chia thành nhiều nhánh.",
-                "Tiếng rì rào bí ẩn vang lên từ sâu trong tàn tích. Bạn cảm nhận được sức mạnh cổ đại đang thức giấc."
+                "Bóng tối trong tàn tích cổ khẽ rung lên như đang thở. Mỗi bước chân của bạn vang lại thành một lời cảnh báo.",
+                "Một làn gió lạnh lướt qua hành lang đá, mang theo mùi bụi cũ và nguy hiểm đang chờ phía trước.",
+                "Những ký hiệu rune mờ nhạt bừng sáng dưới lòng đất. Cánh cửa trước mặt bạn như đang nhớ ra tên người xâm nhập.",
+                "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh."
             };
 
-            int index = Math.Abs(context.GetHashCode()) % templates.Length;
-            return templates[index];
+            var hash = HashCode.Combine(systemPrompt ?? string.Empty, userPrompt ?? string.Empty);
+            var index = (hash & int.MaxValue) % templates.Length;
+            var selected = templates[index];
+
+            if (TryExtractChoice(userPrompt, out var choiceIndex))
+            {
+                return choiceIndex switch
+                {
+                    0 => selected + " Bạn lao thẳng về phía trước, sẵn sàng cho một trận chiến sống còn.",
+                    1 => selected + " Bạn cúi xuống quan sát dấu vết trên nền đá, tìm kiếm bí mật bị giấu kín.",
+                    _ => selected + " Bạn dừng lại để ổn định hơi thở, chấp nhận một khoảng lặng ngắn trước khi bước tiếp."
+                };
+            }
+
+            return selected;
+        }
+
+        private static bool TryExtractChoice(string userPrompt, out int choiceIndex)
+        {
+            choiceIndex = -1;
+
+            if (string.IsNullOrWhiteSpace(userPrompt))
+            {
+                return false;
+            }
+
+            var marker = "choice ";
+            var markerIndex = userPrompt.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+            if (markerIndex < 0)
+            {
+                return false;
+            }
+
+            var startIndex = markerIndex + marker.Length;
+            var digits = new string(userPrompt[startIndex..].TakeWhile(char.IsDigit).ToArray());
+            return int.TryParse(digits, out choiceIndex);
+        }
+
+        private static string Truncate(string value, int maxLength)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length <= maxLength)
+            {
+                return value ?? string.Empty;
+            }
+
+            return value[..maxLength] + "...";
         }
     }
 }

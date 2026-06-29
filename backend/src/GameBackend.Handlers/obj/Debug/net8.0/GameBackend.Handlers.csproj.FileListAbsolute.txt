@@ -36,3 +36,5 @@ D:\My project\backend\src\GameBackend.Handlers\obj\Debug\net8.0\refint\GameBacke
 D:\My project\backend\src\GameBackend.Handlers\obj\Debug\net8.0\GameBackend.Handlers.pdb
 D:\My project\backend\src\GameBackend.Handlers\obj\Debug\net8.0\GameBackend.Handlers.genruntimeconfig.cache
 D:\My project\backend\src\GameBackend.Handlers\obj\Debug\net8.0\ref\GameBackend.Handlers.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Debug\net8.0\GameBackend.Handlers.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Debug\net8.0\refint\GameBackend.Handlers.dll

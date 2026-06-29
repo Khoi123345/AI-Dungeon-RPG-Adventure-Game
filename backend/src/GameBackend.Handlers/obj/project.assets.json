@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net8.0": {
       "Amazon.Lambda.APIGatewayEvents/2.7.1": {
@@ -1117,19 +1117,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Hoquo\\.nuget\\packages\\": {}
+    "C:\\Users\\ACER\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\My project\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
+      "projectUniqueName": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
       "projectName": "GameBackend.Handlers",
-      "projectPath": "D:\\My project\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
-      "packagesPath": "C:\\Users\\Hoquo\\.nuget\\packages\\",
-      "outputPath": "D:\\My project\\backend\\src\\GameBackend.Handlers\\obj\\",
+      "projectPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
+      "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Hoquo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -1139,13 +1139,14 @@
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\My project\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj": {
-              "projectPath": "D:\\My project\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj"
+            "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj": {
+              "projectPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj"
             },
-            "D:\\My project\\shared\\GameShared.csproj": {
-              "projectPath": "D:\\My project\\shared\\GameShared.csproj"
+            "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj": {
+              "projectPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj"
             }
           }
         }
@@ -1160,10 +1161,11 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net8.0": {
+        "framework": "net8.0",
         "targetAlias": "net8.0",
         "dependencies": {
           "Amazon.Lambda.APIGatewayEvents": {
@@ -1205,15 +1207,15 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.28, 8.0.28]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.28, 8.0.28]"
           },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.22, 8.0.22]"
+            "version": "[8.0.28, 8.0.28]"
           }
         ],
         "frameworkReferences": {
@@ -1221,7 +1223,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
