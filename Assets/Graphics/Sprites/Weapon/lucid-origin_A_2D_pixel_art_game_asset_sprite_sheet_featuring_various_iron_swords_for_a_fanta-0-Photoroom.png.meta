@@ -1,0 +1,1287 @@
+fileFormatVersion: 2
+guid: 80dc14ad1c56cee4587fba3f2171fcda
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1751666057462236490
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_0
+  - first:
+      213: -6800933126232825344
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_1
+  - first:
+      213: -4307110558504795787
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_2
+  - first:
+      213: -8076268105750569902
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_3
+  - first:
+      213: 5953634038290510158
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_4
+  - first:
+      213: 1000413287546484143
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_5
+  - first:
+      213: 7449191416218956444
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_6
+  - first:
+      213: 1564061075511645075
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_7
+  - first:
+      213: -6780414874549018983
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_8
+  - first:
+      213: 1347598321473546375
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_9
+  - first:
+      213: 6357081975788708340
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_10
+  - first:
+      213: 3590256091636707692
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_11
+  - first:
+      213: 4105058645710704431
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_12
+  - first:
+      213: 7103811211879615204
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_13
+  - first:
+      213: 5240697199601934862
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_14
+  - first:
+      213: 4219294332055244937
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_15
+  - first:
+      213: -2346988638513480550
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_16
+  - first:
+      213: 3492761690622121635
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_17
+  - first:
+      213: 2192203298174981081
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_18
+  - first:
+      213: 4917598599702997124
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_19
+  - first:
+      213: -2258621565130167574
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_20
+  - first:
+      213: -1015878694835869429
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_21
+  - first:
+      213: -2464342429912038649
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_22
+  - first:
+      213: -1785704238078764063
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_23
+  - first:
+      213: 4464716652763589269
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_24
+  - first:
+      213: -7049778777682483537
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_25
+  - first:
+      213: -4649122090720511417
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_26
+  - first:
+      213: 8960285990930484180
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_27
+  - first:
+      213: -1774327284242659887
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_28
+  - first:
+      213: 5468943753501167690
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_29
+  - first:
+      213: -8934926677341002549
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_30
+  - first:
+      213: 4957098281204927961
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_31
+  - first:
+      213: 4099888094774954528
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_32
+  - first:
+      213: -1616257792234897034
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_33
+  - first:
+      213: 3190833532427230598
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_34
+  - first:
+      213: 4854683527924142499
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_35
+  - first:
+      213: 3016334055912703353
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_36
+  - first:
+      213: 8101357048287776668
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_37
+  - first:
+      213: 4762100518063496253
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_38
+  - first:
+      213: -6528610174163935913
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_39
+  - first:
+      213: -8639778367563004585
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_40
+  - first:
+      213: -3192156396027347976
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_41
+  - first:
+      213: -4064166910726441497
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_42
+  - first:
+      213: -8451165373538592420
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_43
+  - first:
+      213: -3243953536582318739
+    second: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_44
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_0
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 524
+        width: 69
+        height: 195
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6babadf5005d0b7e0800000000000000
+      internalID: -1751666057462236490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_1
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 523
+        width: 67
+        height: 195
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 002a4b5ca5b3e91a0800000000000000
+      internalID: -6800933126232825344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_2
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 524
+        width: 76
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 571ccff54c11a34c0800000000000000
+      internalID: -4307110558504795787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_3
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 523
+        width: 80
+        height: 201
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25c9bed92f45bef80800000000000000
+      internalID: -8076268105750569902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_4
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 524
+        width: 73
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e41faf63d9e8f9250800000000000000
+      internalID: 5953634038290510158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_5
+      rect:
+        serializedVersion: 2
+        x: 465
+        y: 524
+        width: 70
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa5f9c8a59e22ed00800000000000000
+      internalID: 1000413287546484143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_6
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 523
+        width: 65
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c92be932028d06760800000000000000
+      internalID: 7449191416218956444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_7
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 524
+        width: 66
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39313ece249a4b510800000000000000
+      internalID: 1564061075511645075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_8
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 524
+        width: 68
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99e1bb4889027e1a0800000000000000
+      internalID: -6780414874549018983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_9
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 524
+        width: 67
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 788e7539881a3b210800000000000000
+      internalID: 1347598321473546375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_10
+      rect:
+        serializedVersion: 2
+        x: 893
+        y: 524
+        width: 74
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f1acee2064e83850800000000000000
+      internalID: 6357081975788708340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_11
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 524
+        width: 71
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6130b2b4e623d130800000000000000
+      internalID: 3590256091636707692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_12
+      rect:
+        serializedVersion: 2
+        x: 1065
+        y: 524
+        width: 71
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2f8bb7b61918f830800000000000000
+      internalID: 4105058645710704431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_13
+      rect:
+        serializedVersion: 2
+        x: 1169
+        y: 524
+        width: 35
+        height: 198
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ea858bd8aec59260800000000000000
+      internalID: 7103811211879615204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_14
+      rect:
+        serializedVersion: 2
+        x: 1233
+        y: 521
+        width: 76
+        height: 201
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0268ad2652bab840800000000000000
+      internalID: 5240697199601934862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_15
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 301
+        width: 68
+        height: 162
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 980d8f817d1fd8a30800000000000000
+      internalID: 4219294332055244937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_16
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 297
+        width: 68
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9cb685a442dd6fd0800000000000000
+      internalID: -2346988638513480550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_17
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 297
+        width: 73
+        height: 171
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a6df9e8048c87030800000000000000
+      internalID: 3492761690622121635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_18
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 297
+        width: 74
+        height: 171
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d3d82fe8454c6e10800000000000000
+      internalID: 2192203298174981081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_19
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 296
+        width: 73
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48861433fd1de3440800000000000000
+      internalID: 4917598599702997124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_20
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 297
+        width: 69
+        height: 171
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aea216837a3c7a0e0800000000000000
+      internalID: -2258621565130167574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_21
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 297
+        width: 71
+        height: 174
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b09ab6b95bfd6e1f0800000000000000
+      internalID: -1015878694835869429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_22
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 297
+        width: 73
+        height: 176
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7038b2cdd95eccdd0800000000000000
+      internalID: -2464342429912038649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_23
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 297
+        width: 72
+        height: 176
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ebd76fd477e737e0800000000000000
+      internalID: -1785704238078764063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_24
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 294
+        width: 62
+        height: 179
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59aaebef32cd5fd30800000000000000
+      internalID: 4464716652763589269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_25
+      rect:
+        serializedVersion: 2
+        x: 891
+        y: 296
+        width: 76
+        height: 178
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa6e5239d872a2e90800000000000000
+      internalID: -7049778777682483537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_26
+      rect:
+        serializedVersion: 2
+        x: 983
+        y: 297
+        width: 64
+        height: 181
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74abe2137100b7fb0800000000000000
+      internalID: -4649122090720511417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_27
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 297
+        width: 73
+        height: 176
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4db025792a4595c70800000000000000
+      internalID: 8960285990930484180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_28
+      rect:
+        serializedVersion: 2
+        x: 1150
+        y: 297
+        width: 71
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d5ce6b5cb25067e0800000000000000
+      internalID: -1774327284242659887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_29
+      rect:
+        serializedVersion: 2
+        x: 1238
+        y: 297
+        width: 69
+        height: 176
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a40570c3e5795eb40800000000000000
+      internalID: 5468943753501167690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 97
+        height: 252
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc4ade6b683c00480800000000000000
+      internalID: -8934926677341002549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_31
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 53
+        width: 73
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9dd4be77f962bc440800000000000000
+      internalID: 4957098281204927961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_32
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 53
+        width: 62
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02a0ae3008ab5e830800000000000000
+      internalID: 4099888094774954528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_33
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 53
+        width: 73
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 671c16ce916e199e0800000000000000
+      internalID: -1616257792234897034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_34
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 53
+        width: 73
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68ddab5213e184c20800000000000000
+      internalID: 3190833532427230598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_35
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 53
+        width: 71
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a1dbda82fc4f5340800000000000000
+      internalID: 4854683527924142499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_36
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 53
+        width: 72
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9750796b7db2cd920800000000000000
+      internalID: 3016334055912703353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_37
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 53
+        width: 73
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9fccc5005dcd6070800000000000000
+      internalID: 8101357048287776668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_38
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 53
+        width: 73
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3cd0e3c031661240800000000000000
+      internalID: 4762100518063496253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_39
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 53
+        width: 71
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75d15fbf2a7b565a0800000000000000
+      internalID: -6528610174163935913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_40
+      rect:
+        serializedVersion: 2
+        x: 891
+        y: 53
+        width: 76
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7558d47a957591880800000000000000
+      internalID: -8639778367563004585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_41
+      rect:
+        serializedVersion: 2
+        x: 986
+        y: 53
+        width: 58
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fb7c4babae23b3d0800000000000000
+      internalID: -3192156396027347976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_42
+      rect:
+        serializedVersion: 2
+        x: 1063
+        y: 53
+        width: 76
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e5f0424abd2997c0800000000000000
+      internalID: -4064166910726441497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_43
+      rect:
+        serializedVersion: 2
+        x: 1147
+        y: 53
+        width: 77
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5996247edd67ba80800000000000000
+      internalID: -8451165373538592420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_44
+      rect:
+        serializedVersion: 2
+        x: 1231
+        y: 53
+        width: 81
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d65832812792bf2d0800000000000000
+      internalID: -3243953536582318739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 540e6d3bac29f7d49b9a50cc735bf7c2
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_0: -1751666057462236490
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_1: -6800933126232825344
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_10: 6357081975788708340
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_11: 3590256091636707692
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_12: 4105058645710704431
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_13: 7103811211879615204
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_14: 5240697199601934862
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_15: 4219294332055244937
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_16: -2346988638513480550
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_17: 3492761690622121635
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_18: 2192203298174981081
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_19: 4917598599702997124
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_2: -4307110558504795787
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_20: -2258621565130167574
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_21: -1015878694835869429
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_22: -2464342429912038649
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_23: -1785704238078764063
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_24: 4464716652763589269
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_25: -7049778777682483537
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_26: -4649122090720511417
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_27: 8960285990930484180
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_28: -1774327284242659887
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_29: 5468943753501167690
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_3: -8076268105750569902
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_30: -8934926677341002549
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_31: 4957098281204927961
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_32: 4099888094774954528
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_33: -1616257792234897034
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_34: 3190833532427230598
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_35: 4854683527924142499
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_36: 3016334055912703353
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_37: 8101357048287776668
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_38: 4762100518063496253
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_39: -6528610174163935913
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_4: 5953634038290510158
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_40: -8639778367563004585
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_41: -3192156396027347976
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_42: -4064166910726441497
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_43: -8451165373538592420
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_44: -3243953536582318739
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_5: 1000413287546484143
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_6: 7449191416218956444
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_7: 1564061075511645075
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_8: -6780414874549018983
+      lucid-origin_A_2D_pixel_art_game_asset_sprite_sheet_featuring_various_iron_swords_for_a_fanta-0-Photoroom_9: 1347598321473546375
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

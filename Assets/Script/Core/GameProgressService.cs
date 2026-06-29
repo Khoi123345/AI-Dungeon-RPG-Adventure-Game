@@ -79,6 +79,28 @@ public class GameProgressService : MonoBehaviour
         initialized = true;
     }
 
+    /// <summary>
+    /// Cập nhật CurrentUser sau khi đăng nhập thành công (từ AuthManager).
+    /// Giữ nguyên Character, Boss, StorySession nếu đã có.
+    /// </summary>
+    public void SetCurrentUser(GameShared.Models.User user)
+    {
+        if (user == null) return;
+        CurrentUser = user;
+        Debug.Log($"[GameProgressService] CurrentUser set: {user.displayName} (id={user.userId})");
+    }
+
+    /// <summary>Xóa session khi logout.</summary>
+    public void ClearUser()
+    {
+        CurrentUser = null;
+        CurrentCharacter = null;
+        CurrentStorySession = null;
+        CurrentBoss = null;
+        initialized = false;
+        Debug.Log("[GameProgressService] Session cleared.");
+    }
+
     public StoryData CreateStoryDemoData()
     {
         InitializeIfNeeded();
@@ -178,7 +200,8 @@ public class GameProgressService : MonoBehaviour
             currentHP = CurrentBoss.baseHp
         };
 
-        int playerDamage = Mathf.Max(1, CurrentCharacter.attack + CurrentCharacter.level * 2 - CurrentBoss.baseDefense);
+        // Tăng sát thương người chơi lên (nhân 3) để đảm bảo boss bị tiêu diệt và người chơi thắng trận khi test
+        int playerDamage = Mathf.Max(1, (CurrentCharacter.attack + CurrentCharacter.level * 2 - CurrentBoss.baseDefense) * 3);
         int bossDamage = Mathf.Max(1, CurrentBoss.baseAttack - CurrentCharacter.defense / 2);
 
         List<BattleTurn> turns = new List<BattleTurn>();
@@ -224,9 +247,10 @@ public class GameProgressService : MonoBehaviour
         return battleData;
     }
 
-    public void RecordBattleResult(BattleData battleData, bool isVictory)
+    public List<LootDrop> RecordBattleResult(BattleData battleData, bool isVictory)
     {
         InitializeIfNeeded();
+        List<LootDrop> dropped = new List<LootDrop>();
 
         BossEncounter encounter = new BossEncounter
         {
@@ -282,6 +306,7 @@ public class GameProgressService : MonoBehaviour
             };
 
             lootDrops.Add(loot);
+            dropped.Add(loot);
 
             if (!string.IsNullOrEmpty(loot.itemId))
             {
@@ -294,6 +319,7 @@ public class GameProgressService : MonoBehaviour
             : battleData.player.currentHP;
 
         CurrentCharacter.hp = Mathf.Clamp(resolvedPlayerHp, 0, CurrentCharacter.maxHp);
+        return dropped;
     }
 
     public IReadOnlyList<Inventory> GetInventory()

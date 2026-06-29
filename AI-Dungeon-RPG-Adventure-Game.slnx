@@ -66,6 +66,7 @@
   <Project Path="Unity.AI.Search.Editor.csproj" />
   <Project Path="Unity.AI.Assistant.Agent.Dynamic.Extension.Editor.csproj" />
   <Project Path="Unity.AI.Tracing.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.AppUI.MVVM.csproj" />
   <Project Path="Unity.AI.Toolkit.GenerationObjectPicker.csproj" />
   <Project Path="Unity.AI.Assistant.API.Editor.csproj" />
@@ -73,7 +74,6 @@
   <Project Path="Unity.AppUI.Navigation.csproj" />
   <Project Path="Unity.InputSystem.ForUI.csproj" />
   <Project Path="Unity.AI.Generators.Asset.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.Collections.CodeGen.csproj" />
   <Project Path="Unity.2D.Tilemap.Extras.csproj" />
   <Project Path="Unity.2D.Animation.Runtime.csproj" />

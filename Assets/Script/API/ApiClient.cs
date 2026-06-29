@@ -108,10 +108,18 @@ public class ApiClient : MonoBehaviour
             await Task.Yield();
         }
 
-        if (request.result != UnityWebRequest.Result.Success)
+        // Lỗi kết nối mạng (mất mạng, DNS...)
+        if (request.result == UnityWebRequest.Result.ConnectionError)
         {
-            Debug.LogError($"[ApiClient] {request.method} {path} failed: {request.error} | {request.downloadHandler?.text}");
+            Debug.LogError($"[ApiClient] {request.method} {path} connection failed: {request.error}");
             return null;
+        }
+
+        // Lỗi giao thức HTTP (400, 409...) nhưng server vẫn trả về JSON body thông báo lỗi
+        if (request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogWarning($"[ApiClient] {request.method} {path} protocol error: {request.responseCode} | {request.downloadHandler?.text}");
+            return request.downloadHandler?.text; // Trả về JSON để RealAuthService parse errorCode
         }
 
         return request.downloadHandler.text;

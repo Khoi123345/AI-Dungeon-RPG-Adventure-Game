@@ -1,0 +1,34 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b": {
+      "source": {
+        "path": "asset.b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-ap-southeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1",
+          "objectKey": "b718b732dc45d95ea62d4c68f0e972aefef070bd3b3cab08f3b44f633443b46b.zip",
+          "region": "ap-southeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-1"
+        }
+      }
+    },
+    "f5398391c03fb4b1c562af4a24306dbb14ba2e54d00a419eae3e9fd0a1bdf69b": {
+      "source": {
+        "path": "GameLambdaStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-ap-southeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1",
+          "objectKey": "f5398391c03fb4b1c562af4a24306dbb14ba2e54d00a419eae3e9fd0a1bdf69b.json",
+          "region": "ap-southeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

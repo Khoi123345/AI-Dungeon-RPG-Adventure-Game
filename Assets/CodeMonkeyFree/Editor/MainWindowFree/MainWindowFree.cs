@@ -236,6 +236,12 @@ namespace CodeMonkey.FreeWindow {
         }
 
         public void CreateGUI() {
+            if (visualTreeAsset == null) visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/CodeMonkeyFree/Editor/MainWindowFree/MainWindowFree.uxml");
+            if (codeMonkeyFreeSO == null) codeMonkeyFreeSO = AssetDatabase.LoadAssetAtPath<CodeMonkeyFreeSO>("Assets/CodeMonkeyFree/ScriptableObjects/CodeMonkeyFreeSO.asset");
+            if (textTemplateVisualTreeAsset == null) textTemplateVisualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/CodeMonkeyFree/Editor/Templates/TextTemplate.uxml");
+            if (codeTemplateVisualTreeAsset == null) codeTemplateVisualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/CodeMonkeyFree/Editor/Templates/CodeTemplate.uxml");
+            if (videoTemplateVisualTreeAsset == null) videoTemplateVisualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/CodeMonkeyFree/Editor/Templates/VideoTemplate.uxml");
+
             // Each editor window contains a root VisualElement object
             VisualElement root = rootVisualElement;
 

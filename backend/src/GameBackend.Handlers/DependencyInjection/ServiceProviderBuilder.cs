@@ -1,4 +1,5 @@
 using Amazon.DynamoDBv2;
+using Amazon.CognitoIdentityProvider;
 using GameBackend.Core.Repositories;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Services;
@@ -31,10 +32,11 @@ namespace GameBackend.Handlers.DependencyInjection
                 var services = new ServiceCollection();
 
                 // Logging
-                services.AddLogging(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Information));
+                services.AddLogging(builder => builder.AddConsole().SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information));
 
                 // AWS Clients — Singleton để tái sử dụng TCP connection
                 services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
+                services.AddSingleton<IAmazonCognitoIdentityProvider, AmazonCognitoIdentityProviderClient>();
 
                 // Repositories
                 services.AddSingleton<IUserRepository, UserRepository>();
@@ -51,7 +53,15 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<JwtHelper>();
 
                 // Services
-                services.AddSingleton<IAuthService, AuthService>();
+                bool useCognito = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("COGNITO_USER_POOL_ID"));
+                if (useCognito)
+                {
+                    services.AddSingleton<IAuthService, CognitoAuthService>();
+                }
+                else
+                {
+                    services.AddSingleton<IAuthService, AuthService>();
+                }
                 services.AddSingleton<ICharacterService, CharacterService>();
                 services.AddSingleton<IStoryStateUpdater, StoryStateUpdater>();
                 services.AddSingleton<IGameRuleSubValidator, BossValidator>();

@@ -15,6 +15,16 @@ public class GameConfigSO : ScriptableObject
     [Tooltip("Timeout cho mỗi API call (giây)")]
     public float apiTimeoutSeconds = 30f;
 
+    [Header("AWS Cognito Settings (Plan B)")]
+    [Tooltip("Cognito User Pool ID (ví dụ: ap-southeast-1_xxxxxxxxx)")]
+    public string awsCognitoUserPoolId = "";
+
+    [Tooltip("Cognito Client ID (ví dụ: xxxxxxxxxxxxxxxxxxxxxxxxxx)")]
+    public string awsCognitoClientId = "";
+
+    [Tooltip("Cognito Region (ví dụ: ap-southeast-1)")]
+    public string awsCognitoRegion = "ap-southeast-1";
+
     [Header("Mode Settings")]
     [Tooltip("Bật Mock Mode: game chạy offline, không gọi API, dùng dữ liệu giả từ GameProgressService")]
     public bool useMockMode = true;

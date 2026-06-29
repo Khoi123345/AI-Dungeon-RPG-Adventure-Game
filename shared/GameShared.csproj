@@ -7,5 +7,9 @@
     <RootNamespace>GameShared</RootNamespace>
     <AssemblyName>GameShared</AssemblyName>
   </PropertyGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="$(OutputPath)GameShared.dll;$(OutputPath)GameShared.pdb" DestinationFolder="../Assets/Plugins" SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

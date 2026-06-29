@@ -1,0 +1,2370 @@
+{
+ "Resources": {
+  "GameApi48D02DE3": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "API Gateway cho AI Dungeon RPG Game",
+    "Name": "RPG Game API"
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Resource"
+   }
+  },
+  "GameApiCloudWatchRoleA44130A4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/CloudWatchRole/Resource"
+   }
+  },
+  "GameApiAccount26F35C17": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "GameApiCloudWatchRoleA44130A4",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "GameApi48D02DE3"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Account"
+   }
+  },
+  "GameApiDeploymentA549419007da9aab1462fd58d8279831655ff0b4": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "API Gateway cho AI Dungeon RPG Game",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "DependsOn": [
+    "GameApiauthconfirmOPTIONSBFC92660",
+    "GameApiauthconfirmPOSTB8F7E60E",
+    "GameApiauthconfirm4195ED8A",
+    "GameApiauthloginOPTIONSE62AE64B",
+    "GameApiauthloginPOSTE956A81B",
+    "GameApiauthloginA4801B43",
+    "GameApiauthOPTIONS0DF9CC7C",
+    "GameApiauthrefreshOPTIONS33753DAF",
+    "GameApiauthrefreshPOSTB81B9B3A",
+    "GameApiauthrefreshE912F516",
+    "GameApiauthregisterOPTIONS79FB09B9",
+    "GameApiauthregisterPOSTA748B0AB",
+    "GameApiauthregister2989B32B",
+    "GameApiauthC4A7EF3B",
+    "GameApibattleOPTIONS23DC3542",
+    "GameApibattleresolveOPTIONSCCCDBFC0",
+    "GameApibattleresolvePOST8C986B7E",
+    "GameApibattleresolveA8822260",
+    "GameApibattleBDF7A7F1",
+    "GameApibattlespawnbossOPTIONSB5912723",
+    "GameApibattlespawnbossPOSTEC2117AC",
+    "GameApibattlespawnboss3E7F6105",
+    "GameApicharactercharacterIdGET00FAB3C5",
+    "GameApicharactercharacterIdOPTIONS655CBCB8",
+    "GameApicharactercharacterIdF950AABB",
+    "GameApicharacterOPTIONS77BD81EE",
+    "GameApicharacterPOST772068B4",
+    "GameApicharacter79028747",
+    "GameApiinventorycharacterIdGET0FC203C2",
+    "GameApiinventorycharacterIdOPTIONSEF6623EF",
+    "GameApiinventorycharacterId14E46CDA",
+    "GameApiinventoryOPTIONS5F9B28DD",
+    "GameApiinventory36B892F1",
+    "GameApiOPTIONSBA144EA8",
+    "GameApistoryactionOPTIONS33799F07",
+    "GameApistoryactionPOST56B30F81",
+    "GameApistoryaction89619897",
+    "GameApistoryOPTIONSF3B028D6",
+    "GameApistory509F26BD",
+    "GameApistorystartOPTIONSCC8BAA33",
+    "GameApistorystartPOST6F243989",
+    "GameApistorystart940B8EBF"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Deployment/Resource"
+   }
+  },
+  "GameApiDeploymentStageprodD6F3C6E9": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "GameApiDeploymentA549419007da9aab1462fd58d8279831655ff0b4"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "GameApiAccount26F35C17"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "GameApiOPTIONSBA144EA8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "GameApi48D02DE3",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/OPTIONS/Resource"
+   }
+  },
+  "GameApiauthC4A7EF3B": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "GameApi48D02DE3",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "auth",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/Resource"
+   }
+  },
+  "GameApiauthOPTIONS0DF9CC7C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApiauthC4A7EF3B"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/OPTIONS/Resource"
+   }
+  },
+  "GameApiauthloginA4801B43": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApiauthC4A7EF3B"
+    },
+    "PathPart": "login",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/login/Resource"
+   }
+  },
+  "GameApiauthloginOPTIONSE62AE64B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApiauthloginA4801B43"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/login/OPTIONS/Resource"
+   }
+  },
+  "GameApiauthloginPOSTApiPermissionGameApiStackGameApi38DB2726POSTauthloginBD15447A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttLoginFunction66F090C6Arn235F881E"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/auth/login"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/login/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..auth.login"
+   }
+  },
+  "GameApiauthloginPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTauthloginD519DEAD": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttLoginFunction66F090C6Arn235F881E"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/auth/login"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/login/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..auth.login"
+   }
+  },
+  "GameApiauthloginPOSTE956A81B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttLoginFunction66F090C6Arn235F881E"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApiauthloginA4801B43"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/login/POST/Resource"
+   }
+  },
+  "GameApiauthregister2989B32B": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApiauthC4A7EF3B"
+    },
+    "PathPart": "register",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/register/Resource"
+   }
+  },
+  "GameApiauthregisterOPTIONS79FB09B9": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApiauthregister2989B32B"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/register/OPTIONS/Resource"
+   }
+  },
+  "GameApiauthregisterPOSTApiPermissionGameApiStackGameApi38DB2726POSTauthregisterA18F2D99": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttRegisterFunction735506DFArnF4321A6C"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/auth/register"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/register/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..auth.register"
+   }
+  },
+  "GameApiauthregisterPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTauthregisterE098A15B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttRegisterFunction735506DFArnF4321A6C"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/auth/register"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/register/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..auth.register"
+   }
+  },
+  "GameApiauthregisterPOSTA748B0AB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttRegisterFunction735506DFArnF4321A6C"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApiauthregister2989B32B"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/register/POST/Resource"
+   }
+  },
+  "GameApiauthconfirm4195ED8A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApiauthC4A7EF3B"
+    },
+    "PathPart": "confirm",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/confirm/Resource"
+   }
+  },
+  "GameApiauthconfirmOPTIONSBFC92660": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApiauthconfirm4195ED8A"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/confirm/OPTIONS/Resource"
+   }
+  },
+  "GameApiauthconfirmPOSTApiPermissionGameApiStackGameApi38DB2726POSTauthconfirmC30DA294": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttConfirmSignUpFunction5B772372Arn86E7F313"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/auth/confirm"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/confirm/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..auth.confirm"
+   }
+  },
+  "GameApiauthconfirmPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTauthconfirm3452B999": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttConfirmSignUpFunction5B772372Arn86E7F313"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/auth/confirm"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/confirm/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..auth.confirm"
+   }
+  },
+  "GameApiauthconfirmPOSTB8F7E60E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttConfirmSignUpFunction5B772372Arn86E7F313"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApiauthconfirm4195ED8A"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/confirm/POST/Resource"
+   }
+  },
+  "GameApiauthrefreshE912F516": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApiauthC4A7EF3B"
+    },
+    "PathPart": "refresh",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/refresh/Resource"
+   }
+  },
+  "GameApiauthrefreshOPTIONS33753DAF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApiauthrefreshE912F516"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/refresh/OPTIONS/Resource"
+   }
+  },
+  "GameApiauthrefreshPOSTApiPermissionGameApiStackGameApi38DB2726POSTauthrefreshFA1DAA49": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttRefreshTokenFunction37E34807Arn4D44462E"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/auth/refresh"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/refresh/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..auth.refresh"
+   }
+  },
+  "GameApiauthrefreshPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTauthrefreshCEEBBBF3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttRefreshTokenFunction37E34807Arn4D44462E"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/auth/refresh"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/refresh/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..auth.refresh"
+   }
+  },
+  "GameApiauthrefreshPOSTB81B9B3A": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttRefreshTokenFunction37E34807Arn4D44462E"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApiauthrefreshE912F516"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/auth/refresh/POST/Resource"
+   }
+  },
+  "GameApicharacter79028747": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "GameApi48D02DE3",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "character",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/Resource"
+   }
+  },
+  "GameApicharacterOPTIONS77BD81EE": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApicharacter79028747"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/OPTIONS/Resource"
+   }
+  },
+  "GameApicharacterPOSTApiPermissionGameApiStackGameApi38DB2726POSTcharacter05030A02": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttCreateCharacterFunctionA2BD2B88ArnC04826B4"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/character"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..character"
+   }
+  },
+  "GameApicharacterPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTcharacter273E74DC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttCreateCharacterFunctionA2BD2B88ArnC04826B4"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/character"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..character"
+   }
+  },
+  "GameApicharacterPOST772068B4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "GameCognitoAuthorizer0A3A2AA5"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttCreateCharacterFunctionA2BD2B88ArnC04826B4"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApicharacter79028747"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/POST/Resource"
+   }
+  },
+  "GameApicharactercharacterIdF950AABB": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApicharacter79028747"
+    },
+    "PathPart": "{characterId}",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/{characterId}/Resource"
+   }
+  },
+  "GameApicharactercharacterIdOPTIONS655CBCB8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApicharactercharacterIdF950AABB"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/{characterId}/OPTIONS/Resource"
+   }
+  },
+  "GameApicharactercharacterIdGETApiPermissionGameApiStackGameApi38DB2726GETcharactercharacterId42FBFB70": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttGetCharacterFunction1397D5D5Arn077B3D1E"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/GET/character/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/{characterId}/GET/ApiPermission.GameApiStackGameApi38DB2726.GET..character.{characterId}"
+   }
+  },
+  "GameApicharactercharacterIdGETApiPermissionTestGameApiStackGameApi38DB2726GETcharactercharacterId00811040": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttGetCharacterFunction1397D5D5Arn077B3D1E"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/GET/character/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/{characterId}/GET/ApiPermission.Test.GameApiStackGameApi38DB2726.GET..character.{characterId}"
+   }
+  },
+  "GameApicharactercharacterIdGET00FAB3C5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "GameCognitoAuthorizer0A3A2AA5"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttGetCharacterFunction1397D5D5Arn077B3D1E"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApicharactercharacterIdF950AABB"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/character/{characterId}/GET/Resource"
+   }
+  },
+  "GameApistory509F26BD": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "GameApi48D02DE3",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "story",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/Resource"
+   }
+  },
+  "GameApistoryOPTIONSF3B028D6": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApistory509F26BD"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/OPTIONS/Resource"
+   }
+  },
+  "GameApistorystart940B8EBF": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApistory509F26BD"
+    },
+    "PathPart": "start",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/start/Resource"
+   }
+  },
+  "GameApistorystartOPTIONSCC8BAA33": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApistorystart940B8EBF"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/start/OPTIONS/Resource"
+   }
+  },
+  "GameApistorystartPOSTApiPermissionGameApiStackGameApi38DB2726POSTstorystart5AE9814F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttStartStoryFunction8BB4630DArnCA83375B"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/story/start"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/start/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..story.start"
+   }
+  },
+  "GameApistorystartPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTstorystartC90DE0B6": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttStartStoryFunction8BB4630DArnCA83375B"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/story/start"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/start/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..story.start"
+   }
+  },
+  "GameApistorystartPOST6F243989": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "GameCognitoAuthorizer0A3A2AA5"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttStartStoryFunction8BB4630DArnCA83375B"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApistorystart940B8EBF"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/start/POST/Resource"
+   }
+  },
+  "GameApistoryaction89619897": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApistory509F26BD"
+    },
+    "PathPart": "action",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/action/Resource"
+   }
+  },
+  "GameApistoryactionOPTIONS33799F07": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApistoryaction89619897"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/action/OPTIONS/Resource"
+   }
+  },
+  "GameApistoryactionPOSTApiPermissionGameApiStackGameApi38DB2726POSTstoryaction625C9790": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttStoryActionFunction26A06B16Arn85749762"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/story/action"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/action/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..story.action"
+   }
+  },
+  "GameApistoryactionPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTstoryaction3C530892": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttStoryActionFunction26A06B16Arn85749762"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/story/action"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/action/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..story.action"
+   }
+  },
+  "GameApistoryactionPOST56B30F81": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "GameCognitoAuthorizer0A3A2AA5"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttStoryActionFunction26A06B16Arn85749762"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApistoryaction89619897"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/story/action/POST/Resource"
+   }
+  },
+  "GameApibattleBDF7A7F1": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "GameApi48D02DE3",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "battle",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/Resource"
+   }
+  },
+  "GameApibattleOPTIONS23DC3542": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApibattleBDF7A7F1"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/OPTIONS/Resource"
+   }
+  },
+  "GameApibattlespawnboss3E7F6105": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApibattleBDF7A7F1"
+    },
+    "PathPart": "spawn-boss",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/spawn-boss/Resource"
+   }
+  },
+  "GameApibattlespawnbossOPTIONSB5912723": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApibattlespawnboss3E7F6105"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/spawn-boss/OPTIONS/Resource"
+   }
+  },
+  "GameApibattlespawnbossPOSTApiPermissionGameApiStackGameApi38DB2726POSTbattlespawnbossB0D4073C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttSpawnBossFunctionB3B7CB62ArnE6ED4FAD"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/battle/spawn-boss"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/spawn-boss/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..battle.spawn-boss"
+   }
+  },
+  "GameApibattlespawnbossPOSTApiPermissionTestGameApiStackGameApi38DB2726POSTbattlespawnboss6E1DB631": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttSpawnBossFunctionB3B7CB62ArnE6ED4FAD"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/battle/spawn-boss"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/spawn-boss/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..battle.spawn-boss"
+   }
+  },
+  "GameApibattlespawnbossPOSTEC2117AC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "GameCognitoAuthorizer0A3A2AA5"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttSpawnBossFunctionB3B7CB62ArnE6ED4FAD"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApibattlespawnboss3E7F6105"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/spawn-boss/POST/Resource"
+   }
+  },
+  "GameApibattleresolveA8822260": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApibattleBDF7A7F1"
+    },
+    "PathPart": "resolve",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/resolve/Resource"
+   }
+  },
+  "GameApibattleresolveOPTIONSCCCDBFC0": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApibattleresolveA8822260"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/resolve/OPTIONS/Resource"
+   }
+  },
+  "GameApibattleresolvePOSTApiPermissionGameApiStackGameApi38DB2726POSTbattleresolve125E643A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttResolveBattleFunctionD8D0C938Arn33345BDD"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/POST/battle/resolve"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/resolve/POST/ApiPermission.GameApiStackGameApi38DB2726.POST..battle.resolve"
+   }
+  },
+  "GameApibattleresolvePOSTApiPermissionTestGameApiStackGameApi38DB2726POSTbattleresolveDE5C0E0C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttResolveBattleFunctionD8D0C938Arn33345BDD"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/POST/battle/resolve"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/resolve/POST/ApiPermission.Test.GameApiStackGameApi38DB2726.POST..battle.resolve"
+   }
+  },
+  "GameApibattleresolvePOST8C986B7E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "GameCognitoAuthorizer0A3A2AA5"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttResolveBattleFunctionD8D0C938Arn33345BDD"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApibattleresolveA8822260"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/battle/resolve/POST/Resource"
+   }
+  },
+  "GameApiinventory36B892F1": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "GameApi48D02DE3",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "inventory",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/inventory/Resource"
+   }
+  },
+  "GameApiinventoryOPTIONS5F9B28DD": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApiinventory36B892F1"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/inventory/OPTIONS/Resource"
+   }
+  },
+  "GameApiinventorycharacterId14E46CDA": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "GameApiinventory36B892F1"
+    },
+    "PathPart": "{characterId}",
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/inventory/{characterId}/Resource"
+   }
+  },
+  "GameApiinventorycharacterIdOPTIONSEF6623EF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "GameApiinventorycharacterId14E46CDA"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/inventory/{characterId}/OPTIONS/Resource"
+   }
+  },
+  "GameApiinventorycharacterIdGETApiPermissionGameApiStackGameApi38DB2726GETinventorycharacterId98C0C751": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttGetInventoryFunction1F023FCCArn5054D3D2"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/",
+       {
+        "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+       },
+       "/GET/inventory/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/inventory/{characterId}/GET/ApiPermission.GameApiStackGameApi38DB2726.GET..inventory.{characterId}"
+   }
+  },
+  "GameApiinventorycharacterIdGETApiPermissionTestGameApiStackGameApi38DB2726GETinventorycharacterId239DEDCB": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttGetInventoryFunction1F023FCCArn5054D3D2"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-southeast-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "GameApi48D02DE3"
+       },
+       "/test-invoke-stage/GET/inventory/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/inventory/{characterId}/GET/ApiPermission.Test.GameApiStackGameApi38DB2726.GET..inventory.{characterId}"
+   }
+  },
+  "GameApiinventorycharacterIdGET0FC203C2": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "GameCognitoAuthorizer0A3A2AA5"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-southeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::ImportValue": "GameLambdaStack:ExportsOutputFnGetAttGetInventoryFunction1F023FCCArn5054D3D2"
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "GameApiinventorycharacterId14E46CDA"
+    },
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameApi/Default/inventory/{characterId}/GET/Resource"
+   }
+  },
+  "GameCognitoAuthorizer0A3A2AA5": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "GameCognitoAuthorizer",
+    "ProviderARNs": [
+     {
+      "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "GameApi48D02DE3"
+    },
+    "Type": "COGNITO_USER_POOLS"
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/GameCognitoAuthorizer/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOQU/DMAyFf8vuqdsyIXHhUDaOjKkDrshrvS4sjaPEoRpV/zsqLajIB3/PT/bzDeS3GWQr7EJS1ZfE6CP0B8HqorAL7z063aBQh1foSwpSOK02J7vAoqo4WlFbcoavLVkZpwt1EGxonE1QUuDoK3rAQOqJ5Mz1aM70684hM3NjtfBrIL9nNqGIcmavv8j/PPCnBqWxhb5kM+2zoUEZbI81wuZk9+RbHYJmO/zLeY7ioiwTB7Vl2ZGkd5BBvk5h9/iyYU+Fc8kb+fHE/eca8jSHbKzVR9A68dGKbgnKqX8DTRubdFsBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "GameApiStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "GameApiEndpoint25A6DEFC": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "GameApi48D02DE3"
+      },
+      ".execute-api.ap-southeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiUrl": {
+   "Description": "API Gateway endpoint URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "GameApi48D02DE3"
+      },
+      ".execute-api.ap-southeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "GameApiDeploymentStageprodD6F3C6E9"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

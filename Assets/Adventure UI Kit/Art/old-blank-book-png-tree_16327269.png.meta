@@ -1,0 +1,1937 @@
+fileFormatVersion: 2
+guid: 905439bfef452f349a4c7e066edca5d3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4028041866113967112
+    second: old-blank-book-png-tree_16327269_0
+  - first:
+      213: 7383612227707699394
+    second: old-blank-book-png-tree_16327269_1
+  - first:
+      213: 2977209700233359692
+    second: old-blank-book-png-tree_16327269_2
+  - first:
+      213: -3767702394980141094
+    second: old-blank-book-png-tree_16327269_3
+  - first:
+      213: -2487656819166928724
+    second: old-blank-book-png-tree_16327269_4
+  - first:
+      213: 8424299768213948934
+    second: old-blank-book-png-tree_16327269_5
+  - first:
+      213: 4331750816670042487
+    second: old-blank-book-png-tree_16327269_6
+  - first:
+      213: 434439808650223253
+    second: old-blank-book-png-tree_16327269_7
+  - first:
+      213: -7786967802250995278
+    second: old-blank-book-png-tree_16327269_8
+  - first:
+      213: 4999657996760513093
+    second: old-blank-book-png-tree_16327269_9
+  - first:
+      213: 7692139538250793230
+    second: old-blank-book-png-tree_16327269_10
+  - first:
+      213: -1692168584673191584
+    second: old-blank-book-png-tree_16327269_11
+  - first:
+      213: 5900615252929709795
+    second: old-blank-book-png-tree_16327269_12
+  - first:
+      213: -3104187908377144589
+    second: old-blank-book-png-tree_16327269_13
+  - first:
+      213: -5283119694269190797
+    second: old-blank-book-png-tree_16327269_14
+  - first:
+      213: -2489546667664954120
+    second: old-blank-book-png-tree_16327269_15
+  - first:
+      213: 2073357652533000140
+    second: old-blank-book-png-tree_16327269_16
+  - first:
+      213: 4863244372023393911
+    second: old-blank-book-png-tree_16327269_17
+  - first:
+      213: 5909652104309417426
+    second: old-blank-book-png-tree_16327269_18
+  - first:
+      213: 475229413489693624
+    second: old-blank-book-png-tree_16327269_19
+  - first:
+      213: 2192679942000218266
+    second: old-blank-book-png-tree_16327269_20
+  - first:
+      213: 1469692607000640537
+    second: old-blank-book-png-tree_16327269_21
+  - first:
+      213: 6952565587220737891
+    second: old-blank-book-png-tree_16327269_22
+  - first:
+      213: -1123705717966100589
+    second: old-blank-book-png-tree_16327269_23
+  - first:
+      213: -1908203102991631214
+    second: old-blank-book-png-tree_16327269_24
+  - first:
+      213: -5636146251684819752
+    second: old-blank-book-png-tree_16327269_25
+  - first:
+      213: 6538260086293413884
+    second: old-blank-book-png-tree_16327269_26
+  - first:
+      213: -1266059172389735625
+    second: old-blank-book-png-tree_16327269_27
+  - first:
+      213: 825049612272280683
+    second: old-blank-book-png-tree_16327269_28
+  - first:
+      213: -8398866920272999057
+    second: old-blank-book-png-tree_16327269_29
+  - first:
+      213: -5126351637545807167
+    second: old-blank-book-png-tree_16327269_30
+  - first:
+      213: 7949880019619431413
+    second: old-blank-book-png-tree_16327269_31
+  - first:
+      213: 7065158670051866986
+    second: old-blank-book-png-tree_16327269_32
+  - first:
+      213: -1162526142068645131
+    second: old-blank-book-png-tree_16327269_33
+  - first:
+      213: 1904894380583149194
+    second: old-blank-book-png-tree_16327269_34
+  - first:
+      213: -8399469054986122016
+    second: old-blank-book-png-tree_16327269_35
+  - first:
+      213: -4851212222691743331
+    second: old-blank-book-png-tree_16327269_36
+  - first:
+      213: 386198514413475929
+    second: old-blank-book-png-tree_16327269_37
+  - first:
+      213: -535978359973590371
+    second: old-blank-book-png-tree_16327269_38
+  - first:
+      213: -8651788501708092804
+    second: old-blank-book-png-tree_16327269_39
+  - first:
+      213: -4775061419465829295
+    second: old-blank-book-png-tree_16327269_40
+  - first:
+      213: -8708082022181596784
+    second: old-blank-book-png-tree_16327269_41
+  - first:
+      213: 8950488661403357485
+    second: old-blank-book-png-tree_16327269_42
+  - first:
+      213: 5272321378536501473
+    second: old-blank-book-png-tree_16327269_43
+  - first:
+      213: 2943086126597076510
+    second: old-blank-book-png-tree_16327269_44
+  - first:
+      213: 1517653934195683133
+    second: old-blank-book-png-tree_16327269_45
+  - first:
+      213: 6569811403607887412
+    second: old-blank-book-png-tree_16327269_46
+  - first:
+      213: -7903596866210940019
+    second: old-blank-book-png-tree_16327269_47
+  - first:
+      213: 6858496882378922673
+    second: old-blank-book-png-tree_16327269_48
+  - first:
+      213: 2336057830906144819
+    second: old-blank-book-png-tree_16327269_49
+  - first:
+      213: -3900030519884250957
+    second: old-blank-book-png-tree_16327269_50
+  - first:
+      213: -9004412063419513515
+    second: old-blank-book-png-tree_16327269_51
+  - first:
+      213: -8719301307582882482
+    second: old-blank-book-png-tree_16327269_52
+  - first:
+      213: 6781667107799930563
+    second: old-blank-book-png-tree_16327269_53
+  - first:
+      213: -8732278195526507284
+    second: old-blank-book-png-tree_16327269_54
+  - first:
+      213: 7378113403386458587
+    second: old-blank-book-png-tree_16327269_55
+  - first:
+      213: 6053067947075999462
+    second: old-blank-book-png-tree_16327269_56
+  - first:
+      213: -1119760129169614143
+    second: old-blank-book-png-tree_16327269_57
+  - first:
+      213: -971624681291778321
+    second: old-blank-book-png-tree_16327269_58
+  - first:
+      213: -8454835128909902363
+    second: old-blank-book-png-tree_16327269_59
+  - first:
+      213: -2673634636790204865
+    second: old-blank-book-png-tree_16327269_60
+  - first:
+      213: -5217205578794135769
+    second: old-blank-book-png-tree_16327269_61
+  - first:
+      213: 2020133704301406696
+    second: old-blank-book-png-tree_16327269_62
+  - first:
+      213: -5283227244173106381
+    second: old-blank-book-png-tree_16327269_63
+  - first:
+      213: -7380252096602974566
+    second: old-blank-book-png-tree_16327269_64
+  - first:
+      213: -1786593974807838007
+    second: old-blank-book-png-tree_16327269_65
+  - first:
+      213: 5116996101228396728
+    second: old-blank-book-png-tree_16327269_66
+  - first:
+      213: -6069934425654684957
+    second: old-blank-book-png-tree_16327269_67
+  - first:
+      213: 8770520341398071012
+    second: old-blank-book-png-tree_16327269_68
+  - first:
+      213: -2312412353778891393
+    second: old-blank-book-png-tree_16327269_69
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_0
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 2246
+        width: 248
+        height: 247
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fb10e5a3458918c0800000000000000
+      internalID: -4028041866113967112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_1
+      rect:
+        serializedVersion: 2
+        x: 459
+        y: 2365
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c08fb7733cd77660800000000000000
+      internalID: 7383612227707699394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_2
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 2390
+        width: 35
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c41b14cc27c215920800000000000000
+      internalID: 2977209700233359692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_3
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 2246
+        width: 248
+        height: 247
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad7f1d742ae66bbc0800000000000000
+      internalID: -3767702394980141094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_4
+      rect:
+        serializedVersion: 2
+        x: 1060
+        y: 2365
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca02a7a9d411a7dd0800000000000000
+      internalID: -2487656819166928724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_5
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 2390
+        width: 35
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60a4ccd510029e470800000000000000
+      internalID: 8424299768213948934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_6
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 2246
+        width: 248
+        height: 247
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 779402bca687d1c30800000000000000
+      internalID: 4331750816670042487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_7
+      rect:
+        serializedVersion: 2
+        x: 1661
+        y: 2365
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59e92e644b0770600800000000000000
+      internalID: 434439808650223253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_8
+      rect:
+        serializedVersion: 2
+        x: 1687
+        y: 2390
+        width: 35
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b9dc6d7a022fe390800000000000000
+      internalID: -7786967802250995278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_9
+      rect:
+        serializedVersion: 2
+        x: 1809
+        y: 2246
+        width: 248
+        height: 247
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54af95f657a526540800000000000000
+      internalID: 4999657996760513093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_10
+      rect:
+        serializedVersion: 2
+        x: 2262
+        y: 2365
+        width: 37
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e010d24c728ffba60800000000000000
+      internalID: 7692139538250793230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_11
+      rect:
+        serializedVersion: 2
+        x: 2288
+        y: 2390
+        width: 35
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0699a7243a53488e0800000000000000
+      internalID: -1692168584673191584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_12
+      rect:
+        serializedVersion: 2
+        x: 2410
+        y: 2397
+        width: 90
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e6802b4f4233e150800000000000000
+      internalID: 5900615252929709795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_13
+      rect:
+        serializedVersion: 2
+        x: 403
+        y: 2307
+        width: 53
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f21e154b85bbe4d0800000000000000
+      internalID: -3104187908377144589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_14
+      rect:
+        serializedVersion: 2
+        x: 446
+        y: 2346
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37de63511a69ea6b0800000000000000
+      internalID: -5283119694269190797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_15
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 2307
+        width: 53
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fca216fe7a537dd0800000000000000
+      internalID: -2489546667664954120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_16
+      rect:
+        serializedVersion: 2
+        x: 1047
+        y: 2346
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc73193cccb06cc10800000000000000
+      internalID: 2073357652533000140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_17
+      rect:
+        serializedVersion: 2
+        x: 1605
+        y: 2307
+        width: 53
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77e3f526df6bd7340800000000000000
+      internalID: 4863244372023393911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_18
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 2346
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d5a087374d430250800000000000000
+      internalID: 5909652104309417426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_19
+      rect:
+        serializedVersion: 2
+        x: 2206
+        y: 2307
+        width: 53
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b3ded932aa589600800000000000000
+      internalID: 475229413489693624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_20
+      rect:
+        serializedVersion: 2
+        x: 2249
+        y: 2346
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a901c093ac6fd6e10800000000000000
+      internalID: 2192679942000218266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_21
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 2247
+        width: 42
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91c7a49a3a5656410800000000000000
+      internalID: 1469692607000640537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_22
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 2278
+        width: 41
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36fa5e7b0997c7060800000000000000
+      internalID: 6952565587220737891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_23
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 2247
+        width: 42
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3972e886a9bc760f0800000000000000
+      internalID: -1123705717966100589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_24
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 2278
+        width: 41
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29cb2ee4363b485e0800000000000000
+      internalID: -1908203102991631214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_25
+      rect:
+        serializedVersion: 2
+        x: 1550
+        y: 2247
+        width: 42
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dc4d2e78d268c1b0800000000000000
+      internalID: -5636146251684819752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_26
+      rect:
+        serializedVersion: 2
+        x: 1581
+        y: 2278
+        width: 41
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cff32a448e09cba50800000000000000
+      internalID: 6538260086293413884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_27
+      rect:
+        serializedVersion: 2
+        x: 2151
+        y: 2247
+        width: 42
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 733b51df3ed0e6ee0800000000000000
+      internalID: -1266059172389735625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_28
+      rect:
+        serializedVersion: 2
+        x: 2182
+        y: 2278
+        width: 41
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b642095404a237b00800000000000000
+      internalID: 825049612272280683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_29
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 358
+        width: 2384
+        height: 1879
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6d495df80b317b80800000000000000
+      internalID: -8398866920272999057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_30
+      rect:
+        serializedVersion: 2
+        x: 2472
+        y: 1969
+        width: 28
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c21752a85a8bd8b0800000000000000
+      internalID: -5126351637545807167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_31
+      rect:
+        serializedVersion: 2
+        x: 2410
+        y: 1796
+        width: 90
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f34460f1c5a35e60800000000000000
+      internalID: 7949880019619431413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_32
+      rect:
+        serializedVersion: 2
+        x: 2473
+        y: 1368
+        width: 27
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a69763aa06c7c0260800000000000000
+      internalID: 7065158670051866986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_33
+      rect:
+        serializedVersion: 2
+        x: 2410
+        y: 1195
+        width: 90
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f2a4e312a0eddfe0800000000000000
+      internalID: -1162526142068645131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_34
+      rect:
+        serializedVersion: 2
+        x: 2472
+        y: 767
+        width: 28
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8edb49b85b8f6a10800000000000000
+      internalID: 1904894380583149194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_35
+      rect:
+        serializedVersion: 2
+        x: 2410
+        y: 594
+        width: 90
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ec8aa395671f6b80800000000000000
+      internalID: -8399469054986122016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_36
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 282
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d99ec60bf280dacb0800000000000000
+      internalID: -4851212222691743331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_37
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 308
+        width: 36
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9581660b08d0c5500800000000000000
+      internalID: 386198514413475929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_38
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 111
+        width: 255
+        height: 254
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9a4a767582df88f0800000000000000
+      internalID: -535978359973590371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_39
+      rect:
+        serializedVersion: 2
+        x: 781
+        y: 282
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7a41e3623caee780800000000000000
+      internalID: -8651788501708092804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_40
+      rect:
+        serializedVersion: 2
+        x: 806
+        y: 308
+        width: 36
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 154111830f29bbdb0800000000000000
+      internalID: -4775061419465829295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_41
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 111
+        width: 255
+        height: 254
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09196e8c98da62780800000000000000
+      internalID: -8708082022181596784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_42
+      rect:
+        serializedVersion: 2
+        x: 1382
+        y: 282
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d21db1d0406863c70800000000000000
+      internalID: 8950488661403357485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_43
+      rect:
+        serializedVersion: 2
+        x: 1407
+        y: 308
+        width: 36
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e0bd5d1c5c0b2940800000000000000
+      internalID: 5272321378536501473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_44
+      rect:
+        serializedVersion: 2
+        x: 1534
+        y: 111
+        width: 255
+        height: 254
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e16f23f2d31f7d820800000000000000
+      internalID: 2943086126597076510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_45
+      rect:
+        serializedVersion: 2
+        x: 1983
+        y: 282
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3f25b7563acf0510800000000000000
+      internalID: 1517653934195683133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_46
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 308
+        width: 36
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43ecb59c9a8ac2b50800000000000000
+      internalID: 6569811403607887412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_47
+      rect:
+        serializedVersion: 2
+        x: 2135
+        y: 111
+        width: 255
+        height: 254
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8b3b957688c05290800000000000000
+      internalID: -7903596866210940019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_48
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 225
+        width: 53
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bad15f93964e2f50800000000000000
+      internalID: 6858496882378922673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_49
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 263
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3382ee168385b6020800000000000000
+      internalID: 2336057830906144819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_50
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 225
+        width: 53
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b00e19c7ee40e9c0800000000000000
+      internalID: -3900030519884250957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_51
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 263
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55543ac8fe6e90380800000000000000
+      internalID: -9004412063419513515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_52
+      rect:
+        serializedVersion: 2
+        x: 1326
+        y: 225
+        width: 53
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4d5ce758a1def680800000000000000
+      internalID: -8719301307582882482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_53
+      rect:
+        serializedVersion: 2
+        x: 1369
+        y: 263
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c69d51cd425d1e50800000000000000
+      internalID: 6781667107799930563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_54
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 225
+        width: 53
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce4e0cb2f37b0d680800000000000000
+      internalID: -8732278195526507284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_55
+      rect:
+        serializedVersion: 2
+        x: 1970
+        y: 263
+        width: 23
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd1f569ac03546660800000000000000
+      internalID: 7378113403386458587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_56
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 165
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6e694c23a31d00450800000000000000
+      internalID: 6053067947075999462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_57
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 165
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ca13336810d570f0800000000000000
+      internalID: -1119760129169614143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_58
+      rect:
+        serializedVersion: 2
+        x: 1271
+        y: 165
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe6f99010881482f0800000000000000
+      internalID: -971624681291778321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_59
+      rect:
+        serializedVersion: 2
+        x: 1872
+        y: 165
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5edc4d2fe346aaa80800000000000000
+      internalID: -8454835128909902363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_60
+      rect:
+        serializedVersion: 2
+        x: 2473
+        y: 166
+        width: 27
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3670fe967755ead0800000000000000
+      internalID: -2673634636790204865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_61
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 0
+        width: 96
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72f0ac30b23c897b0800000000000000
+      internalID: -5217205578794135769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_62
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 0
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e9eda3a6e4f80c10800000000000000
+      internalID: 2020133704301406696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_63
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 0
+        width: 96
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 333656b20d43ea6b0800000000000000
+      internalID: -5283227244173106381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_64
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 0
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a96d52502d3149990800000000000000
+      internalID: -7380252096602974566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_65
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 0
+        width: 96
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c2c9b5ee3eb437e0800000000000000
+      internalID: -1786593974807838007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_66
+      rect:
+        serializedVersion: 2
+        x: 1687
+        y: 0
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b007c2d7d8330740800000000000000
+      internalID: 5116996101228396728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_67
+      rect:
+        serializedVersion: 2
+        x: 1809
+        y: 0
+        width: 96
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e210fcbcc243cba0800000000000000
+      internalID: -6069934425654684957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_68
+      rect:
+        serializedVersion: 2
+        x: 2288
+        y: 0
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e6ae5448c527b970800000000000000
+      internalID: 8770520341398071012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: old-blank-book-png-tree_16327269_69
+      rect:
+        serializedVersion: 2
+        x: 2410
+        y: 0
+        width: 90
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f75c8c64739a8efd0800000000000000
+      internalID: -2312412353778891393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      old-blank-book-png-tree_16327269_0: -4028041866113967112
+      old-blank-book-png-tree_16327269_1: 7383612227707699394
+      old-blank-book-png-tree_16327269_10: 7692139538250793230
+      old-blank-book-png-tree_16327269_11: -1692168584673191584
+      old-blank-book-png-tree_16327269_12: 5900615252929709795
+      old-blank-book-png-tree_16327269_13: -3104187908377144589
+      old-blank-book-png-tree_16327269_14: -5283119694269190797
+      old-blank-book-png-tree_16327269_15: -2489546667664954120
+      old-blank-book-png-tree_16327269_16: 2073357652533000140
+      old-blank-book-png-tree_16327269_17: 4863244372023393911
+      old-blank-book-png-tree_16327269_18: 5909652104309417426
+      old-blank-book-png-tree_16327269_19: 475229413489693624
+      old-blank-book-png-tree_16327269_2: 2977209700233359692
+      old-blank-book-png-tree_16327269_20: 2192679942000218266
+      old-blank-book-png-tree_16327269_21: 1469692607000640537
+      old-blank-book-png-tree_16327269_22: 6952565587220737891
+      old-blank-book-png-tree_16327269_23: -1123705717966100589
+      old-blank-book-png-tree_16327269_24: -1908203102991631214
+      old-blank-book-png-tree_16327269_25: -5636146251684819752
+      old-blank-book-png-tree_16327269_26: 6538260086293413884
+      old-blank-book-png-tree_16327269_27: -1266059172389735625
+      old-blank-book-png-tree_16327269_28: 825049612272280683
+      old-blank-book-png-tree_16327269_29: -8398866920272999057
+      old-blank-book-png-tree_16327269_3: -3767702394980141094
+      old-blank-book-png-tree_16327269_30: -5126351637545807167
+      old-blank-book-png-tree_16327269_31: 7949880019619431413
+      old-blank-book-png-tree_16327269_32: 7065158670051866986
+      old-blank-book-png-tree_16327269_33: -1162526142068645131
+      old-blank-book-png-tree_16327269_34: 1904894380583149194
+      old-blank-book-png-tree_16327269_35: -8399469054986122016
+      old-blank-book-png-tree_16327269_36: -4851212222691743331
+      old-blank-book-png-tree_16327269_37: 386198514413475929
+      old-blank-book-png-tree_16327269_38: -535978359973590371
+      old-blank-book-png-tree_16327269_39: -8651788501708092804
+      old-blank-book-png-tree_16327269_4: -2487656819166928724
+      old-blank-book-png-tree_16327269_40: -4775061419465829295
+      old-blank-book-png-tree_16327269_41: -8708082022181596784
+      old-blank-book-png-tree_16327269_42: 8950488661403357485
+      old-blank-book-png-tree_16327269_43: 5272321378536501473
+      old-blank-book-png-tree_16327269_44: 2943086126597076510
+      old-blank-book-png-tree_16327269_45: 1517653934195683133
+      old-blank-book-png-tree_16327269_46: 6569811403607887412
+      old-blank-book-png-tree_16327269_47: -7903596866210940019
+      old-blank-book-png-tree_16327269_48: 6858496882378922673
+      old-blank-book-png-tree_16327269_49: 2336057830906144819
+      old-blank-book-png-tree_16327269_5: 8424299768213948934
+      old-blank-book-png-tree_16327269_50: -3900030519884250957
+      old-blank-book-png-tree_16327269_51: -9004412063419513515
+      old-blank-book-png-tree_16327269_52: -8719301307582882482
+      old-blank-book-png-tree_16327269_53: 6781667107799930563
+      old-blank-book-png-tree_16327269_54: -8732278195526507284
+      old-blank-book-png-tree_16327269_55: 7378113403386458587
+      old-blank-book-png-tree_16327269_56: 6053067947075999462
+      old-blank-book-png-tree_16327269_57: -1119760129169614143
+      old-blank-book-png-tree_16327269_58: -971624681291778321
+      old-blank-book-png-tree_16327269_59: -8454835128909902363
+      old-blank-book-png-tree_16327269_6: 4331750816670042487
+      old-blank-book-png-tree_16327269_60: -2673634636790204865
+      old-blank-book-png-tree_16327269_61: -5217205578794135769
+      old-blank-book-png-tree_16327269_62: 2020133704301406696
+      old-blank-book-png-tree_16327269_63: -5283227244173106381
+      old-blank-book-png-tree_16327269_64: -7380252096602974566
+      old-blank-book-png-tree_16327269_65: -1786593974807838007
+      old-blank-book-png-tree_16327269_66: 5116996101228396728
+      old-blank-book-png-tree_16327269_67: -6069934425654684957
+      old-blank-book-png-tree_16327269_68: 8770520341398071012
+      old-blank-book-png-tree_16327269_69: -2312412353778891393
+      old-blank-book-png-tree_16327269_7: 434439808650223253
+      old-blank-book-png-tree_16327269_8: -7786967802250995278
+      old-blank-book-png-tree_16327269_9: 4999657996760513093
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

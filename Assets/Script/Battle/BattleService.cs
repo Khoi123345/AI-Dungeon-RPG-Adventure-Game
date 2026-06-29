@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameShared.Models; // Sử dụng LootDrop từ Models
 
 public class BattlePresenter : MonoBehaviour
 {
     public BattleView view;
+    
+    [Header("UI kết thúc trận đấu")]
+    [SerializeField] private BattleEndUIController endUIController; // Kéo thả BattleEndUIController từ Scene
     
     // Tốc độ phát lại trận đấu (thời gian chờ giữa các lượt)
     public float turnDelay = 1.2f; 
@@ -55,9 +59,35 @@ public class BattlePresenter : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         view.ShowResult(data.isPlayerVictory);
 
+        List<LootDrop> droppedItems = new List<LootDrop>();
         if (GameProgressService.Instance != null)
         {
-            GameProgressService.Instance.RecordBattleResult(data, data.isPlayerVictory);
+            droppedItems = GameProgressService.Instance.RecordBattleResult(data, data.isPlayerVictory);
+        }
+        else
+        {
+            // Dự phòng offline để test UI độc lập
+            if (data.isPlayerVictory)
+            {
+                droppedItems.Add(new LootDrop
+                {
+                    itemId = "Rusty Sword",
+                    quantity = 1
+                });
+            }
+        }
+
+        // Kích hoạt giao diện kết quả trận đấu sau khi log kết thúc
+        if (endUIController != null)
+        {
+            if (data.isPlayerVictory)
+            {
+                endUIController.TriggerVictory(droppedItems);
+            }
+            else
+            {
+                endUIController.TriggerDefeat();
+            }
         }
     }
 
