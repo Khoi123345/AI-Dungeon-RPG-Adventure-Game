@@ -16,12 +16,19 @@ namespace GameShared.DTOs.Inventory
     {
         public string inventoryId;
         public string itemId;
+        /// <summary>Tên vật phẩm (lấy từ ItemCatalog khi build response).</summary>
         public string itemName;
-        public string rarity;
+        /// <summary>Loại vật phẩm: "Weapon" | "Armor" | "Accessory" | "Consumable"</summary>
         public string itemType;
+        public string rarity;
         public int quantity;
         public bool equipped;
         public int slotIndex;
         public bool locked;
+        // Stats để hiển thị tooltip trong client
+        public int attackBonus;
+        public int defenseBonus;
+        public int hpBonus;
+        public float criticalBonus;
     }
 }
