@@ -16,6 +16,8 @@ namespace GameShared.Models
         public int experience;
         public int hp;
         public int maxHp;
+        public int mp;
+        public int maxMp;
         public int attack;
         public int defense;
         public float criticalRate;

@@ -49,14 +49,15 @@ namespace GameBackend.Core.Services
 
             var encounter = new BossEncounter
             {
-                encounterId = Guid.NewGuid().ToString("N"),
-                characterId = character.characterId,
-                bossId = $"{template.bossId}_{Guid.NewGuid().ToString("N")[..8]}",
-                bossLevel = bossLevel,
+                encounterId    = Guid.NewGuid().ToString("N"),
+                characterId    = character.characterId,
+                bossId         = $"{template.bossId}_{Guid.NewGuid().ToString("N")[..8]}",
+                bossLevel      = bossLevel,
+                bossRarity     = rarity,    // Lưu để dùng khi resolve battle (loot, gold, XP)
                 playerHpBefore = character.hp,
-                bossHpBefore = ScaleStat(template.baseHp, bossLevel),
-                status = "Active",
-                encounterTime = DateTime.UtcNow
+                bossHpBefore   = ScaleStat(template.baseHp, bossLevel),
+                status         = "Active",
+                encounterTime  = DateTime.UtcNow
             };
 
             await _battleRepository.SaveEncounterAsync(encounter);
@@ -147,23 +148,33 @@ namespace GameBackend.Core.Services
             await _characterRepository.SaveAsync(character);
 
             // Xử lý phần thưởng
+            string battleId = Guid.NewGuid().ToString("N");
             BattleRewardData? rewards = null;
             if (isVictory)
             {
-                int goldReward = encounter.bossLevel * 10;
-                int expReward = encounter.bossLevel * 15;
+                // Công thức gold/XP theo mục 5.1 logic doc: dùng hệ số rarity
+                int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, encounter.bossRarity);
+                int expReward  = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity);
                 character.gold += goldReward;
                 await _characterService.ApplyExperienceAndLevelUp(character, expReward);
+
+                // Loot drop thật — roll item theo bảng loot (mục 5.2 logic doc)
+                var lootDTOs = await _inventoryService.GrantLootDropAsync(
+                    character.characterId, encounter.bossRarity, battleId);
 
                 rewards = new BattleRewardData
                 {
                     goldEarned = goldReward,
-                    expEarned = expReward,
-                    lootItems = new List<LootItemData>()
+                    expEarned  = expReward,
+                    lootItems  = lootDTOs.Select(l => new LootItemData
+                    {
+                        itemId   = l.itemId,
+                        itemName = GameConstants.GetItemById(l.itemId)?.name ?? l.itemId,
+                        quantity = l.quantity
+                    }).ToList()
                 };
             }
 
-            string battleId = Guid.NewGuid().ToString("N");
             _logger.LogInformation("Battle resolved: {BattleId}, Result: {Result}", battleId, encounter.status);
 
             return new BattleResolveResponse

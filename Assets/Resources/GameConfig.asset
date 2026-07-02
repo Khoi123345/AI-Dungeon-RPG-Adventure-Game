@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d415a81241b31d4990f2602512fbeeb, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: Assembly-CSharp::GameConfigSO
+  apiBaseUrl: https://ne6hi09ope.execute-api.ap-southeast-1.amazonaws.com/prod
+  apiTimeoutSeconds: 30
+  awsCognitoUserPoolId: ap-southeast-1_o5iVEr53m
+  awsCognitoClientId: 6gbr2dsh2ks5enlana5dqrdoob
+  awsCognitoRegion: ap-southeast-1
+  useMockMode: 0
+  enableApiLogging: 1

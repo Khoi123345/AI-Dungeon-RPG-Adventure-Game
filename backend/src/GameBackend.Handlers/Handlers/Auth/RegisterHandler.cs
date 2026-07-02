@@ -10,6 +10,10 @@ using System.Text.Json;
 
 namespace GameBackend.Handlers.Auth
 {
+    /// <summary>
+    /// Lambda entrypoint cho POST /auth/register.
+    /// Dùng RegisterRequest DTO từ shared để đồng nhất schema giữa client và server.
+    /// </summary>
     public class RegisterHandler
     {
         private readonly IAuthService _authService;
@@ -27,23 +31,45 @@ namespace GameBackend.Handlers.Auth
 
             try
             {
-                var body = JsonSerializer.Deserialize<JsonElement>(request.Body);
-                string username = body.GetProperty("username").GetString()!;
-                string email = body.GetProperty("email").GetString()!;
-                string password = body.GetProperty("password").GetString()!;
+                var registerRequest = JsonUtils.Deserialize<RegisterRequest>(request.Body);
 
-                var result = await _authService.RegisterAsync(username, email, password);
+                if (registerRequest == null ||
+                    string.IsNullOrWhiteSpace(registerRequest.username) ||
+                    string.IsNullOrWhiteSpace(registerRequest.email) ||
+                    string.IsNullOrWhiteSpace(registerRequest.password))
+                {
+                    return ResponseBuilder.Error(400, "Username, email, and password are required.", "INVALID_REQUEST");
+                }
+
+                if (!string.IsNullOrEmpty(registerRequest.confirmPassword) &&
+                    registerRequest.password != registerRequest.confirmPassword)
+                {
+                    return ResponseBuilder.Error(400, "Passwords do not match.", "PASSWORD_MISMATCH");
+                }
+
+                var result = await _authService.RegisterAsync(
+                    registerRequest.username,
+                    registerRequest.email,
+                    registerRequest.password);
+
                 return ResponseBuilder.Success(result, "Registration successful");
             }
             catch (GameConflictException ex)
             {
-                return ResponseBuilder.Error(409, ex.Message, "USERNAME_EXISTS");
+                // Phân biệt username vs email conflict
+                string errorCode = ex.Message.Contains("Email") ? "EMAIL_EXISTS" : "USERNAME_EXISTS";
+                return ResponseBuilder.Error(409, ex.Message, errorCode);
+            }
+            catch (GameValidationException ex)
+            {
+                return ResponseBuilder.Error(400, ex.Message, "VALIDATION_ERROR");
             }
             catch (Exception ex)
             {
-                context.Logger.LogLine($"Error: {ex.Message}");
+                context.Logger.LogLine($"RegisterHandler Error: {ex.Message} {ex.StackTrace}");
                 return ResponseBuilder.Error(500, "Internal server error", "SERVER_ERROR");
             }
         }
     }
 }
+

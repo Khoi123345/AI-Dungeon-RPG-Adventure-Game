@@ -1,0 +1,20 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "a95ad16885245f5dfc04b25e6d457cc9876fe039f64e712098b803ee38762460": {
+      "source": {
+        "path": "GameCognitoStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-ap-southeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1",
+          "objectKey": "a95ad16885245f5dfc04b25e6d457cc9876fe039f64e712098b803ee38762460.json",
+          "region": "ap-southeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

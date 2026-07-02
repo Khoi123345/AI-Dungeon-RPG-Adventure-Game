@@ -1,0 +1,198 @@
+﻿1. Character System (Hệ thống Nhân vật)
+1.1. Xem thông tin nhân vật & Tính toán chỉ số thực tế
+Khi người chơi tải dữ liệu nhân vật, các chỉ số gốc (Base Stats) lưu trong bảng Character cần được cộng thêm chỉ số từ các trang bị đang mặc (equipped: true trong bảng Inventory).
+Logic:     Hp (tổng) = Hp (gốc) + Hp(bonus từ trang bị)
+               Attack (tổng) = Attack (gốc) + Attack(bonus từ trang bị)
+  Defense (tổng) = Defense (gốc) + Defense(bonus từ trang bị)
+ Critical Rate (tổng) = Critical Rate (gốc) + Critical Rate(bonus từ trang bị)
+1.2. Logic Tăng cấp (Level Up)
+Mỗi khi nhân vật nhận thêm Kinh nghiệm (experience) từ việc thắng Boss:
+1. Cộng experience mới vào experience hiện tại của nhân vật.
+2. Kiểm tra điều kiện: if (experience >= RequiredXP(current_level)).
+3. Nếu đủ, thực hiện vòng lặp tăng cấp:
+   * Tăng level lên 1.
+   * Trừ RequiredXP của cấp cũ khỏi tổng số experience.
+   * Tăng các chỉ số Base (max_hp, attack, defense...) theo công thức tăng trưởng định sẵn của game.
+   * Hồi đầy máu (hp = max_hp).
+4. Cập nhật dữ liệu mới xuống bảng Character.
+2. Inventory System (Hệ thống Kho đồ)
+2.1. Trang bị Vật phẩm (Equip Item)
+* Điều kiện đầu vào: character_id, item_id.
+* Logic xử lý:
+   1. Kiểm tra vật phẩm có tồn tại trong kho đồ của nhân vật không (Inventory record có character_id, item_id và quantity > 0).
+   2. Lấy thông tin thuộc tính của vật phẩm từ bảng Item để xác định loại trang bị (item_type: Weapon, Armor, Accessory...).
+   3. Tìm kiếm trong bảng Inventory xem nhân vật đã có vật phẩm nào cùng loại (item_type) đang được trang bị (equipped: true) hay chưa.
+   4. Nếu có, chuyển trạng thái của trang bị cũ thành equipped = false.
+   5. Cập nhật trang bị mới thành equipped = true.
+   6. Tính toán lại chỉ số tổng của nhân vật và trả về Client.
+2.2. Gỡ trang bị (Unequip Item)
+* Logic xử lý:
+   1. Tìm bản ghi cụ thể trong Inventory dựa trên inventory_id.
+   2. Kiểm tra nếu equipped == true, chuyển đổi trạng thái thành equipped = false.
+   3. Tính toán lại và cập nhật lại chỉ số nhân vật.
+2.3. Logic Thêm vật phẩm vào Kho đồ (Add Item to Inventory)
+Hệ thống này xử lý việc cấp phát vật phẩm cho nhân vật từ mọi nguồn (Loot từ Boss, Phần thưởng nhiệm vụ, Mở quà, v.v.).
+* Điều kiện đầu vào: character_id, item_id, quantity_to_add.
+* Logic xử lý:
+   1. Kiểm tra Sức chứa (Capacity Check): Gọi logic kiểm tra giới hạn kho đồ (Mục 2.5). Nếu kho đồ đã đầy và vật phẩm không thể cộng dồn, chặn hành động và trả về lỗi: "Kho đồ đã đầy".
+   2. Truy vấn Kho đồ hiện tại: Tìm kiếm trong bảng Inventory xem nhân vật đã sở hữu vật phẩm item_id này hay chưa.
+   3. Phân nhánh xử lý:
+      * Trường hợp đã tồn tại: Tiến hành cập nhật bản ghi cũ, tăng giá trị số lượng: quantity = quantity + quantity_to_add.
+      * Trường hợp chưa tồn tại: Tạo một bản ghi mới trong bảng Inventory với các thông tin: inventory_id (tự sinh), character_id, item_id, quantity = quantity_to_add, equipped = false.
+   4. Cập nhật dữ liệu mới xuống database.
+2.4. Logic Sử dụng Vật phẩm Tiêu hao (Consume Item)
+Áp dụng cho các loại vật phẩm không phải trang bị và có thể tiêu biến sau khi sử dụng (ví dụ: Bình máu, Bình mana, Thuốc tăng chỉ số tạm thời, Nguyên liệu).
+* Điều kiện đầu vào: character_id, inventory_id, quantity_to_use.
+* Logic xử lý:
+   1. Kiểm tra tính hợp lệ: Tìm bản ghi trong Inventory dựa trên inventory_id. Kiểm tra điều kiện vật phẩm có thuộc loại tiêu hao không (item_type: Consumable) và số lượng hiện tại phải đủ thỏa mãn (quantity >= quantity_to_use).
+   2. Trừ số lượng vật phẩm:
+      * Tính toán số lượng mới: quantity = quantity - quantity_to_use.
+      * Nếu quantity == 0: Tiến hành xóa hoàn toàn bản ghi inventory_id này khỏi bảng Inventory (hoặc cập nhật quantity = 0 tùy theo thiết kế hệ thống).
+   3. Kích hoạt Hiệu ứng (Apply Effect): Truy vấn thông tin hiệu ứng của vật phẩm trong bảng Item, sau đó cập nhật trực tiếp lên thuộc tính tương ứng của nhân vật trong bảng Character (ví dụ: cộng thêm HP, tăng Vàng, hoặc nhận thêm Buff).
+   4. Cập nhật trạng thái mới của Inventory và Character xuống database, trả kết quả về cho Client.
+2.5. Kiểm tra Giới hạn Sức chứa Kho đồ (Inventory Capacity System)
+Hệ thống giới hạn số lượng ô chứa vật phẩm để tránh việc người chơi tích trữ vô hạn và tối ưu hóa bộ nhớ database.
+* Quy tắc thiết kế: Kho đồ quy định số lượng ô chứa tối đa của mỗi nhân vật là Max_Slots (ví dụ: 100 ô). Mỗi bản ghi (Inventory record) độc lập sẽ chiếm tính là 1 ô (Slot), không phụ thuộc vào quantity của bản ghi đó.
+* Logic xử lý kiểm tra (Is_Full Check):
+   1. Đếm tổng số bản ghi hiện có của nhân vật trong bảng Inventory (chỉ đếm các bản ghi có quantity > 0). Gọi kết quả này là Current_Slots.
+   2. Khi có yêu cầu thêm vật phẩm mới (item_id mới chưa từng có trong kho):
+      * Nếu Current_Slots >= Max_Slots: Trả về kết quả True (Kho đồ đã đầy).
+      * Nếu Current_Slots < Max_Slots: Trả về kết quả False (Kho đồ còn chỗ).
+   3. Khi có yêu cầu thêm vật phẩm đã tồn tại trong kho (chỉ cộng dồn vào quantity của bản ghi cũ): Hệ thống luôn trả về False (không chiếm thêm ô mới).
+3. Boss Encounter System (Hệ thống Gặp Boss)
+Hệ thống này được kích hoạt ngẫu nhiên (có xác suất) dựa theo hành động khám phá của người chơi.
+3.1. Xác định Độ hiếm (Rarity) của Boss
+Hệ thống sử dụng cơ chế tỉ lệ phần trăm (Weight-based random) để chọn độ hiếm:
+   * Common (60%)
+   * Rare (25%)
+   * Epic (10%)
+   * Legendary (4%)
+   * Mythic (1%)
+3.2. Random Boss & Tính toán Cấp độ Boss (Boss Level)
+1. Truy vấn từ danh sách 100 Boss thiết kế sẵn để lấy ra các Boss có rarity trùng với độ hiếm. Chọn ngẫu nhiên một boss_id.
+2. Tính toán Boss Level theo công thức:
+{Boss Level} = {Player Level} + {Rarity Modifier} + {Random Modifier}
+   * Rarity Modifier: Common (+0), Rare (+5), Epic (+12), Legendary (+25), Mythic (+50) (ví dụ).
+   * Random Modifier: Một số ngẫu nhiên từ -3 đến +3 để tạo tính biến động.
+   3. Tạo một bản ghi mới trong bảng BossEncounter chứa: encounter_id, character_id, boss_id, boss_level, encounter_time. Trả dữ liệu về để client chuyển sang giao diện chiến đấu.
+4. Battle System (Hệ thống Chiến đấu)
+Trận chiến diễn ra tự động hoàn toàn ở phía Backend dưới dạng mô phỏng và trả kết quả dưới 1 giây.
+4.1. Thu thập và tính toán sức mạnh cơ sở
+   * Player Power = Attack(Total) + (Equipment Bonus) + (Level Bonus)
+
+   * Boss Power = Base Attack(Boss) x(1 + (Level) x  0.1) + Base Defense(Boss) + (Level Modifier)
+4.2. Tính toán Điểm trận đấu (Battle Score) và Tác động của Lucky Rate
+      * Hệ thống sinh các chỉ số ngẫu nhiên: Random Factor.
+      * Tính toán Lucky Factor dựa trên thuộc tính lucky_rate của nhân vật. Lucky Rate sẽ tăng tỷ lệ kích hoạt các hiệu ứng đặc biệt:
+      * Nếu Kích hoạt Critical Hit: Nhân đôi điểm Attack đóng góp vào Power.
+      * Nếu Kích hoạt Dodge: Giảm sát thương/Power nhận vào từ Boss.
+      * Nếu Kích hoạt Damage Bonus: Cộng thêm từ 10% - 30% vào tổng điểm.
+      * Công thức Battle Score cuối cùng:
+Battle Score = (Player Power − Boss Power) + Random Factor + Lucky Factor
+Random Factor: dựa trên chính sức mạnh của người chơi (Player Power) để tránh việc khi level người chơi lên cao, chỉ số này sẽ nhỏ so với tổng điểm. Thường thì biên độ giao động sẽ là [-0,1;0,1].
+Lucky Factor: phụ thuộc trực tiếp vào chỉ số lucky_rate của nhân vật lưu trong bảng Character. lucky_rate thường được thiết kế dưới dạng tỷ lệ phần trăm.
+Với mỗi hiệu ứng, hế thống sinh một số ngẫu nhiên từ 0 -> 1. Nếu số này <= lucky_rate, hiệu ứng đó được kích hoạt. 
+Tính điểm đóng góp từ các hiệu ứng
+      * Hiệu ứng 1: Critical Hit (Bạo kích)
+      * Mô tả: Nhân đôi điểm Attack đóng góp vào Power.
+      * Điểm cộng thêm: {Lucky\_Crit} = {Attack(Total)}.
+      * Hiệu ứng 2: Dodge (Né đòn)
+      * Mô tả: Giảm sát thương/Power nhận vào từ Boss. Trong bài toán Battle Score, việc giảm sức mạnh của Boss tương đương với việc tăng lợi thế cho Player.
+      * Điểm cộng thêm: {Lucky\_Dodge} = 0.2 x {Boss Power} (Ví dụ: giảm 20% sức mạnh Boss).
+      * Hiệu ứng 3: Damage Bonus (Sát thương cộng thêm)
+      * Mô tả: Cộng thêm từ 10% đến 30% vào tổng điểm.
+      * Điểm cộng thêm: {Lucky\_Bonus} = {Random}(0.1, 0.3) x {Player Power}.
+4.3. Phân định Kết quả
+      * Nếu Battle Score ≥ 0 thì kết quả là Victory.
+      * Nếu Battle Score < 0 thì kết quả là Defeat.
+Kết quả trận đấu sẽ được lưu vào bảng Battle với cấu trúc:
+(battle_id, encounter_id, player_power, boss_power, result, battle_time)
+5. Loot System (Hệ thống Rơi đồ)
+Hệ thống này chỉ chạy khi kết quả Battle trả về là Victory. 
+5.1. Cấp phát Vàng (Gold) và Kinh nghiệm (Experience)
+      * Lượng vàng thu được: Gold=BossLevel×Hệ số Rarity+Random(10,50) 
+      * Lượng XP thu được: XP=BossLevel×Hệ số Rarity XP 
+      * Cập nhật trực tiếp giá trị gold và experience vào bảng Character. Đồng thời xử lý logic Level Up nếu nhân vật đủ điều kiện.
+5.2. Rơi Trang bị (Equipment Drop)
+      1. Xác định tỷ lệ rơi đồ: Phụ thuộc vào Boss Rarity và Boss Level (Cấp Boss càng cao, Boss càng hiếm thì tỷ lệ rơi đồ Epic/Legendary càng lớn).
+      2. Quyết định độ hiếm vật phẩm rơi (Item Rarity Roll): Random ngẫu nhiên để chọn ra độ hiếm của Item (Common, Rare, Epic, Legendary).
+
+
+
+
+
+
+Xác suất khi rơi vật phẩm theo độ hiếm của Boss
+Khi tiêu diệt Boss Common (Thường):
+
+Tỷ lệ rơi ra vật phẩm Common là 80%
+
+Tỷ lệ rơi ra vật phẩm Rare là 20%
+
+Vật phẩm Epic và Legendary sẽ không xuất hiện (0%)
+
+Khi tiêu diệt Boss Rare (Hiếm):
+
+Tỷ lệ rơi ra vật phẩm Common là 50%
+
+Tỷ lệ rơi ra vật phẩm Rare là 39%
+
+Tỷ lệ rơi ra vật phẩm Epic là 10%
+
+Tỷ lệ rơi ra vật phẩm Legendary là 1%
+
+Khi tiêu diệt Boss Epic (Sử thi):
+
+Tỷ lệ rơi ra vật phẩm Common là 30%
+
+Tỷ lệ rơi ra vật phẩm Rare là 42%
+
+Tỷ lệ rơi ra vật phẩm Epic là 25%
+
+Tỷ lệ rơi ra vật phẩm Legendary là 3%
+
+Khi tiêu diệt Boss Legendary (Huyền thoại):
+
+Tỷ lệ rơi ra vật phẩm Common là 18%
+
+Tỷ lệ rơi ra vật phẩm Rare là 29%
+
+Tỷ lệ rơi ra vật phẩm Epic là 44%
+
+Tỷ lệ rơi ra vật phẩm Legendary là 9%
+
+Khi tiêu diệt Boss Mythic (Thần thoại):
+
+Tỷ lệ rơi ra vật phẩm Common là 10%
+
+Tỷ lệ rơi ra vật phẩm Rare là 20%
+
+Tỷ lệ rơi ra vật phẩm Epic là 50%
+
+Tỷ lệ rơi ra vật phẩm Legendary là 30%
+	
+
+      3. Chọn Item: Truy vấn ngẫu nhiên một item_id trong danh sách cấu hình hệ thống thỏa mãn độ hiếm vừa chọn.
+      4. Cập nhật Kho đồ (Inventory):
+      * Kiểm tra nhân vật đã có item_id này chưa.
+      * Nếu Đã có: Tăng quantity lên 1.
+      * Nếu Chưa có: Tạo bản ghi mới trong bảng Inventory với quantity: 1, equipped: false.
+      5. Ghi nhận lịch sử: Thêm bản ghi vào bảng LootDrop (loot_id, battle_id, item_id, quantity) để theo dõi.
+6. Death & Revival System (Hệ thống Tử trận & Hồi sinh)
+Hệ thống này kích hoạt khi kết quả Battle trả về là Defeat.
+6.1. Trạng thái Tử trận (Death State)
+      1. Thiết lập hp = 0 trong bảng Character.
+      2. Chuyển trạng thái status = 'Dead'.
+      3. Tính toán thời gian hồi sinh dựa trên cấu hình (ví dụ: 5 phút hoặc 10 phút tùy theo level nhân vật hoặc loại Boss vừa thua).
+      4. Cập nhật revive_time = Thời gian hiện tại + Thời gian chờ.
+      5. Trong thời gian này, mọi hành động gửi lên POST /story/action yêu cầu kiểm tra trạng thái nhân vật đều sẽ bị chặn lại từ phía Lambda và trả về lỗi: "Nhân vật đang chuẩn bị hồi sinh".
+6.2. Hồi sinh (Revival)
+Khi người chơi gửi yêu cầu hoặc thực hiện hành động sau khi thời gian chờ kết thúc:
+      1. Kiểm tra điều kiện: if (Thời gian hiện tại >= revive_time).
+      2. Tiến hành hồi sinh nhân vật:
+      * Chuyển trạng thái status = 'Alive' (hoặc Active).
+      * Khôi phục lượng máu theo tỷ lệ quy định (ví dụ: hồi phục 50% hoặc 100% của max_hp): hp = max_hp * tỷ_lệ_quy_định.
+      3. Cập nhật lại thông tin nhân vật vào bảng Character và cho phép tiếp tục chơi.
+7. Save Game (Cơ chế Tự động Lưu)
+      * Không có nút bấm "Lưu game" thủ công.
+      * Mỗi khi có một sự kiện kết thúc (Trang bị xong đồ, Đánh xong Boss, Nhận xong Loot), Lambda Function có nhiệm vụ thực hiện một phiên giao dịch (Transaction hoặc BatchWrite) để ghi đồng thời các dữ liệu thay đổi xuống DynamoDB. Điều này đảm bảo trạng thái nhân vật (Character Stats), kho đồ (Inventory), và tiến trình cốt truyện luôn đồng bộ và không bị mất khi mất kết nối mạng
