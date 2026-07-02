@@ -329,8 +329,6 @@ public class GameProgressService : MonoBehaviour
             experience = 240,
             hp = 84,
             maxHp = 120,
-            mp = 30,
-            maxMp = 40,
             attack = 18,
             defense = 8,
             criticalRate = 0.12f,
@@ -473,8 +471,6 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.level += 1;
             CurrentCharacter.maxHp += 12;
             CurrentCharacter.hp = CurrentCharacter.maxHp;
-            CurrentCharacter.maxMp += 5;
-            CurrentCharacter.mp = CurrentCharacter.maxMp;
             CurrentCharacter.attack += 3;
             CurrentCharacter.defense += 2;
             requiredExperience = CurrentCharacter.level * 100;
