@@ -1537,7 +1537,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -440.00003, y: 246.99998}
+  m_AnchoredPosition: {x: -480.00003, y: 250.99997}
   m_SizeDelta: {x: 88, y: 97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &99457919
@@ -4777,6 +4777,7 @@ GameObject:
   - component: {fileID: 321254165}
   - component: {fileID: 321254164}
   - component: {fileID: 321254163}
+  - component: {fileID: 321254166}
   m_Layer: 5
   m_Name: Login
   m_TagString: Untagged
@@ -4886,6 +4887,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 321254161}
   m_CullTransparentMesh: 1
+--- !u!114 &321254166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321254161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a89f99b966b370499453a99f4d9021b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySoundOnButton
+  customClickSound: {fileID: 0}
 --- !u!1 &330938113
 GameObject:
   m_ObjectHideFlags: 0
@@ -9525,7 +9539,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -616, y: 247}
+  m_AnchoredPosition: {x: -656, y: 251}
   m_SizeDelta: {x: 88, y: 97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &827639506
@@ -16871,6 +16885,7 @@ GameObject:
   - component: {fileID: 1375913835}
   - component: {fileID: 1375913834}
   - component: {fileID: 1375913833}
+  - component: {fileID: 1375913836}
   m_Layer: 5
   m_Name: Register
   m_TagString: Untagged
@@ -16980,6 +16995,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375913831}
   m_CullTransparentMesh: 1
+--- !u!114 &1375913836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375913831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a89f99b966b370499453a99f4d9021b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySoundOnButton
+  customClickSound: {fileID: 0}
 --- !u!1 &1389213321
 GameObject:
   m_ObjectHideFlags: 0
@@ -23997,6 +24025,55 @@ Transform:
   - {fileID: 783755610}
   m_Father: {fileID: 591042012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1919204953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1919204955}
+  - component: {fileID: 1919204954}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1919204954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919204953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 755acadfe41cd614cb8fa09eca7d71ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  musicSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  musicVolume: 0.8
+  sfxVolume: 0.8
+  defaultClickSound: {fileID: 8300000, guid: c303337c0c3ff0a40b1afe411a6c2184, type: 3}
+--- !u!4 &1919204955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919204953}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.08376, y: -0.30055, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1919433717
 GameObject:
   m_ObjectHideFlags: 0
@@ -26936,5 +27013,6 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1455000907}
   - {fileID: 844345804}
+  - {fileID: 1455000907}
+  - {fileID: 1919204955}
