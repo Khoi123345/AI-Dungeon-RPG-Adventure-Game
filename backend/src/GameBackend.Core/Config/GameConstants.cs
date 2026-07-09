@@ -4,7 +4,8 @@ namespace GameBackend.Core.Config
 {
     /// <summary>
     /// Hằng số game và catalog dữ liệu tĩnh.
-    /// Bao gồm: Boss Catalog, Item Catalog, Loot Drop Table, Rarity Multipliers.
+    /// Bao gồm: Boss Catalog, Item Catalog, Loot Drop Table, Rarity Multipliers,
+    /// Battle Formula, Level-Up Growth, Death & Revival config.
     /// </summary>
     public static class GameConstants
     {
@@ -81,7 +82,7 @@ namespace GameBackend.Core.Config
             { "Rare",      (Common: 50, Rare: 39, Epic: 10, Legendary: 1)  },
             { "Epic",      (Common: 30, Rare: 42, Epic: 25, Legendary: 3)  },
             { "Legendary", (Common: 18, Rare: 29, Epic: 44, Legendary: 9)  },
-            { "Mythic",    (Common: 10, Rare: 20, Epic: 50, Legendary: 30) },
+            { "Mythic",    (Common: 10, Rare: 20, Epic: 50, Legendary: 20) },  // Tổng = 100% (sửa từ 30→20 theo prompt)
         };
 
         // =====================================================================
@@ -92,10 +93,111 @@ namespace GameBackend.Core.Config
         public const int MaxInventorySlots = 100;
 
         // =====================================================================
+        // BOSS RARITY WEIGHTS (Mục 3 logic doc)
+        // Common 60%, Rare 25%, Epic 10%, Legendary 4%, Mythic 1%
+        // =====================================================================
+
+        public static readonly (string Rarity, double CumulativeWeight)[] BossRarityWeights =
+        {
+            ("Common",    0.60),
+            ("Rare",      0.85),  // 0.60 + 0.25
+            ("Epic",      0.95),  // 0.85 + 0.10
+            ("Legendary", 0.99),  // 0.95 + 0.04
+            ("Mythic",    1.00),  // 0.99 + 0.01
+        };
+
+        // =====================================================================
+        // BOSS LEVEL MODIFIERS (Mục 3 logic doc)
+        // BossLevel = PlayerLevel + RarityModifier + Random(-3, 3)
+        // =====================================================================
+
+        public static readonly Dictionary<string, int> BossRarityLevelModifier = new()
+        {
+            { "Common",    0  },
+            { "Rare",      5  },
+            { "Epic",      12 },
+            { "Legendary", 25 },
+            { "Mythic",    50 },
+        };
+
+        public const int BossLevelRandomMin = -3;
+        public const int BossLevelRandomMax = 3;  // inclusive → Random(min, max+1)
+
+        // =====================================================================
+        // LEVEL UP GROWTH CONSTANTS (Mục 1 logic doc)
+        // =====================================================================
+
+        public const int LevelUpHpGrowth      = 12;
+        public const int LevelUpMpGrowth      = 5;
+        public const int LevelUpAttackGrowth  = 3;
+        public const int LevelUpDefenseGrowth = 2;
+        public const int BaseRequiredXpPerLevel = 100;  // RequiredXP = level * 100
+
+        // =====================================================================
+        // BATTLE FORMULA CONSTANTS (Mục 4 logic doc)
+        // =====================================================================
+
+        /// <summary>Boss Power scaling: BaseAttack × (1 + Level × BossLevelScaleFactor)</summary>
+        public const double BossLevelScaleFactor = 0.1;
+
+        /// <summary>Random Factor range: ±RandomFactorRange × PlayerPower</summary>
+        public const double RandomFactorRange = 0.1;
+
+        /// <summary>Dodge Lucky Effect: +DodgeBonusRatio × BossPower vào Battle Score</summary>
+        public const double DodgeBonusRatio = 0.2;
+
+        /// <summary>Damage Bonus Lucky Effect: Random(min, max) × PlayerPower</summary>
+        public const double DamageBonusMin = 0.1;
+        public const double DamageBonusMax = 0.3;
+
+        // =====================================================================
+        // DEATH & REVIVAL CONSTANTS (Mục 6 logic doc)
+        // =====================================================================
+
+        /// <summary>Thời gian chờ hồi sinh (phút).</summary>
+        public const int ReviveWaitMinutes = 5;
+
+        /// <summary>Tỷ lệ HP hồi phục khi revive (0.5 = 50% MaxHP).</summary>
+        public const double RevivalHpRatio = 0.5;
+
+        // =====================================================================
         // HELPER METHODS
         // =====================================================================
 
         private static readonly Random _random = new();
+
+        /// <summary>
+        /// Roll ngẫu nhiên rarity cho Boss theo weighted random (Mục 3).
+        /// Common 60%, Rare 25%, Epic 10%, Legendary 4%, Mythic 1%.
+        /// </summary>
+        public static string RollBossRarity()
+        {
+            double roll = _random.NextDouble();
+            foreach (var (rarity, cumulativeWeight) in BossRarityWeights)
+            {
+                if (roll <= cumulativeWeight) return rarity;
+            }
+            return "Common"; // fallback
+        }
+
+        /// <summary>
+        /// Lấy RarityModifier cho công thức Boss Level (Mục 3).
+        /// </summary>
+        public static int GetBossRarityLevelModifier(string rarity)
+        {
+            return BossRarityLevelModifier.TryGetValue(rarity, out int mod) ? mod : 0;
+        }
+
+        /// <summary>
+        /// Tính Boss Level theo công thức: PlayerLevel + RarityModifier + Random(-3, 3).
+        /// Clamp kết quả >= 1.
+        /// </summary>
+        public static int CalculateBossLevel(int playerLevel, string rarity)
+        {
+            int rarityMod = GetBossRarityLevelModifier(rarity);
+            int randomMod = _random.Next(BossLevelRandomMin, BossLevelRandomMax + 1);
+            return Math.Max(1, playerLevel + rarityMod + randomMod);
+        }
 
         public static Boss GetBossTemplateByRarity(string rarity)
         {

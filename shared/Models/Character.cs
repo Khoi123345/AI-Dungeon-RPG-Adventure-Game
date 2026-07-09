@@ -3,8 +3,7 @@ using System;
 namespace GameShared.Models
 {
     /// <summary>
-    /// Nhân vật chơi. Thêm mp/maxMp (đã có trong GameProgressService).
-    /// Chuẩn hóa naming convention sang camelCase.
+    /// Nhân vật chơi. Chuẩn hóa naming convention sang camelCase.
     /// </summary>
     [Serializable]
     public class Character
@@ -16,8 +15,7 @@ namespace GameShared.Models
         public int experience;
         public int hp;
         public int maxHp;
-        public int mp;
-        public int maxMp;
+
         public int attack;
         public int defense;
         public float criticalRate;
