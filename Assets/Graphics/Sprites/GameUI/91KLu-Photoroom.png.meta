@@ -1,0 +1,741 @@
+fileFormatVersion: 2
+guid: 439196209183e214ba31e6703b79ab5c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7898548822643660532
+    second: 91KLu-Photoroom_0
+  - first:
+      213: 1368326762945737289
+    second: 91KLu-Photoroom_1
+  - first:
+      213: 1484049371976481963
+    second: 91KLu-Photoroom_2
+  - first:
+      213: -8167953966689983715
+    second: 91KLu-Photoroom_3
+  - first:
+      213: -4814975684875290315
+    second: 91KLu-Photoroom_4
+  - first:
+      213: -2566821651830281582
+    second: 91KLu-Photoroom_5
+  - first:
+      213: 5634452092985000303
+    second: 91KLu-Photoroom_6
+  - first:
+      213: 7737759553125568681
+    second: 91KLu-Photoroom_7
+  - first:
+      213: 4525064820787752527
+    second: 91KLu-Photoroom_8
+  - first:
+      213: 6902706317680177082
+    second: 91KLu-Photoroom_9
+  - first:
+      213: 9112280600485330545
+    second: 91KLu-Photoroom_10
+  - first:
+      213: 6125055711433516563
+    second: 91KLu-Photoroom_11
+  - first:
+      213: -6543831553207662097
+    second: 91KLu-Photoroom_12
+  - first:
+      213: -8611729207323125277
+    second: 91KLu-Photoroom_13
+  - first:
+      213: -8035560007109068648
+    second: 91KLu-Photoroom_14
+  - first:
+      213: 262317512885751208
+    second: 91KLu-Photoroom_15
+  - first:
+      213: -9099496405658037137
+    second: 91KLu-Photoroom_16
+  - first:
+      213: 7870922606447930286
+    second: 91KLu-Photoroom_17
+  - first:
+      213: 2924659269943794547
+    second: 91KLu-Photoroom_18
+  - first:
+      213: -1424511002118489901
+    second: 91KLu-Photoroom_19
+  - first:
+      213: 6330663093012470628
+    second: 91KLu-Photoroom_20
+  - first:
+      213: 6500416184132647669
+    second: 91KLu-Photoroom_21
+  - first:
+      213: 8453368881562572491
+    second: 91KLu-Photoroom_22
+  - first:
+      213: -4072290755344989051
+    second: 91KLu-Photoroom_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_0
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 564
+        width: 276
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f651ce4e484d9d60800000000000000
+      internalID: 7898548822643660532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_1
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 535
+        width: 336
+        height: 215
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9427a02f0f54df210800000000000000
+      internalID: 1368326762945737289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_2
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 544
+        width: 261
+        height: 220
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bacbccd7a07689410800000000000000
+      internalID: 1484049371976481963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_3
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 541
+        width: 351
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1363b9942995ae80800000000000000
+      internalID: -8167953966689983715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_4
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 438
+        width: 283
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5397ddc1025cd2db0800000000000000
+      internalID: -4814975684875290315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_5
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 438
+        width: 293
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29aefd8ae41d06cd0800000000000000
+      internalID: -2566821651830281582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_6
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 438
+        width: 284
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f61c3527358913e40800000000000000
+      internalID: 5634452092985000303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_7
+      rect:
+        serializedVersion: 2
+        x: 1001
+        y: 438
+        width: 278
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a05f61315b026b60800000000000000
+      internalID: 7737759553125568681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_8
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 345
+        width: 283
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4eabacca724cce30800000000000000
+      internalID: 4525064820787752527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_9
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 345
+        width: 292
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abfeb26e2d65bcf50800000000000000
+      internalID: 6902706317680177082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_10
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 345
+        width: 282
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17e7c9d5de2557e70800000000000000
+      internalID: 9112280600485330545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_11
+      rect:
+        serializedVersion: 2
+        x: 1010
+        y: 351
+        width: 266
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 316e875b7b1900550800000000000000
+      internalID: 6125055711433516563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_12
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 159
+        width: 276
+        height: 145
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe980118fd3af25a0800000000000000
+      internalID: -6543831553207662097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_13
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 149
+        width: 323
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e916afa9edfc7880800000000000000
+      internalID: -8611729207323125277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_14
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 138
+        width: 321
+        height: 188
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 898bdec6fb4fb7090800000000000000
+      internalID: -8035560007109068648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_15
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 138
+        width: 321
+        height: 189
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ad4bed5360f3a300800000000000000
+      internalID: 262317512885751208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_16
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 53
+        width: 280
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f641fc1fa3818b180800000000000000
+      internalID: -9099496405658037137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_17
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 53
+        width: 285
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eababeb98622b3d60800000000000000
+      internalID: 7870922606447930286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_18
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 52
+        width: 261
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37b9d0a4c1a769820800000000000000
+      internalID: 2924659269943794547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_19
+      rect:
+        serializedVersion: 2
+        x: 1013
+        y: 53
+        width: 253
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d8771c7ace1b3ce0800000000000000
+      internalID: -1424511002118489901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 305
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46b1fa3ba880bd750800000000000000
+      internalID: 6330663093012470628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_21
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 0
+        width: 287
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fa3d6b241e163a50800000000000000
+      internalID: 6500416184132647669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_22
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 0
+        width: 262
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc6d0ecb536605570800000000000000
+      internalID: 8453368881562572491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 91KLu-Photoroom_23
+      rect:
+        serializedVersion: 2
+        x: 1013
+        y: 0
+        width: 263
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5840e8942215c77c0800000000000000
+      internalID: -4072290755344989051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: ddde36c5b626cbf47b36afec9dc7e800
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      91KLu-Photoroom_0: 7898548822643660532
+      91KLu-Photoroom_1: 1368326762945737289
+      91KLu-Photoroom_10: 9112280600485330545
+      91KLu-Photoroom_11: 6125055711433516563
+      91KLu-Photoroom_12: -6543831553207662097
+      91KLu-Photoroom_13: -8611729207323125277
+      91KLu-Photoroom_14: -8035560007109068648
+      91KLu-Photoroom_15: 262317512885751208
+      91KLu-Photoroom_16: -9099496405658037137
+      91KLu-Photoroom_17: 7870922606447930286
+      91KLu-Photoroom_18: 2924659269943794547
+      91KLu-Photoroom_19: -1424511002118489901
+      91KLu-Photoroom_2: 1484049371976481963
+      91KLu-Photoroom_20: 6330663093012470628
+      91KLu-Photoroom_21: 6500416184132647669
+      91KLu-Photoroom_22: 8453368881562572491
+      91KLu-Photoroom_23: -4072290755344989051
+      91KLu-Photoroom_3: -8167953966689983715
+      91KLu-Photoroom_4: -4814975684875290315
+      91KLu-Photoroom_5: -2566821651830281582
+      91KLu-Photoroom_6: 5634452092985000303
+      91KLu-Photoroom_7: 7737759553125568681
+      91KLu-Photoroom_8: 4525064820787752527
+      91KLu-Photoroom_9: 6902706317680177082
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

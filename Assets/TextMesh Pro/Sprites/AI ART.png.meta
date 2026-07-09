@@ -1,0 +1,2108 @@
+fileFormatVersion: 2
+guid: f07d8f01036d75f4d915c6061a8e6a3c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2894033540160754901
+    second: AI ART_0
+  - first:
+      213: -8183321563476857625
+    second: AI ART_1
+  - first:
+      213: -1027988716750967629
+    second: AI ART_2
+  - first:
+      213: 4319632133094189366
+    second: AI ART_3
+  - first:
+      213: 1913723129809296526
+    second: AI ART_4
+  - first:
+      213: -6523840711257786222
+    second: AI ART_5
+  - first:
+      213: 782140663315220916
+    second: AI ART_6
+  - first:
+      213: -5770415445459722918
+    second: AI ART_7
+  - first:
+      213: 2628671735839051634
+    second: AI ART_8
+  - first:
+      213: -703669965012173701
+    second: AI ART_9
+  - first:
+      213: -4773568269529645601
+    second: AI ART_10
+  - first:
+      213: 3384585353650179940
+    second: AI ART_11
+  - first:
+      213: 7836340293500435636
+    second: AI ART_12
+  - first:
+      213: -1438444113417119200
+    second: AI ART_13
+  - first:
+      213: 4569609765461879860
+    second: AI ART_14
+  - first:
+      213: 7621376642842135351
+    second: AI ART_15
+  - first:
+      213: 3173825546065388175
+    second: AI ART_16
+  - first:
+      213: -5107019681230373816
+    second: AI ART_17
+  - first:
+      213: -4682977992498101863
+    second: AI ART_18
+  - first:
+      213: 3454102521352762673
+    second: AI ART_19
+  - first:
+      213: -7733082201178800783
+    second: AI ART_20
+  - first:
+      213: 7639864575608058841
+    second: AI ART_21
+  - first:
+      213: -8440220125755036749
+    second: AI ART_22
+  - first:
+      213: 9065115588914053802
+    second: AI ART_23
+  - first:
+      213: -45537850460007961
+    second: AI ART_24
+  - first:
+      213: 8138373455862019416
+    second: AI ART_25
+  - first:
+      213: -9026834633285181818
+    second: AI ART_26
+  - first:
+      213: -1743294518647250721
+    second: AI ART_27
+  - first:
+      213: -9218417210687168841
+    second: AI ART_28
+  - first:
+      213: -1578457282486383946
+    second: AI ART_29
+  - first:
+      213: 9198747477452917678
+    second: AI ART_30
+  - first:
+      213: -76042054846955913
+    second: AI ART_31
+  - first:
+      213: 520144455213886715
+    second: AI ART_32
+  - first:
+      213: -8563322708130987661
+    second: AI ART_33
+  - first:
+      213: 1499972622371227979
+    second: AI ART_34
+  - first:
+      213: 3089623014652858180
+    second: AI ART_35
+  - first:
+      213: -6104519507765362888
+    second: AI ART_36
+  - first:
+      213: -5206176530579864746
+    second: AI ART_37
+  - first:
+      213: 6055024302709052168
+    second: AI ART_38
+  - first:
+      213: -6634532148224768513
+    second: AI ART_39
+  - first:
+      213: 3473236270454191828
+    second: AI ART_40
+  - first:
+      213: 1990199492572113822
+    second: AI ART_41
+  - first:
+      213: 4306597562949661107
+    second: AI ART_42
+  - first:
+      213: -6849610529040506302
+    second: AI ART_43
+  - first:
+      213: -1093331175230651798
+    second: AI ART_44
+  - first:
+      213: -867312368354908163
+    second: AI ART_45
+  - first:
+      213: -1747559279587641750
+    second: AI ART_46
+  - first:
+      213: -2353606573376510000
+    second: AI ART_47
+  - first:
+      213: -4085619326935918543
+    second: AI ART_48
+  - first:
+      213: 1395887366143205217
+    second: AI ART_49
+  - first:
+      213: 1358089092729650955
+    second: AI ART_50
+  - first:
+      213: -7203615009739801909
+    second: AI ART_51
+  - first:
+      213: 8487079006812784259
+    second: AI ART_52
+  - first:
+      213: 2118417468180998011
+    second: AI ART_53
+  - first:
+      213: 2138704370715961317
+    second: AI ART_54
+  - first:
+      213: 210472766870618254
+    second: AI ART_55
+  - first:
+      213: -4709748146494421655
+    second: AI ART_56
+  - first:
+      213: -1260908316782885165
+    second: AI ART_57
+  - first:
+      213: -7316429423962162878
+    second: AI ART_58
+  - first:
+      213: 6288031413005037640
+    second: AI ART_59
+  - first:
+      213: -5791098765727150092
+    second: AI ART_60
+  - first:
+      213: -2001067068355811375
+    second: AI ART_61
+  - first:
+      213: 6458973001489355629
+    second: AI ART_62
+  - first:
+      213: -6456676579805669476
+    second: AI ART_63
+  - first:
+      213: -941096986285991515
+    second: AI ART_64
+  - first:
+      213: 3588002358246518497
+    second: AI ART_65
+  - first:
+      213: -6310194876827215071
+    second: AI ART_66
+  - first:
+      213: -7238278830255999704
+    second: AI ART_67
+  - first:
+      213: 3756955991912862273
+    second: AI ART_68
+  - first:
+      213: 8230162833591436267
+    second: AI ART_69
+  - first:
+      213: -8865284866641527069
+    second: AI ART_70
+  - first:
+      213: -8251551266897095897
+    second: AI ART_71
+  - first:
+      213: -3832560115336312027
+    second: AI ART_72
+  - first:
+      213: -624275582504405395
+    second: AI ART_73
+  - first:
+      213: 4731658554773795875
+    second: AI ART_74
+  - first:
+      213: -113110257301519662
+    second: AI ART_75
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 2
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: AI ART_0
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 605
+        width: 46
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d41959eb2ca92820800000000000000
+      internalID: 2894033540160754901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_1
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 602
+        width: 44
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ecea2625600f6e80800000000000000
+      internalID: -8183321563476857625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_2
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 602
+        width: 46
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bce2f865b9dbb1f0800000000000000
+      internalID: -1027988716750967629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_3
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 601
+        width: 44
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6392175e98a62fb30800000000000000
+      internalID: 4319632133094189366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_4
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 600
+        width: 46
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8c5bb61c09ee8a10800000000000000
+      internalID: 1913723129809296526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_5
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 600
+        width: 46
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2987f3a1079a675a0800000000000000
+      internalID: -6523840711257786222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_6
+      rect:
+        serializedVersion: 2
+        x: 342
+        y: 598
+        width: 43
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b9ca411ac8bada00800000000000000
+      internalID: 782140663315220916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_7
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 598
+        width: 42
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5d12fea9bd5befa0800000000000000
+      internalID: -5770415445459722918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_8
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 595
+        width: 41
+        height: 89
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27fcbc5340bea7420800000000000000
+      internalID: 2628671735839051634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_9
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 595
+        width: 38
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7c765025ef0c36f0800000000000000
+      internalID: -703669965012173701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_10
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 589
+        width: 44
+        height: 102
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fddfb9743f0e0cdb0800000000000000
+      internalID: -4773568269529645601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_11
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 588
+        width: 43
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46f0f44627678fe20800000000000000
+      internalID: 3384585353650179940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_12
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 591
+        width: 46
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bc7c2d6af540cc60800000000000000
+      internalID: 7836340293500435636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_13
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 600
+        width: 46
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02a558633be990ce0800000000000000
+      internalID: -1438444113417119200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_14
+      rect:
+        serializedVersion: 2
+        x: 808
+        y: 598
+        width: 48
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43ce280fed38a6f30800000000000000
+      internalID: 4569609765461879860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_15
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 601
+        width: 49
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73b80184da194c960800000000000000
+      internalID: 7621376642842135351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_16
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 597
+        width: 52
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f82a94cb481bb0c20800000000000000
+      internalID: 3173825546065388175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_17
+      rect:
+        serializedVersion: 2
+        x: 1013
+        y: 599
+        width: 51
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84cb55778a83029b0800000000000000
+      internalID: -5107019681230373816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 500
+        width: 27
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 991cd2ac358b20fb0800000000000000
+      internalID: -4682977992498101863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_19
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 497
+        width: 24
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 135330b41ff6fef20800000000000000
+      internalID: 3454102521352762673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_20
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 498
+        width: 23
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17d77dba5b29ea490800000000000000
+      internalID: -7733082201178800783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_21
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 498
+        width: 24
+        height: 59
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d375319a50460a60800000000000000
+      internalID: 7639864575608058841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_22
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 496
+        width: 26
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bba44a83805eda80800000000000000
+      internalID: -8440220125755036749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_23
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 495
+        width: 27
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa2041d5992cdcd70800000000000000
+      internalID: 9065115588914053802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_24
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 489
+        width: 65
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e11f77f0973e5ff0800000000000000
+      internalID: -45537850460007961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_25
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 489
+        width: 65
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 855bf160a8f41f070800000000000000
+      internalID: 8138373455862019416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_26
+      rect:
+        serializedVersion: 2
+        x: 521
+        y: 489
+        width: 66
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68ed7dc2abd3ab280800000000000000
+      internalID: -9026834633285181818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_27
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 487
+        width: 63
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd025252fd29ec7e0800000000000000
+      internalID: -1743294518647250721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_28
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 486
+        width: 35
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bed4ad536a911080800000000000000
+      internalID: -9218417210687168841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_29
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 483
+        width: 39
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ba4540f671381ae0800000000000000
+      internalID: -1578457282486383946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_30
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 480
+        width: 42
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eab0a1cf71488af70800000000000000
+      internalID: 9198747477452917678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_31
+      rect:
+        serializedVersion: 2
+        x: 868
+        y: 479
+        width: 39
+        height: 87
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77e3bdc6728d1fef0800000000000000
+      internalID: -76042054846955913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_32
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 478
+        width: 41
+        height: 87
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfca9ec40ace73700800000000000000
+      internalID: 520144455213886715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_33
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 479
+        width: 40
+        height: 89
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37101dc0e57f82980800000000000000
+      internalID: -8563322708130987661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_34
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 387
+        width: 35
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b498f312729f0d410800000000000000
+      internalID: 1499972622371227979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_35
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 387
+        width: 35
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44f414623cb80ea20800000000000000
+      internalID: 3089623014652858180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_36
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 387
+        width: 34
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83ff33fc9d3684ba0800000000000000
+      internalID: -6104519507765362888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_37
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 387
+        width: 34
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 653cfc86702ffb7b0800000000000000
+      internalID: -5206176530579864746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_38
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 387
+        width: 34
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 803945db584c70450800000000000000
+      internalID: 6055024302709052168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_39
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 387
+        width: 48
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff5472699286de3a0800000000000000
+      internalID: -6634532148224768513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_40
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 387
+        width: 45
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d6bc696cf9633030800000000000000
+      internalID: 3473236270454191828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_41
+      rect:
+        serializedVersion: 2
+        x: 455
+        y: 387
+        width: 44
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9b6cead4eb9e9b10800000000000000
+      internalID: 1990199492572113822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_42
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 387
+        width: 45
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b17d2a8aab14cb30800000000000000
+      internalID: 4306597562949661107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_43
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 387
+        width: 65
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 242e3ceb38b41f0a0800000000000000
+      internalID: -6849610529040506302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_44
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 387
+        width: 72
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a62448eb615b3d0f0800000000000000
+      internalID: -1093331175230651798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_45
+      rect:
+        serializedVersion: 2
+        x: 737
+        y: 388
+        width: 74
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df727e60fffa6f3f0800000000000000
+      internalID: -867312368354908163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_46
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 389
+        width: 61
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a66bd3c181c6fb7e0800000000000000
+      internalID: -1747559279587641750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_47
+      rect:
+        serializedVersion: 2
+        x: 914
+        y: 388
+        width: 147
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d76edc9a4f465fd0800000000000000
+      internalID: -2353606573376510000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_48
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 291
+        width: 39
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13893826ed6fc47c0800000000000000
+      internalID: -4085619326935918543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_49
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 291
+        width: 49
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16fdb6de9203f5310800000000000000
+      internalID: 1395887366143205217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_50
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 291
+        width: 50
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0fbb7995d6e8d210800000000000000
+      internalID: 1358089092729650955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_51
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 290
+        width: 68
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bca79c5a05e970c90800000000000000
+      internalID: -7203615009739801909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_52
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 201
+        width: 53
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38640c5e36928c570800000000000000
+      internalID: 8487079006812784259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_53
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 201
+        width: 51
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7729e4a671266d10800000000000000
+      internalID: 2118417468180998011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_54
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 201
+        width: 52
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e7a9183b443ead10800000000000000
+      internalID: 2138704370715961317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_55
+      rect:
+        serializedVersion: 2
+        x: 249
+        y: 201
+        width: 54
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e808738cddfbbe200800000000000000
+      internalID: 210472766870618254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_56
+      rect:
+        serializedVersion: 2
+        x: 357
+        y: 201
+        width: 65
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96545aa930d93aeb0800000000000000
+      internalID: -4709748146494421655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_57
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 200
+        width: 69
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d602d3019a508ee0800000000000000
+      internalID: -1260908316782885165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_58
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 200
+        width: 62
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 249f488f332d67a90800000000000000
+      internalID: -7316429423962162878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_59
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 200
+        width: 65
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 840b9a43143934750800000000000000
+      internalID: 6288031413005037640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_60
+      rect:
+        serializedVersion: 2
+        x: 714
+        y: 200
+        width: 65
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ff41a9ea52e1afa0800000000000000
+      internalID: -5791098765727150092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_61
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 201
+        width: 65
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d76bea7a18ca34e0800000000000000
+      internalID: -2001067068355811375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_62
+      rect:
+        serializedVersion: 2
+        x: 878
+        y: 199
+        width: 72
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d639c9749b1e2a950800000000000000
+      internalID: 6458973001489355629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_63
+      rect:
+        serializedVersion: 2
+        x: 963
+        y: 200
+        width: 72
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c97591f0cd64566a0800000000000000
+      internalID: -6456676579805669476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_64
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 27
+        width: 145
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a99b31f64d80f2f0800000000000000
+      internalID: -941096986285991515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_65
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 27
+        width: 127
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ee2c8082252bc130800000000000000
+      internalID: 3588002358246518497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_66
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 27
+        width: 154
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12b593f313fad68a0800000000000000
+      internalID: -6310194876827215071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_67
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 27
+        width: 164
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8257c5101c77c8b90800000000000000
+      internalID: -7238278830255999704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_68
+      rect:
+        serializedVersion: 2
+        x: 668
+        y: 24
+        width: 142
+        height: 134
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 142ddb6c193632430800000000000000
+      internalID: 3756955991912862273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_69
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 101
+        width: 39
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be307dbed79673270800000000000000
+      internalID: 8230162833591436267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_70
+      rect:
+        serializedVersion: 2
+        x: 908
+        y: 102
+        width: 53
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ee7f23526e28f480800000000000000
+      internalID: -8865284866641527069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_71
+      rect:
+        serializedVersion: 2
+        x: 991
+        y: 99
+        width: 61
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7239ca267d99c7d80800000000000000
+      internalID: -8251551266897095897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_72
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 35
+        width: 48
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52b8c0181e200dac0800000000000000
+      internalID: -3832560115336312027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_73
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 36
+        width: 46
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d66ffde4aa02657f0800000000000000
+      internalID: -624275582504405395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_74
+      rect:
+        serializedVersion: 2
+        x: 967
+        y: 32
+        width: 34
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 324fabbd26a3aa140800000000000000
+      internalID: 4731658554773795875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AI ART_75
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 31
+        width: 19
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d2071df1d62e6ef0800000000000000
+      internalID: -113110257301519662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 02cba70927a1b3048845d097ab321073
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      AI ART_0: 2894033540160754901
+      AI ART_1: -8183321563476857625
+      AI ART_10: -4773568269529645601
+      AI ART_11: 3384585353650179940
+      AI ART_12: 7836340293500435636
+      AI ART_13: -1438444113417119200
+      AI ART_14: 4569609765461879860
+      AI ART_15: 7621376642842135351
+      AI ART_16: 3173825546065388175
+      AI ART_17: -5107019681230373816
+      AI ART_18: -4682977992498101863
+      AI ART_19: 3454102521352762673
+      AI ART_2: -1027988716750967629
+      AI ART_20: -7733082201178800783
+      AI ART_21: 7639864575608058841
+      AI ART_22: -8440220125755036749
+      AI ART_23: 9065115588914053802
+      AI ART_24: -45537850460007961
+      AI ART_25: 8138373455862019416
+      AI ART_26: -9026834633285181818
+      AI ART_27: -1743294518647250721
+      AI ART_28: -9218417210687168841
+      AI ART_29: -1578457282486383946
+      AI ART_3: 4319632133094189366
+      AI ART_30: 9198747477452917678
+      AI ART_31: -76042054846955913
+      AI ART_32: 520144455213886715
+      AI ART_33: -8563322708130987661
+      AI ART_34: 1499972622371227979
+      AI ART_35: 3089623014652858180
+      AI ART_36: -6104519507765362888
+      AI ART_37: -5206176530579864746
+      AI ART_38: 6055024302709052168
+      AI ART_39: -6634532148224768513
+      AI ART_4: 1913723129809296526
+      AI ART_40: 3473236270454191828
+      AI ART_41: 1990199492572113822
+      AI ART_42: 4306597562949661107
+      AI ART_43: -6849610529040506302
+      AI ART_44: -1093331175230651798
+      AI ART_45: -867312368354908163
+      AI ART_46: -1747559279587641750
+      AI ART_47: -2353606573376510000
+      AI ART_48: -4085619326935918543
+      AI ART_49: 1395887366143205217
+      AI ART_5: -6523840711257786222
+      AI ART_50: 1358089092729650955
+      AI ART_51: -7203615009739801909
+      AI ART_52: 8487079006812784259
+      AI ART_53: 2118417468180998011
+      AI ART_54: 2138704370715961317
+      AI ART_55: 210472766870618254
+      AI ART_56: -4709748146494421655
+      AI ART_57: -1260908316782885165
+      AI ART_58: -7316429423962162878
+      AI ART_59: 6288031413005037640
+      AI ART_6: 782140663315220916
+      AI ART_60: -5791098765727150092
+      AI ART_61: -2001067068355811375
+      AI ART_62: 6458973001489355629
+      AI ART_63: -6456676579805669476
+      AI ART_64: -941096986285991515
+      AI ART_65: 3588002358246518497
+      AI ART_66: -6310194876827215071
+      AI ART_67: -7238278830255999704
+      AI ART_68: 3756955991912862273
+      AI ART_69: 8230162833591436267
+      AI ART_7: -5770415445459722918
+      AI ART_70: -8865284866641527069
+      AI ART_71: -8251551266897095897
+      AI ART_72: -3832560115336312027
+      AI ART_73: -624275582504405395
+      AI ART_74: 4731658554773795875
+      AI ART_75: -113110257301519662
+      AI ART_8: 2628671735839051634
+      AI ART_9: -703669965012173701
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

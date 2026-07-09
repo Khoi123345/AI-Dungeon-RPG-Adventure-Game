@@ -1,0 +1,1313 @@
+fileFormatVersion: 2
+guid: 719c9514591248f41959b9f7c7d10cf2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7835467539701571412
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_0
+  - first:
+      213: -5381484653364802162
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_1
+  - first:
+      213: 6934310116720115284
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_2
+  - first:
+      213: 8386488767760342541
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_3
+  - first:
+      213: 7469335175246579020
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_4
+  - first:
+      213: -2977693242538433540
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_5
+  - first:
+      213: 519000303836945118
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_6
+  - first:
+      213: 4597781348309540368
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_7
+  - first:
+      213: 5066770517057213327
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_8
+  - first:
+      213: 3718094749839011664
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_9
+  - first:
+      213: 5198095303724251891
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_10
+  - first:
+      213: 6526246790327839454
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_11
+  - first:
+      213: 3456030238207042080
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_12
+  - first:
+      213: 5090315447907905606
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_13
+  - first:
+      213: 1011756241471841560
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_14
+  - first:
+      213: -7063953213991140512
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_15
+  - first:
+      213: 4367209684025803636
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_16
+  - first:
+      213: -6022428594244436482
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_17
+  - first:
+      213: -7967049025076141317
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_18
+  - first:
+      213: -5983028842244638855
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_19
+  - first:
+      213: -3154109561470569628
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_20
+  - first:
+      213: -6805139712078452045
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_21
+  - first:
+      213: -6515644774251706341
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_22
+  - first:
+      213: 152815121842372566
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_23
+  - first:
+      213: 541198730333583290
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_24
+  - first:
+      213: 3279631154291371133
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_25
+  - first:
+      213: -7560962913505872494
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_26
+  - first:
+      213: -7852968208344084707
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_27
+  - first:
+      213: 3138692790474138512
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_28
+  - first:
+      213: -1184631087629175870
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_29
+  - first:
+      213: 1811242506788884895
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_30
+  - first:
+      213: -813038532740333876
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_31
+  - first:
+      213: -842930176442964012
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_32
+  - first:
+      213: 2806018217811608997
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_33
+  - first:
+      213: 7071927444022033457
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_34
+  - first:
+      213: 4943196893567395408
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_35
+  - first:
+      213: 6138157393673526618
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_36
+  - first:
+      213: 2537129039302398188
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_37
+  - first:
+      213: -6013783540643293330
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_38
+  - first:
+      213: 3181464616540872040
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_39
+  - first:
+      213: 6752870386220071581
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_40
+  - first:
+      213: 1873515534564544329
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_41
+  - first:
+      213: -8143003573594988025
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_42
+  - first:
+      213: -1676018152033285058
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_43
+  - first:
+      213: 1046346104670796689
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_44
+  - first:
+      213: -3932759861905130829
+    second: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_45
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 598
+        width: 165
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45f1409963c2dbc60800000000000000
+      internalID: 7835467539701571412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_1
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 597
+        width: 127
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8d89f758302155b0800000000000000
+      internalID: -5381484653364802162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_2
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 598
+        width: 126
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45eff75cf4e9b3060800000000000000
+      internalID: 6934310116720115284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_3
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 608
+        width: 119
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0e982bc91bc26470800000000000000
+      internalID: 8386488767760342541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_4
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 606
+        width: 120
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4507e484c868a760800000000000000
+      internalID: 7469335175246579020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_5
+      rect:
+        serializedVersion: 2
+        x: 744
+        y: 479
+        width: 29
+        height: 138
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf36a6cb5cb1da6d0800000000000000
+      internalID: -2977693242538433540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_6
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 607
+        width: 114
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eda558cc60cd33700800000000000000
+      internalID: 519000303836945118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_7
+      rect:
+        serializedVersion: 2
+        x: 914
+        y: 603
+        width: 116
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01e18e4b6c99ecf30800000000000000
+      internalID: 4597781348309540368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_8
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 475
+        width: 58
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f831e9bb0f8c05640800000000000000
+      internalID: 5066770517057213327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_9
+      rect:
+        serializedVersion: 2
+        x: 1126
+        y: 478
+        width: 102
+        height: 248
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05f2665c973599330800000000000000
+      internalID: 3718094749839011664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_10
+      rect:
+        serializedVersion: 2
+        x: 1221
+        y: 524
+        width: 123
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fa3c175328532840800000000000000
+      internalID: 5198095303724251891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_11
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 470
+        width: 118
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eda2606d0e2e19a50800000000000000
+      internalID: 6526246790327839454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_12
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 476
+        width: 117
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 022e659d03946ff20800000000000000
+      internalID: 3456030238207042080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_13
+      rect:
+        serializedVersion: 2
+        x: 335
+        y: 475
+        width: 107
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 640fb332eee64a640800000000000000
+      internalID: 5090315447907905606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_14
+      rect:
+        serializedVersion: 2
+        x: 466
+        y: 476
+        width: 110
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 815a63ce0fa7a0e00800000000000000
+      internalID: 1011756241471841560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_15
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 478
+        width: 115
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06344127afbc7fd90800000000000000
+      internalID: -7063953213991140512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_16
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 475
+        width: 114
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4730104b1127b9c30800000000000000
+      internalID: 4367209684025803636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_17
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 482
+        width: 112
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efdb7ea0a190c6ca0800000000000000
+      internalID: -6022428594244436482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_18
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 330
+        width: 103
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf2e6387f1b5f6190800000000000000
+      internalID: -7967049025076141317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_19
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 331
+        width: 93
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9777719a7f208fca0800000000000000
+      internalID: -5983028842244638855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_20
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 325
+        width: 117
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46332e5a01a5a34d0800000000000000
+      internalID: -3154109561470569628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_21
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 374
+        width: 50
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bae8aeac794f81a0800000000000000
+      internalID: -6805139712078452045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_22
+      rect:
+        serializedVersion: 2
+        x: 495
+        y: 282
+        width: 161
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b18c8146997c395a0800000000000000
+      internalID: -6515644774251706341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_23
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 292
+        width: 158
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dff8bd2b88ee1200800000000000000
+      internalID: 152815121842372566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_24
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 372
+        width: 47
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab7fc6ab069b28700800000000000000
+      internalID: 541198730333583290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_25
+      rect:
+        serializedVersion: 2
+        x: 881
+        y: 196
+        width: 69
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7c67d99827938d20800000000000000
+      internalID: 3279631154291371133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_26
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 195
+        width: 60
+        height: 243
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29574943a40121790800000000000000
+      internalID: -7560962913505872494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_27
+      rect:
+        serializedVersion: 2
+        x: 1037
+        y: 195
+        width: 73
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1f07357507a40390800000000000000
+      internalID: -7852968208344084707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_28
+      rect:
+        serializedVersion: 2
+        x: 1116
+        y: 195
+        width: 93
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0936a43a670ee8b20800000000000000
+      internalID: 3138692790474138512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_29
+      rect:
+        serializedVersion: 2
+        x: 1226
+        y: 319
+        width: 92
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c37aff5d485f8fe0800000000000000
+      internalID: -1184631087629175870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_30
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 198
+        width: 104
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f915d3ba673d22910800000000000000
+      internalID: 1811242506788884895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_31
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 199
+        width: 88
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccebe4b13c187b4f0800000000000000
+      internalID: -813038532740333876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_32
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 204
+        width: 73
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d7e8a6787f4d44f0800000000000000
+      internalID: -842930176442964012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_33
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 201
+        width: 187
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a58fe1c3baf0f620800000000000000
+      internalID: 2806018217811608997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_34
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 198
+        width: 179
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13cf44aaa88842260800000000000000
+      internalID: 7071927444022033457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_35
+      rect:
+        serializedVersion: 2
+        x: 1222
+        y: 197
+        width: 93
+        height: 115
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05626ef6263c99440800000000000000
+      internalID: 4943196893567395408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 144
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5d1951d0ad1f2550800000000000000
+      internalID: 6138157393673526618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_37
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 49
+        width: 115
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce092f04b61b53320800000000000000
+      internalID: 2537129039302398188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_38
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 51
+        width: 116
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e679ddf6bbfba8ca0800000000000000
+      internalID: -6013783540643293330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_39
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 50
+        width: 111
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86d946e6635d62c20800000000000000
+      internalID: 3181464616540872040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_40
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 48
+        width: 107
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9af6e886d307bd50800000000000000
+      internalID: 6752870386220071581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_41
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 48
+        width: 115
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94f45eec370100a10800000000000000
+      internalID: 1873515534564544329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_42
+      rect:
+        serializedVersion: 2
+        x: 749
+        y: 50
+        width: 111
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 702622fa46d3efe80800000000000000
+      internalID: -8143003573594988025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_43
+      rect:
+        serializedVersion: 2
+        x: 869
+        y: 49
+        width: 115
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3c03f2ee569db8e0800000000000000
+      internalID: -1676018152033285058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_44
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 49
+        width: 185
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19b34090d3e558e00800000000000000
+      internalID: 1046346104670796689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_45
+      rect:
+        serializedVersion: 2
+        x: 1212
+        y: 79
+        width: 103
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bafa340eb70c69c0800000000000000
+      internalID: -3932759861905130829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_0: 7835467539701571412
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_1: -5381484653364802162
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_10: 5198095303724251891
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_11: 6526246790327839454
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_12: 3456030238207042080
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_13: 5090315447907905606
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_14: 1011756241471841560
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_15: -7063953213991140512
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_16: 4367209684025803636
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_17: -6022428594244436482
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_18: -7967049025076141317
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_19: -5983028842244638855
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_2: 6934310116720115284
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_20: -3154109561470569628
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_21: -6805139712078452045
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_22: -6515644774251706341
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_23: 152815121842372566
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_24: 541198730333583290
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_25: 3279631154291371133
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_26: -7560962913505872494
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_27: -7852968208344084707
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_28: 3138692790474138512
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_29: -1184631087629175870
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_3: 8386488767760342541
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_30: 1811242506788884895
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_31: -813038532740333876
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_32: -842930176442964012
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_33: 2806018217811608997
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_34: 7071927444022033457
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_35: 4943196893567395408
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_36: 6138157393673526618
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_37: 2537129039302398188
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_38: -6013783540643293330
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_39: 3181464616540872040
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_4: 7469335175246579020
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_40: 6752870386220071581
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_41: 1873515534564544329
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_42: -8143003573594988025
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_43: -1676018152033285058
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_44: 1046346104670796689
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_45: -3932759861905130829
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_5: -2977693242538433540
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_6: 519000303836945118
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_7: 4597781348309540368
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_8: 5066770517057213327
+      lucid-origin_A_2D_32-bit_pixel_art_game_asset_sprite_sheet_featuring_a_diverse_assortment_of_-010-Photoroom_9: 3718094749839011664
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

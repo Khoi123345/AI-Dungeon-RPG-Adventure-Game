@@ -189,9 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &5858542
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -270,9 +268,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &17325219
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -430,7 +426,6 @@ GameObject:
   - component: {fileID: 108778362}
   - component: {fileID: 108778361}
   - component: {fileID: 108778364}
-  - component: {fileID: 108778365}
   m_Layer: 5
   m_Name: Slots (14)
   m_TagString: Untagged
@@ -553,24 +548,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &108778365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 108778359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &146422350
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,9 +628,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &146422353
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -688,7 +673,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -729.79, y: -296.43002}
+  m_AnchoredPosition: {x: -729.79, y: -280.7615}
   m_SizeDelta: {x: 344.62, y: 134.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &175934319
@@ -767,8 +752,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 3304147286915949197, guid: 44c4950b95c410144a0c024dd652ddda, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -798,7 +783,6 @@ GameObject:
   - component: {fileID: 190421122}
   - component: {fileID: 190421121}
   - component: {fileID: 190421124}
-  - component: {fileID: 190421125}
   m_Layer: 5
   m_Name: Slots (28)
   m_TagString: Untagged
@@ -921,24 +905,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &190421125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 190421119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &191371907
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,7 +951,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -729.79, y: -162.17001}
+  m_AnchoredPosition: {x: -729.79, y: -146.5015}
   m_SizeDelta: {x: 344.62, y: 134.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &191371909
@@ -1054,8 +1030,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 3304147286915949197, guid: 44c4950b95c410144a0c024dd652ddda, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1110,7 +1086,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -711, y: 5.550003}
+  m_AnchoredPosition: {x: -710.99994, y: 5.550003}
   m_SizeDelta: {x: -1542.24, y: -51.66}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &209292289
@@ -1221,9 +1197,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &220447871
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1245,7 +1219,6 @@ GameObject:
   - component: {fileID: 240466228}
   - component: {fileID: 240466227}
   - component: {fileID: 240466230}
-  - component: {fileID: 240466231}
   m_Layer: 5
   m_Name: Slots (1)
   m_TagString: Untagged
@@ -1368,24 +1341,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &240466231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 240466225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &253162869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,7 +1364,6 @@ GameObject:
   - component: {fileID: 253162872}
   - component: {fileID: 253162871}
   - component: {fileID: 253162874}
-  - component: {fileID: 253162875}
   m_Layer: 5
   m_Name: Slots (11)
   m_TagString: Untagged
@@ -1522,24 +1486,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &253162875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 253162869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &275596619
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,9 +1566,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &275596622
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1691,9 +1645,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &278452017
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1772,9 +1724,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &285124733
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1933,7 +1883,6 @@ GameObject:
   - component: {fileID: 316612357}
   - component: {fileID: 316612356}
   - component: {fileID: 316612359}
-  - component: {fileID: 316612360}
   m_Layer: 5
   m_Name: Slots (26)
   m_TagString: Untagged
@@ -2056,24 +2005,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &316612360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 316612354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &328565569
 GameObject:
   m_ObjectHideFlags: 0
@@ -2087,7 +2028,6 @@ GameObject:
   - component: {fileID: 328565572}
   - component: {fileID: 328565571}
   - component: {fileID: 328565574}
-  - component: {fileID: 328565575}
   m_Layer: 5
   m_Name: Slots (10)
   m_TagString: Untagged
@@ -2210,24 +2150,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &328565575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328565569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &363742816
 GameObject:
   m_ObjectHideFlags: 0
@@ -2322,7 +2254,6 @@ GameObject:
   - component: {fileID: 365732182}
   - component: {fileID: 365732181}
   - component: {fileID: 365732184}
-  - component: {fileID: 365732185}
   m_Layer: 5
   m_Name: Slots (29)
   m_TagString: Untagged
@@ -2445,24 +2376,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &365732185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365732179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &371563198
 GameObject:
   m_ObjectHideFlags: 0
@@ -2533,9 +2456,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &371563201
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2689,9 +2610,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &386297994
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2713,7 +2632,6 @@ GameObject:
   - component: {fileID: 394186556}
   - component: {fileID: 394186555}
   - component: {fileID: 394186558}
-  - component: {fileID: 394186559}
   m_Layer: 5
   m_Name: Slots (16)
   m_TagString: Untagged
@@ -2836,24 +2754,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &394186559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 394186553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &429979748
 GameObject:
   m_ObjectHideFlags: 0
@@ -2867,7 +2777,6 @@ GameObject:
   - component: {fileID: 429979751}
   - component: {fileID: 429979750}
   - component: {fileID: 429979753}
-  - component: {fileID: 429979754}
   m_Layer: 5
   m_Name: Slots (35)
   m_TagString: Untagged
@@ -2990,24 +2899,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &429979754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 429979748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &434751516
 GameObject:
   m_ObjectHideFlags: 0
@@ -3216,7 +3117,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 184, y: -64.92098}
+  m_AnchoredPosition: {x: 184, y: -64.92087}
   m_SizeDelta: {x: -437.02, y: -129.85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &448775270
@@ -3447,7 +3348,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -38}
+  m_AnchoredPosition: {x: 0, y: -18.302574}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &474299074
@@ -3552,7 +3453,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Close
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3855,7 +3756,6 @@ GameObject:
   - component: {fileID: 515358399}
   - component: {fileID: 515358398}
   - component: {fileID: 515358401}
-  - component: {fileID: 515358402}
   m_Layer: 5
   m_Name: Slots (27)
   m_TagString: Untagged
@@ -3978,24 +3878,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &515358402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 515358396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4169,7 +4061,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -729.79, y: -27.909996}
+  m_AnchoredPosition: {x: -729.79, y: -12.241478}
   m_SizeDelta: {x: 344.62, y: 134.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &537459613
@@ -4248,8 +4140,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 3304147286915949197, guid: 44c4950b95c410144a0c024dd652ddda, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4336,9 +4228,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &549141261
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4501,9 +4391,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &646351960
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4582,9 +4470,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &648553079
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4606,7 +4492,6 @@ GameObject:
   - component: {fileID: 664950112}
   - component: {fileID: 664950111}
   - component: {fileID: 664950114}
-  - component: {fileID: 664950115}
   m_Layer: 5
   m_Name: Slots (12)
   m_TagString: Untagged
@@ -4729,24 +4614,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &664950115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 664950109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &672998677
 GameObject:
   m_ObjectHideFlags: 0
@@ -4760,7 +4637,6 @@ GameObject:
   - component: {fileID: 672998680}
   - component: {fileID: 672998679}
   - component: {fileID: 672998682}
-  - component: {fileID: 672998683}
   m_Layer: 5
   m_Name: Slots (9)
   m_TagString: Untagged
@@ -4883,24 +4759,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &672998683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 672998677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &678941167
 GameObject:
   m_ObjectHideFlags: 0
@@ -4971,9 +4839,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &678941170
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5093,7 +4959,6 @@ GameObject:
   - component: {fileID: 708065259}
   - component: {fileID: 708065258}
   - component: {fileID: 708065261}
-  - component: {fileID: 708065262}
   m_Layer: 5
   m_Name: Slots (30)
   m_TagString: Untagged
@@ -5216,24 +5081,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &708065262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708065256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &720474247
 GameObject:
   m_ObjectHideFlags: 0
@@ -5379,9 +5236,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &750546132
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5493,7 +5348,6 @@ GameObject:
   - component: {fileID: 815909583}
   - component: {fileID: 815909582}
   - component: {fileID: 815909585}
-  - component: {fileID: 815909586}
   m_Layer: 5
   m_Name: Slots (20)
   m_TagString: Untagged
@@ -5616,24 +5470,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &815909586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815909580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &842768437
 GameObject:
   m_ObjectHideFlags: 0
@@ -5704,9 +5550,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &842768440
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5922,9 +5766,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &924443042
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6204,7 +6046,6 @@ GameObject:
   - component: {fileID: 973713595}
   - component: {fileID: 973713594}
   - component: {fileID: 973713597}
-  - component: {fileID: 973713598}
   m_Layer: 5
   m_Name: Slots (15)
   m_TagString: Untagged
@@ -6327,24 +6168,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &973713598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973713592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &980505884
 GameObject:
   m_ObjectHideFlags: 0
@@ -6358,7 +6191,6 @@ GameObject:
   - component: {fileID: 980505887}
   - component: {fileID: 980505886}
   - component: {fileID: 980505889}
-  - component: {fileID: 980505890}
   m_Layer: 5
   m_Name: Slots (4)
   m_TagString: Untagged
@@ -6481,24 +6313,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &980505890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 980505884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &985875942
 GameObject:
   m_ObjectHideFlags: 0
@@ -6569,9 +6393,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &985875945
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6593,7 +6415,6 @@ GameObject:
   - component: {fileID: 1021744164}
   - component: {fileID: 1021744163}
   - component: {fileID: 1021744166}
-  - component: {fileID: 1021744167}
   m_Layer: 5
   m_Name: Slots (5)
   m_TagString: Untagged
@@ -6716,24 +6537,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1021744167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021744161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1045916682
 GameObject:
   m_ObjectHideFlags: 0
@@ -6747,7 +6560,6 @@ GameObject:
   - component: {fileID: 1045916685}
   - component: {fileID: 1045916684}
   - component: {fileID: 1045916687}
-  - component: {fileID: 1045916688}
   m_Layer: 5
   m_Name: Slots (31)
   m_TagString: Untagged
@@ -6870,24 +6682,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1045916688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1045916682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1050764648
 GameObject:
   m_ObjectHideFlags: 0
@@ -7200,9 +7004,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1165794271
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7359,9 +7161,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1178236745
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7519,9 +7319,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1211726225
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7600,9 +7398,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1220718965
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7732,9 +7528,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1247946667
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7756,7 +7550,6 @@ GameObject:
   - component: {fileID: 1307845334}
   - component: {fileID: 1307845333}
   - component: {fileID: 1307845336}
-  - component: {fileID: 1307845337}
   m_Layer: 5
   m_Name: Slots (32)
   m_TagString: Untagged
@@ -7879,24 +7672,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1307845337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307845331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1321285325
 GameObject:
   m_ObjectHideFlags: 0
@@ -8046,9 +7831,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1329662435
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8248,9 +8031,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1426259904
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8272,7 +8053,6 @@ GameObject:
   - component: {fileID: 1429967501}
   - component: {fileID: 1429967500}
   - component: {fileID: 1429967503}
-  - component: {fileID: 1429967504}
   m_Layer: 5
   m_Name: Slots (25)
   m_TagString: Untagged
@@ -8395,24 +8175,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1429967504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1429967498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1435085037
 GameObject:
   m_ObjectHideFlags: 0
@@ -8426,7 +8198,6 @@ GameObject:
   - component: {fileID: 1435085040}
   - component: {fileID: 1435085039}
   - component: {fileID: 1435085042}
-  - component: {fileID: 1435085043}
   m_Layer: 5
   m_Name: Slots (22)
   m_TagString: Untagged
@@ -8549,24 +8320,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1435085043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1435085037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1442917447
 GameObject:
   m_ObjectHideFlags: 0
@@ -8580,7 +8343,6 @@ GameObject:
   - component: {fileID: 1442917450}
   - component: {fileID: 1442917449}
   - component: {fileID: 1442917452}
-  - component: {fileID: 1442917453}
   m_Layer: 5
   m_Name: Slots (18)
   m_TagString: Untagged
@@ -8703,24 +8465,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1442917453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442917447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1443919062
 GameObject:
   m_ObjectHideFlags: 0
@@ -8734,7 +8488,6 @@ GameObject:
   - component: {fileID: 1443919065}
   - component: {fileID: 1443919064}
   - component: {fileID: 1443919067}
-  - component: {fileID: 1443919068}
   m_Layer: 5
   m_Name: Slots (23)
   m_TagString: Untagged
@@ -8857,24 +8610,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1443919068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443919062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1446980543
 GameObject:
   m_ObjectHideFlags: 0
@@ -9082,9 +8827,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1483465702
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9106,7 +8849,6 @@ GameObject:
   - component: {fileID: 1486159054}
   - component: {fileID: 1486159053}
   - component: {fileID: 1486159056}
-  - component: {fileID: 1486159057}
   m_Layer: 5
   m_Name: Slots (6)
   m_TagString: Untagged
@@ -9229,24 +8971,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1486159057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1486159051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1494840829
 GameObject:
   m_ObjectHideFlags: 0
@@ -9422,7 +9156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -729.79, y: 106.35}
+  m_AnchoredPosition: {x: -729.7899, y: 122.01853}
   m_SizeDelta: {x: 344.62, y: 134.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1591339606
@@ -9501,8 +9235,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 3304147286915949197, guid: 44c4950b95c410144a0c024dd652ddda, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -9589,9 +9323,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1597375099
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9613,7 +9345,6 @@ GameObject:
   - component: {fileID: 1598335600}
   - component: {fileID: 1598335599}
   - component: {fileID: 1598335602}
-  - component: {fileID: 1598335603}
   m_Layer: 5
   m_Name: Slots (34)
   m_TagString: Untagged
@@ -9736,24 +9467,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1598335603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1598335597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1602444875
 GameObject:
   m_ObjectHideFlags: 0
@@ -9796,7 +9519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00048828125, y: -54.835022}
+  m_AnchoredPosition: {x: -0.00048828125, y: -54.83496}
   m_SizeDelta: {x: -115.8, y: -174.33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1602444877
@@ -10012,9 +9735,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1643477664
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10072,7 +9793,6 @@ GameObject:
   - component: {fileID: 1665148945}
   - component: {fileID: 1665148944}
   - component: {fileID: 1665148947}
-  - component: {fileID: 1665148948}
   m_Layer: 5
   m_Name: Slots (17)
   m_TagString: Untagged
@@ -10195,24 +9915,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1665148948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1665148942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1678565461
 GameObject:
   m_ObjectHideFlags: 0
@@ -10283,9 +9995,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1678565464
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10364,9 +10074,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1730011053
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10388,7 +10096,6 @@ GameObject:
   - component: {fileID: 1743925280}
   - component: {fileID: 1743925279}
   - component: {fileID: 1743925282}
-  - component: {fileID: 1743925283}
   m_Layer: 5
   m_Name: Slots (7)
   m_TagString: Untagged
@@ -10511,24 +10218,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1743925283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743925277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1744078434
 GameObject:
   m_ObjectHideFlags: 0
@@ -10644,8 +10343,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -8542653549661865833, guid: 37b5f3969d3f6ea4b81a930af6aacb2d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -10732,9 +10431,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1749580843
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10756,7 +10453,6 @@ GameObject:
   - component: {fileID: 1773841697}
   - component: {fileID: 1773841696}
   - component: {fileID: 1773841699}
-  - component: {fileID: 1773841700}
   m_Layer: 5
   m_Name: Slots (3)
   m_TagString: Untagged
@@ -10879,24 +10575,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1773841700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773841694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1845578774
 GameObject:
   m_ObjectHideFlags: 0
@@ -10967,9 +10655,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1845578777
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10991,7 +10677,6 @@ GameObject:
   - component: {fileID: 1848172129}
   - component: {fileID: 1848172128}
   - component: {fileID: 1848172131}
-  - component: {fileID: 1848172132}
   m_Layer: 5
   m_Name: Slots (33)
   m_TagString: Untagged
@@ -11114,24 +10799,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1848172132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848172126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1860856852
 GameObject:
   m_ObjectHideFlags: 0
@@ -11168,7 +10845,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -729.79, y: 240.61}
+  m_AnchoredPosition: {x: -729.7899, y: 256.27853}
   m_SizeDelta: {x: 344.62, y: 134.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1860856854
@@ -11247,8 +10924,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 3304147286915949197, guid: 44c4950b95c410144a0c024dd652ddda, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -11278,7 +10955,6 @@ GameObject:
   - component: {fileID: 1872769199}
   - component: {fileID: 1872769198}
   - component: {fileID: 1872769201}
-  - component: {fileID: 1872769202}
   m_Layer: 5
   m_Name: Slots (21)
   m_TagString: Untagged
@@ -11401,24 +11077,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1872769202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1872769196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1884650472
 GameObject:
   m_ObjectHideFlags: 0
@@ -11489,9 +11157,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1884650475
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11513,7 +11179,6 @@ GameObject:
   - component: {fileID: 1894843589}
   - component: {fileID: 1894843588}
   - component: {fileID: 1894843591}
-  - component: {fileID: 1894843592}
   m_Layer: 5
   m_Name: Slots (8)
   m_TagString: Untagged
@@ -11636,24 +11301,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1894843592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894843586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1904521944
 GameObject:
   m_ObjectHideFlags: 0
@@ -11987,9 +11644,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1916187870
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12032,7 +11687,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -429, y: 2.3300018}
+  m_AnchoredPosition: {x: -428.99994, y: 2.3300018}
   m_SizeDelta: {x: -1320.43, y: 44.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1930830818
@@ -12360,7 +12015,6 @@ GameObject:
   - component: {fileID: 1978333415}
   - component: {fileID: 1978333414}
   - component: {fileID: 1978333417}
-  - component: {fileID: 1978333418}
   m_Layer: 5
   m_Name: Slots
   m_TagString: Untagged
@@ -12482,25 +12136,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a28e195ba62869f43af2af69f7cd4e55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
-  hasItem: 1
+  hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1978333418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978333412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &1994035379
 GameObject:
   m_ObjectHideFlags: 0
@@ -12571,9 +12217,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &1994035382
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12595,7 +12239,6 @@ GameObject:
   - component: {fileID: 1995677772}
   - component: {fileID: 1995677771}
   - component: {fileID: 1995677774}
-  - component: {fileID: 1995677775}
   m_Layer: 5
   m_Name: Slots (13)
   m_TagString: Untagged
@@ -12718,24 +12361,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &1995677775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1995677769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &2023726303
 GameObject:
   m_ObjectHideFlags: 0
@@ -12886,7 +12521,6 @@ GameObject:
   - component: {fileID: 2026904611}
   - component: {fileID: 2026904610}
   - component: {fileID: 2026904613}
-  - component: {fileID: 2026904614}
   m_Layer: 5
   m_Name: Slots (2)
   m_TagString: Untagged
@@ -13009,24 +12643,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &2026904614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2026904608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &2047586758
 GameObject:
   m_ObjectHideFlags: 0
@@ -13169,8 +12795,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -20}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -108, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2070397300
 MonoBehaviour:
@@ -13229,7 +12855,6 @@ GameObject:
   - component: {fileID: 2102086253}
   - component: {fileID: 2102086252}
   - component: {fileID: 2102086255}
-  - component: {fileID: 2102086256}
   m_Layer: 5
   m_Name: Slots (24)
   m_TagString: Untagged
@@ -13352,24 +12977,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &2102086256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102086250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &2124817082
 GameObject:
   m_ObjectHideFlags: 0
@@ -13383,7 +13000,6 @@ GameObject:
   - component: {fileID: 2124817085}
   - component: {fileID: 2124817084}
   - component: {fileID: 2124817087}
-  - component: {fileID: 2124817088}
   m_Layer: 5
   m_Name: Slots (19)
   m_TagString: Untagged
@@ -13506,24 +13122,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
+  itemQuantity: 0
   itemData: {fileID: 0}
   itemTypeTest: 0
   itemIconImage: {fileID: 0}
---- !u!114 &2124817088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124817082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131a23e5b5c3cf946b17235d62fd60f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemSlot
-  itemName: "Ki\u1EBFm G\u1ED7"
-  hasItem: 1
-  menuPrefab: {fileID: 2629519304479759521, guid: d64dd4422e469704ba4e97ef332a6b27, type: 3}
+  backgroundImage: {fileID: 0}
+  txtQuantity: {fileID: 0}
+  colorCommon: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
+  colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
 --- !u!1 &2128231577
 GameObject:
   m_ObjectHideFlags: 0
@@ -13594,7 +13202,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
+  m_Text: '
 
 '
 --- !u!222 &2128231580
@@ -13642,7 +13250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00024414062, y: -155.87}
+  m_AnchoredPosition: {x: -0.00048828125, y: -155.86987}
   m_SizeDelta: {x: -115.8, y: -779.17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2130096958
@@ -13753,9 +13361,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Slot
-
-'
+  m_Text: 
 --- !u!222 &2140848565
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -7,5 +7,7 @@ namespace GameBackend.Core.Services.Interfaces
         Task<LoginResponse> LoginAsync(LoginRequest request);
         Task<LoginResponse> RegisterAsync(string username, string email, string password);
         Task<bool> ValidateTokenAsync(string token);
+        Task ConfirmSignUpAsync(string username, string confirmationCode);
+        Task<LoginResponse> RefreshTokenAsync(string refreshToken);
     }
 }

@@ -14,8 +14,16 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.300.2" />
     <PackageReference Include="AWSSDK.BedrockRuntime" Version="3.7.400.0" />
+    <!-- Plan B: AWS Cognito SDK -->
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.7.401.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <!-- Plan A: BCrypt password hashing (thay SHA256 thủ công) -->
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <!-- Plan A/B: JWT chuẩn (RS256/HS256 validation) -->
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.5.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
+
 
 </Project>
