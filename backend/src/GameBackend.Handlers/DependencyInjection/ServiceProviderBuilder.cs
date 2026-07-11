@@ -1,5 +1,9 @@
+using System;
+using System.IO;
 using Amazon.DynamoDBv2;
 using Amazon.CognitoIdentityProvider;
+using GameBackend.Core.AIStory.Services;
+using GameBackend.Core.AIStory.Services.Impl;
 using GameBackend.Core.Repositories;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Services;
@@ -45,9 +49,11 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<IBattleRepository, BattleRepository>();
                 services.AddSingleton<IStoryRepository, StoryRepository>();
                 services.AddSingleton<IInventoryRepository, InventoryRepository>();
-                services.AddSingleton<IItemRepository, InMemoryItemRepository>();
-                services.AddSingleton<ILocationRepository, InMemoryLocationRepository>();
-                services.AddSingleton<ILootRepository, InMemoryLootRepository>();
+                services.AddSingleton<IContentService>(sp =>
+                {
+                    var contentRoot = Environment.GetEnvironmentVariable("CONTENT_ROOT") ?? Path.Combine(Directory.GetCurrentDirectory(), "Content");
+                    return new ContentService(contentRoot);
+                });
 
                 // Utils
                 services.AddSingleton<JwtHelper>();

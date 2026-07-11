@@ -1,4 +1,4 @@
-using GameBackend.Core.Repositories.Interfaces;
+using GameBackend.Core.AIStory.Services;
 using GameShared.DTOs.Story;
 using Microsoft.Extensions.Logging;
 
@@ -6,14 +6,12 @@ namespace GameBackend.Core.Services.Validation
 {
     public sealed class BossValidator : IGameRuleSubValidator
     {
-        private readonly IBossRepository _bossRepository;
-        private readonly ILocationRepository _locationRepository;
+        private readonly IContentService _contentService;
         private readonly ILogger<BossValidator> _logger;
 
-        public BossValidator(IBossRepository bossRepository, ILocationRepository locationRepository, ILogger<BossValidator> logger)
+        public BossValidator(IContentService contentService, ILogger<BossValidator> logger)
         {
-            _bossRepository = bossRepository;
-            _locationRepository = locationRepository;
+            _contentService = contentService;
             _logger = logger;
         }
 
@@ -33,26 +31,23 @@ namespace GameBackend.Core.Services.Validation
                 return;
             }
 
-            var boss = await _bossRepository.GetByIdAsync(response.BossId);
-            if (boss == null)
+            if (!await _contentService.BossExistsAsync(response.BossId))
             {
-                _logger.LogInformation("Rejected battle trigger because boss {BossId} does not exist", response.BossId);
+                _logger.LogInformation("Rejected battle trigger because boss {BossId} does not exist in content", response.BossId);
                 ResetBossFields(response);
                 return;
             }
 
             var effectiveLocation = response.CurrentLocation ?? context.Session.currentLocation ?? context.Character.currentLocationId;
-            var canSpawn = await _locationRepository.CanSpawnBossAsync(boss.bossId, effectiveLocation ?? string.Empty);
-            if (!canSpawn)
+            if (!string.IsNullOrWhiteSpace(effectiveLocation) && !await _contentService.LocationExistsAsync(effectiveLocation))
             {
-                _logger.LogInformation("Rejected battle trigger because boss {BossId} cannot spawn at {Location}", boss.bossId, effectiveLocation);
+                _logger.LogInformation("Rejected battle trigger because boss {BossId} references invalid location {Location}", response.BossId, effectiveLocation);
                 ResetBossFields(response);
                 return;
             }
 
-            response.BossId = boss.bossId;
-            response.BossName = string.IsNullOrWhiteSpace(response.BossName) ? boss.name : response.BossName;
-            var suggestedLevel = response.BossLevel ?? (boss.level > 0 ? boss.level : 1);
+            response.BossName = string.IsNullOrWhiteSpace(response.BossName) ? response.BossId : response.BossName;
+            var suggestedLevel = response.BossLevel ?? 1;
             response.BossLevel = Math.Clamp(suggestedLevel, 1, 200);
         }
 

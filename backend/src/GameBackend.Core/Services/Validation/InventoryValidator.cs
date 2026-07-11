@@ -1,4 +1,4 @@
-using GameBackend.Core.Repositories.Interfaces;
+using GameBackend.Core.AIStory.Services;
 using GameShared.DTOs.Story;
 using Microsoft.Extensions.Logging;
 
@@ -8,14 +8,12 @@ namespace GameBackend.Core.Services.Validation
     {
         private const int MaxQuantityDelta = 20;
 
-        private readonly IItemRepository _itemRepository;
-        private readonly ILootRepository _lootRepository;
+        private readonly IContentService _contentService;
         private readonly ILogger<InventoryValidator> _logger;
 
-        public InventoryValidator(IItemRepository itemRepository, ILootRepository lootRepository, ILogger<InventoryValidator> logger)
+        public InventoryValidator(IContentService contentService, ILogger<InventoryValidator> logger)
         {
-            _itemRepository = itemRepository;
-            _lootRepository = lootRepository;
+            _contentService = contentService;
             _logger = logger;
         }
 
@@ -37,22 +35,17 @@ namespace GameBackend.Core.Services.Validation
                     continue;
                 }
 
-                var exists = await _itemRepository.ExistsAsync(change.ItemId);
-                if (!exists)
+                if (!await _contentService.ItemExistsAsync(change.ItemId))
                 {
                     _logger.LogInformation("Rejected inventory change for unknown item {ItemId}", change.ItemId);
                     continue;
                 }
 
                 var clampedQuantity = Math.Clamp(change.QuantityDelta, -MaxQuantityDelta, MaxQuantityDelta);
-                if (clampedQuantity > 0)
+                if (clampedQuantity > 0 && !string.IsNullOrWhiteSpace(effectiveLocation) && !await _contentService.LocationExistsAsync(effectiveLocation))
                 {
-                    var canDrop = await _lootRepository.CanDropItemAtLocationAsync(change.ItemId, effectiveLocation ?? string.Empty);
-                    if (!canDrop)
-                    {
-                        _logger.LogInformation("Rejected inventory reward item {ItemId} at location {Location}", change.ItemId, effectiveLocation);
-                        continue;
-                    }
+                    _logger.LogInformation("Rejected inventory reward item {ItemId} for invalid location {Location}", change.ItemId, effectiveLocation);
+                    continue;
                 }
 
                 accepted.Add(new StoryAiInventoryChange

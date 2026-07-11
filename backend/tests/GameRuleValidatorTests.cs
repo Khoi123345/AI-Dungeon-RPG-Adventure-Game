@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameBackend.Core.Repositories.Interfaces;
+using GameBackend.Core.AIStory.Services;
 using GameBackend.Core.Services.Validation;
 using GameShared.DTOs.Story;
 using GameShared.Models;
@@ -13,14 +13,11 @@ public class GameRuleValidatorTests
     [Fact]
     public async Task ValidateAndSanitizeAsync_Should_Reject_Invalid_Boss_And_Invalid_Item()
     {
-        var validator = BuildValidator(
-            new FakeBossRepository(exists: false),
-            new FakeItemRepository(validItemIds: new[] { "ancient_key" }),
-            new FakeLocationRepository(validLocations: new[] { "dragon_cave", "ancient_cave_depths" }),
-            new FakeLootRepository(validDrops: new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["dragon_cave"] = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "ancient_key" }
-            }));
+        var validator = BuildValidator(new FakeContentService(
+            validBosses: Array.Empty<string>(),
+            validItems: new[] { "ancient_key" },
+            validLocations: new[] { "dragon_cave", "ancient_cave_depths" },
+            validQuests: Array.Empty<string>()));
 
         var session = CreateSession(location: "dragon_cave");
         var character = CreateCharacter(location: "dragon_cave");
@@ -49,11 +46,11 @@ public class GameRuleValidatorTests
     [Fact]
     public async Task ValidateAndSanitizeAsync_Should_Clamp_Character_Abuse_Deltas()
     {
-        var validator = BuildValidator(
-            new FakeBossRepository(exists: true),
-            new FakeItemRepository(validItemIds: Array.Empty<string>()),
-            new FakeLocationRepository(validLocations: new[] { "ancient_cave_depths" }),
-            new FakeLootRepository(validDrops: new Dictionary<string, HashSet<string>>()));
+        var validator = BuildValidator(new FakeContentService(
+            validBosses: new[] { "dragon_001" },
+            validItems: Array.Empty<string>(),
+            validLocations: new[] { "ancient_cave_depths" },
+            validQuests: Array.Empty<string>()));
 
         var session = CreateSession(location: "ancient_cave_depths");
         var character = CreateCharacter(location: "ancient_cave_depths");
@@ -81,17 +78,13 @@ public class GameRuleValidatorTests
         Assert.DoesNotContain("Dragon chết", sanitized.NarrativeText, StringComparison.OrdinalIgnoreCase);
     }
 
-    private static GameRuleValidator BuildValidator(
-        IBossRepository bossRepository,
-        IItemRepository itemRepository,
-        ILocationRepository locationRepository,
-        ILootRepository lootRepository)
+    private static GameRuleValidator BuildValidator(IContentService contentService)
     {
         var validators = new IGameRuleSubValidator[]
         {
-            new BossValidator(bossRepository, locationRepository, NullLogger<BossValidator>.Instance),
-            new InventoryValidator(itemRepository, lootRepository, NullLogger<InventoryValidator>.Instance),
-            new LocationValidator(locationRepository),
+            new BossValidator(contentService, NullLogger<BossValidator>.Instance),
+            new InventoryValidator(contentService, NullLogger<InventoryValidator>.Instance),
+            new LocationValidator(contentService, NullLogger<LocationValidator>.Instance),
             new QuestValidator(),
             new CharacterValidator(),
             new StoryValidator()
@@ -142,86 +135,34 @@ public class GameRuleValidatorTests
         };
     }
 
-    private sealed class FakeBossRepository : IBossRepository
+    private sealed class FakeContentService : IContentService
     {
-        private readonly bool _exists;
-
-        public FakeBossRepository(bool exists)
-        {
-            _exists = exists;
-        }
-
-        public Task<Boss?> GetByIdAsync(string bossId)
-        {
-            if (!_exists)
-            {
-                return Task.FromResult<Boss?>(null);
-            }
-
-            return Task.FromResult<Boss?>(new Boss
-            {
-                bossId = bossId,
-                name = "Boss",
-                level = 10,
-                baseHp = 100
-            });
-        }
-
-        public Task SaveAsync(Boss boss) => Task.CompletedTask;
-    }
-
-    private sealed class FakeItemRepository : IItemRepository
-    {
+        private readonly HashSet<string> _validBosses;
         private readonly HashSet<string> _validItems;
-
-        public FakeItemRepository(IEnumerable<string> validItemIds)
-        {
-            _validItems = new HashSet<string>(validItemIds, StringComparer.OrdinalIgnoreCase);
-        }
-
-        public Task<bool> ExistsAsync(string itemId)
-        {
-            return Task.FromResult(_validItems.Contains(itemId));
-        }
-    }
-
-    private sealed class FakeLocationRepository : ILocationRepository
-    {
         private readonly HashSet<string> _validLocations;
+        private readonly HashSet<string> _validQuests;
 
-        public FakeLocationRepository(IEnumerable<string> validLocations)
+        public FakeContentService(
+            IEnumerable<string> validBosses,
+            IEnumerable<string> validItems,
+            IEnumerable<string> validLocations,
+            IEnumerable<string> validQuests)
         {
+            _validBosses = new HashSet<string>(validBosses, StringComparer.OrdinalIgnoreCase);
+            _validItems = new HashSet<string>(validItems, StringComparer.OrdinalIgnoreCase);
             _validLocations = new HashSet<string>(validLocations, StringComparer.OrdinalIgnoreCase);
+            _validQuests = new HashSet<string>(validQuests, StringComparer.OrdinalIgnoreCase);
         }
 
-        public Task<bool> ExistsAsync(string locationId)
-        {
-            return Task.FromResult(_validLocations.Contains(locationId));
-        }
-
-        public Task<bool> CanSpawnBossAsync(string bossId, string locationId)
-        {
-            return Task.FromResult(_validLocations.Contains(locationId) && !string.Equals(bossId, "dragon_001", StringComparison.OrdinalIgnoreCase));
-        }
-    }
-
-    private sealed class FakeLootRepository : ILootRepository
-    {
-        private readonly Dictionary<string, HashSet<string>> _validDrops;
-
-        public FakeLootRepository(Dictionary<string, HashSet<string>> validDrops)
-        {
-            _validDrops = validDrops;
-        }
-
-        public Task<bool> CanDropItemAtLocationAsync(string itemId, string locationId)
-        {
-            if (!_validDrops.TryGetValue(locationId, out var allowed))
-            {
-                return Task.FromResult(false);
-            }
-
-            return Task.FromResult(allowed.Contains(itemId));
-        }
+        public Task<string> GetWorldAsync() => Task.FromResult("world");
+        public Task<string> GetChapterAsync(string chapterId) => Task.FromResult(chapterId);
+        public Task<string> GetLocationAsync(string locationId) => Task.FromResult(locationId);
+        public Task<string> GetBossAsync(string bossId) => Task.FromResult(bossId);
+        public Task<string> GetItemAsync(string itemId) => Task.FromResult(itemId);
+        public Task<string> GetQuestAsync(string questId) => Task.FromResult(questId);
+        public Task<bool> BossExistsAsync(string bossId) => Task.FromResult(_validBosses.Contains(bossId));
+        public Task<bool> ItemExistsAsync(string itemId) => Task.FromResult(_validItems.Contains(itemId));
+        public Task<bool> LocationExistsAsync(string locationId) => Task.FromResult(_validLocations.Contains(locationId));
+        public Task<bool> QuestExistsAsync(string questId) => Task.FromResult(_validQuests.Contains(questId));
     }
 }
