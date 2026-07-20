@@ -11,18 +11,20 @@ namespace GameBackend.Core.Repositories
 {
     public class StoryRepository : IStoryRepository
     {
-        private readonly Table _table;
+        private readonly Table _sessionTable;
+        private readonly Table _actionTable;
 
         public StoryRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.GameTableName);
+            _sessionTable = Table.LoadTable(dynamoDbClient, AppSettings.StorySessionsTableName);
+            _actionTable = Table.LoadTable(dynamoDbClient, AppSettings.StoryActionsTableName);
         }
 
         public async Task<StorySession?> GetSessionByIdAsync(string sessionId)
         {
             if (string.IsNullOrWhiteSpace(sessionId)) return null;
 
-            var doc = await _table.GetItemAsync($"SESSION#{sessionId}", "METADATA");
+            var doc = await _sessionTable.GetItemAsync(sessionId);
             return doc != null ? JsonUtils.Deserialize<StorySession>(doc.ToJson()) : null;
         }
 
@@ -30,20 +32,12 @@ namespace GameBackend.Core.Repositories
         {
             if (string.IsNullOrWhiteSpace(characterId)) return null;
 
-            var search = _table.Query(new QueryOperationConfig
-            {
-                IndexName = "GSI1",
-                Filter = new QueryFilter("GSI1PK", QueryOperator.Equal, $"CHAR#{characterId}")
-            });
+            var filter = new ScanFilter();
+            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
+            filter.AddCondition("status", ScanOperator.Equal, "Active");
+            var search = _sessionTable.Scan(filter);
             var docs = await search.GetNextSetAsync();
-            var sessions = docs
-                .Where(d => d.ContainsKey("SK") && d["SK"].AsString() == "METADATA")
-                .Select(d => JsonUtils.Deserialize<StorySession>(d.ToJson())!)
-                .Where(s => s != null && s.status == "Active")
-                .OrderByDescending(s => s.updatedAt)
-                .ToList();
-
-            return sessions.FirstOrDefault();
+            return docs.Count > 0 ? JsonUtils.Deserialize<StorySession>(docs[0].ToJson()) : null;
         }
 
         public async Task SaveSessionAsync(StorySession session)
@@ -51,12 +45,7 @@ namespace GameBackend.Core.Repositories
             if (session == null || string.IsNullOrWhiteSpace(session.sessionId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(session));
-            doc["PK"] = $"SESSION#{session.sessionId}";
-            doc["SK"] = "METADATA";
-            doc["GSI1PK"] = $"CHAR#{session.characterId}";
-            doc["GSI1SK"] = $"SESSION#{session.sessionId}";
-
-            await _table.PutItemAsync(doc);
+            await _sessionTable.PutItemAsync(doc);
         }
 
         public async Task SaveActionAsync(StoryAction action)
@@ -64,22 +53,16 @@ namespace GameBackend.Core.Repositories
             if (action == null || string.IsNullOrWhiteSpace(action.actionId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(action));
-            doc["PK"] = $"SESSION#{action.sessionId}";
-            doc["SK"] = $"ACTION#{action.actionId}";
-            doc["GSI1PK"] = $"SESSION#{action.sessionId}";
-            doc["GSI1SK"] = $"ACTION#{action.turnNumber:D6}";
-
-            await _table.PutItemAsync(doc);
+            await _actionTable.PutItemAsync(doc);
         }
 
         public async Task<List<StoryAction>> GetActionsBySessionIdAsync(string sessionId)
         {
             if (string.IsNullOrWhiteSpace(sessionId)) return new List<StoryAction>();
 
-            var filter = new QueryFilter("PK", QueryOperator.Equal, $"SESSION#{sessionId}");
-            filter.AddCondition("SK", QueryOperator.BeginsWith, "ACTION#");
-
-            var search = _table.Query(filter);
+            var filter = new ScanFilter();
+            filter.AddCondition("sessionId", ScanOperator.Equal, sessionId);
+            var search = _actionTable.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Select(d => JsonUtils.Deserialize<StoryAction>(d.ToJson())!).ToList();
         }

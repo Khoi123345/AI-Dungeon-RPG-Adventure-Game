@@ -9,18 +9,22 @@ namespace GameBackend.Core.Repositories
 {
     public class BattleRepository : IBattleRepository
     {
-        private readonly Table _table;
+        private readonly Table _encounterTable;
+        private readonly Table _battleTable;
+        private readonly Table _lootTable;
 
         public BattleRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.GameTableName);
+            _encounterTable = Table.LoadTable(dynamoDbClient, AppSettings.EncountersTableName);
+            _battleTable = Table.LoadTable(dynamoDbClient, AppSettings.BattlesTableName);
+            _lootTable = Table.LoadTable(dynamoDbClient, AppSettings.LootDropsTableName);
         }
 
         public async Task<BossEncounter?> GetEncounterByIdAsync(string encounterId)
         {
             if (string.IsNullOrWhiteSpace(encounterId)) return null;
 
-            var doc = await _table.GetItemAsync($"ENCOUNTER#{encounterId}", "METADATA");
+            var doc = await _encounterTable.GetItemAsync(encounterId);
             return doc != null ? JsonUtils.Deserialize<BossEncounter>(doc.ToJson()) : null;
         }
 
@@ -29,19 +33,14 @@ namespace GameBackend.Core.Repositories
             if (encounter == null || string.IsNullOrWhiteSpace(encounter.encounterId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(encounter));
-            doc["PK"] = $"ENCOUNTER#{encounter.encounterId}";
-            doc["SK"] = "METADATA";
-            doc["GSI1PK"] = $"CHAR#{encounter.characterId}";
-            doc["GSI1SK"] = $"ENCOUNTER#{encounter.encounterId}";
-
-            await _table.PutItemAsync(doc);
+            await _encounterTable.PutItemAsync(doc);
         }
 
         public async Task<Battle?> GetBattleByIdAsync(string battleId)
         {
             if (string.IsNullOrWhiteSpace(battleId)) return null;
 
-            var doc = await _table.GetItemAsync($"BATTLE#{battleId}", "METADATA");
+            var doc = await _battleTable.GetItemAsync(battleId);
             return doc != null ? JsonUtils.Deserialize<Battle>(doc.ToJson()) : null;
         }
 
@@ -50,10 +49,7 @@ namespace GameBackend.Core.Repositories
             if (battle == null || string.IsNullOrWhiteSpace(battle.battleId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(battle));
-            doc["PK"] = $"BATTLE#{battle.battleId}";
-            doc["SK"] = "METADATA";
-
-            await _table.PutItemAsync(doc);
+            await _battleTable.PutItemAsync(doc);
         }
 
         public async Task SaveLootDropAsync(LootDrop lootDrop)
@@ -61,10 +57,7 @@ namespace GameBackend.Core.Repositories
             if (lootDrop == null || string.IsNullOrWhiteSpace(lootDrop.lootId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(lootDrop));
-            doc["PK"] = $"LOOT#{lootDrop.lootId}";
-            doc["SK"] = "METADATA";
-
-            await _table.PutItemAsync(doc);
+            await _lootTable.PutItemAsync(doc);
         }
     }
 }

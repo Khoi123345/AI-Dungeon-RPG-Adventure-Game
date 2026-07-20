@@ -13,14 +13,14 @@ namespace GameBackend.Core.Repositories
 
         public BossRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.GameTableName);
+            _table = Table.LoadTable(dynamoDbClient, AppSettings.BossesTableName);
         }
 
         public async Task<Boss?> GetByIdAsync(string bossId)
         {
             if (string.IsNullOrWhiteSpace(bossId)) return null;
 
-            var doc = await _table.GetItemAsync($"BOSS#{bossId}", "METADATA");
+            var doc = await _table.GetItemAsync(bossId);
             return doc != null ? JsonUtils.Deserialize<Boss>(doc.ToJson()) : null;
         }
 
@@ -29,9 +29,6 @@ namespace GameBackend.Core.Repositories
             if (boss == null || string.IsNullOrWhiteSpace(boss.bossId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(boss));
-            doc["PK"] = $"BOSS#{boss.bossId}";
-            doc["SK"] = "METADATA";
-
             await _table.PutItemAsync(doc);
         }
     }

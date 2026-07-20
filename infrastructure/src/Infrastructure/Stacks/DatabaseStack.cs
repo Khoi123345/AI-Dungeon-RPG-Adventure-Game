@@ -7,38 +7,49 @@ namespace Infrastructure.Stacks
 {
     public class DatabaseStack : Stack
     {
-        public ITable MainTable { get; }
-
-        public ITable UsersTable => MainTable;
-        public ITable CharactersTable => MainTable;
-        public ITable BossEncountersTable => MainTable;
-        public ITable BattlesTable => MainTable;
-        public ITable StorySessionsTable => MainTable;
-        public ITable StoryActionsTable => MainTable;
-        public ITable InventoryTable => MainTable;
+        public ITable UsersTable { get; }
+        public ITable CharactersTable { get; }
+        public ITable BossEncountersTable { get; }
+        public ITable BattlesTable { get; }
+        public ITable StorySessionsTable { get; }
+        public ITable StoryActionsTable { get; }
+        public ITable InventoryTable { get; }
 
         public DatabaseStack(Construct scope, string id, IStackProps? props = null) : base(scope, id, props)
         {
-            var table = new Table(this, "GameTable", new TableProps
+            UsersTable = CreateTable("GameUsers", "userId");
+            CharactersTable = CreateTable("GameCharacters", "characterId");
+            BossEncountersTable = CreateTable("GameBossEncounters", "encounterId");
+            BattlesTable = CreateTable("GameBattles", "battleId");
+            StorySessionsTable = CreateTable("GameStorySessions", "sessionId");
+            StoryActionsTable = CreateTable("GameStoryActions", "actionId");
+            InventoryTable = CreateTable("GameInventory", "inventoryId");
+
+            // GSI cho Character lookup by userId
+            (CharactersTable as Table)?.AddGlobalSecondaryIndex(new GlobalSecondaryIndexProps
             {
-                TableName = "GameTable",
-                PartitionKey = new Attribute { Name = "PK", Type = AttributeType.STRING },
-                SortKey = new Attribute { Name = "SK", Type = AttributeType.STRING },
+                IndexName = "userId-index",
+                PartitionKey = new Attribute { Name = "userId", Type = AttributeType.STRING }
+            });
+
+            // GSI cho StorySession lookup by characterId
+            (StorySessionsTable as Table)?.AddGlobalSecondaryIndex(new GlobalSecondaryIndexProps
+            {
+                IndexName = "characterId-index",
+                PartitionKey = new Attribute { Name = "characterId", Type = AttributeType.STRING }
+            });
+        }
+
+        private Table CreateTable(string tableName, string partitionKeyName)
+        {
+            return new Table(this, tableName, new TableProps
+            {
+                TableName = tableName,
+                PartitionKey = new Attribute { Name = partitionKeyName, Type = AttributeType.STRING },
                 BillingMode = BillingMode.PAY_PER_REQUEST,
                 RemovalPolicy = RemovalPolicy.RETAIN,
                 PointInTimeRecovery = true
             });
-
-            // Global Secondary Index 1
-            table.AddGlobalSecondaryIndex(new GlobalSecondaryIndexProps
-            {
-                IndexName = "GSI1",
-                PartitionKey = new Attribute { Name = "GSI1PK", Type = AttributeType.STRING },
-                SortKey = new Attribute { Name = "GSI1SK", Type = AttributeType.STRING },
-                ProjectionType = ProjectionType.ALL
-            });
-
-            MainTable = table;
         }
     }
 }

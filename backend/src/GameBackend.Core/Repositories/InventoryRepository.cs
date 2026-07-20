@@ -15,17 +15,16 @@ namespace GameBackend.Core.Repositories
 
         public InventoryRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.GameTableName);
+            _table = Table.LoadTable(dynamoDbClient, AppSettings.InventoryTableName);
         }
 
         public async Task<List<Inventory>> GetByCharacterIdAsync(string characterId)
         {
             if (string.IsNullOrWhiteSpace(characterId)) return new List<Inventory>();
 
-            var filter = new QueryFilter("PK", QueryOperator.Equal, $"CHAR#{characterId}");
-            filter.AddCondition("SK", QueryOperator.BeginsWith, "INVENTORY#");
-
-            var search = _table.Query(filter);
+            var filter = new ScanFilter();
+            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
+            var search = _table.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Select(d => JsonUtils.Deserialize<Inventory>(d.ToJson())!).ToList();
         }
@@ -34,49 +33,64 @@ namespace GameBackend.Core.Repositories
         {
             if (string.IsNullOrWhiteSpace(inventoryId)) return null;
 
-            var search = _table.Query(new QueryOperationConfig
-            {
-                IndexName = "GSI1",
-                Filter = new QueryFilter("GSI1PK", QueryOperator.Equal, $"INVENTORY#{inventoryId}")
-            });
-            var docs = await search.GetNextSetAsync();
-            return docs.Count > 0 ? JsonUtils.Deserialize<Inventory>(docs[0].ToJson()) : null;
+            var doc = await _table.GetItemAsync(inventoryId);
+            return doc == null ? null : JsonUtils.Deserialize<Inventory>(doc.ToJson());
         }
 
         public async Task<Inventory?> FindByCharacterAndItemAsync(string characterId, string itemId)
         {
             if (string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(itemId)) return null;
 
-            var items = await GetByCharacterIdAsync(characterId);
-            return items.FirstOrDefault(x => x.itemId == itemId);
+            var filter = new ScanFilter();
+            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
+            filter.AddCondition("itemId",      ScanOperator.Equal, itemId);
+            var search = _table.Scan(filter);
+            var docs = await search.GetNextSetAsync();
+            return docs.Count > 0 ? JsonUtils.Deserialize<Inventory>(docs[0].ToJson()) : null;
         }
 
         public async Task<List<Inventory>> GetEquippedItemsAsync(string characterId)
         {
             if (string.IsNullOrWhiteSpace(characterId)) return new List<Inventory>();
 
-            var items = await GetByCharacterIdAsync(characterId);
-            return items.Where(x => x.equipped).ToList();
+            var filter = new ScanFilter();
+            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
+            filter.AddCondition("equipped",    ScanOperator.Equal, true);
+            var search = _table.Scan(filter);
+            var docs = await search.GetNextSetAsync();
+            return docs.Select(d => JsonUtils.Deserialize<Inventory>(d.ToJson())!).ToList();
         }
 
         public async Task<int> CountSlotsAsync(string characterId)
         {
             if (string.IsNullOrWhiteSpace(characterId)) return 0;
 
-            var items = await GetByCharacterIdAsync(characterId);
-            return items.Count(x => x.quantity > 0);
+            var filter = new ScanFilter();
+            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
+            filter.AddCondition("quantity",    ScanOperator.GreaterThan, 0);
+
+            var config = new ScanOperationConfig
+            {
+                Filter = filter,
+                AttributesToGet = new List<string> { "inventoryId" },
+                Select = SelectValues.SpecificAttributes
+            };
+
+            var search = _table.Scan(config);
+            int count = 0;
+            while (!search.IsDone)
+            {
+                var page = await search.GetNextSetAsync();
+                count += page.Count;
+            }
+            return count;
         }
 
         public async Task SaveAsync(Inventory inventory)
         {
-            if (inventory == null || string.IsNullOrWhiteSpace(inventory.inventoryId) || string.IsNullOrWhiteSpace(inventory.characterId)) return;
+            if (inventory == null || string.IsNullOrWhiteSpace(inventory.inventoryId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(inventory));
-            doc["PK"] = $"CHAR#{inventory.characterId}";
-            doc["SK"] = $"INVENTORY#{inventory.inventoryId}";
-            doc["GSI1PK"] = $"INVENTORY#{inventory.inventoryId}";
-            doc["GSI1SK"] = "METADATA";
-
             await _table.PutItemAsync(doc);
         }
 
@@ -84,11 +98,7 @@ namespace GameBackend.Core.Repositories
         {
             if (string.IsNullOrWhiteSpace(inventoryId)) return;
 
-            var existing = await GetByInventoryIdAsync(inventoryId);
-            if (existing != null)
-            {
-                await _table.DeleteItemAsync($"CHAR#{existing.characterId}", $"INVENTORY#{existing.inventoryId}");
-            }
+            await _table.DeleteItemAsync(inventoryId);
         }
     }
 }
