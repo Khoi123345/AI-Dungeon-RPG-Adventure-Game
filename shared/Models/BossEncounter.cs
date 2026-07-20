@@ -5,10 +5,7 @@ namespace GameShared.Models
     [Serializable]
     public class BossEncounter
     {
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
         public string encounterId { get; set; }
         public string characterId { get; set; }
         public string bossId { get; set; }
