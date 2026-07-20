@@ -357,15 +357,15 @@ namespace GameBackend.Core.Services
 
         private sealed class StoryActionProcessingContext
         {
-            public Character Character { get; init; }
+            public required Character Character { get; init; }
 
-            public StorySession Session { get; init; }
+            public required StorySession Session { get; init; }
 
-            public string PlayerInput { get; init; }
+            public required string PlayerInput { get; init; }
 
             public List<StoryAction> RecentActions { get; init; } = new();
 
-            public GamePromptContext PromptContext { get; init; }
+            public required GamePromptContext PromptContext { get; init; }
         }
     }
 }

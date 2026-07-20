@@ -211,7 +211,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/0WIvQ7CIBhFn6U7fICNiYtD07p2qMbVfAVMsT80/MjQ9N0NOpgz3HPPAcSRAy8weSrVSCfTw3YNKEeCyT/kZKNKGOQAW4N+6C06Rern8j/VhG7O6St7tk57G53UO2lsaHVgJ+AgSgbt5VZbp6t1pXftvLHL+V2CYAJ4pnh5Y6iLSzCzhu63H0GMw2aiAAAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/0WIOw+CMBRGfwt7eymoiYsDAVcGNK7mUmoor0v6sAPhv5vqYM7wne/kkJ0EiASD5bIb+aRb2G4O5cgw2KecyHcBnexhq9D2LaHpWPla/qeY0MwxfWWP1ihL3ki1s4pcrVx6BgH5MYX6ei/JqGJd+UMZq2m5vA+QpRmISDJYrbnxi9Ozgua3H0ihdq6iAAAA"
    },
    "Metadata": {
     "aws:cdk:path": "GameMonitoringStack/CDKMetadata/Default"

@@ -2,16 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-// Đánh dấu Serializable để Unity có thể hiển thị trong Inspector (khi test) 
-// và thư viện Json có thể parse được.
-[Serializable]
-public class FighterStats
-{
-    public string name;
-    public int level;
-    public int maxHP;
-    public int currentHP;
-}
+
 
 [Serializable]
 public class BattleTurn

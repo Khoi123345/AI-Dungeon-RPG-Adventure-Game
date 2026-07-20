@@ -41,8 +41,19 @@ public class ApiClient : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // TODO: Đọc từ GameConfigSO ScriptableObject
-        baseUrl = "https://your-api-gateway-url.execute-api.ap-southeast-1.amazonaws.com/prod";
+        // Đọc cấu hình từ GameConfigSO trong thư mục Resources
+        GameConfigSO config = Resources.Load<GameConfigSO>("GameConfig");
+        
+        if (config != null && !string.IsNullOrEmpty(config.apiBaseUrl))
+        {
+            baseUrl = config.apiBaseUrl;
+            if (!baseUrl.EndsWith("/")) baseUrl += "/";
+        }
+        else
+        {
+            Debug.LogWarning("[ApiClient] Không tìm thấy file 'GameConfig' trong thư mục Resources (hoặc apiBaseUrl trống). Đang dùng URL mặc định.");
+            baseUrl = "https://ne6hi09ope.execute-api.ap-southeast-1.amazonaws.com/prod/";
+        }
     }
 
     private void OnDestroy()
