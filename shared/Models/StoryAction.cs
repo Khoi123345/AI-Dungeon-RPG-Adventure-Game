@@ -11,7 +11,10 @@ namespace GameShared.Models
         public string aiResponse { get; set; }
         public int turnNumber { get; set; }
         public string actionType { get; set; }
+        /// <summary>Index lựa chọn người chơi đã chọn (dùng bởi Unity GameProgressService).</summary>
+        public int choiceIndex { get; set; }
         public string metadataJson { get; set; }
         public DateTime createdAt { get; set; }
+        
     }
 }

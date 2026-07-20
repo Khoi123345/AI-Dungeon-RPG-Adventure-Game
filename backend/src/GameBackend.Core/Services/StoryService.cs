@@ -96,6 +96,9 @@ namespace GameBackend.Core.Services
 
         public async Task<StoryActionResponse> ProcessActionAsync(StoryActionRequest request)
         {
+            // Mục 6: Kiểm tra nhân vật còn sống không (tự động hồi sinh nếu đủ thời gian)
+            await _characterService.EnsureAliveOrAutoReviveAsync(request.characterId);
+
             var character = await _characterRepository.GetByIdAsync(request.characterId)
                 ?? throw new Utils.GameNotFoundException("Character not found");
 

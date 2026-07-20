@@ -5,10 +5,14 @@ namespace GameShared.Models
     [Serializable]
     public class BossEncounter
     {
+        /// <summary>Độ hiếm của boss: "Common" | "Rare" | "Epic" | "Legendary" | "Mythic"</summary>
+        public string bossRarity;
         public string encounterId { get; set; }
         public string characterId { get; set; }
         public string bossId { get; set; }
         public int bossLevel { get; set; }
+        /// <summary>Độ hiếm của boss: "Common" | "Rare" | "Epic" | "Legendary" | "Mythic"</summary>
+        public string bossRarity { get; set; }
         public int playerHpBefore { get; set; }
         public int playerHpAfter { get; set; }
         public int bossHpBefore { get; set; }
