@@ -1,4 +1,4 @@
-public class PromptContext {
+public class GamePromptContext {
 
     private string world;
 

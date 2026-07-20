@@ -2,7 +2,9 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
 using GameShared.Models;
-using System.Text.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using GameBackend.Core.Utils;
 
 namespace GameBackend.Core.Repositories
@@ -20,12 +22,16 @@ namespace GameBackend.Core.Repositories
 
         public async Task<StorySession?> GetSessionByIdAsync(string sessionId)
         {
+            if (string.IsNullOrWhiteSpace(sessionId)) return null;
+
             var doc = await _sessionTable.GetItemAsync(sessionId);
             return doc != null ? JsonUtils.Deserialize<StorySession>(doc.ToJson()) : null;
         }
 
         public async Task<StorySession?> GetSessionByCharacterIdAsync(string characterId)
         {
+            if (string.IsNullOrWhiteSpace(characterId)) return null;
+
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
             filter.AddCondition("status", ScanOperator.Equal, "Active");
@@ -36,18 +42,24 @@ namespace GameBackend.Core.Repositories
 
         public async Task SaveSessionAsync(StorySession session)
         {
+            if (session == null || string.IsNullOrWhiteSpace(session.sessionId)) return;
+
             var doc = Document.FromJson(JsonUtils.Serialize(session));
             await _sessionTable.PutItemAsync(doc);
         }
 
         public async Task SaveActionAsync(StoryAction action)
         {
+            if (action == null || string.IsNullOrWhiteSpace(action.actionId)) return;
+
             var doc = Document.FromJson(JsonUtils.Serialize(action));
             await _actionTable.PutItemAsync(doc);
         }
 
         public async Task<List<StoryAction>> GetActionsBySessionIdAsync(string sessionId)
         {
+            if (string.IsNullOrWhiteSpace(sessionId)) return new List<StoryAction>();
+
             var filter = new ScanFilter();
             filter.AddCondition("sessionId", ScanOperator.Equal, sessionId);
             var search = _actionTable.Scan(filter);

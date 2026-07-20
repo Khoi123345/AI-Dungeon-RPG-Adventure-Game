@@ -3,6 +3,9 @@ using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Utils;
 using GameShared.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GameBackend.Core.Repositories
 {
@@ -15,9 +18,10 @@ namespace GameBackend.Core.Repositories
             _table = Table.LoadTable(dynamoDbClient, AppSettings.InventoryTableName);
         }
 
-        /// <inheritdoc/>
         public async Task<List<Inventory>> GetByCharacterIdAsync(string characterId)
         {
+            if (string.IsNullOrWhiteSpace(characterId)) return new List<Inventory>();
+
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
             var search = _table.Scan(filter);
@@ -25,16 +29,18 @@ namespace GameBackend.Core.Repositories
             return docs.Select(d => JsonUtils.Deserialize<Inventory>(d.ToJson())!).ToList();
         }
 
-        /// <inheritdoc/>
         public async Task<Inventory?> GetByInventoryIdAsync(string inventoryId)
         {
+            if (string.IsNullOrWhiteSpace(inventoryId)) return null;
+
             var doc = await _table.GetItemAsync(inventoryId);
             return doc == null ? null : JsonUtils.Deserialize<Inventory>(doc.ToJson());
         }
 
-        /// <inheritdoc/>
         public async Task<Inventory?> FindByCharacterAndItemAsync(string characterId, string itemId)
         {
+            if (string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(itemId)) return null;
+
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
             filter.AddCondition("itemId",      ScanOperator.Equal, itemId);
@@ -43,9 +49,10 @@ namespace GameBackend.Core.Repositories
             return docs.Count > 0 ? JsonUtils.Deserialize<Inventory>(docs[0].ToJson()) : null;
         }
 
-        /// <inheritdoc/>
         public async Task<List<Inventory>> GetEquippedItemsAsync(string characterId)
         {
+            if (string.IsNullOrWhiteSpace(characterId)) return new List<Inventory>();
+
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
             filter.AddCondition("equipped",    ScanOperator.Equal, true);
@@ -54,14 +61,14 @@ namespace GameBackend.Core.Repositories
             return docs.Select(d => JsonUtils.Deserialize<Inventory>(d.ToJson())!).ToList();
         }
 
-        /// <inheritdoc/>
         public async Task<int> CountSlotsAsync(string characterId)
         {
+            if (string.IsNullOrWhiteSpace(characterId)) return 0;
+
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
             filter.AddCondition("quantity",    ScanOperator.GreaterThan, 0);
 
-            // Chỉ cần đếm — chỉ lấy inventoryId để tiết kiệm đọc từ DynamoDB
             var config = new ScanOperationConfig
             {
                 Filter = filter,
@@ -79,16 +86,18 @@ namespace GameBackend.Core.Repositories
             return count;
         }
 
-        /// <inheritdoc/>
         public async Task SaveAsync(Inventory inventory)
         {
+            if (inventory == null || string.IsNullOrWhiteSpace(inventory.inventoryId)) return;
+
             var doc = Document.FromJson(JsonUtils.Serialize(inventory));
             await _table.PutItemAsync(doc);
         }
 
-        /// <inheritdoc/>
         public async Task DeleteAsync(string inventoryId)
         {
+            if (string.IsNullOrWhiteSpace(inventoryId)) return;
+
             await _table.DeleteItemAsync(inventoryId);
         }
     }

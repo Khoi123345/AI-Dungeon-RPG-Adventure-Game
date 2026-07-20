@@ -5,9 +5,9 @@ using GameBackend.Core.AIStory.DTOs;
 
 namespace GameBackend.Core.AIStory.Builder
 {
-    public interface IStoryContextBuilder
+    public interface IGamePromptContextBuilder
     {
-        Task<PromptContext> BuildAsync(
+        Task<GamePromptContext> BuildAsync(
             Character character,
             IEnumerable<Item> inventoryItems,
             IEnumerable<StoryAction> recentActions,

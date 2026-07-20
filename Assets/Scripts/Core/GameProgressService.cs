@@ -113,7 +113,7 @@ public class GameProgressService : MonoBehaviour
             gold = CurrentCharacter.gold
         };
 
-        string context = CurrentStorySession != null ? CurrentStorySession.storyContext : "";
+        string context = CurrentStorySession != null ? CurrentStorySession.storySummary : "";
         string location = CurrentStorySession != null ? CurrentStorySession.currentLocation : "Unknown";
 
         StoryData storyData = new StoryData
@@ -175,7 +175,6 @@ public class GameProgressService : MonoBehaviour
 
         storyActions.Add(action);
         CurrentStorySession.updatedAt = DateTime.UtcNow;
-        CurrentStorySession.storyContext = aiResponse;
         CurrentStorySession.currentNodeId = choice != null ? choice.nextNodeId : CurrentStorySession.currentNodeId;
 
         return action;
@@ -419,7 +418,6 @@ public class GameProgressService : MonoBehaviour
             characterId = CurrentCharacter.characterId,
             currentLocation = "Ancient Ruins",
             currentNodeId = "intro",
-            storyContext = "Bạn bước vào tàn tích cổ và cảm nhận có thứ gì đó đang theo dõi mình.",
             status = "Active",
             updatedAt = DateTime.UtcNow,
             endedAt = null,

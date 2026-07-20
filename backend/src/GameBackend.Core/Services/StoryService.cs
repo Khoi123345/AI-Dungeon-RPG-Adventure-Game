@@ -3,6 +3,7 @@ using GameBackend.Core.Services.Interfaces;
 using GameBackend.Core.AIStory.Builder;
 using GameBackend.Core.AIStory;
 using GameBackend.Core.AIStory.DTOs;
+using GameBackend.Core.Services.Parsing;
 using GameShared.DTOs.Character;
 using GameShared.DTOs.Story;
 using GameShared.Models;
@@ -21,8 +22,11 @@ namespace GameBackend.Core.Services
         private readonly IBedrockService _bedrockService;
         private readonly ICharacterService _characterService;
         private readonly IInventoryService _inventoryService;
-        private readonly IStoryContextBuilder _storyContextBuilder;
+        private readonly IGamePromptContextBuilder _gamePromptContextBuilder;
+        private readonly IStoryStateUpdater _storyStateUpdater;
+        private readonly IGameRuleValidator _gameRuleValidator;
         private readonly IPromptBuilder _promptBuilder;
+        private readonly IStorySummaryService _storySummaryService;
         private readonly ILogger<StoryService> _logger;
 
         public StoryService(
@@ -31,8 +35,11 @@ namespace GameBackend.Core.Services
             IBedrockService bedrockService,
             ICharacterService characterService,
             IInventoryService inventoryService,
-            IStoryContextBuilder storyContextBuilder,
+            IGamePromptContextBuilder gamePromptContextBuilder,
+            IStoryStateUpdater storyStateUpdater,
+            IGameRuleValidator gameRuleValidator,
             IPromptBuilder promptBuilder,
+            IStorySummaryService storySummaryService,
             ILogger<StoryService> logger)
         {
             _storyRepository = storyRepository;
@@ -40,8 +47,11 @@ namespace GameBackend.Core.Services
             _bedrockService = bedrockService;
             _characterService = characterService;
             _inventoryService = inventoryService;
-            _storyContextBuilder = storyContextBuilder;
+            _gamePromptContextBuilder = gamePromptContextBuilder;
+            _storyStateUpdater = storyStateUpdater;
+            _gameRuleValidator = gameRuleValidator;
             _promptBuilder = promptBuilder;
+            _storySummaryService = storySummaryService;
             _logger = logger;
         }
 
@@ -53,7 +63,7 @@ namespace GameBackend.Core.Services
             var existingSession = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
             if (existingSession != null && existingSession.status == "Active")
             {
-                return BuildResponse(existingSession, character);
+                return BuildResponse(existingSession, character, existingSession.storySummary ?? string.Empty);
             }
 
             var session = new StorySession
@@ -63,7 +73,6 @@ namespace GameBackend.Core.Services
                 currentLocation = DefaultLocation,
                 currentChapterId = string.IsNullOrWhiteSpace(request.storyFileId) ? DefaultChapterId : request.storyFileId,
                 currentNodeId = DefaultChapterId,
-                storyContext = string.Empty,
                 status = "Active",
                 updatedAt = DateTime.UtcNow,
                 storyVersion = string.IsNullOrWhiteSpace(request.storyFileId) ? "1.0" : request.storyFileId,
@@ -71,15 +80,21 @@ namespace GameBackend.Core.Services
                 sourceType = "AI"
             };
 
-            session.storyContext = await GenerateNarrativeAsync(
-                DefaultSystemPrompt,
-                $"Start a new story for character {character.name} (level {character.level}) in {session.currentLocation}. Story file: {session.currentChapterId}.",
-                "Bạn đứng trước cánh cổng cũ nát của Ancient Ruins. Một luồng khí lạnh toát thổi ra.");
+            var openingContext = new StoryActionProcessingContext
+            {
+                Character = character,
+                Session = session,
+                PlayerInput = string.Empty,
+                RecentActions = new List<StoryAction>(),
+                PromptContext = await _gamePromptContextBuilder.BuildAsync(character, new List<Item>(), new List<StoryAction>(), session, string.Empty)
+            };
 
-            await _storyRepository.SaveSessionAsync(session);
+            var openingResponse = await GenerateStoryAiResponseAsync(openingContext, "opening");
+            openingResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, openingResponse);
+            await _storyStateUpdater.ApplyAsync(session, character, openingResponse);
             _logger.LogInformation("Story session started: {SessionId} for character: {CharacterId}", session.sessionId, character.characterId);
 
-            return BuildResponse(session, character);
+            return BuildResponse(session, character, openingResponse.NarrativeText);
         }
 
         public async Task<StoryActionResponse> ProcessActionAsync(StoryActionRequest request)
@@ -113,12 +128,20 @@ namespace GameBackend.Core.Services
             StorySession session)
         {
             var context = await LoadGameContextAsync(request, character, session);
-            var narrative = await GenerateNarrativeAsync(context);
+            var aiResponse = await GenerateStoryAiResponseAsync(context, "player_action");
 
-            await SaveStoryTurnAsync(context, narrative);
-            await UpdateSessionAsync(context, narrative);
+            if (string.IsNullOrWhiteSpace(aiResponse.NarrativeText))
+            {
+                aiResponse = CreateFallbackResponse(context, "Bạn tiếp tục cuộc phiêu lưu trong bóng tối...");
+            }
 
-            return BuildResponse(context);
+            aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
+
+            await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
+
+            await SaveStoryTurnAsync(context, aiResponse);
+
+            return BuildResponse(context, aiResponse.NarrativeText, aiResponse);
         }
 
         private async Task<StoryActionResponse> ProcessChoiceActionAsync(
@@ -126,44 +149,21 @@ namespace GameBackend.Core.Services
             Character character,
             StorySession session)
         {
-            var (narrativeText, nextNodeId, goldDelta, hpDelta, expDelta, triggerBattle) = ResolveChoice(request.choiceIndex);
+            var context = await LoadGameContextAsync(request, character, session);
+            var aiResponse = await GenerateStoryAiResponseAsync(context, "choice");
 
-            character.gold = Math.Max(0, character.gold + goldDelta);
-            character.hp = Math.Clamp(character.hp + hpDelta, 0, character.maxHp);
-            await _characterService.ApplyExperienceAndLevelUp(character, expDelta);
-
-            var aiNarrative = await GenerateNarrativeAsync(
-                DefaultSystemPrompt,
-                $"Character: {character.name} (Level {character.level}), Location: {session.currentLocation}, Current node: {session.currentNodeId}, Action: choice {request.choiceIndex}, Player input: {request.playerInput}",
-                narrativeText);
-
-            session.currentNodeId = nextNodeId;
-            session.storyContext = aiNarrative;
-            session.storySummary = UpdateStorySummary(session.storySummary, aiNarrative);
-            session.updatedAt = DateTime.UtcNow;
-            await _storyRepository.SaveSessionAsync(session);
-
-            var action = new StoryAction
+            if (string.IsNullOrWhiteSpace(aiResponse.NarrativeText))
             {
-                actionId = Guid.NewGuid().ToString("N"),
-                sessionId = session.sessionId,
-                playerInput = request.playerInput,
-                aiResponse = aiNarrative,
-                turnNumber = 0,
-                actionType = "choice",
-                metadataJson = "{}",
-                createdAt = DateTime.UtcNow
-            };
-            await _storyRepository.SaveActionAsync(action);
-
-            var response = BuildResponse(session, character);
-            response.triggerBattle = triggerBattle;
-            if (triggerBattle)
-            {
-                response.bossId = "boss_goblin_chief";
+                aiResponse = CreateFallbackResponseFromChoice(request.choiceIndex, context);
             }
 
-            return response;
+            aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
+
+            await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
+
+            await SaveStoryTurnAsync(context, aiResponse, "choice");
+
+            return BuildResponse(context, aiResponse.NarrativeText, aiResponse);
         }
 
         private async Task<StoryActionProcessingContext> LoadGameContextAsync(
@@ -188,7 +188,7 @@ namespace GameBackend.Core.Services
                 .OrderBy(action => action.createdAt)
                 .ToList();
 
-            var promptContext = await _storyContextBuilder.BuildAsync(
+            var promptContext = await _gamePromptContextBuilder.BuildAsync(
                 character,
                 inventoryItems,
                 recentActions,
@@ -205,63 +205,58 @@ namespace GameBackend.Core.Services
             };
         }
 
-        private async Task<string> GenerateNarrativeAsync(StoryActionProcessingContext context)
+        private async Task<StoryAiResponse> GenerateStoryAiResponseAsync(StoryActionProcessingContext context, string defaultActionType)
         {
             var prompt = _promptBuilder.Build(context.PromptContext);
-            return await GenerateNarrativeAsync(DefaultSystemPrompt, prompt, context.Session.storyContext ?? string.Empty);
+            prompt += "\n\nReturn ONLY valid JSON for StoryAiResponse. No markdown, no code fences, no extra commentary. Use camelCase property names.";
+
+            var rawResponse = await GenerateRawAiResponseAsync(DefaultSystemPrompt, prompt, context.Session.storySummary ?? string.Empty);
+            return StoryAiResponseParser.Parse(rawResponse, context.Session, defaultActionType, _logger);
         }
 
-        private async Task SaveStoryTurnAsync(StoryActionProcessingContext context, string narrative)
+        private async Task SaveStoryTurnAsync(StoryActionProcessingContext context, StoryAiResponse aiResponse, string defaultActionType = "player_action")
         {
+            var turnNumber = (context.RecentActions?.Count ?? 0) + 1;
             var action = new StoryAction
             {
                 actionId = Guid.NewGuid().ToString("N"),
                 sessionId = context.Session.sessionId,
                 playerInput = context.PlayerInput,
-                aiResponse = narrative,
-                turnNumber = (context.RecentActions?.Count ?? 0) + 1,
-                actionType = "player_action",
-                metadataJson = "{}",
+                aiResponse = aiResponse.NarrativeText,
+                turnNumber = turnNumber,
+                actionType = aiResponse.ActionType ?? defaultActionType,
+                metadataJson = StoryAiResponseParser.Serialize(aiResponse),
                 createdAt = DateTime.UtcNow
             };
 
             await _storyRepository.SaveActionAsync(action);
-        }
 
-        private async Task UpdateSessionAsync(StoryActionProcessingContext context, string narrative)
-        {
-            context.Session.storyContext = narrative;
-            context.Session.storySummary = UpdateStorySummary(context.Session.storySummary, narrative);
-            context.Session.updatedAt = DateTime.UtcNow;
-
-            await _storyRepository.SaveSessionAsync(context.Session);
-        }
-
-        private static StoryActionResponse BuildResponse(StoryActionProcessingContext context)
-        {
-            return BuildResponse(context.Session, context.Character);
-        }
-
-        private static (string narrative, string nextNode, int gold, int hp, int exp, bool triggerBattle) ResolveChoice(int choiceIndex)
-        {
-            return choiceIndex switch
+            var oldSummary = context.Session.storySummary;
+            var newSummary = await _storySummaryService.CondenseSummaryIfNeededAsync(context.Session, turnNumber, context.RecentActions);
+            if (oldSummary != newSummary)
             {
-                0 => ("Bạn giơ vũ khí lên và xông thẳng vào sương mù!", "battle_path", 0, 0, 25, true),
-                1 => ("Bạn kiểm tra các ký tự kỳ lạ trên sàn đá, phát hiện ngăn bí mật chứa vàng cổ!", "investigate_path", 15, 0, 15, false),
-                _ => ("Bạn đốt lửa nghỉ ngơi. Sức khỏe phục hồi nhưng tốn 5 vàng mua lương khô.", "rest_path", -5, 18, 5, false)
-            };
+                await _storyRepository.SaveSessionAsync(context.Session);
+            }
         }
 
-        private async Task<string> GenerateNarrativeAsync(string systemPrompt, string userPrompt, string fallbackNarrative)
+        private static StoryActionResponse BuildResponse(StoryActionProcessingContext context, string narrativeText, StoryAiResponse aiResponse)
+        {
+            var response = BuildResponse(context.Session, context.Character, narrativeText);
+            response.triggerBattle = aiResponse.TriggerBattle;
+            response.bossId = aiResponse.BossId;
+            return response;
+        }
+
+        private async Task<string> GenerateRawAiResponseAsync(string systemPrompt, string userPrompt, string fallbackNarrative)
         {
             try
             {
                 if (await _bedrockService.IsAvailableAsync())
                 {
-                    var narrative = await _bedrockService.GenerateNarrativeAsync(systemPrompt, userPrompt);
-                    if (!string.IsNullOrWhiteSpace(narrative))
+                    var raw = await _bedrockService.GenerateNarrativeAsync(systemPrompt, userPrompt);
+                    if (!string.IsNullOrWhiteSpace(raw))
                     {
-                        return narrative;
+                        return raw;
                     }
                 }
             }
@@ -273,31 +268,74 @@ namespace GameBackend.Core.Services
             return fallbackNarrative;
         }
 
-        private static string UpdateStorySummary(string? currentSummary, string narrativeText)
+        private StoryAiResponse CreateFallbackResponse(StoryActionProcessingContext context, string rawResponse)
         {
-            if (string.IsNullOrWhiteSpace(currentSummary))
+            return new StoryAiResponse
             {
-                return narrativeText;
-            }
-
-            var summary = currentSummary.Trim();
-            var addition = narrativeText.Trim();
-            if (summary.Length > 700)
-            {
-                summary = summary[..700];
-            }
-
-            return $"{summary} | {addition}";
+                NarrativeText = rawResponse,
+                CurrentNodeId = context.Session.currentNodeId,
+                CurrentLocation = context.Session.currentLocation,
+                CurrentChapterId = context.Session.currentChapterId,
+                StorySummary = context.Session.storySummary,
+                ActionType = "player_action",
+                MetadataJson = "{}",
+                CharacterDelta = new StoryAiCharacterDelta()
+            };
         }
 
-        private static StoryActionResponse BuildResponse(StorySession session, Character character)
+        private StoryAiResponse CreateFallbackResponseFromChoice(int choiceIndex, StoryActionProcessingContext context)
+        {
+            return choiceIndex switch
+            {
+                0 => new StoryAiResponse
+                {
+                    NarrativeText = "Bạn giơ vũ khí lên và xông thẳng vào sương mù!",
+                    CurrentNodeId = "battle_path",
+                    CurrentLocation = context.Session.currentLocation,
+                    CurrentChapterId = context.Session.currentChapterId,
+                    StorySummary = context.Session.storySummary,
+                    ActionType = "choice",
+                    MetadataJson = "{}",
+                    TriggerBattle = true,
+                    BossId = "boss_goblin_chief",
+                    BossLevel = 10,
+                    CharacterDelta = new StoryAiCharacterDelta { ExpDelta = 25 }
+                },
+                1 => new StoryAiResponse
+                {
+                    NarrativeText = "Bạn kiểm tra các ký tự kỳ lạ trên sàn đá, phát hiện ngăn bí mật chứa vàng cổ!",
+                    CurrentNodeId = "investigate_path",
+                    CurrentLocation = context.Session.currentLocation,
+                    CurrentChapterId = context.Session.currentChapterId,
+                    StorySummary = context.Session.storySummary,
+                    ActionType = "choice",
+                    MetadataJson = "{}",
+                    TriggerBattle = false,
+                    CharacterDelta = new StoryAiCharacterDelta { GoldDelta = 15, ExpDelta = 15 }
+                },
+                _ => new StoryAiResponse
+                {
+                    NarrativeText = "Bạn đốt lửa nghỉ ngơi. Sức khỏe phục hồi nhưng tốn 5 vàng mua lương khô.",
+                    CurrentNodeId = "rest_path",
+                    CurrentLocation = context.Session.currentLocation,
+                    CurrentChapterId = context.Session.currentChapterId,
+                    StorySummary = context.Session.storySummary,
+                    ActionType = "choice",
+                    MetadataJson = "{}",
+                    TriggerBattle = false,
+                    CharacterDelta = new StoryAiCharacterDelta { HpDelta = 18, GoldDelta = -5, ExpDelta = 5 }
+                }
+            };
+        }
+
+        private static StoryActionResponse BuildResponse(StorySession session, Character character, string narrativeText)
         {
             return new StoryActionResponse
             {
                 sessionId = session.sessionId,
                 currentNodeId = session.currentNodeId,
                 currentLocation = session.currentLocation,
-                narrativeText = session.storyContext,
+                narrativeText = narrativeText,
                 character = new CharacterResponse
                 {
                     characterId = character.characterId,
@@ -319,15 +357,15 @@ namespace GameBackend.Core.Services
 
         private sealed class StoryActionProcessingContext
         {
-            public Character Character { get; init; }
+            public required Character Character { get; init; }
 
-            public StorySession Session { get; init; }
+            public required StorySession Session { get; init; }
 
-            public string PlayerInput { get; init; }
+            public required string PlayerInput { get; init; }
 
             public List<StoryAction> RecentActions { get; init; } = new();
 
-            public PromptContext PromptContext { get; init; }
+            public required GamePromptContext PromptContext { get; init; }
         }
     }
 }

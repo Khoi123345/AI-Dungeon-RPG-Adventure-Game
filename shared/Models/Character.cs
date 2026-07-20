@@ -8,22 +8,23 @@ namespace GameShared.Models
     [Serializable]
     public class Character
     {
-        public string characterId;
-        public string userId;
-        public string name;
-        public int level;
-        public int experience;
-        public int hp;
-        public int maxHp;
-
-        public int attack;
-        public int defense;
-        public float criticalRate;
-        public float luckyRate;
-        public int gold;
-        public string className;
-        public string status;
-        public string currentLocationId;
-        public DateTime reviveTime;
+        public string characterId { get; set; }
+        public string userId { get; set; }
+        public string name { get; set; }
+        public int level { get; set; }
+        public int experience { get; set; }
+        public int hp { get; set; }
+        public int maxHp { get; set; }
+        public int mp { get; set; }
+        public int maxMp { get; set; }
+        public int attack { get; set; }
+        public int defense { get; set; }
+        public float criticalRate { get; set; }
+        public float luckyRate { get; set; }
+        public int gold { get; set; }
+        public string className { get; set; }
+        public string status { get; set; }
+        public string currentLocationId { get; set; }
+        public DateTime reviveTime { get; set; }
     }
 }

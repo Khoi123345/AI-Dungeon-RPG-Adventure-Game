@@ -1,6 +1,6 @@
 namespace GameBackend.Core.AIStory.DTOs
 {
-    public class PromptContext
+    public class GamePromptContext
     {
         public string World { get; set; }
 

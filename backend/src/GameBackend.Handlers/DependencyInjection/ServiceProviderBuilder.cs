@@ -1,9 +1,14 @@
+using System;
+using System.IO;
 using Amazon.DynamoDBv2;
 using Amazon.CognitoIdentityProvider;
+using GameBackend.Core.AIStory.Services;
+using GameBackend.Core.AIStory.Services.Impl;
 using GameBackend.Core.Repositories;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Services;
 using GameBackend.Core.Services.Interfaces;
+using GameBackend.Core.Services.Validation;
 using GameBackend.Core.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -44,6 +49,11 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<IBattleRepository, BattleRepository>();
                 services.AddSingleton<IStoryRepository, StoryRepository>();
                 services.AddSingleton<IInventoryRepository, InventoryRepository>();
+                services.AddSingleton<IContentService>(sp =>
+                {
+                    var contentRoot = Environment.GetEnvironmentVariable("CONTENT_ROOT") ?? Path.Combine(Directory.GetCurrentDirectory(), "Content");
+                    return new ContentService(contentRoot);
+                });
 
                 // Utils
                 services.AddSingleton<JwtHelper>();
@@ -59,9 +69,17 @@ namespace GameBackend.Handlers.DependencyInjection
                     services.AddSingleton<IAuthService, AuthService>();
                 }
                 services.AddSingleton<ICharacterService, CharacterService>();
+                services.AddSingleton<IStoryStateUpdater, StoryStateUpdater>();
+                services.AddSingleton<IGameRuleSubValidator, BossValidator>();
+                services.AddSingleton<IGameRuleSubValidator, InventoryValidator>();
+                services.AddSingleton<IGameRuleSubValidator, LocationValidator>();
+                services.AddSingleton<IGameRuleSubValidator, CharacterValidator>();
+                services.AddSingleton<IGameRuleSubValidator, StoryValidator>();
+                services.AddSingleton<IGameRuleValidator, GameRuleValidator>();
                 services.AddSingleton<IStoryService, StoryService>();
                 services.AddSingleton<IBattleService, BattleService>();
                 services.AddSingleton<IBedrockService, BedrockService>();
+                services.AddSingleton<IStorySummaryService, StorySummaryService>();
                 services.AddSingleton<IInventoryService, InventoryService>();
 
                 _serviceProvider = services.BuildServiceProvider();

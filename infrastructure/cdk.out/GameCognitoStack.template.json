@@ -81,7 +81,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02Juw6CQBBFv4V+d9iVmNhYGLRFg4/W4DqaEdwh+5CC8O8Gicbc4p6cMwM9V6CSqvPSXGvZ0AX6fahMLarOnw3fLQWG/ujR7Zgbkd/sj7+QN4Q2/KfJDKPaxtDGTyzRc3QGB7HmUGBIF6BAZykUm0PODldtK0/oPLFdvjLQqQY1Lnl4IumiDfREKKd/A6Y1kuG5AAAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02Juw6CQBBFv8WeHRbUxMbCoC0afLQG19GM4A7ZnZWC8O8Gicbc4p6ck0Iy16AnZeuVuVaqpgt0eylNFZWtPxu+WxKG7ujR7ZjrKLvZH38hqwmt/KfR9IPaBmnCJxboOTiDfbRmyVHiBWhIZzHkm0PGDldNo07oPLFdvqaQxAnoYZOHJ1IuWKEnQjH+G68YJym5AAAA"
    },
    "Metadata": {
     "aws:cdk:path": "GameCognitoStack/CDKMetadata/Default"

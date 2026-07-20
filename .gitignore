@@ -113,3 +113,18 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# ════════════════════════════════════════════════════════════
+# Backend (.NET) & Shared
+# ════════════════════════════════════════════════════════════
+backend/**/bin/
+backend/**/obj/
+shared/**/bin/
+shared/**/obj/
+
+# ════════════════════════════════════════════════════════════
+# Infrastructure (AWS CDK / Node.js)
+# ════════════════════════════════════════════════════════════
+infrastructure/cdk.out/
+infrastructure/node_modules/
+
