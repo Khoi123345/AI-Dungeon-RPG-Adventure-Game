@@ -81,3 +81,11 @@ C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBacken
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Debug\net8.0\GameBackend.Handlers.pdb
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Debug\net8.0\GameBackend.Handlers.genruntimeconfig.cache
 C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Debug\net8.0\ref\GameBackend.Handlers.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Debug\net8.0\appsettings.json
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Debug\net8.0\AWSSDK.Extensions.NETCore.Setup.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Debug\net8.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Debug\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
