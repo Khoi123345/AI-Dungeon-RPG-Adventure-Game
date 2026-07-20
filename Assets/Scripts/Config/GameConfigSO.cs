@@ -9,8 +9,8 @@ using UnityEngine;
 public class GameConfigSO : ScriptableObject
 {
     [Header("API Settings")]
-    [Tooltip("Base URL của API Gateway (ví dụ: https://xxx.execute-api.ap-southeast-1.amazonaws.com/prod)")]
-    public string apiBaseUrl = "https://your-api-gateway-url.execute-api.ap-southeast-1.amazonaws.com/prod";
+    [Tooltip("Base URL của API Gateway (ví dụ: https://xxx.execute-api.ap-southeast-1.amazonaws.com/prod/)")]
+    public string apiBaseUrl = "https://ne6hi09ope.execute-api.ap-southeast-1.amazonaws.com/prod/";
 
     [Tooltip("Timeout cho mỗi API call (giây)")]
     public float apiTimeoutSeconds = 30f;
@@ -27,7 +27,7 @@ public class GameConfigSO : ScriptableObject
 
     [Header("Mode Settings")]
     [Tooltip("Bật Mock Mode: game chạy offline, không gọi API, dùng dữ liệu giả từ GameProgressService")]
-    public bool useMockMode = true;
+    public bool useMockMode = false;
 
     [Header("Debug")]
     [Tooltip("Log tất cả API request/response ra Console")]

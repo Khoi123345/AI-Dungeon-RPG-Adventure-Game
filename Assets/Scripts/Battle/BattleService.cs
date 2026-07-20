@@ -13,16 +13,106 @@ public class BattlePresenter : MonoBehaviour
     // Tốc độ phát lại trận đấu (thời gian chờ giữa các lượt)
     public float turnDelay = 1.2f; 
 
-    private void Start()
+    private List<LootDrop> apiDroppedItems = new List<LootDrop>();
+
+    private async void Start()
     {
         GameProgressService.EnsureInstance();
 
-        // Khi Scene bắt đầu, lấy data từ runtime service mô phỏng CSDL.
-        BattleData mockData = GameProgressService.Instance != null
-            ? GameProgressService.Instance.CreateBattleDemoData()
-            : CreateMockData();
+        GameConfigSO config = Resources.Load<GameConfigSO>("GameConfig");
+        bool isMock = config != null && config.useMockMode;
 
-        StartPlayback(mockData);
+        if (isMock)
+        {
+            Debug.Log("[BattleService] Đang chạy chế độ Mock Mode...");
+            BattleData mockData = GameProgressService.Instance != null
+                ? GameProgressService.Instance.CreateBattleDemoData()
+                : CreateMockData();
+            StartPlayback(mockData);
+        }
+        else
+        {
+            Debug.Log("[BattleService] Đang gọi API lấy dữ liệu Battle...");
+            await LoadRealBattleDataAsync();
+        }
+    }
+
+    private async System.Threading.Tasks.Task LoadRealBattleDataAsync()
+    {
+        string charId = "mock-id";
+        string sessionId = "mock-session";
+        if (GameProgressService.Instance != null && GameProgressService.Instance.CurrentCharacter != null)
+        {
+            charId = GameProgressService.Instance.CurrentCharacter.characterId;
+            if (GameProgressService.Instance.CurrentStorySession != null)
+            {
+                sessionId = GameProgressService.Instance.CurrentStorySession.sessionId;
+            }
+        }
+
+        var spawnReq = new GameShared.DTOs.Battle.BossSpawnRequest { characterId = charId, sessionId = sessionId };
+        var spawnRes = await ApiClient.Instance.PostAsync<GameShared.DTOs.Battle.BossSpawnResponse>("battle/spawn-boss", spawnReq);
+
+        if (spawnRes == null)
+        {
+            Debug.LogError("[BattleService] Lỗi API Spawn Boss. Tự động chuyển về Mock Mode.");
+            StartPlayback(CreateMockData());
+            return;
+        }
+
+        var resolveReq = new GameShared.DTOs.Battle.BattleResolveRequest { characterId = charId, encounterId = spawnRes.encounterId };
+        var resolveRes = await ApiClient.Instance.PostAsync<GameShared.DTOs.Battle.BattleResolveResponse>("battle/resolve", resolveReq);
+
+        if (resolveRes == null)
+        {
+            Debug.LogError("[BattleService] Lỗi API Resolve Battle. Tự động chuyển về Mock Mode.");
+            StartPlayback(CreateMockData());
+            return;
+        }
+
+        // Chuyển đổi dữ liệu Backend về định dạng UI
+        BattleData realData = new BattleData();
+        realData.isPlayerVictory = resolveRes.isPlayerVictory;
+
+        realData.player = new FighterStats {
+            name = GameProgressService.Instance?.CurrentCharacter?.name ?? "Player",
+            level = GameProgressService.Instance?.CurrentCharacter?.level ?? 1,
+            maxHP = GameProgressService.Instance?.CurrentCharacter?.maxHp ?? 100,
+            currentHP = GameProgressService.Instance?.CurrentCharacter?.hp ?? 100
+        };
+
+        realData.boss = new FighterStats {
+            name = spawnRes.bossName,
+            level = spawnRes.bossLevel,
+            maxHP = spawnRes.bossHp,
+            currentHP = spawnRes.bossHp
+        };
+
+        realData.turns = new List<BattleTurn>();
+        foreach (var t in resolveRes.turns)
+        {
+            realData.turns.Add(new BattleTurn {
+                logMessage = t.logMessage,
+                playerHPRemaining = t.playerHpRemaining,
+                bossHPRemaining = t.bossHpRemaining,
+                isCritical = t.isCritical
+            });
+        }
+
+        apiDroppedItems.Clear();
+        if (resolveRes.rewards != null && resolveRes.rewards.lootItems != null)
+        {
+            foreach (var loot in resolveRes.rewards.lootItems)
+            {
+                apiDroppedItems.Add(new LootDrop {
+                    itemId = loot.itemId,
+                    quantity = loot.quantity,
+                    battleId = resolveRes.battleId
+                });
+            }
+        }
+
+        StartPlayback(realData);
     }
 
     // Bắt đầu luồng hiển thị
@@ -60,21 +150,24 @@ public class BattlePresenter : MonoBehaviour
         view.ShowResult(data.isPlayerVictory);
 
         List<LootDrop> droppedItems = new List<LootDrop>();
-        if (GameProgressService.Instance != null)
+        GameConfigSO config = Resources.Load<GameConfigSO>("GameConfig");
+        bool isMock = config != null && config.useMockMode;
+
+        if (isMock)
         {
-            droppedItems = GameProgressService.Instance.RecordBattleResult(data, data.isPlayerVictory);
+            if (GameProgressService.Instance != null)
+            {
+                droppedItems = GameProgressService.Instance.RecordBattleResult(data, data.isPlayerVictory);
+            }
+            else if (data.isPlayerVictory)
+            {
+                droppedItems.Add(new LootDrop { itemId = "Rusty Sword", quantity = 1 });
+            }
         }
         else
         {
-            // Dự phòng offline để test UI độc lập
-            if (data.isPlayerVictory)
-            {
-                droppedItems.Add(new LootDrop
-                {
-                    itemId = "Rusty Sword",
-                    quantity = 1
-                });
-            }
+            // Nếu là Online Mode, lấy phần thưởng trực tiếp từ API đã lưu lúc tải trận đấu
+            droppedItems = this.apiDroppedItems;
         }
 
         // Kích hoạt giao diện kết quả trận đấu sau khi log kết thúc

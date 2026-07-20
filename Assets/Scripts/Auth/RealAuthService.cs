@@ -58,9 +58,10 @@ public class RealAuthService : IUnityAuthService
                 status      = "Active"
             };
 
-            SetSession(data.token, data.refreshToken, user, data.expiresAt);
+            string tokenToUse = !string.IsNullOrEmpty(data.idToken) ? data.idToken : data.token;
+            SetSession(tokenToUse, data.refreshToken, user, data.expiresAt);
             Debug.Log($"[RealAuth] Login success: {username}");
-            return AuthResult.Ok(data.token, data.userId, data.displayName, data.expiresAt, data.refreshToken);
+            return AuthResult.Ok(tokenToUse, data.userId, data.displayName, data.expiresAt, data.refreshToken);
         }
         catch (Exception ex)
         {
@@ -118,8 +119,9 @@ public class RealAuthService : IUnityAuthService
             // Nếu Cognito trả về token ngay (auto-confirm), lưu session
             if (!string.IsNullOrEmpty(data.token))
             {
-                SetSession(data.token, data.refreshToken, user, data.expiresAt);
-                return AuthResult.Ok(data.token, data.userId, data.displayName, data.expiresAt, data.refreshToken);
+                string tokenToUse = !string.IsNullOrEmpty(data.idToken) ? data.idToken : data.token;
+                SetSession(tokenToUse, data.refreshToken, user, data.expiresAt);
+                return AuthResult.Ok(tokenToUse, data.userId, data.displayName, data.expiresAt, data.refreshToken);
             }
 
             // Cognito yêu cầu xác nhận email trước
@@ -240,7 +242,8 @@ public class RealAuthService : IUnityAuthService
                 status      = "Active"
             };
 
-            SetSession(data.token, newRefresh, user, data.expiresAt);
+            string tokenToUse = !string.IsNullOrEmpty(data.idToken) ? data.idToken : data.token;
+            SetSession(tokenToUse, newRefresh, user, data.expiresAt);
             Debug.Log("[RealAuth] Token refreshed successfully.");
             return true;
         }

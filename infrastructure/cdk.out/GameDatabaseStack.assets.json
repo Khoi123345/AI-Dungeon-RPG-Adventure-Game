@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "76d6bcd6b2edf8ed0ed15f6a3f943b58855a681ec05cb2f27cb3cc12110cfd6d": {
+    "133fddc573dee9fc0717fec1b464e7d9911c720406b8ae862982c3813fef9c4e": {
       "source": {
         "path": "GameDatabaseStack.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-ap-southeast-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1",
-          "objectKey": "76d6bcd6b2edf8ed0ed15f6a3f943b58855a681ec05cb2f27cb3cc12110cfd6d.json",
+          "objectKey": "133fddc573dee9fc0717fec1b464e7d9911c720406b8ae862982c3813fef9c4e.json",
           "region": "ap-southeast-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-1"
         }

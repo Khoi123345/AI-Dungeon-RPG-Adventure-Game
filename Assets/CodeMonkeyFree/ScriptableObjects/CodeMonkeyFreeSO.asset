@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
-  lastShownTimestamp: 1782920340
+  lastShownTimestamp: 1784514405
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1782920340
+  checkedLastUpdateTimestamp: 1784514405
   lastQOTDResponse:
-    questionId: 317
-    questionText: What is the significance of January 1st, 1970?
-    answerA: Skyrim Release Date on the Magnavox Odyssey
-    answerB: Start of Unix Time
-    answerC: 
+    questionId: 323
+    questionText: What is the purpose of using Time.deltaTime?
+    answerA: Random movement
+    answerB: Faster performance
+    answerC: Framerate independence
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1782920340
+  lastQotdTimestamp: 1784514405
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle.png
     topText: Get 80% OFF on ALL my Courses and Games!!!
@@ -35,19 +35,19 @@ MonoBehaviour:
     bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
       Newsletter!
     bottomLink: gamedevreport
-  lastDynamicHeaderTimestamp: 1782920340
+  lastDynamicHeaderTimestamp: 1784514405
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1782920340
+  websiteLatestMessageTimestamp: 1784514405
   websiteLatestVideos:
     videos:
-    - youTubeId: v2E2OkAYjs4
-      title: How to make $50 MILLION Indie Game (MECCHA CHAMELEON)
-    - youTubeId: YMZSa1CzQGk
-      title: TOP 10 NEW Systems and Tools JUNE 2026! | Unity Asset Store
-    - youTubeId: gIECgv6d-1M
-      title: How To Make the HOTTEST Game on Next Fest! (IRON NEST)
-    - youTubeId: -c66MXBKCFk
-      title: How to ESCAPE Tutorial HELL!
-  websiteLatestVideosTimestamp: 1782920340
+    - youTubeId: IQlMciGDMTY
+      title: This method helps you find Game Ideas that make MILLIONS!
+    - youTubeId: zkKU7Vj5Syc
+      title: Do THIS to pick your next SUCCESSFUL game idea!
+    - youTubeId: NjNbIHHu9Z0
+      title: Steam Marketing EXPERT on how to find SUCCESS in 2026!
+    - youTubeId: ngQCio7raFY
+      title: Apparently Indie devs are NOT dead?
+  websiteLatestVideosTimestamp: 1784514405

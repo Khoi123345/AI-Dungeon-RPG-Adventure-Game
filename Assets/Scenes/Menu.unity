@@ -20972,6 +20972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   txtUsername: {fileID: 1706189697}
   btnLogout: {fileID: 1908164740}
+  btnPlay: {fileID: 1112324397}
 --- !u!1 &1606287047
 GameObject:
   m_ObjectHideFlags: 0
