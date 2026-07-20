@@ -1,4 +1,4 @@
-public class PromptContext
+public class GamePromptContext
 {
     public string World { get; set; }
     public string CharacterInfo { get; set; }

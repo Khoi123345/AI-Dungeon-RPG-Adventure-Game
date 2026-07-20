@@ -7,14 +7,14 @@ using GameBackend.Core.AIStory.Services;
 
 namespace GameBackend.Core.AIStory.Builder.Impl
 {
-    public class StoryContextBuilder : IStoryContextBuilder
+    public class GamePromptContextBuilder : IGamePromptContextBuilder
     {
         private readonly ICharacterFormatter _characterFormatter;
         private readonly IInventoryFormatter _inventoryFormatter;
         private readonly IRecentTurnsFormatter _recentTurnsFormatter;
         private readonly IContentService _contentService;
 
-        public StoryContextBuilder(
+        public GamePromptContextBuilder(
             ICharacterFormatter characterFormatter,
             IInventoryFormatter inventoryFormatter,
             IRecentTurnsFormatter recentTurnsFormatter,
@@ -26,7 +26,7 @@ namespace GameBackend.Core.AIStory.Builder.Impl
             _contentService = contentService;
         }
 
-        public async Task<PromptContext> BuildAsync(
+        public async Task<GamePromptContext> BuildAsync(
             Character character,
             IEnumerable<Item> inventoryItems,
             IEnumerable<StoryAction> recentActions,
@@ -39,7 +39,7 @@ namespace GameBackend.Core.AIStory.Builder.Impl
 
             var location = await _contentService.GetLocationAsync(session.currentLocation);
 
-            return new PromptContext
+            return new GamePromptContext
             {
                 World = world,
 

@@ -5,13 +5,13 @@ namespace GameShared.Models
     [Serializable]
     public class LootDrop
     {
-        public string lootId;
-        public string battleId;
-        public string itemId;
-        public int quantity;
-        public float dropRate;
-        public string sourceType;
-        public bool isUnique;
-        public DateTime createdAt;
+        public string lootId { get; set; }
+        public string battleId { get; set; }
+        public string itemId { get; set; }
+        public int quantity { get; set; }
+        public float dropRate { get; set; }
+        public string sourceType { get; set; }
+        public bool isUnique { get; set; }
+        public DateTime createdAt { get; set; }
     }
 }

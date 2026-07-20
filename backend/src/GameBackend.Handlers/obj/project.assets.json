@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net8.0": {
       "Amazon.Lambda.APIGatewayEvents/2.7.1": {
@@ -1406,20 +1406,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HP\\.nuget\\packages\\": {}
+    "C:\\Users\\ACER\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
+      "projectUniqueName": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
       "projectName": "GameBackend.Handlers",
-      "projectPath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
-      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\obj\\",
+      "projectPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\GameBackend.Handlers.csproj",
+      "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -1430,13 +1429,14 @@
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj": {
-              "projectPath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj"
+            "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj": {
+              "projectPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\GameBackend.Core.csproj"
             },
-            "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj": {
-              "projectPath": "D:\\Unity\\Project\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj"
+            "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj": {
+              "projectPath": "C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\shared\\GameShared.csproj"
             }
           }
         }
@@ -1450,10 +1450,12 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net8.0": {
+        "framework": "net8.0",
         "targetAlias": "net8.0",
         "dependencies": {
           "Amazon.Lambda.APIGatewayEvents": {
@@ -1492,12 +1494,26 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.28, 8.0.28]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.28, 8.0.28]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.28, 8.0.28]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

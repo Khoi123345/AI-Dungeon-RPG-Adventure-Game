@@ -1,3 +1,4 @@
+using GameBackend.Core.Config;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Services.Interfaces;
 using GameShared.DTOs.Character;
@@ -39,8 +40,6 @@ namespace GameBackend.Core.Services
                 experience = 0,
                 hp = 100,
                 maxHp = 100,
-                mp = 30,
-                maxMp = 30,
                 attack = 10,
                 defense = 5,
                 criticalRate = 0.05f,
@@ -57,25 +56,62 @@ namespace GameBackend.Core.Services
             return MapToResponse(character);
         }
 
+        // =====================================================================
+        // CALCULATE EFFECTIVE STATS (Mục 1 logic doc)
+        // Stat(tổng) = Stat(gốc) + Σ(bonus từ equipped items)
+        // =====================================================================
+
+        public CharacterStats CalculateEffectiveStats(
+            Character character,
+            IEnumerable<Inventory> equippedItems,
+            IDictionary<string, Item> itemLookup)
+        {
+            int bonusHp = 0, bonusAttack = 0, bonusDefense = 0;
+            float bonusCritical = 0f;
+
+            foreach (var inv in equippedItems)
+            {
+                if (!inv.equipped) continue;
+                if (itemLookup.TryGetValue(inv.itemId, out var item))
+                {
+                    bonusHp       += item.hpBonus;
+                    bonusAttack   += item.attackBonus;
+                    bonusDefense  += item.defenseBonus;
+                    bonusCritical += item.criticalBonus;
+                }
+            }
+
+            return new CharacterStats
+            {
+                maxHp        = character.maxHp   + bonusHp,
+                attack       = character.attack  + bonusAttack,
+                defense      = character.defense + bonusDefense,
+                criticalRate = character.criticalRate + bonusCritical,
+                luckyRate    = character.luckyRate
+            };
+        }
+
+        // =====================================================================
+        // LEVEL UP (Mục 1 logic doc — dùng GameConstants thay vì hardcode)
+        // =====================================================================
+
         /// <summary>
-        /// Logic level up tách từ GameProgressService.HandleLevelUpIfNeeded()
+        /// Logic level up: vòng lặp while cho phép nhảy nhiều cấp cùng lúc.
         /// </summary>
         public async Task<Character> ApplyExperienceAndLevelUp(Character character, int expGained)
         {
             character.experience += expGained;
-            int requiredExp = character.level * 100;
+            int requiredExp = character.level * GameConstants.BaseRequiredXpPerLevel;
 
             while (character.experience >= requiredExp)
             {
                 character.experience -= requiredExp;
                 character.level += 1;
-                character.maxHp += 12;
-                character.hp = character.maxHp;
-                character.maxMp += 5;
-                character.mp = character.maxMp;
-                character.attack += 3;
-                character.defense += 2;
-                requiredExp = character.level * 100;
+                character.maxHp   += GameConstants.LevelUpHpGrowth;
+                character.hp       = character.maxHp;   // Hồi đầy HP mỗi lần lên cấp
+                character.attack  += GameConstants.LevelUpAttackGrowth;
+                character.defense += GameConstants.LevelUpDefenseGrowth;
+                requiredExp = character.level * GameConstants.BaseRequiredXpPerLevel;
 
                 _logger.LogInformation("Character {CharacterId} leveled up to {Level}", character.characterId, character.level);
             }
@@ -83,6 +119,45 @@ namespace GameBackend.Core.Services
             await _characterRepository.SaveAsync(character);
             return character;
         }
+
+        // =====================================================================
+        // DEATH & REVIVAL (Mục 6 logic doc)
+        // =====================================================================
+
+        /// <summary>
+        /// Kiểm tra và tự động hồi sinh nếu đủ thời gian.
+        /// Dùng chung cho mọi handler cần check trạng thái nhân vật.
+        /// </summary>
+        public async Task EnsureAliveOrAutoReviveAsync(string characterId)
+        {
+            var character = await _characterRepository.GetByIdAsync(characterId)
+                ?? throw new Utils.GameNotFoundException("Character not found");
+
+            if (character.status != "Dead") return; // Đang Alive — không cần làm gì
+
+            if (DateTime.UtcNow >= character.reviveTime)
+            {
+                // Đã qua thời gian chờ → tự động hồi sinh
+                character.status = "Alive";
+                character.hp = (int)(character.maxHp * GameConstants.RevivalHpRatio);
+                character.hp = Math.Max(1, character.hp); // Tối thiểu 1 HP
+                await _characterRepository.SaveAsync(character);
+
+                _logger.LogInformation("Character {CharacterId} auto-revived with {Hp}/{MaxHp} HP",
+                    character.characterId, character.hp, character.maxHp);
+            }
+            else
+            {
+                // Chưa tới giờ hồi sinh
+                var remaining = character.reviveTime - DateTime.UtcNow;
+                throw new Utils.GameValidationException(
+                    $"Nhân vật đang chờ hồi sinh. Còn {remaining.Minutes} phút {remaining.Seconds} giây.");
+            }
+        }
+
+        // =====================================================================
+        // MAPPING
+        // =====================================================================
 
         private static CharacterResponse MapToResponse(Character c)
         {
@@ -94,8 +169,6 @@ namespace GameBackend.Core.Services
                 experience = c.experience,
                 hp = c.hp,
                 maxHp = c.maxHp,
-                mp = c.mp,
-                maxMp = c.maxMp,
                 attack = c.attack,
                 defense = c.defense,
                 criticalRate = c.criticalRate,
@@ -108,3 +181,4 @@ namespace GameBackend.Core.Services
         }
     }
 }
+

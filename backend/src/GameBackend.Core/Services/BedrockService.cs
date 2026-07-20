@@ -1,5 +1,7 @@
 using GameBackend.Core.Services.Interfaces;
+using GameShared.DTOs.Story;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace GameBackend.Core.Services
 {
@@ -55,17 +57,58 @@ namespace GameBackend.Core.Services
             var index = (hash & int.MaxValue) % templates.Length;
             var selected = templates[index];
 
-            if (TryExtractChoice(userPrompt, out var choiceIndex))
+            var response = new StoryAiResponse
             {
-                return choiceIndex switch
+                NarrativeText = selected,
+                StorySummary = selected,
+                ActionType = TryExtractChoice(userPrompt, out var choiceIndex) ? "choice" : "player_action",
+                MetadataJson = "{}",
+                TriggerBattle = false,
+                BossId = string.Empty,
+                CharacterDelta = new StoryAiCharacterDelta()
+            };
+
+            if (TryExtractChoice(userPrompt, out var choiceIndex2))
+            {
+                response = choiceIndex2 switch
                 {
-                    0 => selected + " Bạn lao thẳng về phía trước, sẵn sàng cho một trận chiến sống còn.",
-                    1 => selected + " Bạn cúi xuống quan sát dấu vết trên nền đá, tìm kiếm bí mật bị giấu kín.",
-                    _ => selected + " Bạn dừng lại để ổn định hơi thở, chấp nhận một khoảng lặng ngắn trước khi bước tiếp."
+                    0 => new StoryAiResponse
+                    {
+                        NarrativeText = selected + " Bạn lao thẳng về phía trước, sẵn sàng cho một trận chiến sống còn.",
+                        StorySummary = selected,
+                        ActionType = "choice",
+                        MetadataJson = "{}",
+                        TriggerBattle = true,
+                        BossId = "boss_goblin_chief",
+                        BossLevel = 10,
+                        CharacterDelta = new StoryAiCharacterDelta { ExpDelta = 25 }
+                    },
+                    1 => new StoryAiResponse
+                    {
+                        NarrativeText = selected + " Bạn cúi xuống quan sát dấu vết trên nền đá, tìm kiếm bí mật bị giấu kín.",
+                        StorySummary = selected,
+                        ActionType = "choice",
+                        MetadataJson = "{}",
+                        TriggerBattle = false,
+                        CharacterDelta = new StoryAiCharacterDelta { GoldDelta = 15, ExpDelta = 15 }
+                    },
+                    _ => new StoryAiResponse
+                    {
+                        NarrativeText = selected + " Bạn dừng lại để ổn định hơi thở, chấp nhận một khoảng lặng ngắn trước khi bước tiếp.",
+                        StorySummary = selected,
+                        ActionType = "choice",
+                        MetadataJson = "{}",
+                        TriggerBattle = false,
+                        CharacterDelta = new StoryAiCharacterDelta { HpDelta = 18, GoldDelta = -5, ExpDelta = 5 }
+                    }
                 };
             }
 
-            return selected;
+            return JsonSerializer.Serialize(response, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            });
         }
 
         private static bool TryExtractChoice(string userPrompt, out int choiceIndex)

@@ -13,7 +13,7 @@ public class InventoryFormatter : IInventoryFormatter
         foreach (var item in items)
         {
             sb.AppendLine(
-                $"- {item.name} ({item.rarity})");
+                $"- {item.name} ({item.rarity}");
         }
 
         return sb.ToString();

@@ -4,6 +4,6 @@ namespace GameBackend.Core.AIStory
 {
     public interface IPromptBuilder
     {
-        string Build(PromptContext context);
+        string Build(GamePromptContext context);
     }
 }
