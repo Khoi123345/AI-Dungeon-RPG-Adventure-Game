@@ -1,0 +1,163 @@
+=========== PROMPT ===========
+# system_prompt.md
+
+Bạn là một Game Master (Người Quản Quản Trò) xuất sắc cho "Aethelgard", một trò chơi Text-based RPG mang phong cách Dark Fantasy. Nhiệm vụ của bạn là phản hồi các hành động của người chơi, dẫn dắt cốt truyện và mô tả thế giới một cách sống động.
+
+**Quy tắc Cốt lõi (Core Rules):**
+1. **Góc nhìn & Văn phong:** Luôn sử dụng ngôi thứ hai ("Bạn") để kể chuyện. Văn phong tăm tối, bí ẩn, lôi cuốn và đầy rẫy hiểm nguy rình rập. Mô tả chi tiết cảnh quan, âm thanh và mùi vị.
+2. **Không chơi thay người chơi:** Tuyệt đối KHÔNG bao giờ tự quyết định hành động, suy nghĩ hay lời thoại của người chơi. Chỉ phản hồi lại hành động họ vừa thực hiện và dừng lại để chờ họ quyết định bước tiếp theo.
+3. **Phản hồi linh hoạt:** Nếu người chơi làm điều hợp lý, hãy cho họ thành công hoặc tìm thấy manh mối. Nếu hành động vô lý hoặc nguy hiểm, hãy mô tả hậu quả (như dính bẫy, bị quái vật nhỏ tấn công).
+4. **Giới hạn Hệ thống Chiến đấu (RẤT QUAN TRỌNG):** Trò chơi có một hệ thống "Boss Encounter" và "Battle System" tự động. Nếu người chơi sắp gặp Boss, bạn chỉ có nhiệm vụ MÔ TẢ sự xuất hiện và bầu không khí áp đảo của Boss đó, TUYỆT ĐỐI KHÔNG tự viết ra kết quả trận đánh (thắng hay thua). Việc tính toán sát thương sẽ do hệ thống backend lo.
+5. **Độ dài:** Giữ phản hồi ngắn gọn, súc tích (khoảng 3-5 câu hoặc 100-150 từ) để phù hợp với màn hình game. Luôn kết thúc bằng một sự kiện, tình huống mở hoặc câu hỏi gián tiếp để kích thích người chơi hành động tiếp.
+
+ story_prompt.md
+
+Dựa vào ngữ cảnh hiện tại của trò chơi, hãy phản hồi lại hành động mới nhất của người chơi.
+
+<game_context>
+- **Vị trí hiện tại (Location):** Mock Location - Mock Lore
+- **Nhiệm vụ hiện tại (Quest):** Mock Quest
+- **Chỉ số nhân vật (Stats & HP):** HP: 100/100 | Cấp độ: 1
+- **Vật phẩm trong túi (Inventory):** Mock Inventory
+- **Boss đã đánh bại:** None
+</game_context>
+
+<recent_story_history>
+Mock Summary
+</recent_story_history>
+
+<system_event>
+<!-- Hệ thống sẽ tự động điền nếu có sự kiện random như rớt đồ, gặp quái. Nếu trống, bỏ qua -->
+ 
+</system_event>
+
+**Hành động của người chơi:** ""
+
+**Yêu cầu:** Hãy viết đoạn văn tiếp theo mô tả kết quả của hành động trên. Nếu <system_event> có chứa thông báo "Gặp Boss Mock Boss", hãy mô tả sự xuất hiện đầy áp đảo của nó. Đừng quên áp dụng các quy tắc trong system_prompt.
+
+SYSTEM PROMPT
+-------------
+You are an RPG narrator.
+Never change game state.
+Never create items.
+Never decide battles.
+
+WORLD
+------
+Dark Fantasy World
+
+CHARACTER
+----------
+Name: Kratos, Level: 1, HP: 100/100
+
+INVENTORY
+----------
+Health Potion x1
+
+CHAPTER
+----------
+Intro
+
+CURRENT LOCATION
+----------------
+Ancient Ruins
+
+STORY SUMMARY
+-------------
+Anh hùng bắt đầu cuộc hành trình tại tàn tích cổ.
+
+RECENT TURNS
+------------
+Turn 1: Người chơi di chuyển vào sảnh chính.
+
+CURRENT ACTION
+--------------
+Tấn công quái vật canh giữ báu vật
+
+=========== RAW AI ===========
+{"narrativeText":"T\u1EEB s\u00E2u trong b\u00F3ng \u0111\u00EAm, m\u1ED9t ti\u1EBFng g\u1EA7m tr\u1EA7m th\u1EA5p v\u1ECDng \u0111\u1EBFn. Cu\u1ED9c phi\u00EAu l\u01B0u v\u1EEBa ch\u1EA1m v\u00E0o v\u00F9ng \u0111\u1EA5t kh\u00F4ng n\u00EAn th\u1EE9c t\u1EC9nh.","storySummary":"T\u1EEB s\u00E2u trong b\u00F3ng \u0111\u00EAm, m\u1ED9t ti\u1EBFng g\u1EA7m tr\u1EA7m th\u1EA5p v\u1ECDng \u0111\u1EBFn. Cu\u1ED9c phi\u00EAu l\u01B0u v\u1EEBa ch\u1EA1m v\u00E0o v\u00F9ng \u0111\u1EA5t kh\u00F4ng n\u00EAn th\u1EE9c t\u1EC9nh.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[]}
+
+=========== PARSED ===========
+{
+  "NarrativeText": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "CurrentNodeId": "intro",
+  "CurrentLocation": "Ancient Ruins",
+  "CurrentChapterId": "chapter_1",
+  "StorySummary": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "ActionType": "player_action",
+  "MetadataJson": "{}",
+  "TriggerBattle": false,
+  "BossId": "",
+  "BossName": null,
+  "BossLevel": null,
+  "CharacterDelta": {
+    "HpDelta": 0,
+    "GoldDelta": 0,
+    "ExpDelta": 0,
+    "MpDelta": 0,
+    "Status": null,
+    "CurrentLocationId": "Ancient Ruins"
+  },
+  "InventoryChanges": []
+}
+
+=========== VALIDATED ===========
+{
+  "NarrativeText": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "CurrentNodeId": "intro",
+  "CurrentLocation": "Ancient Ruins",
+  "CurrentChapterId": "chapter_1",
+  "StorySummary": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "ActionType": "player_action",
+  "MetadataJson": "{}",
+  "TriggerBattle": false,
+  "BossId": "",
+  "BossName": null,
+  "BossLevel": null,
+  "CharacterDelta": {
+    "HpDelta": 0,
+    "GoldDelta": 0,
+    "ExpDelta": 0,
+    "MpDelta": 0,
+    "Status": null,
+    "CurrentLocationId": "Ancient Ruins"
+  },
+  "InventoryChanges": []
+}
+
+=========== FINAL SESSION ===========
+{
+  "sessionId": "session_full_pipeline",
+  "characterId": "hero_1",
+  "currentLocation": "Ancient Ruins",
+  "currentNodeId": "intro",
+  "currentChapterId": "chapter_1",
+  "status": "Active",
+  "updatedAt": "2026-07-20T09:11:39.142094Z",
+  "endedAt": null,
+  "storyVersion": null,
+  "storySummary": "Anh hùng bắt đầu cuộc hành trình tại tàn tích cổ. Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "sourceType": null
+}
+
+=========== CHARACTER ===========
+{
+  "characterId": "hero_1",
+  "userId": "user_1",
+  "name": "Kratos",
+  "level": 1,
+  "experience": 0,
+  "hp": 100,
+  "maxHp": 100,
+  "mp": 50,
+  "maxMp": 50,
+  "attack": 0,
+  "defense": 0,
+  "criticalRate": 0,
+  "luckyRate": 0,
+  "gold": 10,
+  "className": null,
+  "status": null,
+  "currentLocationId": "Ancient Ruins",
+  "reviveTime": "0001-01-01T00:00:00"
+}

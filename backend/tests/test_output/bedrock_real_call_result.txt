@@ -1,0 +1,5 @@
+=== BEDROCK CALL RESULT (2026-07-20 09:11:39 UTC) ===
+ModelId: anthropic.claude-sonnet-4-5-20250929-v1:0
+Region: ap-southeast-1
+RAW RESPONSE:
+{"narrativeText":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","storySummary":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[]}

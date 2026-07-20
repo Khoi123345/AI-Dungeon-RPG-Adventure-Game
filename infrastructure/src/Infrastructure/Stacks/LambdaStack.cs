@@ -122,6 +122,16 @@ namespace Infrastructure.Stacks
             cognitoStack.UserPool.Grant(RegisterFunction, "cognito-idp:SignUp");
             cognitoStack.UserPool.Grant(ConfirmSignUpFunction, "cognito-idp:ConfirmSignUp");
             cognitoStack.UserPool.Grant(RefreshTokenFunction, "cognito-idp:InitiateAuth");
+
+            // Grant Bedrock Permissions
+            var bedrockPolicy = new Amazon.CDK.AWS.IAM.PolicyStatement(new Amazon.CDK.AWS.IAM.PolicyStatementProps
+            {
+                Effect = Amazon.CDK.AWS.IAM.Effect.ALLOW,
+                Actions = new[] { "bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream" },
+                Resources = new[] { "*" }
+            });
+            StartStoryFunction.AddToRolePolicy(bedrockPolicy);
+            StoryActionFunction.AddToRolePolicy(bedrockPolicy);
         }
 
         private Function CreateFunction(string name, string handler, FunctionProps baseProps, bool enableSnapStart = false)

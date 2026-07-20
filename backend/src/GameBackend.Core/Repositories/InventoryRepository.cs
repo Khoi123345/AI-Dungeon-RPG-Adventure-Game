@@ -1,6 +1,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
+using GameBackend.Core.Config;
 using GameBackend.Core.Utils;
 using GameShared.Models;
 using System.Collections.Generic;

@@ -1,38 +1,102 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Amazon.BedrockRuntime;
+using Amazon.BedrockRuntime.Model;
+using GameBackend.Core.Config;
 using GameBackend.Core.Services.Interfaces;
 using GameShared.DTOs.Story;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
+using Microsoft.Extensions.Options;
 
 namespace GameBackend.Core.Services
 {
     /// <summary>
-    /// Mock Bedrock service cho giai đoạn chưa kết nối AWS thật.
-    /// Có thể tắt mock bằng biến môi trường BEDROCK_USE_MOCK=false.
+    /// BedrockService kết nối trực tiếp với AWS Bedrock Runtime để gọi Claude AI.
+    /// Đây là nơi duy nhất trong hệ thống tương tác với AWS Bedrock.
     /// </summary>
     public class BedrockService : IBedrockService
     {
+        private readonly IAmazonBedrockRuntime? _client;
+        private readonly BedrockOptions _options;
         private readonly ILogger<BedrockService> _logger;
         private readonly bool _useMockResponses;
         private const int SimulatedLatencyMs = 120;
 
-        public BedrockService(ILogger<BedrockService> logger)
+        public BedrockService(
+            IAmazonBedrockRuntime client,
+            IOptions<BedrockOptions> options,
+            ILogger<BedrockService> logger)
         {
+            _client = client;
+            _options = options?.Value ?? new BedrockOptions();
             _logger = logger;
-            _useMockResponses = !string.Equals(
+            _useMockResponses = string.Equals(
                 Environment.GetEnvironmentVariable("BEDROCK_USE_MOCK"),
-                "false",
+                "true",
                 StringComparison.OrdinalIgnoreCase);
         }
 
         public async Task<string> GenerateNarrativeAsync(string systemPrompt, string userPrompt)
         {
-            if (!_useMockResponses)
+            if (_client != null && !_useMockResponses)
             {
-                _logger.LogWarning("BEDROCK_USE_MOCK is disabled, but real AWS integration is not wired yet. Falling back to mock response.");
+                try
+                {
+                    var modelId = string.IsNullOrWhiteSpace(_options.ModelId)
+                        ? "anthropic.claude-sonnet-4-5-20250929-v1:0"
+                        : _options.ModelId;
+
+                    _logger.LogInformation("Calling AWS Bedrock ConverseAsync for model: {ModelId} in region: {Region}", modelId, _options.Region);
+
+                    var converseRequest = new ConverseRequest
+                    {
+                        ModelId = modelId,
+                        InferenceConfig = new InferenceConfiguration
+                        {
+                            Temperature = _options.Temperature,
+                            MaxTokens = _options.MaxTokens > 0 ? _options.MaxTokens : 1000,
+                            TopP = _options.TopP
+                        },
+                        Messages = new List<Message>
+                        {
+                            new Message
+                            {
+                                Role = ConversationRole.User,
+                                Content = new List<ContentBlock>
+                                {
+                                    new ContentBlock { Text = userPrompt ?? string.Empty }
+                                }
+                            }
+                        }
+                    };
+
+                    if (!string.IsNullOrWhiteSpace(systemPrompt))
+                    {
+                        converseRequest.System = new List<SystemContentBlock>
+                        {
+                            new SystemContentBlock { Text = systemPrompt }
+                        };
+                    }
+
+                    var response = await _client.ConverseAsync(converseRequest);
+                    var text = response.Output?.Message?.Content?.FirstOrDefault()?.Text;
+
+                    if (!string.IsNullOrWhiteSpace(text))
+                    {
+                        return text;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to call AWS Bedrock ConverseAsync. Falling back to mock response.");
+                }
             }
 
             await Task.Delay(SimulatedLatencyMs);
-
             var narrative = GenerateMockNarrative(systemPrompt, userPrompt);
             _logger.LogInformation("Mock Bedrock response generated for prompt: {Prompt}", Truncate(userPrompt, 80));
             return narrative;
@@ -40,7 +104,7 @@ namespace GameBackend.Core.Services
 
         public Task<bool> IsAvailableAsync()
         {
-            return Task.FromResult(true);
+            return Task.FromResult(_client != null);
         }
 
         private static string GenerateMockNarrative(string systemPrompt, string userPrompt)
