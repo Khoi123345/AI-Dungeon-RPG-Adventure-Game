@@ -27,5 +27,10 @@ namespace GameShared.Models
         public string status;
         public string currentLocationId;
         public DateTime reviveTime;
+
+        // Hidden stats — hiển thị trong ProfileScene, không show ở Story/Battle
+        public float speed;
+        public float evasionRate;
+        public float magicResist;
     }
 }
