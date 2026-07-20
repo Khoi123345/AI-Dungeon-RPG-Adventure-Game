@@ -5,8 +5,6 @@ namespace GameShared.Models
     [Serializable]
     public class BossEncounter
     {
-        /// <summary>Độ hiếm của boss: "Common" | "Rare" | "Epic" | "Legendary" | "Mythic"</summary>
-        public string bossRarity;
         public string encounterId { get; set; }
         public string characterId { get; set; }
         public string bossId { get; set; }

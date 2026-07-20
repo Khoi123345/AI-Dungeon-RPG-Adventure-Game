@@ -2,55 +2,84 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
 using GameShared.Models;
-using System.Text.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using GameBackend.Core.Utils;
 
 namespace GameBackend.Core.Repositories
 {
     public class StoryRepository : IStoryRepository
     {
-        private readonly Table _sessionTable;
-        private readonly Table _actionTable;
+        private readonly Table _table;
 
         public StoryRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _sessionTable = Table.LoadTable(dynamoDbClient, AppSettings.StorySessionsTableName);
-            _actionTable = Table.LoadTable(dynamoDbClient, AppSettings.StoryActionsTableName);
+            _table = Table.LoadTable(dynamoDbClient, AppSettings.GameTableName);
         }
 
         public async Task<StorySession?> GetSessionByIdAsync(string sessionId)
         {
-            var doc = await _sessionTable.GetItemAsync(sessionId);
+            if (string.IsNullOrWhiteSpace(sessionId)) return null;
+
+            var doc = await _table.GetItemAsync($"SESSION#{sessionId}", "METADATA");
             return doc != null ? JsonUtils.Deserialize<StorySession>(doc.ToJson()) : null;
         }
 
         public async Task<StorySession?> GetSessionByCharacterIdAsync(string characterId)
         {
-            var filter = new ScanFilter();
-            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
-            filter.AddCondition("status", ScanOperator.Equal, "Active");
-            var search = _sessionTable.Scan(filter);
+            if (string.IsNullOrWhiteSpace(characterId)) return null;
+
+            var search = _table.Query(new QueryOperationConfig
+            {
+                IndexName = "GSI1",
+                Filter = new QueryFilter("GSI1PK", QueryOperator.Equal, $"CHAR#{characterId}")
+            });
             var docs = await search.GetNextSetAsync();
-            return docs.Count > 0 ? JsonUtils.Deserialize<StorySession>(docs[0].ToJson()) : null;
+            var sessions = docs
+                .Where(d => d.ContainsKey("SK") && d["SK"].AsString() == "METADATA")
+                .Select(d => JsonUtils.Deserialize<StorySession>(d.ToJson())!)
+                .Where(s => s != null && s.status == "Active")
+                .OrderByDescending(s => s.updatedAt)
+                .ToList();
+
+            return sessions.FirstOrDefault();
         }
 
         public async Task SaveSessionAsync(StorySession session)
         {
+            if (session == null || string.IsNullOrWhiteSpace(session.sessionId)) return;
+
             var doc = Document.FromJson(JsonUtils.Serialize(session));
-            await _sessionTable.PutItemAsync(doc);
+            doc["PK"] = $"SESSION#{session.sessionId}";
+            doc["SK"] = "METADATA";
+            doc["GSI1PK"] = $"CHAR#{session.characterId}";
+            doc["GSI1SK"] = $"SESSION#{session.sessionId}";
+
+            await _table.PutItemAsync(doc);
         }
 
         public async Task SaveActionAsync(StoryAction action)
         {
+            if (action == null || string.IsNullOrWhiteSpace(action.actionId)) return;
+
             var doc = Document.FromJson(JsonUtils.Serialize(action));
-            await _actionTable.PutItemAsync(doc);
+            doc["PK"] = $"SESSION#{action.sessionId}";
+            doc["SK"] = $"ACTION#{action.actionId}";
+            doc["GSI1PK"] = $"SESSION#{action.sessionId}";
+            doc["GSI1SK"] = $"ACTION#{action.turnNumber:D6}";
+
+            await _table.PutItemAsync(doc);
         }
 
         public async Task<List<StoryAction>> GetActionsBySessionIdAsync(string sessionId)
         {
-            var filter = new ScanFilter();
-            filter.AddCondition("sessionId", ScanOperator.Equal, sessionId);
-            var search = _actionTable.Scan(filter);
+            if (string.IsNullOrWhiteSpace(sessionId)) return new List<StoryAction>();
+
+            var filter = new QueryFilter("PK", QueryOperator.Equal, $"SESSION#{sessionId}");
+            filter.AddCondition("SK", QueryOperator.BeginsWith, "ACTION#");
+
+            var search = _table.Query(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Select(d => JsonUtils.Deserialize<StoryAction>(d.ToJson())!).ToList();
         }

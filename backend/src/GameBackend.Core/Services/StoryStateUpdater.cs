@@ -65,9 +65,14 @@ namespace GameBackend.Core.Services
 
 			if (!string.IsNullOrWhiteSpace(aiResponse.StorySummary))
 			{
-				session.storySummary = string.IsNullOrWhiteSpace(session.storySummary)
-					? aiResponse.StorySummary
-					: $"{session.storySummary} {aiResponse.StorySummary}";
+				if (string.IsNullOrWhiteSpace(session.storySummary))
+				{
+					session.storySummary = aiResponse.StorySummary;
+				}
+				else if (!session.storySummary.Contains(aiResponse.StorySummary, StringComparison.OrdinalIgnoreCase))
+				{
+					session.storySummary = $"{session.storySummary} {aiResponse.StorySummary}";
+				}
 			}
 		}
 

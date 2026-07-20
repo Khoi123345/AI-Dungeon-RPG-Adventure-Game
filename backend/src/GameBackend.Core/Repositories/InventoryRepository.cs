@@ -3,6 +3,9 @@ using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Utils;
 using GameShared.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GameBackend.Core.Repositories
 {
@@ -12,84 +15,80 @@ namespace GameBackend.Core.Repositories
 
         public InventoryRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.InventoryTableName);
+            _table = Table.LoadTable(dynamoDbClient, AppSettings.GameTableName);
         }
 
-        /// <inheritdoc/>
         public async Task<List<Inventory>> GetByCharacterIdAsync(string characterId)
         {
-            var filter = new ScanFilter();
-            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
-            var search = _table.Scan(filter);
+            if (string.IsNullOrWhiteSpace(characterId)) return new List<Inventory>();
+
+            var filter = new QueryFilter("PK", QueryOperator.Equal, $"CHAR#{characterId}");
+            filter.AddCondition("SK", QueryOperator.BeginsWith, "INVENTORY#");
+
+            var search = _table.Query(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Select(d => JsonUtils.Deserialize<Inventory>(d.ToJson())!).ToList();
         }
 
-        /// <inheritdoc/>
         public async Task<Inventory?> GetByInventoryIdAsync(string inventoryId)
         {
-            var doc = await _table.GetItemAsync(inventoryId);
-            return doc == null ? null : JsonUtils.Deserialize<Inventory>(doc.ToJson());
-        }
+            if (string.IsNullOrWhiteSpace(inventoryId)) return null;
 
-        /// <inheritdoc/>
-        public async Task<Inventory?> FindByCharacterAndItemAsync(string characterId, string itemId)
-        {
-            var filter = new ScanFilter();
-            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
-            filter.AddCondition("itemId",      ScanOperator.Equal, itemId);
-            var search = _table.Scan(filter);
+            var search = _table.Query(new QueryOperationConfig
+            {
+                IndexName = "GSI1",
+                Filter = new QueryFilter("GSI1PK", QueryOperator.Equal, $"INVENTORY#{inventoryId}")
+            });
             var docs = await search.GetNextSetAsync();
             return docs.Count > 0 ? JsonUtils.Deserialize<Inventory>(docs[0].ToJson()) : null;
         }
 
-        /// <inheritdoc/>
+        public async Task<Inventory?> FindByCharacterAndItemAsync(string characterId, string itemId)
+        {
+            if (string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(itemId)) return null;
+
+            var items = await GetByCharacterIdAsync(characterId);
+            return items.FirstOrDefault(x => x.itemId == itemId);
+        }
+
         public async Task<List<Inventory>> GetEquippedItemsAsync(string characterId)
         {
-            var filter = new ScanFilter();
-            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
-            filter.AddCondition("equipped",    ScanOperator.Equal, true);
-            var search = _table.Scan(filter);
-            var docs = await search.GetNextSetAsync();
-            return docs.Select(d => JsonUtils.Deserialize<Inventory>(d.ToJson())!).ToList();
+            if (string.IsNullOrWhiteSpace(characterId)) return new List<Inventory>();
+
+            var items = await GetByCharacterIdAsync(characterId);
+            return items.Where(x => x.equipped).ToList();
         }
 
-        /// <inheritdoc/>
         public async Task<int> CountSlotsAsync(string characterId)
         {
-            var filter = new ScanFilter();
-            filter.AddCondition("characterId", ScanOperator.Equal, characterId);
-            filter.AddCondition("quantity",    ScanOperator.GreaterThan, 0);
+            if (string.IsNullOrWhiteSpace(characterId)) return 0;
 
-            // Chỉ cần đếm — chỉ lấy inventoryId để tiết kiệm đọc từ DynamoDB
-            var config = new ScanOperationConfig
-            {
-                Filter = filter,
-                AttributesToGet = new List<string> { "inventoryId" },
-                Select = SelectValues.SpecificAttributes
-            };
-
-            var search = _table.Scan(config);
-            int count = 0;
-            while (!search.IsDone)
-            {
-                var page = await search.GetNextSetAsync();
-                count += page.Count;
-            }
-            return count;
+            var items = await GetByCharacterIdAsync(characterId);
+            return items.Count(x => x.quantity > 0);
         }
 
-        /// <inheritdoc/>
         public async Task SaveAsync(Inventory inventory)
         {
+            if (inventory == null || string.IsNullOrWhiteSpace(inventory.inventoryId) || string.IsNullOrWhiteSpace(inventory.characterId)) return;
+
             var doc = Document.FromJson(JsonUtils.Serialize(inventory));
+            doc["PK"] = $"CHAR#{inventory.characterId}";
+            doc["SK"] = $"INVENTORY#{inventory.inventoryId}";
+            doc["GSI1PK"] = $"INVENTORY#{inventory.inventoryId}";
+            doc["GSI1SK"] = "METADATA";
+
             await _table.PutItemAsync(doc);
         }
 
-        /// <inheritdoc/>
         public async Task DeleteAsync(string inventoryId)
         {
-            await _table.DeleteItemAsync(inventoryId);
+            if (string.IsNullOrWhiteSpace(inventoryId)) return;
+
+            var existing = await GetByInventoryIdAsync(inventoryId);
+            if (existing != null)
+            {
+                await _table.DeleteItemAsync($"CHAR#{existing.characterId}", $"INVENTORY#{existing.inventoryId}");
+            }
         }
     }
 }

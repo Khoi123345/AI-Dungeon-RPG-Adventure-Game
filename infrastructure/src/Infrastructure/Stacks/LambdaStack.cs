@@ -28,6 +28,7 @@ namespace Infrastructure.Stacks
                 Code = Code.FromAsset("../backend/src/GameBackend.Handlers/bin/Release/net8.0/publish"),
                 Environment = new Dictionary<string, string>
                 {
+                    { "GAME_TABLE", dbStack.MainTable.TableName },
                     { "USERS_TABLE", dbStack.UsersTable.TableName },
                     { "CHARACTERS_TABLE", dbStack.CharactersTable.TableName },
                     { "ENCOUNTERS_TABLE", dbStack.BossEncountersTable.TableName },

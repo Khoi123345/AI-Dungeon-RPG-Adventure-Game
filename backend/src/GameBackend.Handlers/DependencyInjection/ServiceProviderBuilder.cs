@@ -73,13 +73,13 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<IGameRuleSubValidator, BossValidator>();
                 services.AddSingleton<IGameRuleSubValidator, InventoryValidator>();
                 services.AddSingleton<IGameRuleSubValidator, LocationValidator>();
-                services.AddSingleton<IGameRuleSubValidator, QuestValidator>();
                 services.AddSingleton<IGameRuleSubValidator, CharacterValidator>();
                 services.AddSingleton<IGameRuleSubValidator, StoryValidator>();
                 services.AddSingleton<IGameRuleValidator, GameRuleValidator>();
                 services.AddSingleton<IStoryService, StoryService>();
                 services.AddSingleton<IBattleService, BattleService>();
                 services.AddSingleton<IBedrockService, BedrockService>();
+                services.AddSingleton<IStorySummaryService, StorySummaryService>();
                 services.AddSingleton<IInventoryService, InventoryService>();
 
                 _serviceProvider = services.BuildServiceProvider();

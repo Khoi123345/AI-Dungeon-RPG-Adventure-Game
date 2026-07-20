@@ -220,6 +220,15 @@ public class StoryStateUpdaterTests
 
             return Task.CompletedTask;
         }
+
+        public Task<Inventory?> GetByInventoryIdAsync(string inventoryId) => Task.FromResult(_items.FirstOrDefault(x => x.inventoryId == inventoryId));
+        public Task<List<Inventory>> GetEquippedItemsAsync(string characterId) => Task.FromResult(_items.Where(x => x.characterId == characterId && x.equipped).ToList());
+        public Task<int> CountSlotsAsync(string characterId) => Task.FromResult(_items.Count(x => x.characterId == characterId));
+        public Task DeleteAsync(string inventoryId)
+        {
+            _items.RemoveAll(x => x.inventoryId == inventoryId);
+            return Task.CompletedTask;
+        }
     }
 
     private sealed class FakeBattleRepository : IBattleRepository

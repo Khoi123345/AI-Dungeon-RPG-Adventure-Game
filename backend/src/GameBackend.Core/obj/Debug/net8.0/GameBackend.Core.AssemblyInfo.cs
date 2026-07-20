@@ -6,14 +6,14 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-    
+
 using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("GameBackend.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb90f1ea52e32c417ad6131cde40354ba3105b60")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+57bfc1bb1bec165e1f2b8a470454917f8940ec76")]
 [assembly: System.Reflection.AssemblyProductAttribute("GameBackend.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GameBackend.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

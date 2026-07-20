@@ -26,6 +26,7 @@ namespace GameBackend.Core.Services
         private readonly IStoryStateUpdater _storyStateUpdater;
         private readonly IGameRuleValidator _gameRuleValidator;
         private readonly IPromptBuilder _promptBuilder;
+        private readonly IStorySummaryService _storySummaryService;
         private readonly ILogger<StoryService> _logger;
 
         public StoryService(
@@ -38,6 +39,7 @@ namespace GameBackend.Core.Services
             IStoryStateUpdater storyStateUpdater,
             IGameRuleValidator gameRuleValidator,
             IPromptBuilder promptBuilder,
+            IStorySummaryService storySummaryService,
             ILogger<StoryService> logger)
         {
             _storyRepository = storyRepository;
@@ -49,6 +51,7 @@ namespace GameBackend.Core.Services
             _storyStateUpdater = storyStateUpdater;
             _gameRuleValidator = gameRuleValidator;
             _promptBuilder = promptBuilder;
+            _storySummaryService = storySummaryService;
             _logger = logger;
         }
 
@@ -158,18 +161,7 @@ namespace GameBackend.Core.Services
 
             await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
 
-            var action = new StoryAction
-            {
-                actionId = Guid.NewGuid().ToString("N"),
-                sessionId = session.sessionId,
-                playerInput = request.playerInput,
-                aiResponse = aiResponse.NarrativeText,
-                turnNumber = 0,
-                actionType = aiResponse.ActionType ?? "choice",
-                metadataJson = StoryAiResponseParser.Serialize(aiResponse),
-                createdAt = DateTime.UtcNow
-            };
-            await _storyRepository.SaveActionAsync(action);
+            await SaveStoryTurnAsync(context, aiResponse, "choice");
 
             return BuildResponse(context, aiResponse.NarrativeText, aiResponse);
         }
@@ -222,21 +214,29 @@ namespace GameBackend.Core.Services
             return StoryAiResponseParser.Parse(rawResponse, context.Session, defaultActionType, _logger);
         }
 
-        private async Task SaveStoryTurnAsync(StoryActionProcessingContext context, StoryAiResponse aiResponse)
+        private async Task SaveStoryTurnAsync(StoryActionProcessingContext context, StoryAiResponse aiResponse, string defaultActionType = "player_action")
         {
+            var turnNumber = (context.RecentActions?.Count ?? 0) + 1;
             var action = new StoryAction
             {
                 actionId = Guid.NewGuid().ToString("N"),
                 sessionId = context.Session.sessionId,
                 playerInput = context.PlayerInput,
                 aiResponse = aiResponse.NarrativeText,
-                turnNumber = (context.RecentActions?.Count ?? 0) + 1,
-                actionType = aiResponse.ActionType ?? "player_action",
+                turnNumber = turnNumber,
+                actionType = aiResponse.ActionType ?? defaultActionType,
                 metadataJson = StoryAiResponseParser.Serialize(aiResponse),
                 createdAt = DateTime.UtcNow
             };
 
             await _storyRepository.SaveActionAsync(action);
+
+            var oldSummary = context.Session.storySummary;
+            var newSummary = await _storySummaryService.CondenseSummaryIfNeededAsync(context.Session, turnNumber, context.RecentActions);
+            if (oldSummary != newSummary)
+            {
+                await _storyRepository.SaveSessionAsync(context.Session);
+            }
         }
 
         private static StoryActionResponse BuildResponse(StoryActionProcessingContext context, string narrativeText, StoryAiResponse aiResponse)

@@ -85,7 +85,6 @@ public class GameRuleValidatorTests
             new BossValidator(contentService, NullLogger<BossValidator>.Instance),
             new InventoryValidator(contentService, NullLogger<InventoryValidator>.Instance),
             new LocationValidator(contentService, NullLogger<LocationValidator>.Instance),
-            new QuestValidator(),
             new CharacterValidator(),
             new StoryValidator()
         };
