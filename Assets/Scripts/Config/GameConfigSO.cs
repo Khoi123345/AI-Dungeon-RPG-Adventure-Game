@@ -27,7 +27,7 @@ public class GameConfigSO : ScriptableObject
 
     [Header("Mode Settings")]
     [Tooltip("Bật Mock Mode: game chạy offline, không gọi API, dùng dữ liệu giả từ GameProgressService")]
-    public bool useMockMode = true;
+    public bool useMockMode = false;
 
     [Header("Debug")]
     [Tooltip("Log tất cả API request/response ra Console")]

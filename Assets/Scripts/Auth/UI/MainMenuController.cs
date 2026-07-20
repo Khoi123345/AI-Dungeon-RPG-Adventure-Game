@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private TMP_Text txtUsername;
     [SerializeField] private Button btnLogout;
+    [SerializeField] private Button btnPlay; // Nút Play
 
     private void Start()
     {
@@ -29,6 +31,19 @@ public class MainMenuController : MonoBehaviour
             btnLogout.onClick.RemoveAllListeners();
             btnLogout.onClick.AddListener(OnLogoutClicked);
         }
+
+        // 3. Gán sự kiện cho nút Play
+        if (btnPlay != null)
+        {
+            btnPlay.onClick.RemoveAllListeners();
+            btnPlay.onClick.AddListener(OnPlayClicked);
+        }
+    }
+
+    private void OnPlayClicked()
+    {
+        Debug.Log("[MainMenuController] Chuyển sang BattleScene...");
+        SceneManager.LoadScene("BattleScene");
     }
 
     private async void OnLogoutClicked()
