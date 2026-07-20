@@ -15,12 +15,12 @@ namespace GameBackend.Core.Config
 
         public static readonly List<Boss> BossCatalog = new()
         {
-            new Boss { bossId = "boss_goblin_chief",    name = "Goblin Chief",     rarity = "Common",    baseHp = 80,  baseAttack = 10, baseDefense = 4,  speed = 8,  criticalRate = 0.05f, expReward = 30,  goldReward = 40  },
+            new Boss { bossId = "boss_goblin_king",     name = "Goblin King",      rarity = "Common",    baseHp = 80,  baseAttack = 10, baseDefense = 4,  speed = 8,  criticalRate = 0.05f, expReward = 30,  goldReward = 40  },
             new Boss { bossId = "boss_skeleton_knight", name = "Skeleton Knight",  rarity = "Common",    baseHp = 100, baseAttack = 12, baseDefense = 6,  speed = 6,  criticalRate = 0.08f, expReward = 35,  goldReward = 45  },
             new Boss { bossId = "boss_orc_warlord",     name = "Orc Warlord",      rarity = "Rare",      baseHp = 140, baseAttack = 16, baseDefense = 7,  speed = 7,  criticalRate = 0.10f, expReward = 50,  goldReward = 65  },
             new Boss { bossId = "boss_shadow_demon",    name = "Shadow Demon",     rarity = "Rare",      baseHp = 200, baseAttack = 22, baseDefense = 9,  speed = 12, criticalRate = 0.15f, expReward = 75,  goldReward = 100 },
             new Boss { bossId = "boss_vampire_lord",    name = "Vampire Lord",     rarity = "Epic",      baseHp = 300, baseAttack = 28, baseDefense = 12, speed = 14, criticalRate = 0.18f, expReward = 120, goldReward = 180 },
-            new Boss { bossId = "boss_ancient_dragon",  name = "Ancient Dragon",   rarity = "Legendary", baseHp = 500, baseAttack = 35, baseDefense = 20, speed = 11, criticalRate = 0.20f, expReward = 250, goldReward = 400 },
+            new Boss { bossId = "boss_dragon_king",     name = "Dragon King",      rarity = "Legendary", baseHp = 500, baseAttack = 35, baseDefense = 20, speed = 11, criticalRate = 0.20f, expReward = 250, goldReward = 400 },
             new Boss { bossId = "boss_chaos_titan",     name = "Chaos Titan",      rarity = "Mythic",    baseHp = 900, baseAttack = 55, baseDefense = 35, speed = 15, criticalRate = 0.25f, expReward = 600, goldReward = 1000 },
         };
 
