@@ -1,0 +1,325 @@
+fileFormatVersion: 2
+guid: 9f0dde4abe0a4284994f2433d7ded379
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1733779320801649902
+    second: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_0
+  - first:
+      213: 8367196562183140370
+    second: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_1
+  - first:
+      213: -297037108830529674
+    second: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_2
+  - first:
+      213: 6852307523180214442
+    second: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_3
+  - first:
+      213: -6618602107835475454
+    second: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_4
+  - first:
+      213: 3840443172804440436
+    second: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_5
+  - first:
+      213: -3728992943228782371
+    second: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_6
+  - first:
+      213: 576912309547973832
+    second: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_7
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_0
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 531
+        width: 508
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21b13b8c4e060f7e0800000000000000
+      internalID: -1733779320801649902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_1
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 325
+        width: 236
+        height: 377
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 214bbc621f04e1470800000000000000
+      internalID: 8367196562183140370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_2
+      rect:
+        serializedVersion: 2
+        x: 998
+        y: 322
+        width: 241
+        height: 382
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6771c03c256b0ebf0800000000000000
+      internalID: -297037108830529674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_3
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 339
+        width: 516
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa8b4e22369481f50800000000000000
+      internalID: 6852307523180214442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_4
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 73
+        width: 248
+        height: 214
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20a90d423700624a0800000000000000
+      internalID: -6618602107835475454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_5
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 73
+        width: 222
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4713517d7befb4530800000000000000
+      internalID: 3840443172804440436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_6
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 63
+        width: 223
+        height: 236
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd8f8e8dca4ff3cc0800000000000000
+      internalID: -3728992943228782371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_7
+      rect:
+        serializedVersion: 2
+        x: 988
+        y: 69
+        width: 255
+        height: 231
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cc382d50ba910800800000000000000
+      internalID: 576912309547973832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 7988529b58b428f45be4dfc28eeef7be
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_0: -1733779320801649902
+      lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_1: 8367196562183140370
+      lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_2: -297037108830529674
+      lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_3: 6852307523180214442
+      lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_4: -6618602107835475454
+      lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_5: 3840443172804440436
+      lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_6: -3728992943228782371
+      lucid-origin_a_surreal_and_vibrant_cinematic_photo_of_A_collection_of_10_minimalist_frameless-0-Photoroom_7: 576912309547973832
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

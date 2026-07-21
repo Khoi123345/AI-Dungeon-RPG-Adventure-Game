@@ -22,10 +22,18 @@ public class StoryView : MonoBehaviour
     [SerializeField] private Button[] choiceButtons = new Button[3];
     [SerializeField] private TextMeshProUGUI[] choiceTexts = new TextMeshProUGUI[3];
 
+    [Header("Custom Text Input")]
+    [SerializeField] private GameObject panelTextInput;
+    [SerializeField] private TMP_InputField inputStoryAction;
+    [SerializeField] private Button btnSubmitAction;
+
+    private Action<string> onSubmitCallback;
+
     private void Awake()
     {
         SetNextIndicatorVisible(false);
         SetChoiceButtonsVisible(false);
+        SetInputPanelVisible(false);
     }
 
     public void BindAdvance(Action onAdvance)
@@ -218,6 +226,66 @@ public class StoryView : MonoBehaviour
             {
                 choiceButtons[index].interactable = interactable;
             }
+        }
+    }
+
+    public void SetInputPanelVisible(bool visible)
+    {
+        if (panelTextInput != null)
+        {
+            panelTextInput.SetActive(visible);
+        }
+    }
+
+    public void BindSubmitAction(Action<string> onSubmit)
+    {
+        onSubmitCallback = onSubmit;
+
+        if (btnSubmitAction != null)
+        {
+            btnSubmitAction.onClick.RemoveAllListeners();
+            btnSubmitAction.onClick.AddListener(OnSubmitClicked);
+        }
+
+        if (inputStoryAction != null)
+        {
+            inputStoryAction.onSubmit.RemoveAllListeners();
+            inputStoryAction.onSubmit.AddListener(text => OnSubmitClicked());
+        }
+    }
+
+    private void OnSubmitClicked()
+    {
+        string text = GetInputValue();
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            onSubmitCallback?.Invoke(text.Trim());
+        }
+    }
+
+    public string GetInputValue()
+    {
+        return inputStoryAction != null ? inputStoryAction.text : string.Empty;
+    }
+
+    public void ClearInputField()
+    {
+        if (inputStoryAction != null)
+        {
+            inputStoryAction.text = string.Empty;
+        }
+    }
+
+    public void SetInputInteractable(bool interactable)
+    {
+        if (inputStoryAction != null)
+        {
+            inputStoryAction.interactable = interactable;
+        }
+
+        if (btnSubmitAction != null)
+        {
+            btnSubmitAction.interactable = interactable;
         }
     }
 }

@@ -33,6 +33,7 @@ public class StoryPresenter : MonoBehaviour
         if (view != null)
         {
             view.BindAdvance(HandleAdvancePressed);
+            view.BindSubmitAction(HandleUserActionSubmitted);
         }
 
         GameProgressService.EnsureInstance();
@@ -82,6 +83,8 @@ public class StoryPresenter : MonoBehaviour
         view.SetNextIndicatorVisible(false);
         view.SetChoiceButtonsVisible(false);
         view.SetChoiceInteractable(false);
+        view.SetInputPanelVisible(false);
+        view.ClearInputField();
         view.SetAdvanceInteractable(true);
         view.SetCharacterState(currentData.node.character);
         pendingLines.Clear();
@@ -122,9 +125,8 @@ public class StoryPresenter : MonoBehaviour
         }
 
         view.SetNextIndicatorVisible(false);
-        view.SetChoiceButtonsVisible(true);
-        view.SetChoiceInteractable(true);
-        view.SetChoices(currentData.node.choices != null ? currentData.node.choices.ToArray() : null, OnChoiceSelected);
+        view.SetInputPanelVisible(true);
+        view.SetInputInteractable(true);
         awaitingChoice = true;
     }
 
@@ -224,6 +226,63 @@ public class StoryPresenter : MonoBehaviour
         }
 
         Debug.Log("Story choice selected: " + choice.label + " -> " + choice.nextNodeId);
+    }
+
+    private void HandleUserActionSubmitted(string userText)
+    {
+        if (string.IsNullOrWhiteSpace(userText) || !awaitingChoice)
+        {
+            return;
+        }
+
+        awaitingChoice = false;
+        view.SetInputInteractable(false);
+        view.SetInputPanelVisible(false);
+        view.ClearInputField();
+
+        // Ghi nhận hành động vừa gõ của người chơi vào ô log hội thoại
+        view.AppendStoryText($"\n\n<b>> Bạn:</b> \"{userText}\"\n\n");
+
+        // Sinh dữ liệu cốt truyện tiếp theo từ văn bản gõ
+        StoryData nextStoryData = GameProgressService.Instance != null
+            ? GameProgressService.Instance.ExecuteCustomStoryAction(userText)
+            : CreateMockCustomResponse(userText);
+
+        if (nextStoryData != null && nextStoryData.node != null && nextStoryData.node.lines != null)
+        {
+            currentData = nextStoryData;
+            pendingLines.Clear();
+            for (int index = 0; index < currentData.node.lines.Count; index++)
+            {
+                pendingLines.Enqueue(currentData.node.lines[index]);
+            }
+
+            if (playbackCoroutine != null)
+            {
+                StopCoroutine(playbackCoroutine);
+            }
+            playbackCoroutine = StartCoroutine(PlayStoryRoutine());
+        }
+    }
+
+    private StoryData CreateMockCustomResponse(string userText)
+    {
+        return new StoryData
+        {
+            title = "Continuation",
+            node = new StoryNodeData
+            {
+                nodeId = "custom_mock",
+                lines = new List<StoryLineData>
+                {
+                    new StoryLineData
+                    {
+                        text = $"Hành động của bạn ('{userText}') đã tạo nên bước ngoặt mới trong hầm ngục...",
+                        pauseAfter = 0.2f
+                    }
+                }
+            }
+        };
     }
 
     private void StopCurrentPlayback()

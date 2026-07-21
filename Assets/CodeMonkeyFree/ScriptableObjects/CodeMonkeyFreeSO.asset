@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
-  lastShownTimestamp: 1783738102
+  lastShownTimestamp: 1784599869
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1783738102
+  checkedLastUpdateTimestamp: 1784599869
   lastQOTDResponse:
-    questionId: 320
-    questionText: Can Color ever be null?
-    answerA: Yes, always
-    answerB: No
-    answerC: Yes, as Nullable
+    questionId: 324
+    questionText: What is JSON and what is it useful for?
+    answerA: JavaScript Over Node, programming pattern
+    answerB: JavaScript Object Notation, data format
+    answerC: Jumping-Signal Over Nonce, crypto concept
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1783738102
+  lastQotdTimestamp: 1784599869
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle.png
     topText: Get 80% OFF on ALL my Courses and Games!!!
@@ -35,19 +35,19 @@ MonoBehaviour:
     bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
       Newsletter!
     bottomLink: gamedevreport
-  lastDynamicHeaderTimestamp: 1783738102
+  lastDynamicHeaderTimestamp: 1784599869
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1783738102
+  websiteLatestMessageTimestamp: 1784599869
   websiteLatestVideos:
     videos:
+    - youTubeId: -qpKrATW4wM
+      title: TOP 10 FREE NEW Assets JULY 2026!
+    - youTubeId: IQlMciGDMTY
+      title: This method helps you find Game Ideas that make MILLIONS!
     - youTubeId: zkKU7Vj5Syc
       title: Do THIS to pick your next SUCCESSFUL game idea!
     - youTubeId: NjNbIHHu9Z0
       title: Steam Marketing EXPERT on how to find SUCCESS in 2026!
-    - youTubeId: ngQCio7raFY
-      title: Apparently Indie devs are NOT dead?
-    - youTubeId: C9iHZDlnXdk
-      title: BEST NEW Visual Assets to INSPIRE YOU! (APRIL 2026)
-  websiteLatestVideosTimestamp: 1783738102
+  websiteLatestVideosTimestamp: 1784599869

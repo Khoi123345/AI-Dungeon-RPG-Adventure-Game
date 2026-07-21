@@ -182,6 +182,87 @@ public class GameProgressService : MonoBehaviour
         return action;
     }
 
+    public StoryData ExecuteCustomStoryAction(string playerInput)
+    {
+        InitializeIfNeeded();
+
+        StoryCharacterState characterState = new StoryCharacterState
+        {
+            characterName = CurrentCharacter.name,
+            level = CurrentCharacter.level,
+            hp = CurrentCharacter.hp,
+            gold = CurrentCharacter.gold
+        };
+
+        string dynamicStoryResponse = GenerateStoryResponseFromInput(playerInput);
+
+        StoryAction action = new StoryAction
+        {
+            actionId = Guid.NewGuid().ToString("N"),
+            sessionId = CurrentStorySession != null ? CurrentStorySession.sessionId : Guid.NewGuid().ToString("N"),
+            playerInput = playerInput,
+            aiResponse = dynamicStoryResponse,
+            choiceIndex = -1,
+            actionType = "custom_input",
+            metadataJson = "{}",
+            createdAt = DateTime.UtcNow
+        };
+
+        storyActions.Add(action);
+        if (CurrentStorySession != null)
+        {
+            CurrentStorySession.updatedAt = DateTime.UtcNow;
+        }
+
+        StoryData storyData = new StoryData
+        {
+            title = "Dungeon Story Continuation",
+            node = new StoryNodeData
+            {
+                nodeId = "custom_node_" + Guid.NewGuid().ToString("N").Substring(0, 8),
+                backgroundKey = string.Empty,
+                character = characterState,
+                lines = new List<StoryLineData>
+                {
+                    new StoryLineData
+                    {
+                        text = dynamicStoryResponse,
+                        pauseAfter = 0.2f
+                    }
+                }
+            }
+        };
+
+        return storyData;
+    }
+
+    private string GenerateStoryResponseFromInput(string playerInput)
+    {
+        if (string.IsNullOrWhiteSpace(playerInput))
+        {
+            return "Bạn phân vân không biết phải làm gì tiếp theo...";
+        }
+
+        string inputLower = playerInput.ToLower();
+
+        if (inputLower.Contains("kiếm") || inputLower.Contains("chém") || inputLower.Contains("tấn công") || inputLower.Contains("đánh"))
+        {
+            return $"Bạn quyết định hành động: '{playerInput}'. Bạn vung vũ khí xé rách màn đêm! Sức mạnh khí thế khiến bầu không khí xung quanh rung chuyển. Một giọng nói vang vọng từ hầm ngục: 'Dũng khí tốt đấy, kẻ phiêu lưu!'";
+        }
+
+        if (inputLower.Contains("xem") || inputLower.Contains("kiểm tra") || inputLower.Contains("nhìn") || inputLower.Contains("soi"))
+        {
+            return $"Bạn tiến lại gần và quan sát tỉ mỉ: '{playerInput}'. Ánh sáng phản chiếu tiết lộ những ký tự cổ xưa ẩn giấu đằng sau bức tường đá. Bạn thu thập thêm được một số thông tin quan trọng.";
+        }
+
+        if (inputLower.Contains("chạy") || inputLower.Contains("rút") || inputLower.Contains("né") || inputLower.Contains("tránh"))
+        {
+            return $"Bạn nhanh chóng thực hiện: '{playerInput}'. Bạn né lùi lại phía sau an toàn, nhịp thở dồn dập trong bóng tối trong khi chờ đợi biến cố tiếp theo.";
+        }
+
+        return $"Bạn thực hiện hành động: '{playerInput}'. Mọi chuyển động của bạn đều làm thay đổi vận mệnh trong hầm ngục cổ xưa này. Bóng tối xung quanh dường như đang phản ứng lại quyết định của bạn!";
+    }
+
     public BattleData CreateBattleDemoData()
     {
         InitializeIfNeeded();
