@@ -8,7 +8,15 @@ public class MainMenuController : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private TMP_Text txtUsername;
     [SerializeField] private Button btnLogout;
-    [SerializeField] private Button btnPlay; // Nút Play
+    [SerializeField] private Button btnPlay;
+    [SerializeField] private Button btnShop;
+    [SerializeField] private Button btnProfile;
+    // btnInventory: tạm thời chưa làm, để trống trong Inspector
+
+    [Header("Scene Names")]
+    [SerializeField] private string storyScene    = "StoryScene";
+    [SerializeField] private string shopScene     = "Shop";
+    [SerializeField] private string profileScene  = "Profile";
 
     private void Start()
     {
@@ -25,25 +33,46 @@ public class MainMenuController : MonoBehaviour
             }
         }
 
-        // 2. Gán sự kiện cho nút Logout
+        // 2. Nút Logout
         if (btnLogout != null)
         {
             btnLogout.onClick.RemoveAllListeners();
             btnLogout.onClick.AddListener(OnLogoutClicked);
         }
 
-        // 3. Gán sự kiện cho nút Play
+        // 3. Nút Play → StoryScene
         if (btnPlay != null)
         {
             btnPlay.onClick.RemoveAllListeners();
             btnPlay.onClick.AddListener(OnPlayClicked);
         }
+
+        // 4. Nút Shop → ShopScene
+        if (btnShop != null)
+        {
+            btnShop.onClick.RemoveAllListeners();
+            btnShop.onClick.AddListener(() => SceneManager.LoadScene(shopScene));
+        }
+
+        // 5. Nút Profile → ProfileScene (lưu scene hiện tại để Back)
+        if (btnProfile != null)
+        {
+            btnProfile.onClick.RemoveAllListeners();
+            btnProfile.onClick.AddListener(OnProfileClicked);
+        }
     }
 
     private void OnPlayClicked()
     {
-        Debug.Log("[MainMenuController] Chuyển sang BattleScene...");
-        SceneManager.LoadScene("BattleScene");
+        Debug.Log("[MainMenuController] Chuyển sang StoryScene...");
+        SceneManager.LoadScene(storyScene);
+    }
+
+    private void OnProfileClicked()
+    {
+        ProfilePresenter.SetPreviousScene(SceneManager.GetActiveScene().name);
+        Debug.Log("[MainMenuController] Chuyển sang ProfileScene...");
+        SceneManager.LoadScene(profileScene);
     }
 
     private async void OnLogoutClicked()

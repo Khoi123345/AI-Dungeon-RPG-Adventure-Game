@@ -53,7 +53,7 @@ public class AuthManager : MonoBehaviour
     // ── Scene Names ───────────────────────────────────────────────
     [Header("Scene Navigation")]
     [Tooltip("Tên scene chính sau khi đăng nhập thành công")]
-    [SerializeField] private string mainMenuScene = "DemoMenu";
+    [SerializeField] private string mainMenuScene = "Menu";
 
     [Tooltip("Tên scene Login")]
     [SerializeField] private string loginScene = "Login";

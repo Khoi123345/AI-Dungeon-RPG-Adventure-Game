@@ -20987,6 +20987,11 @@ MonoBehaviour:
   txtUsername: {fileID: 1706189697}
   btnLogout: {fileID: 1908164740}
   btnPlay: {fileID: 1112324397}
+  btnShop: {fileID: 321254163}
+  btnProfile: {fileID: 329988551}
+  storyScene: StoryScene
+  shopScene: Shop
+  profileScene: Profile
 --- !u!1 &1606287047
 GameObject:
   m_ObjectHideFlags: 0

@@ -103,6 +103,90 @@ public class GameProgressService : MonoBehaviour
         Debug.Log("[GameProgressService] Session cleared.");
     }
 
+    /// <summary>
+    /// Spawn một boss ngẫu nhiên theo đúng bảng xác suất rarity của thiết kế gốc.
+    /// Tính boss level theo công thức: PlayerLevel + RarityModifier + Random(-3, +3).
+    /// Gán vào CurrentBoss để BattlePresenter dùng khi load BattleScene.
+    /// </summary>
+    public void SpawnRandomBoss()
+    {
+        InitializeIfNeeded();
+
+        // ── Bảng xác suất Rarity (theo logic_tam_thoi_cua_game.txt mục 3.1) ──────
+        float roll = UnityEngine.Random.value; // 0.0 → 1.0
+        string selectedRarity;
+        int rarityModifier;
+
+        if (roll < 0.60f)       { selectedRarity = "Common";    rarityModifier = 0;  }
+        else if (roll < 0.85f)  { selectedRarity = "Rare";      rarityModifier = 5;  }
+        else if (roll < 0.95f)  { selectedRarity = "Epic";      rarityModifier = 12; }
+        else if (roll < 0.99f)  { selectedRarity = "Legendary"; rarityModifier = 25; }
+        else                    { selectedRarity = "Mythic";     rarityModifier = 50; }
+
+        // ── Danh sách boss theo rarity (mock — thay bằng API khi có backend) ─────
+        var commonBosses = new[]
+        {
+            new Boss { name = "Goblin Chieftain", rarity = "Common", baseHp = 100, baseAttack = 12, baseDefense = 5,  expReward = 30,  goldReward = 40  },
+            new Boss { name = "Stone Golem",      rarity = "Common", baseHp = 130, baseAttack = 10, baseDefense = 10, expReward = 35,  goldReward = 45  },
+            new Boss { name = "Cave Troll",       rarity = "Common", baseHp = 110, baseAttack = 14, baseDefense = 4,  expReward = 28,  goldReward = 38  },
+        };
+        var rareBosses = new[]
+        {
+            new Boss { name = "Shadow Demon",     rarity = "Rare",   baseHp = 200, baseAttack = 22, baseDefense = 9,  expReward = 75,  goldReward = 100 },
+            new Boss { name = "Frost Wyvern",     rarity = "Rare",   baseHp = 220, baseAttack = 20, baseDefense = 12, expReward = 80,  goldReward = 110 },
+        };
+        var epicBosses = new[]
+        {
+            new Boss { name = "Fire Drake",       rarity = "Epic",   baseHp = 350, baseAttack = 35, baseDefense = 18, expReward = 150, goldReward = 220 },
+            new Boss { name = "Void Serpent",     rarity = "Epic",   baseHp = 380, baseAttack = 32, baseDefense = 20, expReward = 160, goldReward = 230 },
+        };
+        var legendaryBosses = new[]
+        {
+            new Boss { name = "Ancient Lich",     rarity = "Legendary", baseHp = 600, baseAttack = 55, baseDefense = 30, expReward = 300, goldReward = 500 },
+        };
+        var mythicBosses = new[]
+        {
+            new Boss { name = "World Eater",      rarity = "Mythic",    baseHp = 1200, baseAttack = 90, baseDefense = 50, expReward = 800, goldReward = 1500 },
+        };
+
+        // ── Chọn boss trong rarity vừa roll ──────────────────────────────────────
+        Boss[] pool = selectedRarity switch
+        {
+            "Rare"      => rareBosses,
+            "Epic"      => epicBosses,
+            "Legendary" => legendaryBosses,
+            "Mythic"    => mythicBosses,
+            _           => commonBosses
+        };
+
+        Boss picked = pool[UnityEngine.Random.Range(0, pool.Length)];
+
+        // ── Tính Boss Level theo công thức thiết kế gốc ──────────────────────────
+        int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
+        int randomModifier = UnityEngine.Random.Range(-3, 4); // -3 đến +3
+        int bossLevel = Mathf.Max(1, playerLevel + rarityModifier + randomModifier);
+
+        CurrentBoss = new Boss
+        {
+            bossId       = System.Guid.NewGuid().ToString("N"),
+            name         = picked.name,
+            rarity       = picked.rarity,
+            level        = bossLevel,
+            baseHp       = picked.baseHp + bossLevel * 5,
+            baseAttack   = picked.baseAttack + bossLevel,
+            baseDefense  = picked.baseDefense,
+            speed        = 10,
+            criticalRate = 0.10f,
+            expReward    = picked.expReward,
+            goldReward   = picked.goldReward,
+            skillSetJson = "[]",
+            imageUrl     = string.Empty
+        };
+
+        Debug.Log($"[GameProgressService] SpawnRandomBoss: {CurrentBoss.name} (Rarity={CurrentBoss.rarity}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp})");
+    }
+
+
     public StoryData CreateStoryDemoData()
     {
         InitializeIfNeeded();

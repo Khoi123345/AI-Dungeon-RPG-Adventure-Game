@@ -174,7 +174,7 @@ public class BattleEndUIController : MonoBehaviour
     public void OnReturnToMainMenu()
     {
         Debug.Log("[BattleEndUI] Quay trở lại Menu chính...");
-        SceneManager.LoadScene("DemoMenu");
+        SceneManager.LoadScene("Menu");
     }
     #endregion
 
