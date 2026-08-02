@@ -27,7 +27,7 @@ namespace GameBackend.Handlers.Story
 
             try
             {
-                var startRequest = JsonSerializer.Deserialize<StoryStartRequest>(request.Body);
+                var startRequest = JsonUtils.Deserialize<StoryStartRequest>(request.Body);
                 if (startRequest == null || string.IsNullOrWhiteSpace(startRequest.characterId))
                     return ResponseBuilder.Error(400, "Invalid request payload", "INVALID_REQUEST");
 

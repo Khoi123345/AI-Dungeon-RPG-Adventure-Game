@@ -196,11 +196,73 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-    private void ApplyUserToGameProgress(User user)
+    private async void ApplyUserToGameProgress(User user)
     {
         if (user == null) return;
         GameProgressService.EnsureInstance();
         GameProgressService.Instance.SetCurrentUser(user);
         Debug.Log($"[AuthManager] GameProgressService updated with user: {user.displayName}");
+
+        if (GameConfigSO.Instance != null && !GameConfigSO.Instance.useMockMode)
+        {
+            await EnsureDefaultCharacterAsync(user);
+        }
+    }
+
+    private async Task EnsureDefaultCharacterAsync(User user)
+    {
+        try
+        {
+            var apiService = new CharacterApiService();
+            string displayName = !string.IsNullOrEmpty(user.displayName) ? user.displayName : "Default Hero";
+            string userId = !string.IsNullOrEmpty(user.userId) ? user.userId : "user_default";
+
+            string json = await apiService.CreateCharacterAsync(userId, displayName, "Adventurer");
+            if (!string.IsNullOrEmpty(json))
+            {
+                var container = JsonUtility.FromJson<ApiResponseContainer<GameShared.DTOs.Character.CharacterResponse>>(json);
+                if (container != null && container.success && container.data != null && !string.IsNullOrEmpty(container.data.characterId))
+                {
+                    var model = MapResponseToModel(container.data);
+                    GameProgressService.Instance.SetCurrentCharacter(model);
+                    Debug.Log($"[AuthManager] Nhân vật mặc định đã tạo thành công trên AWS DynamoDB: {model.name} (id={model.characterId})");
+                }
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning($"[AuthManager] Không thể tạo nhân vật mặc định trên AWS: {ex.Message}");
+        }
+    }
+
+    private GameShared.Models.Character MapResponseToModel(GameShared.DTOs.Character.CharacterResponse res)
+    {
+        if (res == null) return null;
+        return new GameShared.Models.Character
+        {
+            characterId = res.characterId,
+            name = res.name,
+            level = res.level,
+            experience = res.experience,
+            hp = res.hp,
+            maxHp = res.maxHp,
+            attack = res.attack,
+            defense = res.defense,
+            criticalRate = res.criticalRate,
+            luckyRate = res.luckyRate,
+            gold = res.gold,
+            className = res.className,
+            status = res.status,
+            currentLocationId = res.currentLocationId
+        };
+    }
+
+    [System.Serializable]
+    private class ApiResponseContainer<T> where T : class
+    {
+        public bool success;
+        public string message;
+        public string errorCode;
+        public T data;
     }
 }

@@ -128,3 +128,10 @@ shared/**/obj/
 infrastructure/cdk.out/
 infrastructure/node_modules/
 
+# ════════════════════════════════════════════════════════════
+# Temporary files & exports
+# ════════════════════════════════════════════════════════════
+Assets/_Recovery/
+export.json
+
+

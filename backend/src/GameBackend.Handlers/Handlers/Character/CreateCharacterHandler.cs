@@ -27,7 +27,7 @@ namespace GameBackend.Handlers.Character
 
             try
             {
-                var createRequest = JsonSerializer.Deserialize<CreateCharacterRequest>(request.Body);
+                var createRequest = JsonUtils.Deserialize<CreateCharacterRequest>(request.Body);
                 if (createRequest == null || string.IsNullOrWhiteSpace(createRequest.name))
                     return ResponseBuilder.Error(400, "Invalid request payload", "INVALID_REQUEST");
 

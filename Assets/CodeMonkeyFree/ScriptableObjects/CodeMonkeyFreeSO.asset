@@ -14,20 +14,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
-  lastShownTimestamp: 1784514405
+  lastShownTimestamp: 1785394984
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1784514405
+  checkedLastUpdateTimestamp: 1785394984
   lastQOTDResponse:
-    questionId: 323
-    questionText: What is the purpose of using Time.deltaTime?
-    answerA: Random movement
-    answerB: Faster performance
-    answerC: Framerate independence
+    questionId: 327
+    questionText: 'When would this code cause an error?
+
+      <p>Building closest
+      = null;</p>
+
+      <p>for (int i = 0; i &lt; instanceList.Count; i++) {</p>
+
+      <p>&nbsp;
+      &nbsp; if (Vector3.Distance(position, instanceList[i].GetPosition()) &lt; Vector3.Distance(position,
+      closest.GetPosition())) {</p>
+
+      <p>&nbsp; &nbsp; &nbsp; &nbsp; closest
+      = instanceList[i];</p>
+
+      <p>&nbsp; &nbsp; }</p>
+
+      <p>}</p>
+
+      <p>return
+      closest;</p>'
+    answerA: When instanceList is empty
+    answerB: When instanceList has at least one element
+    answerC: When instanceList has exactly two elements
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1784514405
+  lastQotdTimestamp: 1785394984
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle.png
     topText: Get 80% OFF on ALL my Courses and Games!!!
@@ -35,19 +54,19 @@ MonoBehaviour:
     bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
       Newsletter!
     bottomLink: gamedevreport
-  lastDynamicHeaderTimestamp: 1784514405
+  lastDynamicHeaderTimestamp: 1785394984
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1784514405
+  websiteLatestMessageTimestamp: 1785394984
   websiteLatestVideos:
     videos:
-    - youTubeId: IQlMciGDMTY
-      title: This method helps you find Game Ideas that make MILLIONS!
-    - youTubeId: zkKU7Vj5Syc
-      title: Do THIS to pick your next SUCCESSFUL game idea!
-    - youTubeId: NjNbIHHu9Z0
-      title: Steam Marketing EXPERT on how to find SUCCESS in 2026!
-    - youTubeId: ngQCio7raFY
-      title: Apparently Indie devs are NOT dead?
-  websiteLatestVideosTimestamp: 1784514405
+    - youTubeId: f0BSrBhudoY
+      title: TOP 10 NEW Systems and Tools JULY 2026! | Unity Asset Store
+    - youTubeId: _0Lp-iXEhfU
+      title: Join my Game Dev Practice Lab for FREE!
+    - youTubeId: 2dyD9yWWtCU
+      title: Unity 7 is RE-ANNOUNCED!
+    - youTubeId: -qpKrATW4wM
+      title: TOP 10 FREE NEW Assets JULY 2026!
+  websiteLatestVideosTimestamp: 1785394984

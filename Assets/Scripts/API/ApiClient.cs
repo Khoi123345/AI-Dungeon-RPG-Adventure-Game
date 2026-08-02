@@ -63,24 +63,55 @@ public class ApiClient : MonoBehaviour
 
     public void SetAuth(string token) => authToken = token;
     public void ClearAuth() => authToken = null;
-    public void SetBaseUrl(string url) => baseUrl = url;
+
+    /// <summary>
+    /// Cập nhật baseUrl. Luôn đảm bảo có dấu "/" ở cuối để tránh URL bị ghép sai.
+    /// Ví dụ: "...prod" + "battle/spawn" = "...prodbattle/spawn" (SAI)
+    ///        "...prod/" + "battle/spawn" = "...prod/battle/spawn" (ĐÚNG)
+    /// </summary>
+    public void SetBaseUrl(string url)
+    {
+        baseUrl = url;
+        if (!string.IsNullOrEmpty(baseUrl) && !baseUrl.EndsWith("/"))
+            baseUrl += "/";
+    }
 
     // ══════════════════════════════════════════════════════
     // PUBLIC HTTP METHODS
     // ══════════════════════════════════════════════════════
 
+    [System.Serializable]
+    private class ApiResponseContainer<T> where T : class
+    {
+        public bool success;
+        public string message;
+        public string errorCode;
+        public T data;
+    }
+
     public async Task<T> GetAsync<T>(string path) where T : class
     {
         string json = await GetRawAsync(path);
-        if (json == null) return null;
-        return JsonUtility.FromJson<T>(json);
+        if (string.IsNullOrEmpty(json)) return null;
+        var container = JsonUtility.FromJson<ApiResponseContainer<T>>(json);
+        if (container != null && container.success)
+        {
+            return container.data;
+        }
+        return null;
     }
 
     public async Task<T> PostAsync<T>(string path, object body) where T : class
     {
-        string json = await PostRawAsync(path, JsonUtility.ToJson(body));
-        if (json == null) return null;
-        return JsonUtility.FromJson<T>(json);
+        string jsonBody = body != null ? JsonUtility.ToJson(body) : "{}";
+        string json = await PostRawAsync(path, jsonBody);
+        if (string.IsNullOrEmpty(json)) return null;
+        var container = JsonUtility.FromJson<ApiResponseContainer<T>>(json);
+        if (container != null && container.success)
+        {
+            return container.data;
+        }
+        return null;
     }
 
     public async Task<string> GetRawAsync(string path)
@@ -113,6 +144,9 @@ public class ApiClient : MonoBehaviour
 
     private async Task<string> SendRequestAsync(UnityWebRequest request, string path)
     {
+        // DEBUG: In URL đầy đủ để kiểm tra URL đang gửi có đúng không
+        Debug.Log($"[ApiClient] → {request.method} {request.url}");
+
         UnityWebRequestAsyncOperation operation = request.SendWebRequest();
         while (!operation.isDone)
         {

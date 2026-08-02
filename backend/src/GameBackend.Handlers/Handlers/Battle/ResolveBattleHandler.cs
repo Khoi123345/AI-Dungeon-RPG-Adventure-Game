@@ -27,7 +27,7 @@ namespace GameBackend.Handlers.Battle
 
             try
             {
-                var resolveRequest = JsonSerializer.Deserialize<BattleResolveRequest>(request.Body);
+                var resolveRequest = JsonUtils.Deserialize<BattleResolveRequest>(request.Body);
                 if (resolveRequest == null || string.IsNullOrWhiteSpace(resolveRequest.encounterId))
                     return ResponseBuilder.Error(400, "Invalid request payload", "INVALID_REQUEST");
 

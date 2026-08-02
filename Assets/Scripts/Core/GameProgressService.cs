@@ -90,6 +90,16 @@ public class GameProgressService : MonoBehaviour
         Debug.Log($"[GameProgressService] CurrentUser set: {user.displayName} (id={user.userId})");
     }
 
+    /// <summary>
+    /// Cập nhật CurrentCharacter sau khi tạo hoặc tải nhân vật từ API backend.
+    /// </summary>
+    public void SetCurrentCharacter(Character character)
+    {
+        if (character == null) return;
+        CurrentCharacter = character;
+        Debug.Log($"[GameProgressService] CurrentCharacter set: {character.name} (id={character.characterId})");
+    }
+
     /// <summary>Xóa session khi logout.</summary>
     public void ClearUser()
     {
