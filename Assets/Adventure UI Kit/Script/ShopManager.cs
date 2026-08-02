@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI; // Thư viện chứa UI Text và Button Legacy
+using UnityEngine.SceneManagement;
 
 public class ShopManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ShopManager : MonoBehaviour
 
     [Header("Shop Buttons")]
     public Button buyButton; 
+    public Button backButton;
 
     private ShopSlot currentlySelectedSlot; 
 
@@ -16,6 +18,12 @@ public class ShopManager : MonoBehaviour
     {
         buyButton.interactable = false;
         ClearDetailWindow();
+
+        if (backButton != null)
+        {
+            backButton.onClick.RemoveAllListeners();
+            backButton.onClick.AddListener(ReturnToMenu);
+        }
     }
 
     public void SelectNewItem(ShopSlot clickedSlot)
@@ -41,6 +49,11 @@ public class ShopManager : MonoBehaviour
         {
             Debug.Log($"Purchased successfully: {currentlySelectedSlot.shopItemData.itemName}!");
         }
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
     void ClearDetailWindow()

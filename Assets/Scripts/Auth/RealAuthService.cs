@@ -211,11 +211,22 @@ public class RealAuthService : IUnityAuthService
 
         _currentToken = token;
         _currentUser  = new User { userId = userId, displayName = displayName, status = "Active" };
-        ApiClient.Instance.SetAuth(token);
+
+        // Guard: Nếu ApiClient đã có token (do login thủ công vừa chạy đồng thời),
+        // KHÔNG ghi đè bằng token cũ từ PlayerPrefs để tránh race condition.
+        if (!ApiClient.Instance.IsAuthenticated)
+        {
+            ApiClient.Instance.SetAuth(token);
+        }
+        else
+        {
+            Debug.Log("[RealAuth] TryRestoreSession: ApiClient đã có token, bỏ qua token từ PlayerPrefs.");
+        }
 
         Debug.Log($"[RealAuth] Session restored for userId={userId}");
         return true;
     }
+
 
     // ══════════════════════════════════════════════════════════════
     // PRIVATE HELPERS

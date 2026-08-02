@@ -16146,6 +16146,7 @@ MonoBehaviour:
   detailNameText: {fileID: 1112593501}
   detailDescriptionText: {fileID: 775288513}
   buyButton: {fileID: 1112324397}
+  backButton: {fileID: 1299258043}
 --- !u!1001 &1198429075
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -38,7 +38,7 @@ public class LoginPanelController : MonoBehaviour
     [SerializeField] private GameObject loadingIndicator;
 
     [Header("Scene Navigation")]
-    [SerializeField] private string mainMenuScene   = "DemoMenu";
+    [SerializeField] private string mainMenuScene   = "Menu";
     [SerializeField] private string registerScene   = "Register";
     [SerializeField] private string welcomeScene    = "Welcome";
 

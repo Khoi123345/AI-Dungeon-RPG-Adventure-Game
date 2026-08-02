@@ -13,6 +13,10 @@ using GameBackend.Core.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using Amazon.BedrockRuntime;
+using GameBackend.Core.Config;
+using Microsoft.Extensions.Configuration;
+
 namespace GameBackend.Handlers.DependencyInjection
 {
     /// <summary>
@@ -35,12 +39,23 @@ namespace GameBackend.Handlers.DependencyInjection
 
                 var services = new ServiceCollection();
 
+                // Configuration
+                var configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddEnvironmentVariables()
+                    .Build();
+
+                services.AddSingleton<IConfiguration>(configuration);
+                services.Configure<BedrockOptions>(configuration.GetSection("Bedrock"));
+
                 // Logging
                 services.AddLogging(builder => builder.AddConsole().SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information));
 
                 // AWS Clients — Singleton để tái sử dụng TCP connection
                 services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
                 services.AddSingleton<IAmazonCognitoIdentityProvider, AmazonCognitoIdentityProviderClient>();
+                services.AddAWSService<IAmazonBedrockRuntime>();
 
                 // Repositories
                 services.AddSingleton<IUserRepository, UserRepository>();

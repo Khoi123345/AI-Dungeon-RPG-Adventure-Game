@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using GameBackend.Core.Repositories.Interfaces;
 using GameShared.Models;
 using System.Threading.Tasks;
+using GameBackend.Core.Config;
 using GameBackend.Core.Utils;
 
 namespace GameBackend.Core.Repositories

@@ -27,7 +27,7 @@ namespace GameBackend.Handlers.Battle
 
             try
             {
-                var spawnRequest = JsonSerializer.Deserialize<BossSpawnRequest>(request.Body);
+                var spawnRequest = JsonUtils.Deserialize<BossSpawnRequest>(request.Body);
                 if (spawnRequest == null || string.IsNullOrWhiteSpace(spawnRequest.characterId))
                     return ResponseBuilder.Error(400, "Invalid request payload", "INVALID_REQUEST");
 
