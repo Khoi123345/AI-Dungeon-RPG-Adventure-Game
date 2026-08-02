@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 6210a8f450611bc419071dc6d83226ac
+guid: b6f170bac8bf2d14ea8a239842a5967a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4334783836991956000
-    second: player_0
-  - first:
-      213: 7388399842426930641
-    second: player_1
+      213: 3369056847997357570
+    second: The_wood-0_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_1
+      name: The_wood-0_0
       rect:
         serializedVersion: 2
-        x: 271
-        y: 112
-        width: 997
-        height: 787
+        x: 0
+        y: 0
+        width: 1344
+        height: 768
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1d5c862e28ed88660800000000000000
-      internalID: 7388399842426930641
+      spriteID: 20ecafc6a5b41ce20800000000000000
+      internalID: 3369056847997357570
       vertices: []
       indices: 
       edges: []
@@ -128,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b56c5ac93bb104948acb5c1478073000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -138,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      player_0: 4334783836991956000
-      player_1: 7388399842426930641
+      The_wood-0_0: 3369056847997357570
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

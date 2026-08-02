@@ -14,11 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
+<<<<<<< HEAD
   lastShownTimestamp: 1785394984
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
   checkedLastUpdateTimestamp: 1785394984
+=======
+  lastShownTimestamp: 1785548831
+  lastUpdateResponse:
+    version: 1.00
+    versionUrl: https://unitycodemonkey.com
+  checkedLastUpdateTimestamp: 1785548831
+>>>>>>> 4ec17d7531547d193321d10c4f0c570d03c68d18
   lastQOTDResponse:
     questionId: 327
     questionText: 'When would this code cause an error?
@@ -46,7 +54,11 @@ MonoBehaviour:
     answerC: When instanceList has exactly two elements
     answerD: 
     answerE: 
+<<<<<<< HEAD
   lastQotdTimestamp: 1785394984
+=======
+  lastQotdTimestamp: 1785548831
+>>>>>>> 4ec17d7531547d193321d10c4f0c570d03c68d18
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle.png
     topText: Get 80% OFF on ALL my Courses and Games!!!
@@ -54,11 +66,19 @@ MonoBehaviour:
     bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
       Newsletter!
     bottomLink: gamedevreport
+<<<<<<< HEAD
   lastDynamicHeaderTimestamp: 1785394984
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
   websiteLatestMessageTimestamp: 1785394984
+=======
+  lastDynamicHeaderTimestamp: 1785548831
+  websiteLatestMessage:
+    text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
+      Click here!</a>
+  websiteLatestMessageTimestamp: 1785548831
+>>>>>>> 4ec17d7531547d193321d10c4f0c570d03c68d18
   websiteLatestVideos:
     videos:
     - youTubeId: f0BSrBhudoY
@@ -69,4 +89,8 @@ MonoBehaviour:
       title: Unity 7 is RE-ANNOUNCED!
     - youTubeId: -qpKrATW4wM
       title: TOP 10 FREE NEW Assets JULY 2026!
+<<<<<<< HEAD
   websiteLatestVideosTimestamp: 1785394984
+=======
+  websiteLatestVideosTimestamp: 1785548831
+>>>>>>> 4ec17d7531547d193321d10c4f0c570d03c68d18

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using GameShared.Models;
+using GameShared.DTOs.Character;
 
 public class GameProgressService : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class GameProgressService : MonoBehaviour
     private readonly List<LootDrop> lootDrops = new List<LootDrop>();
     private readonly List<Battle> battles = new List<Battle>();
     private readonly List<BossEncounter> encounters = new List<BossEncounter>();
+    private readonly List<CharacterTitle> titles = new List<CharacterTitle>();
 
     private bool initialized;
 
@@ -111,6 +113,90 @@ public class GameProgressService : MonoBehaviour
         Debug.Log("[GameProgressService] Session cleared.");
     }
 
+    /// <summary>
+    /// Spawn một boss ngẫu nhiên theo đúng bảng xác suất rarity của thiết kế gốc.
+    /// Tính boss level theo công thức: PlayerLevel + RarityModifier + Random(-3, +3).
+    /// Gán vào CurrentBoss để BattlePresenter dùng khi load BattleScene.
+    /// </summary>
+    public void SpawnRandomBoss()
+    {
+        InitializeIfNeeded();
+
+        // ── Bảng xác suất Rarity (theo logic_tam_thoi_cua_game.txt mục 3.1) ──────
+        float roll = UnityEngine.Random.value; // 0.0 → 1.0
+        string selectedRarity;
+        int rarityModifier;
+
+        if (roll < 0.60f)       { selectedRarity = "Common";    rarityModifier = 0;  }
+        else if (roll < 0.85f)  { selectedRarity = "Rare";      rarityModifier = 5;  }
+        else if (roll < 0.95f)  { selectedRarity = "Epic";      rarityModifier = 12; }
+        else if (roll < 0.99f)  { selectedRarity = "Legendary"; rarityModifier = 25; }
+        else                    { selectedRarity = "Mythic";     rarityModifier = 50; }
+
+        // ── Danh sách boss theo rarity (mock — thay bằng API khi có backend) ─────
+        var commonBosses = new[]
+        {
+            new Boss { name = "Goblin Chieftain", rarity = "Common", baseHp = 100, baseAttack = 12, baseDefense = 5,  expReward = 30,  goldReward = 40  },
+            new Boss { name = "Stone Golem",      rarity = "Common", baseHp = 130, baseAttack = 10, baseDefense = 10, expReward = 35,  goldReward = 45  },
+            new Boss { name = "Cave Troll",       rarity = "Common", baseHp = 110, baseAttack = 14, baseDefense = 4,  expReward = 28,  goldReward = 38  },
+        };
+        var rareBosses = new[]
+        {
+            new Boss { name = "Shadow Demon",     rarity = "Rare",   baseHp = 200, baseAttack = 22, baseDefense = 9,  expReward = 75,  goldReward = 100 },
+            new Boss { name = "Frost Wyvern",     rarity = "Rare",   baseHp = 220, baseAttack = 20, baseDefense = 12, expReward = 80,  goldReward = 110 },
+        };
+        var epicBosses = new[]
+        {
+            new Boss { name = "Fire Drake",       rarity = "Epic",   baseHp = 350, baseAttack = 35, baseDefense = 18, expReward = 150, goldReward = 220 },
+            new Boss { name = "Void Serpent",     rarity = "Epic",   baseHp = 380, baseAttack = 32, baseDefense = 20, expReward = 160, goldReward = 230 },
+        };
+        var legendaryBosses = new[]
+        {
+            new Boss { name = "Ancient Lich",     rarity = "Legendary", baseHp = 600, baseAttack = 55, baseDefense = 30, expReward = 300, goldReward = 500 },
+        };
+        var mythicBosses = new[]
+        {
+            new Boss { name = "World Eater",      rarity = "Mythic",    baseHp = 1200, baseAttack = 90, baseDefense = 50, expReward = 800, goldReward = 1500 },
+        };
+
+        // ── Chọn boss trong rarity vừa roll ──────────────────────────────────────
+        Boss[] pool = selectedRarity switch
+        {
+            "Rare"      => rareBosses,
+            "Epic"      => epicBosses,
+            "Legendary" => legendaryBosses,
+            "Mythic"    => mythicBosses,
+            _           => commonBosses
+        };
+
+        Boss picked = pool[UnityEngine.Random.Range(0, pool.Length)];
+
+        // ── Tính Boss Level theo công thức thiết kế gốc ──────────────────────────
+        int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
+        int randomModifier = UnityEngine.Random.Range(-3, 4); // -3 đến +3
+        int bossLevel = Mathf.Max(1, playerLevel + rarityModifier + randomModifier);
+
+        CurrentBoss = new Boss
+        {
+            bossId       = System.Guid.NewGuid().ToString("N"),
+            name         = picked.name,
+            rarity       = picked.rarity,
+            level        = bossLevel,
+            baseHp       = picked.baseHp + bossLevel * 5,
+            baseAttack   = picked.baseAttack + bossLevel,
+            baseDefense  = picked.baseDefense,
+            speed        = 10,
+            criticalRate = 0.10f,
+            expReward    = picked.expReward,
+            goldReward   = picked.goldReward,
+            skillSetJson = "[]",
+            imageUrl     = string.Empty
+        };
+
+        Debug.Log($"[GameProgressService] SpawnRandomBoss: {CurrentBoss.name} (Rarity={CurrentBoss.rarity}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp})");
+    }
+
+
     public StoryData CreateStoryDemoData()
     {
         InitializeIfNeeded();
@@ -188,6 +274,87 @@ public class GameProgressService : MonoBehaviour
         CurrentStorySession.currentNodeId = choice != null ? choice.nextNodeId : CurrentStorySession.currentNodeId;
 
         return action;
+    }
+
+    public StoryData ExecuteCustomStoryAction(string playerInput)
+    {
+        InitializeIfNeeded();
+
+        StoryCharacterState characterState = new StoryCharacterState
+        {
+            characterName = CurrentCharacter.name,
+            level = CurrentCharacter.level,
+            hp = CurrentCharacter.hp,
+            gold = CurrentCharacter.gold
+        };
+
+        string dynamicStoryResponse = GenerateStoryResponseFromInput(playerInput);
+
+        StoryAction action = new StoryAction
+        {
+            actionId = Guid.NewGuid().ToString("N"),
+            sessionId = CurrentStorySession != null ? CurrentStorySession.sessionId : Guid.NewGuid().ToString("N"),
+            playerInput = playerInput,
+            aiResponse = dynamicStoryResponse,
+            choiceIndex = -1,
+            actionType = "custom_input",
+            metadataJson = "{}",
+            createdAt = DateTime.UtcNow
+        };
+
+        storyActions.Add(action);
+        if (CurrentStorySession != null)
+        {
+            CurrentStorySession.updatedAt = DateTime.UtcNow;
+        }
+
+        StoryData storyData = new StoryData
+        {
+            title = "Dungeon Story Continuation",
+            node = new StoryNodeData
+            {
+                nodeId = "custom_node_" + Guid.NewGuid().ToString("N").Substring(0, 8),
+                backgroundKey = string.Empty,
+                character = characterState,
+                lines = new List<StoryLineData>
+                {
+                    new StoryLineData
+                    {
+                        text = dynamicStoryResponse,
+                        pauseAfter = 0.2f
+                    }
+                }
+            }
+        };
+
+        return storyData;
+    }
+
+    private string GenerateStoryResponseFromInput(string playerInput)
+    {
+        if (string.IsNullOrWhiteSpace(playerInput))
+        {
+            return "Bạn phân vân không biết phải làm gì tiếp theo...";
+        }
+
+        string inputLower = playerInput.ToLower();
+
+        if (inputLower.Contains("kiếm") || inputLower.Contains("chém") || inputLower.Contains("tấn công") || inputLower.Contains("đánh"))
+        {
+            return $"Bạn quyết định hành động: '{playerInput}'. Bạn vung vũ khí xé rách màn đêm! Sức mạnh khí thế khiến bầu không khí xung quanh rung chuyển. Một giọng nói vang vọng từ hầm ngục: 'Dũng khí tốt đấy, kẻ phiêu lưu!'";
+        }
+
+        if (inputLower.Contains("xem") || inputLower.Contains("kiểm tra") || inputLower.Contains("nhìn") || inputLower.Contains("soi"))
+        {
+            return $"Bạn tiến lại gần và quan sát tỉ mỉ: '{playerInput}'. Ánh sáng phản chiếu tiết lộ những ký tự cổ xưa ẩn giấu đằng sau bức tường đá. Bạn thu thập thêm được một số thông tin quan trọng.";
+        }
+
+        if (inputLower.Contains("chạy") || inputLower.Contains("rút") || inputLower.Contains("né") || inputLower.Contains("tránh"))
+        {
+            return $"Bạn nhanh chóng thực hiện: '{playerInput}'. Bạn né lùi lại phía sau an toàn, nhịp thở dồn dập trong bóng tối trong khi chờ đợi biến cố tiếp theo.";
+        }
+
+        return $"Bạn thực hiện hành động: '{playerInput}'. Mọi chuyển động của bạn đều làm thay đổi vận mệnh trong hầm ngục cổ xưa này. Bóng tối xung quanh dường như đang phản ứng lại quyết định của bạn!";
     }
 
     public BattleData CreateBattleDemoData()
@@ -337,6 +504,156 @@ public class GameProgressService : MonoBehaviour
         return inventory;
     }
 
+    /// <summary>Trả về danh sách danh hiệu của nhân vật hiện tại.</summary>
+    public IReadOnlyList<CharacterTitle> GetTitles()
+    {
+        return titles;
+    }
+
+    /// <summary>
+    /// Trả về tối đa <paramref name="maxCount"/> lịch sử phiêu lưu gần nhất,
+    /// được ghép từ BossEncounter + Battle.
+    /// </summary>
+    public List<AdventureRecord> GetBattleHistory(int maxCount = 10)
+    {
+        List<AdventureRecord> records = new List<AdventureRecord>();
+
+        // Duyệt ngược từ encounter mới nhất
+        for (int i = encounters.Count - 1; i >= 0 && records.Count < maxCount; i--)
+        {
+            BossEncounter enc = encounters[i];
+
+            // Tìm Boss tương ứng (trong mock chỉ có 1 boss)
+            string bossName = CurrentBoss != null && CurrentBoss.bossId == enc.bossId
+                ? CurrentBoss.name
+                : "Unknown Boss";
+            string bossRarity = CurrentBoss != null && CurrentBoss.bossId == enc.bossId
+                ? CurrentBoss.rarity
+                : "Common";
+
+            // Lấy battle khớp với encounter
+            Battle battle = battles.Find(b => b.encounterId == enc.encounterId);
+            int expGained = 0;
+            int goldGained = 0;
+            int turnCount = battle != null ? battle.turnCount : 0;
+
+            if (enc.status == "Victory" && CurrentBoss != null && CurrentBoss.bossId == enc.bossId)
+            {
+                expGained = CurrentBoss.expReward;
+                goldGained = CurrentBoss.goldReward;
+            }
+
+            records.Add(new AdventureRecord
+            {
+                encounterId  = enc.encounterId,
+                bossName     = bossName,
+                bossRarity   = bossRarity,
+                bossLevel    = enc.bossLevel,
+                result       = enc.status,
+                expGained    = expGained,
+                goldGained   = goldGained,
+                turnCount    = turnCount,
+                encounterTime = enc.encounterTime
+            });
+        }
+
+        return records;
+    }
+
+    /// <summary>
+    /// Tổng hợp toàn bộ thông tin nhân vật thành <see cref="ProfileCharacterData"/> DTO
+    /// để ProfilePresenter render màn hình Profile.
+    /// </summary>
+    public ProfileCharacterData BuildProfileData()
+    {
+        InitializeIfNeeded();
+        Character c = CurrentCharacter;
+
+        // ── Slots trang bị ───────────────────────────────────────────
+        List<ProfileEquippedSlot> slots = new List<ProfileEquippedSlot>
+        {
+            BuildSlot("Weapon"),
+            BuildSlot("Armor"),
+            BuildSlot("Accessory"),
+            BuildSlot("Ring"),
+            BuildSlot("Helmet"),
+            BuildSlot("Boots")
+        };
+
+        // ── Titles ───────────────────────────────────────────────────
+        List<ProfileTitleEntry> titleEntries = new List<ProfileTitleEntry>();
+        foreach (CharacterTitle t in titles)
+        {
+            titleEntries.Add(new ProfileTitleEntry
+            {
+                titleId     = t.titleId,
+                name        = t.name,
+                description = t.description,
+                rarity      = t.rarity,
+                isEquipped  = t.isEquipped,
+                earnedAt    = t.earnedAt
+            });
+        }
+
+        return new ProfileCharacterData
+        {
+            characterId          = c.characterId,
+            characterName        = c.name,
+            className            = c.className,
+            level                = c.level,
+            experience           = c.experience,
+            experienceToNextLevel = c.level * 100,
+            hp                   = c.hp,
+            maxHp                = c.maxHp,
+            mp                   = c.mp,
+            maxMp                = c.maxMp,
+            gold                 = c.gold,
+            status               = c.status,
+            currentLocationId    = c.currentLocationId,
+            attack               = c.attack,
+            defense              = c.defense,
+            criticalRate         = c.criticalRate,
+            luckyRate            = c.luckyRate,
+            speed                = c.speed,
+            evasionRate          = c.evasionRate,
+            magicResist          = c.magicResist,
+            equippedSlots        = slots,
+            titles               = titleEntries,
+            adventureHistory     = GetBattleHistory(10)
+        };
+    }
+
+    private ProfileEquippedSlot BuildSlot(string slotType)
+    {
+        Inventory inv = inventory.Find(i => i.equipped && i.slotIndex >= 0
+            && items.Find(it => it.itemId == i.itemId)?.slotType == slotType);
+
+        if (inv == null)
+        {
+            return new ProfileEquippedSlot { slotType = slotType, isEmpty = true };
+        }
+
+        Item item = items.Find(it => it.itemId == inv.itemId);
+        if (item == null)
+        {
+            return new ProfileEquippedSlot { slotType = slotType, isEmpty = true };
+        }
+
+        return new ProfileEquippedSlot
+        {
+            slotType       = slotType,
+            isEmpty        = false,
+            itemId         = item.itemId,
+            itemName       = item.name,
+            itemRarity     = item.rarity,
+            itemDescription = item.description,
+            attackBonus    = item.attackBonus,
+            defenseBonus   = item.defenseBonus,
+            hpBonus        = item.hpBonus,
+            criticalBonus  = item.criticalBonus
+        };
+    }
+
     private void SeedMockWorld()
     {
         CurrentUser = new User
@@ -368,7 +685,11 @@ public class GameProgressService : MonoBehaviour
             className = "Adventurer",
             status = "Alive",
             currentLocationId = "ruins_gate",
-            reviveTime = DateTime.UtcNow
+            reviveTime = DateTime.UtcNow,
+            // Hidden stats
+            speed = 12f,
+            evasionRate = 0.07f,
+            magicResist = 8f
         };
 
         items.Clear();
@@ -438,6 +759,80 @@ public class GameProgressService : MonoBehaviour
         storyActions.Clear();
         lootDrops.Clear();
         battles.Clear();
+
+        // Seed mock titles
+        titles.Clear();
+        titles.Add(new CharacterTitle
+        {
+            titleId     = Guid.NewGuid().ToString("N"),
+            characterId = CurrentCharacter.characterId,
+            name        = "Kẻ Tiêu Diệt Bóng Tối",
+            description = "Hạ gục Shadow Demon lần đầu tiên",
+            rarity      = "Rare",
+            isEquipped  = true,
+            earnedAt    = DateTime.UtcNow.AddDays(-1)
+        });
+        titles.Add(new CharacterTitle
+        {
+            titleId     = Guid.NewGuid().ToString("N"),
+            characterId = CurrentCharacter.characterId,
+            name        = "Kẻ Lạc Đường",
+            description = "Đặt chân vào Ancient Ruins",
+            rarity      = "Common",
+            isEquipped  = false,
+            earnedAt    = DateTime.UtcNow.AddDays(-3)
+        });
+        titles.Add(new CharacterTitle
+        {
+            titleId     = Guid.NewGuid().ToString("N"),
+            characterId = CurrentCharacter.characterId,
+            name        = "Sinh Tồn Thần Kỳ",
+            description = "Kết thúc trận đấu với HP còn dưới 10%",
+            rarity      = "Epic",
+            isEquipped  = false,
+            earnedAt    = DateTime.UtcNow.AddHours(-6)
+        });
+
+        // Seed mock battle history
+        for (int i = 0; i < 3; i++)
+        {
+            string encId  = Guid.NewGuid().ToString("N");
+            string battleId = Guid.NewGuid().ToString("N");
+            bool victory  = i != 1; // lần 2 (index 1) thua
+
+            BossEncounter mockEnc = new BossEncounter
+            {
+                encounterId   = encId,
+                characterId   = CurrentCharacter.characterId,
+                bossId        = CurrentBoss.bossId,
+                bossLevel     = CurrentBoss.level,
+                bossRarity    = CurrentBoss.rarity,
+                playerHpBefore = CurrentCharacter.maxHp,
+                playerHpAfter  = victory ? Mathf.Max(5, CurrentCharacter.maxHp - 36) : 0,
+                bossHpBefore   = CurrentBoss.baseHp,
+                bossHpAfter    = victory ? 0 : Mathf.Max(10, CurrentBoss.baseHp - 80),
+                status         = victory ? "Victory" : "Defeat",
+                encounterTime  = DateTime.UtcNow.AddHours(-(i + 1) * 2)
+            };
+            encounters.Add(mockEnc);
+
+            battles.Add(new Battle
+            {
+                battleId           = battleId,
+                encounterId        = encId,
+                playerPower        = CurrentCharacter.attack + CurrentCharacter.level * 2,
+                bossPower          = CurrentBoss.baseAttack,
+                battleType         = "Boss",
+                status             = "Completed",
+                result             = victory ? "Victory" : "Defeat",
+                turnCount          = victory ? 4 : 6,
+                durationMs         = victory ? 4800 : 7200,
+                playerSnapshotJson = "{}",
+                bossSnapshotJson   = "{}",
+                rewardJson         = victory ? "{\"gold\":100,\"exp\":75}" : "{}",
+                battleTime         = mockEnc.encounterTime
+            });
+        }
     }
 
     private void ApplyChoiceEffect(StoryChoice choice)

@@ -22,10 +22,32 @@ public class StoryView : MonoBehaviour
     [SerializeField] private Button[] choiceButtons = new Button[3];
     [SerializeField] private TextMeshProUGUI[] choiceTexts = new TextMeshProUGUI[3];
 
+    [Header("Custom Text Input")]
+    [SerializeField] private GameObject panelTextInput;
+    [SerializeField] private TMP_InputField inputStoryAction;
+    [SerializeField] private Button btnSubmitAction;
+
+    [Header("Navigation")]
+    [SerializeField] private Button btnBack;
+
+    [Header("Boss Encounter Popup")]
+    [Tooltip("Panel popup boss encounter — mặc định SetActive(false) trong Scene")]
+    [SerializeField] private GameObject bossEncounterPanel;
+    [SerializeField] private Image bossEncounterOverlay;          // nền tối mờ
+    [SerializeField] private TextMeshProUGUI txtBossName;          // tên boss
+    [SerializeField] private TextMeshProUGUI txtBossRarity;        // rarity badge
+    [SerializeField] private TextMeshProUGUI txtBossLevel;         // "Lv. 12"
+    [SerializeField] private Button btnFight;                      // Chiến đấu
+    [SerializeField] private Button btnFlee;                       // Bỏ chạy
+
+    private Action<string> onSubmitCallback;
+
     private void Awake()
     {
         SetNextIndicatorVisible(false);
         SetChoiceButtonsVisible(false);
+        SetInputPanelVisible(false);
+        HideBossEncounterPopup();
     }
 
     public void BindAdvance(Action onAdvance)
@@ -40,6 +62,79 @@ public class StoryView : MonoBehaviour
         {
             btnAdvance.onClick.AddListener(() => onAdvance());
         }
+    }
+
+    public void BindBack(Action onBack)
+    {
+        if (btnBack == null) return;
+        btnBack.onClick.RemoveAllListeners();
+        if (onBack != null)
+            btnBack.onClick.AddListener(() => onBack());
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // BOSS ENCOUNTER POPUP
+    // ══════════════════════════════════════════════════════════════
+
+    /// <summary>
+    /// Bước 1: Chỉ hiện Overlay (hình con mắt/nền quái vật) với độ mờ hoàn toàn.
+    /// Gọi trước ShowBossPanel() để tạo hiệu ứng xuất hiện dần.
+    /// </summary>
+    public void ShowBossOverlay()
+    {
+        if (bossEncounterOverlay == null) return;
+
+        bossEncounterOverlay.gameObject.SetActive(true);
+        // Alpha = 1 — hiện đầy đủ, không mờ
+        Color c = bossEncounterOverlay.color;
+        c.a = 1f;
+        bossEncounterOverlay.color = c;
+    }
+
+    /// <summary>
+    /// Bước 2: Hiện Panel thông tin boss và bind 2 nút (sau khi Overlay đã hiện).
+    /// </summary>
+    public void ShowBossPanel(
+        string bossName, string bossRarity, int bossLevel,
+        Action onFight, Action onFlee)
+    {
+        // Điền thông tin boss
+        if (txtBossName   != null) txtBossName.text   = bossName;
+        if (txtBossRarity != null) txtBossRarity.text = bossRarity.ToUpper();
+        if (txtBossLevel  != null) txtBossLevel.text  = "Lv. " + bossLevel;
+
+        // Bind nút
+        if (btnFight != null)
+        {
+            btnFight.onClick.RemoveAllListeners();
+            btnFight.onClick.AddListener(() => onFight?.Invoke());
+        }
+        if (btnFlee != null)
+        {
+            btnFlee.onClick.RemoveAllListeners();
+            btnFlee.onClick.AddListener(() => onFlee?.Invoke());
+        }
+
+        // Hiện panel
+        if (bossEncounterPanel != null)
+            bossEncounterPanel.SetActive(true);
+    }
+
+    /// <summary>Ẩn toàn bộ popup Boss Encounter (overlay + panel).</summary>
+    public void HideBossEncounterPopup()
+    {
+        if (bossEncounterPanel   != null) bossEncounterPanel.SetActive(false);
+        if (bossEncounterOverlay != null) bossEncounterOverlay.gameObject.SetActive(false);
+    }
+
+    // ═ (giữ lại để không break gì cũ) ShowBossEncounterPopup đã được thay bằng ShowBossOverlay + ShowBossPanel
+    [System.Obsolete("Dùng ShowBossOverlay() + ShowBossPanel() thay thế.")]
+    public void ShowBossEncounterPopup(
+        string bossName, string bossRarity, int bossLevel,
+        Action onFight, Action onFlee)
+    {
+        ShowBossOverlay();
+        ShowBossPanel(bossName, bossRarity, bossLevel, onFight, onFlee);
     }
 
     public void SetBackground(Sprite sprite)
@@ -218,6 +313,66 @@ public class StoryView : MonoBehaviour
             {
                 choiceButtons[index].interactable = interactable;
             }
+        }
+    }
+
+    public void SetInputPanelVisible(bool visible)
+    {
+        if (panelTextInput != null)
+        {
+            panelTextInput.SetActive(visible);
+        }
+    }
+
+    public void BindSubmitAction(Action<string> onSubmit)
+    {
+        onSubmitCallback = onSubmit;
+
+        if (btnSubmitAction != null)
+        {
+            btnSubmitAction.onClick.RemoveAllListeners();
+            btnSubmitAction.onClick.AddListener(OnSubmitClicked);
+        }
+
+        if (inputStoryAction != null)
+        {
+            inputStoryAction.onSubmit.RemoveAllListeners();
+            inputStoryAction.onSubmit.AddListener(text => OnSubmitClicked());
+        }
+    }
+
+    private void OnSubmitClicked()
+    {
+        string text = GetInputValue();
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            onSubmitCallback?.Invoke(text.Trim());
+        }
+    }
+
+    public string GetInputValue()
+    {
+        return inputStoryAction != null ? inputStoryAction.text : string.Empty;
+    }
+
+    public void ClearInputField()
+    {
+        if (inputStoryAction != null)
+        {
+            inputStoryAction.text = string.Empty;
+        }
+    }
+
+    public void SetInputInteractable(bool interactable)
+    {
+        if (inputStoryAction != null)
+        {
+            inputStoryAction.interactable = interactable;
+        }
+
+        if (btnSubmitAction != null)
+        {
+            btnSubmitAction.interactable = interactable;
         }
     }
 }
