@@ -64,6 +64,10 @@ public class InventoryManager : MonoBehaviour
                 fallbackData.itemType = ItemData.GetItemTypeFromId(inv.itemId);
                 matchData = fallbackData;
             }
+            else
+            {
+                matchData.itemType = ItemData.GetItemTypeFromId(inv.itemId);
+            }
 
             InventorySlotUI slotScript = allSlots[slotIndex];
             slotScript.AddItemToSlot(matchData, inv.quantity);

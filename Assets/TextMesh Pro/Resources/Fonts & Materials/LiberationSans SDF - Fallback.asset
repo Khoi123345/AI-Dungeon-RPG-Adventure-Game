@@ -749,7 +749,6 @@ MonoBehaviour:
     m_Unicode: 7883
     m_GlyphIndex: 1717
     m_Scale: 1
->>>>>>> 4ec17d7531547d193321d10c4f0c570d03c68d18
   m_AtlasTextures:
   - {fileID: 28268798066460806}
   m_AtlasTextureIndex: 0
@@ -977,7 +976,6 @@ MonoBehaviour:
   - m_X: 339
     m_Y: 0
     m_Width: 172
->>>>>>> 4ec17d7531547d193321d10c4f0c570d03c68d18
     m_Height: 511
   m_FontFeatureTable:
     m_MultipleSubstitutionRecords: []
