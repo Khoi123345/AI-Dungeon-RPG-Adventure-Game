@@ -17,12 +17,20 @@ public enum ItemRarity
     Epic         // Sử thi (Màu tím)
 }
 
-public class ItemData : MonoBehaviour
+// Đổi thành [System.Serializable] để có thể dùng "new ItemData()" trong code
+// Không còn là MonoBehaviour — không cần attach vào GameObject nữa
+[System.Serializable]
+public class ItemData
 {
     public string itemName;
     public Sprite itemIcon;
-    public ItemType itemType; 
+    public ItemType itemType;
     public ItemRarity itemRarity; // Độ hiếm của vật phẩm
+
+    // Thêm chỉ số chiến đấu
+    public int atkBonus;
+    public int defBonus;
+    public int quantity = 1; // Số lượng mặc định là 1
 
     public static ItemType GetItemTypeFromId(string itemId)
     {

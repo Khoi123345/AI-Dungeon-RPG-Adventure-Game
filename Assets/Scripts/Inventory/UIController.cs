@@ -23,4 +23,13 @@ public class UIController : MonoBehaviour
             panelInventory.SetActive(!panelInventory.activeSelf);
         }
     }
+
+    // Hàm đóng Inventory (dùng riêng cho nút X / nút Đóng bên trong Panel_Inventory)
+    public void CloseInventory()
+    {
+        if (panelInventory != null)
+        {
+            panelInventory.SetActive(false);
+        }
+    }
 }
