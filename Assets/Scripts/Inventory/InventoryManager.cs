@@ -3,11 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-// 1. Khai báo kiểu dữ liệu cho Item
-public enum ItemType { Weapon, Armor, Accessory, Consumable }
+// ItemType được khai báo trong ItemData.cs — không khai báo lại ở đây để tránh lỗi CS0101
 
+// Đổi tên thành InventoryGridItem để tránh xung đột với GameShared.Models.Item
+// class Item (backend model) được dùng bởi GameProgressService và có các field khác (itemId, rarity, v.v.)
 [System.Serializable]
-public class Item
+public class InventoryGridItem
 {
     public string itemName;
     public ItemType type;
@@ -31,8 +32,8 @@ public class InventoryManager : MonoBehaviour
     public Button btnLast;
 
     [Header("--- Inventory Data ---")]
-    public List<Item> allItems = new List<Item>(); // Danh sách toàn bộ item đang có
-    private List<Item> filteredItems = new List<Item>(); // Danh sách sau khi lọc
+    public List<InventoryGridItem> allItems = new List<InventoryGridItem>(); // Danh sách toàn bộ item đang có
+    private List<InventoryGridItem> filteredItems = new List<InventoryGridItem>(); // Danh sách sau khi lọc
 
     private int currentPage = 1;
     private int itemsPerPage = 49; // Đúng bằng số ô vuông trên 1 trang của bạn
@@ -41,15 +42,29 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         // Gán sự kiện cho Dropdown và Nút phân trang
-        dropdownFilter.onValueChanged.AddListener(OnFilterChanged);
-        btnFirst.onClick.AddListener(() => ChangePage(1));
-        btnPrev.onClick.AddListener(() => ChangePage(currentPage - 1));
-        btnNext.onClick.AddListener(() => ChangePage(currentPage + 1));
-        btnLast.onClick.AddListener(() => ChangePage(totalPages));
+        // Dùng null guard để tránh NullReferenceException khi chưa gán trong Inspector
+        if (dropdownFilter != null)
+            dropdownFilter.onValueChanged.AddListener(OnFilterChanged);
 
-        // Tạo dữ liệu giả lập (Dummy Data) để test ngay
-        GenerateDummyData();
-        ApplyFilter();
+        if (btnFirst != null)
+            btnFirst.onClick.AddListener(() => ChangePage(1));
+        if (btnPrev != null)
+            btnPrev.onClick.AddListener(() => ChangePage(currentPage - 1));
+        if (btnNext != null)
+            btnNext.onClick.AddListener(() => ChangePage(currentPage + 1));
+        if (btnLast != null)
+            btnLast.onClick.AddListener(() => ChangePage(totalPages));
+
+        // Tạo dữ liệu giả lập và render — chỉ chạy khi gridSlotsContainer được gán
+        if (gridSlotsContainer != null)
+        {
+            GenerateDummyData();
+            ApplyFilter();
+        }
+        else
+        {
+            Debug.LogWarning("[InventoryManager] Chưa gán 'Grid Slots Container' trong Inspector — bỏ qua GenerateDummyData.");
+        }
     }
 
     // Tạo dữ liệu test ngẫu nhiên
@@ -59,7 +74,7 @@ public class InventoryManager : MonoBehaviour
         for (int i = 1; i <= 120; i++) // Tạo hẳn 120 item để test phân trang (3 trang)
         {
             ItemType randomType = (ItemType)Random.Range(0, 4);
-            allItems.Add(new Item
+            allItems.Add(new InventoryGridItem
             {
                 itemName = $"{randomType} #{i}",
                 type = randomType,
