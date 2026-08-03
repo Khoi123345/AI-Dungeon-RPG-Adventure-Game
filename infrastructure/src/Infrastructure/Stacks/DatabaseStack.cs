@@ -21,6 +21,7 @@ namespace Infrastructure.Stacks
         {
             UsersTable = CreateTable("GameUsers", "userId");
             CharactersTable = CreateTable("GameCharacters", "characterId");
+            BossesTable = CreateTable("GameBosses", "bossId");
             BossEncountersTable = CreateTable("GameBossEncounters", "encounterId");
             BattlesTable = CreateTable("GameBattles", "battleId");
             StorySessionsTable = CreateTable("GameStorySessions", "sessionId");
