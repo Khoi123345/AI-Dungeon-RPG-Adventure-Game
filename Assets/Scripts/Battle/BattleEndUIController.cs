@@ -265,7 +265,7 @@ public class BattleEndUIController : MonoBehaviour
             {
                 LootDrop drop = droppedItems[i];
                 // Tìm kiếm ItemData mẫu (Thêm kiểm tra x != null để tránh lỗi nếu danh sách database chứa phần tử rỗng/None)
-                ItemData matchData = itemDatabase.Find(x => x != null && (x.name == drop.itemId || x.itemName == drop.itemId));
+                ItemData matchData = itemDatabase.Find(x => x != null && x.itemName == drop.itemId);
 
                 if (matchData != null)
                 {
