@@ -88,10 +88,18 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
         itemQuantity = quantity;
 
         // 1. Cập nhật Icon hiển thị
-        if (itemIconImage != null && newItem != null && newItem.itemIcon != null)
+        if (itemIconImage != null)
         {
-            itemIconImage.sprite = newItem.itemIcon;
-            itemIconImage.gameObject.SetActive(true);
+            if (newItem != null && newItem.itemIcon != null)
+            {
+                itemIconImage.sprite = newItem.itemIcon;
+                itemIconImage.color = Color.white;
+                itemIconImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                itemIconImage.gameObject.SetActive(false);
+            }
         }
 
         // 2. Cập nhật màu nền theo độ hiếm

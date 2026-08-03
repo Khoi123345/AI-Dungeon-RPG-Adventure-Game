@@ -13,6 +13,12 @@ public class InventoryManager : MonoBehaviour
     public TextMeshProUGUI txtPageNumber;
     public Button btnClose;
 
+    [Header("--- Equipment Slots (Left Panel) ---")]
+    public InventorySlotUI slotHelmet;
+    public InventorySlotUI slotArmor;
+    public InventorySlotUI slotAccessory;
+    public InventorySlotUI slotWeapon;
+
     [Header("--- Pagination Buttons ---")]
     public Button btnFirst;
     public Button btnPrev;
@@ -47,18 +53,116 @@ public class InventoryManager : MonoBehaviour
         if (btnClose != null)
             btnClose.onClick.AddListener(() => gameObject.SetActive(false));
 
+        AutoFindEquipmentSlots();
         RefreshInventoryUI();
     }
 
     private void OnEnable()
     {
+        AutoFindEquipmentSlots();
         RefreshInventoryUI();
+    }
+
+    private void AutoFindEquipmentSlots()
+    {
+        Transform leftPanel = transform.Find("Left_CharacterPanel");
+        if (leftPanel == null && transform.parent != null)
+            leftPanel = transform.parent.Find("Left_CharacterPanel");
+        if (leftPanel == null)
+            leftPanel = GameObject.Find("Left_CharacterPanel")?.transform;
+
+        if (leftPanel != null)
+        {
+            Transform equipGroup = leftPanel.Find("Equipment_Slots");
+            if (equipGroup != null)
+            {
+                if (slotHelmet == null) slotHelmet = GetOrAddSlotUI(equipGroup.Find("Slot_Helmet"));
+                if (slotArmor == null) slotArmor = GetOrAddSlotUI(equipGroup.Find("Slot_Armor"));
+                if (slotAccessory == null) slotAccessory = GetOrAddSlotUI(equipGroup.Find("Slot_Accessory"));
+                if (slotWeapon == null) slotWeapon = GetOrAddSlotUI(equipGroup.Find("Slot_Weapon"));
+            }
+        }
+    }
+
+    private InventorySlotUI GetOrAddSlotUI(Transform slotTr)
+    {
+        if (slotTr == null) return null;
+        InventorySlotUI slotUI = slotTr.GetComponent<InventorySlotUI>();
+        if (slotUI == null)
+        {
+            slotUI = slotTr.gameObject.AddComponent<InventorySlotUI>();
+        }
+        return slotUI;
     }
 
     public void RefreshInventoryUI()
     {
+        AutoFindEquipmentSlots();
+
+        // 1. Xóa hiển thị ô trang bị bên trái
+        if (slotHelmet != null) slotHelmet.ClearSlot();
+        if (slotArmor != null) slotArmor.ClearSlot();
+        if (slotAccessory != null) slotAccessory.ClearSlot();
+        if (slotWeapon != null) slotWeapon.ClearSlot();
+
+        // 2. Nạp dữ liệu từ GameProgressService
         LoadInventoryFromProgressService();
+
+        // 3. Đưa các món ĐÃ TRANG BỊ lên 4 ô tương ứng bên trái (Left Panel)
+        foreach (var item in allItems)
+        {
+            if (item.isEquipped)
+            {
+                InventorySlotUI targetLeftSlot = GetTargetEquipmentSlot(item, item.itemName);
+                if (targetLeftSlot != null)
+                {
+                    targetLeftSlot.AddItemToSlot(item, item.quantity);
+                    targetLeftSlot.SetEquipped(true);
+
+                    string capturedInvId = item.inventoryId;
+                    targetLeftSlot.onSlotClicked = (clickedSlot) =>
+                    {
+                        if (clickedSlot.hasItem && !string.IsNullOrEmpty(capturedInvId))
+                        {
+                            GameProgressService.Instance?.ToggleEquipItemByInventoryId(capturedInvId);
+                            RefreshInventoryUI();
+                        }
+                    };
+                }
+            }
+        }
+
+        // 4. Áp dụng bộ lọc và render trang bên phải (Right Grid)
         ApplyFilter();
+    }
+
+    private InventorySlotUI GetTargetEquipmentSlot(ItemData item, string itemIdOrName)
+    {
+        var template = GameShared.Config.GameConstants.GetItemById(itemIdOrName);
+        string slotType = template?.slotType?.ToLower() ?? "";
+        string lowerId = (itemIdOrName ?? "").ToLower();
+
+        if (slotType.Contains("helmet") || slotType.Contains("head") || lowerId.Contains("helmet") || lowerId.Contains("cap") || lowerId.Contains("crown") || lowerId.Contains("hood"))
+        {
+            return slotHelmet;
+        }
+
+        if (item.itemType == ItemType.Armor || slotType.Contains("armor") || lowerId.Contains("armor") || lowerId.Contains("vest") || lowerId.Contains("plate"))
+        {
+            return slotArmor;
+        }
+
+        if (item.itemType == ItemType.Accessory || slotType.Contains("accessory") || lowerId.Contains("ring") || lowerId.Contains("amulet") || lowerId.Contains("necklace"))
+        {
+            return slotAccessory;
+        }
+
+        if (item.itemType == ItemType.Weapon || slotType.Contains("weapon") || lowerId.Contains("sword") || lowerId.Contains("bow") || lowerId.Contains("staff") || lowerId.Contains("shield") || lowerId.Contains("blade"))
+        {
+            return slotWeapon;
+        }
+
+        return slotWeapon; // Mặc định
     }
 
     private void LoadInventoryFromProgressService()
@@ -70,25 +174,31 @@ public class InventoryManager : MonoBehaviour
 
         foreach (var inv in inventoryItems)
         {
+            var template = GameShared.Config.GameConstants.GetItemById(inv.itemId);
+
             ItemData matchData = null;
-            if (itemDatabase != null)
+            if (itemDatabase != null && itemDatabase.Count > 0)
             {
                 matchData = itemDatabase.Find(x => x != null && 
                     !string.IsNullOrEmpty(x.itemName) &&
-                    x.itemName.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase));
+                    (x.itemName.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase) ||
+                     (template != null && x.itemName.Equals(template.name, System.StringComparison.OrdinalIgnoreCase))));
             }
 
             if (matchData == null)
             {
                 matchData = new ItemData
                 {
-                    itemName = string.IsNullOrEmpty(inv.itemId) ? "Inventory Item" : inv.itemId,
-                    itemType = ItemData.GetItemTypeFromId(inv.itemId)
+                    itemName = template != null ? template.name : (string.IsNullOrEmpty(inv.itemId) ? "Inventory Item" : inv.itemId),
+                    itemType = template != null && System.Enum.TryParse<ItemType>(template.itemType, true, out var parsedType) 
+                                ? parsedType 
+                                : ItemData.GetItemTypeFromId(inv.itemId),
+                    atkBonus = template != null ? template.attackBonus : 0,
+                    defBonus = template != null ? template.defenseBonus : 0,
+                    itemRarity = template != null && System.Enum.TryParse<ItemRarity>(template.rarity, true, out var parsedRarity)
+                                ? parsedRarity
+                                : ItemRarity.Common
                 };
-            }
-            else
-            {
-                matchData.itemType = ItemData.GetItemTypeFromId(inv.itemId);
             }
 
             matchData.quantity = inv.quantity;
@@ -156,7 +266,7 @@ public class InventoryManager : MonoBehaviour
 
         if (gridSlotsContainer == null) return;
 
-        // --- Hiển thị item lên từng ô Slot ---
+        // --- Hiển thị item lên từng ô Slot bên phải ---
         int startIndex = (currentPage - 1) * itemsPerPage;
         int slotCount  = gridSlotsContainer.childCount;
 
