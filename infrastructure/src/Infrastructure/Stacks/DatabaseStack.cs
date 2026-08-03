@@ -14,16 +14,20 @@ namespace Infrastructure.Stacks
         public ITable StorySessionsTable { get; }
         public ITable StoryActionsTable { get; }
         public ITable InventoryTable { get; }
+        public ITable LootDropsTable { get; }
+        public ITable BossesTable { get; }
 
         public DatabaseStack(Construct scope, string id, IStackProps? props = null) : base(scope, id, props)
         {
             UsersTable = CreateTable("GameUsers", "userId");
             CharactersTable = CreateTable("GameCharacters", "characterId");
+            BossesTable = CreateTable("GameBosses", "bossId");
             BossEncountersTable = CreateTable("GameBossEncounters", "encounterId");
             BattlesTable = CreateTable("GameBattles", "battleId");
             StorySessionsTable = CreateTable("GameStorySessions", "sessionId");
             StoryActionsTable = CreateTable("GameStoryActions", "actionId");
             InventoryTable = CreateTable("GameInventory", "inventoryId");
+            LootDropsTable = CreateTable("GameLootDrops", "lootId");
 
             // GSI cho Character lookup by userId
             (CharactersTable as Table)?.AddGlobalSecondaryIndex(new GlobalSecondaryIndexProps

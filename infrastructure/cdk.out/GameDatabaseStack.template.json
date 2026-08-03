@@ -72,6 +72,33 @@
     "aws:cdk:path": "GameDatabaseStack/GameCharacters/Resource"
    }
   },
+  "GameBossesAFC7BE77": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "bossId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "bossId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameBosses"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameBosses/Resource"
+   }
+  },
   "GameBossEncounters2BCD1172": {
    "Type": "AWS::DynamoDB::Table",
    "Properties": {
@@ -225,10 +252,37 @@
     "aws:cdk:path": "GameDatabaseStack/GameInventory/Resource"
    }
   },
+  "GameLootDropsF2D08EDA": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "lootId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "lootId",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "GameLootDrops"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "GameDatabaseStack/GameLootDrops/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWIvQ6CMBgAn4W9/dqiJi4OBlwZkLia/nwmFWhJWySG8O4GiLnhLpeDOHHgmZwi1aalnVUw35PULZFTfJqvk703CuZGqg5J8XJbLKTG6Megt/XvhZQ+VZjYGTjkRwbVrSl8wOsw0AeGaL27fA4gmAC+kr2jtTSMLtkeod79A2Y890eSAAAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWIvQqDMBgAn8U9+ZJYCu3QoWhXBytdS36+QqomksRKEd+9qJQb7rgcxJEDz+QUqTYt7ayC+Z6kbomc4tN8ney9UTA3UnVIipfbYiE1Rj8Gva1/L6T0qcLETsAhPzOobk3hA16HgT4wROvd5XMAwQTwlewdraVhdMn2CPXuH/fdliaSAAAA"
    },
    "Metadata": {
     "aws:cdk:path": "GameDatabaseStack/CDKMetadata/Default"
@@ -303,6 +357,22 @@
     "Name": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
    }
   },
+  "ExportsOutputRefGameLootDropsF2D08EDA9180A8FD": {
+   "Value": {
+    "Ref": "GameLootDropsF2D08EDA"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+   }
+  },
+  "ExportsOutputRefGameBossesAFC7BE7787CF05B3": {
+   "Value": {
+    "Ref": "GameBossesAFC7BE77"
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
+   }
+  },
   "ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051": {
    "Value": {
     "Fn::GetAtt": [
@@ -314,26 +384,15 @@
     "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
    }
   },
-  "ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C": {
+  "ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5": {
    "Value": {
     "Fn::GetAtt": [
-     "GameStorySessions94D664C0",
+     "GameBossesAFC7BE77",
      "Arn"
     ]
    },
    "Export": {
-    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
-   }
-  },
-  "ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC": {
-   "Value": {
-    "Fn::GetAtt": [
-     "GameStoryActionsBCC1CDD7",
-     "Arn"
-    ]
-   },
-   "Export": {
-    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
    }
   },
   "ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA": {
@@ -358,6 +417,28 @@
     "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
    }
   },
+  "ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameStorySessions94D664C0",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+   }
+  },
+  "ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameStoryActionsBCC1CDD7",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+   }
+  },
   "ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75": {
    "Value": {
     "Fn::GetAtt": [
@@ -367,6 +448,17 @@
    },
    "Export": {
     "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+   }
+  },
+  "ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E": {
+   "Value": {
+    "Fn::GetAtt": [
+     "GameLootDropsF2D08EDA",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "GameDatabaseStack:ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
    }
   }
  },

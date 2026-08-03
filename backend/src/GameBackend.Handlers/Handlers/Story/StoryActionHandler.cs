@@ -27,7 +27,7 @@ namespace GameBackend.Handlers.Story
 
             try
             {
-                var actionRequest = JsonSerializer.Deserialize<StoryActionRequest>(request.Body);
+                var actionRequest = JsonUtils.Deserialize<StoryActionRequest>(request.Body);
                 if (actionRequest == null || string.IsNullOrWhiteSpace(actionRequest.sessionId))
                     return ResponseBuilder.Error(400, "Invalid request payload", "INVALID_REQUEST");
 

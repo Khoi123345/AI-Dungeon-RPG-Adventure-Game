@@ -122,6 +122,54 @@
               "version": "2.150.0"
             }
           },
+          "GameBosses": {
+            "id": "GameBosses",
+            "path": "GameDatabaseStack/GameBosses",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GameDatabaseStack/GameBosses/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "bossId",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "keySchema": [
+                      {
+                        "attributeName": "bossId",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "pointInTimeRecoverySpecification": {
+                      "pointInTimeRecoveryEnabled": true
+                    },
+                    "tableName": "GameBosses"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.150.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "GameDatabaseStack/GameBosses/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.150.0"
+            }
+          },
           "GameBossEncounters": {
             "id": "GameBossEncounters",
             "path": "GameDatabaseStack/GameBossEncounters",
@@ -380,6 +428,54 @@
               "version": "2.150.0"
             }
           },
+          "GameLootDrops": {
+            "id": "GameLootDrops",
+            "path": "GameDatabaseStack/GameLootDrops",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GameDatabaseStack/GameLootDrops/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "lootId",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "keySchema": [
+                      {
+                        "attributeName": "lootId",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "pointInTimeRecoverySpecification": {
+                      "pointInTimeRecoveryEnabled": true
+                    },
+                    "tableName": "GameLootDrops"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.150.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "GameDatabaseStack/GameLootDrops/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.150.0"
+            }
+          },
           "CDKMetadata": {
             "id": "CDKMetadata",
             "path": "GameDatabaseStack/CDKMetadata",
@@ -466,6 +562,22 @@
                   "version": "2.150.0"
                 }
               },
+              "Output{\"Ref\":\"GameLootDropsF2D08EDA\"}": {
+                "id": "Output{\"Ref\":\"GameLootDropsF2D08EDA\"}",
+                "path": "GameDatabaseStack/Exports/Output{\"Ref\":\"GameLootDropsF2D08EDA\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.150.0"
+                }
+              },
+              "Output{\"Ref\":\"GameBossesAFC7BE77\"}": {
+                "id": "Output{\"Ref\":\"GameBossesAFC7BE77\"}",
+                "path": "GameDatabaseStack/Exports/Output{\"Ref\":\"GameBossesAFC7BE77\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.150.0"
+                }
+              },
               "Output{\"Fn::GetAtt\":[\"GameCharactersADC68954\",\"Arn\"]}": {
                 "id": "Output{\"Fn::GetAtt\":[\"GameCharactersADC68954\",\"Arn\"]}",
                 "path": "GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameCharactersADC68954\",\"Arn\"]}",
@@ -474,17 +586,9 @@
                   "version": "2.150.0"
                 }
               },
-              "Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}": {
-                "id": "Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}",
-                "path": "GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}",
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.CfnOutput",
-                  "version": "2.150.0"
-                }
-              },
-              "Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}": {
-                "id": "Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}",
-                "path": "GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}",
+              "Output{\"Fn::GetAtt\":[\"GameBossesAFC7BE77\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"GameBossesAFC7BE77\",\"Arn\"]}",
+                "path": "GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameBossesAFC7BE77\",\"Arn\"]}",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.150.0"
@@ -506,9 +610,33 @@
                   "version": "2.150.0"
                 }
               },
+              "Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}",
+                "path": "GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.150.0"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}",
+                "path": "GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.150.0"
+                }
+              },
               "Output{\"Fn::GetAtt\":[\"GameInventory125E1F12\",\"Arn\"]}": {
                 "id": "Output{\"Fn::GetAtt\":[\"GameInventory125E1F12\",\"Arn\"]}",
                 "path": "GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameInventory125E1F12\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.150.0"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"GameLootDropsF2D08EDA\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"GameLootDropsF2D08EDA\",\"Arn\"]}",
+                "path": "GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameLootDropsF2D08EDA\",\"Arn\"]}",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.150.0"
@@ -909,7 +1037,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -933,6 +1061,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -1103,7 +1237,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1127,6 +1261,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -1297,7 +1437,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1321,6 +1461,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -1491,7 +1637,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1515,6 +1661,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -1624,6 +1776,35 @@
                                     "dynamodb:GetItem",
                                     "dynamodb:Scan",
                                     "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
                                     "dynamodb:DescribeTable"
                                   ],
                                   "Effect": "Allow",
@@ -1653,12 +1834,174 @@
                                     "dynamodb:GetItem",
                                     "dynamodb:Scan",
                                     "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
                                     "dynamodb:DescribeTable"
                                   ],
                                   "Effect": "Allow",
                                   "Resource": [
                                     {
-                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
                                     },
                                     {
                                       "Ref": "AWS::NoValue"
@@ -1703,7 +2046,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1727,6 +2070,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -1845,6 +2194,31 @@
                                   "Effect": "Allow",
                                   "Resource": [
                                     {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
                                       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
                                     },
                                     {
@@ -1857,6 +2231,189 @@
                                           "/index/*"
                                         ]
                                       ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
                                     }
                                   ]
                                 }
@@ -1898,7 +2455,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1922,6 +2479,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -2040,6 +2603,139 @@
                                   "Effect": "Allow",
                                   "Resource": [
                                     {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
                                       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
                                     },
                                     {
@@ -2054,6 +2750,89 @@
                                       ]
                                     }
                                   ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "bedrock:InvokeModel",
+                                    "bedrock:InvokeModelWithResponseStream"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*"
                                 }
                               ],
                               "Version": "2012-10-17"
@@ -2093,7 +2872,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -2117,6 +2896,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -2235,6 +3020,139 @@
                                   "Effect": "Allow",
                                   "Resource": [
                                     {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
                                       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
                                     },
                                     {
@@ -2293,20 +3211,45 @@
                                   "Effect": "Allow",
                                   "Resource": [
                                     {
-                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
                                     },
                                     {
-                                      "Fn::Join": [
-                                        "",
-                                        [
-                                          {
-                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
-                                          },
-                                          "/index/*"
-                                        ]
-                                      ]
+                                      "Ref": "AWS::NoValue"
                                     }
                                   ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "bedrock:InvokeModel",
+                                    "bedrock:InvokeModelWithResponseStream"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*"
                                 }
                               ],
                               "Version": "2012-10-17"
@@ -2346,7 +3289,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -2370,6 +3313,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -2488,7 +3437,223 @@
                                   "Effect": "Allow",
                                   "Resource": [
                                     {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
                                       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
                                     },
                                     {
                                       "Ref": "AWS::NoValue"
@@ -2533,7 +3698,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -2557,6 +3722,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -2675,7 +3846,223 @@
                                   "Effect": "Allow",
                                   "Resource": [
                                     {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
                                       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
                                     },
                                     {
                                       "Ref": "AWS::NoValue"
@@ -2720,7 +4107,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -2744,6 +4131,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"
@@ -2853,12 +4246,232 @@
                                     "dynamodb:GetItem",
                                     "dynamodb:Scan",
                                     "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameUsers2CC13EA4Arn56F96692"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBossEncounters2BCD1172Arn4641EEEA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
                                     "dynamodb:DescribeTable"
                                   ],
                                   "Effect": "Allow",
                                   "Resource": [
                                     {
                                       "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameDatabaseStack:ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
                                     },
                                     {
                                       "Ref": "AWS::NoValue"
@@ -2903,7 +4516,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "310ab35eb2dbdc949a94b104ba0dca057125e8da7e099189b72f5fc59c2287e0.zip"
+                      "s3Key": "b894592a7d07c80291b36aedc28ecb8196be28ca033f78ece12051f28fc1c2c7.zip"
                     },
                     "environment": {
                       "variables": {
@@ -2927,6 +4540,12 @@
                         },
                         "INVENTORY_TABLE": {
                           "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameInventory125E1F128FE2DC96"
+                        },
+                        "LOOT_DROPS_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+                        },
+                        "BOSSES_TABLE": {
+                          "Fn::ImportValue": "GameDatabaseStack:ExportsOutputRefGameBossesAFC7BE7787CF05B3"
                         },
                         "COGNITO_USER_POOL_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolA8C3B0A9D6859601"

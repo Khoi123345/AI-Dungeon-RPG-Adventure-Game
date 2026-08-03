@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 using GameBackend.Core.AIStory.Services;
 
@@ -65,10 +65,22 @@ namespace GameBackend.Core.AIStory.Services.Impl
 
         private async Task<string> ReadContentAsync(string folder, string id)
         {
-            var path = GetContentPath(folder, id);
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return $"No description available for {folder}.";
+            }
+
+            var normalizedId = id.Trim().ToLowerInvariant().Replace(" ", "_").Replace("-", "_");
+
+            var path = GetContentPath(folder, normalizedId);
             if (!File.Exists(path))
             {
-                throw new FileNotFoundException($"Content file not found: {path}");
+                path = GetContentPath(folder, id);
+            }
+
+            if (!File.Exists(path))
+            {
+                return $"Description for {folder} '{id}' is not available.";
             }
 
             return await File.ReadAllTextAsync(path);
@@ -92,7 +104,20 @@ namespace GameBackend.Core.AIStory.Services.Impl
                 return false;
             }
 
-            var folderPath = Path.Combine(_contentRoot, folder, $"{id}.md");
+            var normalizedId = id.Trim().ToLowerInvariant().Replace(" ", "_").Replace("-", "_");
+
+            var folderPath = Path.Combine(_contentRoot, folder, $"{normalizedId}.md");
+            if (File.Exists(folderPath))
+            {
+                return true;
+            }
+
+            if (File.Exists(Path.Combine(_contentRoot, $"{normalizedId}.md")))
+            {
+                return true;
+            }
+
+            folderPath = Path.Combine(_contentRoot, folder, $"{id}.md");
             if (File.Exists(folderPath))
             {
                 return true;

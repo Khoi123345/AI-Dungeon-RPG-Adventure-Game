@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/133fddc573dee9fc0717fec1b464e7d9911c720406b8ae862982c3813fef9c4e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/dc4395fb67a3407796fe63fd9f4ed7830bddf18f28ce4d46760c845fc2bd5f74.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -60,6 +60,20 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "GameCharactersADC68954"
+          }
+        ],
+        "/GameDatabaseStack/GameBosses": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameBossesAFC7BE77"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameBosses/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameBossesAFC7BE77"
           }
         ],
         "/GameDatabaseStack/GameBossEncounters": [
@@ -132,6 +146,20 @@
             "data": "GameInventory125E1F12"
           }
         ],
+        "/GameDatabaseStack/GameLootDrops": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "GameLootDropsF2D08EDA"
+            }
+          }
+        ],
+        "/GameDatabaseStack/GameLootDrops/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GameLootDropsF2D08EDA"
+          }
+        ],
         "/GameDatabaseStack/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
@@ -186,22 +214,28 @@
             "data": "ExportsOutputRefGameInventory125E1F128FE2DC96"
           }
         ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameLootDropsF2D08EDA\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameLootDropsF2D08EDA9180A8FD"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Ref\":\"GameBossesAFC7BE77\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefGameBossesAFC7BE7787CF05B3"
+          }
+        ],
         "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameCharactersADC68954\",\"Arn\"]}": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ExportsOutputFnGetAttGameCharactersADC68954Arn397EC051"
           }
         ],
-        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}": [
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameBossesAFC7BE77\",\"Arn\"]}": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
-          }
-        ],
-        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+            "data": "ExportsOutputFnGetAttGameBossesAFC7BE77Arn7273EAB5"
           }
         ],
         "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameBossEncounters2BCD1172\",\"Arn\"]}": [
@@ -216,10 +250,28 @@
             "data": "ExportsOutputFnGetAttGameBattles72B8D8BAArn091C50CA"
           }
         ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStorySessions94D664C0\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameStorySessions94D664C0Arn52CF048C"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameStoryActionsBCC1CDD7\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameStoryActionsBCC1CDD7ArnC2A1D9DC"
+          }
+        ],
         "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameInventory125E1F12\",\"Arn\"]}": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ExportsOutputFnGetAttGameInventory125E1F12Arn60638C75"
+          }
+        ],
+        "/GameDatabaseStack/Exports/Output{\"Fn::GetAtt\":[\"GameLootDropsF2D08EDA\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttGameLootDropsF2D08EDAArn0E09267E"
           }
         ],
         "/GameDatabaseStack/BootstrapVersion": [
@@ -254,7 +306,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/7d4a93058f40b09ca013bca94caa9d21f594a2a381b403b407e665001d89ce95.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/9338635ac5903195182b1535d50628b5fe80a7b462e5f1163ea6c465f86eb6b7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -350,7 +402,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/838e1c927a849ba8d7ceb2e70339f4ce1128daf6251e165ecb1308a20c3e7de9.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/a86e4ef5694bbb0167ecf183ad7be2beed0c2136e303a8c84a0ff3f159473c1a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -670,7 +722,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/6a6b86753ccfa80c215891d361fa00df66614b01916eafb6ecbfa9b18099b37f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/39112e12563f085021ed591c146971ee4ba5ab37cef666498454427d72eb6a83.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -1158,7 +1210,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-ap-southeast-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-ap-southeast-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/b69135b954c17eaed9c1274208c80384a8debd5bd821bce26e2cd41b52f701c4.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1/b120aefa0f30587beccf54529ee99ac6d0e4a0127994f46b70c9198917b9112f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [

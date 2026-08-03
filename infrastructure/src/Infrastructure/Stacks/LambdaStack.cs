@@ -35,6 +35,8 @@ namespace Infrastructure.Stacks
                     { "STORY_SESSIONS_TABLE", dbStack.StorySessionsTable.TableName },
                     { "STORY_ACTIONS_TABLE", dbStack.StoryActionsTable.TableName },
                     { "INVENTORY_TABLE", dbStack.InventoryTable.TableName },
+                    { "LOOT_DROPS_TABLE", dbStack.LootDropsTable.TableName },
+                    { "BOSSES_TABLE", dbStack.BossesTable.TableName },
                     { "COGNITO_USER_POOL_ID", cognitoStack.UserPool.UserPoolId },
                     { "COGNITO_CLIENT_ID", cognitoStack.UserPoolClient.UserPoolClientId }
                 }
@@ -104,18 +106,38 @@ namespace Infrastructure.Stacks
             dbStack.UsersTable.GrantReadWriteData(ConfirmSignUpFunction);
             dbStack.UsersTable.GrantReadWriteData(RefreshTokenFunction);
 
-            dbStack.CharactersTable.GrantReadData(GetCharacterFunction);
-            dbStack.CharactersTable.GrantReadWriteData(CreateCharacterFunction);
-            dbStack.UsersTable.GrantReadData(GetCharacterFunction);
+            // Grant DynamoDB Permissions to all Game Play Lambdas
+            var gameTables = new[]
+            {
+                dbStack.UsersTable,
+                dbStack.CharactersTable,
+                dbStack.BossesTable,
+                dbStack.BossEncountersTable,
+                dbStack.BattlesTable,
+                dbStack.StorySessionsTable,
+                dbStack.StoryActionsTable,
+                dbStack.InventoryTable,
+                dbStack.LootDropsTable
+            };
 
-            dbStack.StorySessionsTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.StorySessionsTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.StoryActionsTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.CharactersTable.GrantReadWriteData(StoryActionFunction);
+            var gameFunctions = new[]
+            {
+                GetCharacterFunction,
+                CreateCharacterFunction,
+                StartStoryFunction,
+                StoryActionFunction,
+                SpawnBossFunction,
+                ResolveBattleFunction,
+                GetInventoryFunction
+            };
 
-            dbStack.BossEncountersTable.GrantReadWriteData(SpawnBossFunction);
-            dbStack.BattlesTable.GrantReadWriteData(ResolveBattleFunction);
-            dbStack.InventoryTable.GrantReadData(GetInventoryFunction);
+            foreach (var table in gameTables)
+            {
+                foreach (var function in gameFunctions)
+                {
+                    table.GrantReadWriteData(function);
+                }
+            }
 
             // Grant Cognito Permissions
             cognitoStack.UserPool.Grant(LoginFunction, "cognito-idp:InitiateAuth");
