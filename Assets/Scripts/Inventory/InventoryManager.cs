@@ -5,47 +5,128 @@ public class InventoryManager : MonoBehaviour
 {
     // Danh sách tất cả các Slots hiển thị trong Grid_Slots_Container
     [SerializeField] private List<InventorySlotUI> allSlots = new List<InventorySlotUI>();
+    [SerializeField] private List<ItemData> itemDatabase = new List<ItemData>();
 
-    void Start()
+    private void OnEnable()
     {
-        // Vừa vào game: Hiện đầy đủ tất cả các ô (kể cả ô trống) để đảm bảo thẩm mỹ UI
-        ShowAllInventory();
+        RefreshInventoryUI();
+    }
+
+    private void Start()
+    {
+        RefreshInventoryUI();
     }
 
     // ==========================================
     // MODULE 1: LOGIC LỌC VÀ HIỂN THỊ TÚI ĐỒ
     // ==========================================
 
-    public void FilterInventory(string typeString)
+    public void RefreshInventoryUI()
     {
-        // Chuyển chuỗi chữ truyền từ nút bấm thành kiểu Enum tương ứng
-        ItemType selectedType = (ItemType)System.Enum.Parse(typeof(ItemType), typeString);
+        // Tự động quét tìm allSlots nếu danh sách rỗng trong Inspector
+        if (allSlots == null || allSlots.Count == 0)
+        {
+            allSlots = new List<InventorySlotUI>(GetComponentsInChildren<InventorySlotUI>(true));
+        }
 
+        // Làm sạch tất cả ô
         foreach (var slot in allSlots)
         {
-            // Kiểm tra xem Slot có tồn tại không để tránh lỗi NullReferenceException
             if (slot != null)
             {
-                // Kiểm tra xem Slot đó được tích chọn "Has Item" hay không
-                if (slot.hasItem) 
+                slot.ClearSlot();
+                slot.gameObject.SetActive(true); // Giữ ô hiển thị để đẹp lưới UI
+            }
+        }
+
+        if (GameProgressService.Instance == null) return;
+        var inventoryItems = GameProgressService.Instance.GetInventory();
+        if (inventoryItems == null || inventoryItems.Count == 0) return;
+
+        int slotIndex = 0;
+        foreach (var inv in inventoryItems)
+        {
+            if (slotIndex >= allSlots.Count) break;
+
+            ItemData matchData = null;
+            if (itemDatabase != null)
+            {
+                matchData = itemDatabase.Find(x => x != null && 
+                    !string.IsNullOrEmpty(x.itemName) &&
+                    x.itemName.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (matchData == null)
+            {
+                matchData = new ItemData
                 {
-                    // So sánh trực tiếp với itemTypeTest trên Slot để phân loại
-                    if (slot.itemTypeTest == selectedType)
-                    {
-                        slot.gameObject.SetActive(true); // Trùng loại -> HIỆN
-                    }
-                    else 
-                    {
-                        slot.gameObject.SetActive(false); // Không trùng -> ẨN
-                    }
+                    itemName = string.IsNullOrEmpty(inv.itemId) ? "Inventory Item" : inv.itemId,
+                    itemType = ItemData.GetItemTypeFromId(inv.itemId)
+                };
+            }
+            else
+            {
+                matchData.itemType = ItemData.GetItemTypeFromId(inv.itemId);
+            }
+
+            InventorySlotUI slotScript = allSlots[slotIndex];
+            slotScript.AddItemToSlot(matchData, inv.quantity);
+            slotScript.SetEquipped(inv.equipped);
+            slotScript.gameObject.SetActive(true);
+
+            // Gán sự kiện Bấm vào ô để Trang bị / Tháo trang bị theo ID định danh duy nhất (inventoryId)
+            string capturedInventoryId = !string.IsNullOrEmpty(inv.inventoryId) ? inv.inventoryId : inv.itemId;
+            slotScript.onSlotClicked = (clickedSlot) =>
+            {
+                if (clickedSlot.hasItem && !string.IsNullOrEmpty(capturedInventoryId))
+                {
+                    GameProgressService.Instance.ToggleEquipItemByInventoryId(capturedInventoryId);
+                    RefreshInventoryUI(); // Cập nhật lại giao diện để hiển thị đúng viền trang bị ô người chơi vừa chọn!
+                }
+            };
+
+            slotIndex++;
+        }
+
+        Debug.Log($"🎒 [INVENTORY UI REFRESH] Đã tải thành công {slotIndex} vật phẩm từ GameProgressService vào giao diện Túi đồ!");
+    }
+
+    public void FilterInventory(string typeString)
+    {
+        if (string.IsNullOrEmpty(typeString) || typeString.Equals("All", System.StringComparison.OrdinalIgnoreCase))
+        {
+            ShowAllInventory();
+            return;
+        }
+
+        // Tự động chuẩn hóa tên danh mục (ví dụ: "Consumable Item" -> "Consumable")
+        string cleanTypeStr = typeString.Replace(" ", "").Replace("Item", "");
+
+        if (!System.Enum.TryParse<ItemType>(cleanTypeStr, true, out ItemType selectedType))
+        {
+            Debug.LogWarning($"[InventoryManager] Không thể nhận diện danh mục filter '{typeString}'.");
+            return;
+        }
+
+        int activeCount = 0;
+        foreach (var slot in allSlots)
+        {
+            if (slot != null)
+            {
+                // Kiểm tra chính xác 100% itemData.itemType của vật phẩm trong ô
+                if (slot.hasItem && slot.itemData != null && slot.itemData.itemType == selectedType)
+                {
+                    slot.gameObject.SetActive(true);
+                    activeCount++;
                 }
                 else
                 {
-                    // Khi đang bật chế độ Lọc: Ô trống không có đồ thì ẩn đi
                     slot.gameObject.SetActive(false); 
                 }
             }
         }
+
+        Debug.Log($"🎒 [INVENTORY FILTER] Đã lọc theo danh mục '{selectedType}': Hiển thị {activeCount} vật phẩm hợp lệ.");
     }
 
     public void ShowAllInventory()
@@ -54,7 +135,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (slot != null)
             {
-                slot.gameObject.SetActive(true); // Hiện lại toàn bộ 36 ô đồ
+                slot.gameObject.SetActive(true);
             }
         }
     }

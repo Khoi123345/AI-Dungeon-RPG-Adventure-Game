@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using GameShared.Models;
 using GameShared.DTOs.Character;
@@ -122,78 +123,53 @@ public class GameProgressService : MonoBehaviour
     {
         InitializeIfNeeded();
 
-        // ── Bảng xác suất Rarity (theo logic_tam_thoi_cua_game.txt mục 3.1) ──────
-        float roll = UnityEngine.Random.value; // 0.0 → 1.0
+        int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
         string selectedRarity;
         int rarityModifier;
 
-        if (roll < 0.60f)       { selectedRarity = "Common";    rarityModifier = 0;  }
-        else if (roll < 0.85f)  { selectedRarity = "Rare";      rarityModifier = 5;  }
-        else if (roll < 0.95f)  { selectedRarity = "Epic";      rarityModifier = 12; }
-        else if (roll < 0.99f)  { selectedRarity = "Legendary"; rarityModifier = 25; }
-        else                    { selectedRarity = "Mythic";     rarityModifier = 50; }
+        // Nếu người chơi ở Level thấp (<= 3), ép 100% xuất hiện Boss Common vừa sức để chơi mượt mà
+        if (playerLevel <= 3)
+        {
+            selectedRarity = "Common";
+            rarityModifier = 0;
+        }
+        else
+        {
+            selectedRarity = GameShared.Config.GameConstants.RollBossRarity();
+            rarityModifier = GameShared.Config.GameConstants.GetBossRarityLevelModifier(selectedRarity);
+        }
 
-        // ── Danh sách boss theo rarity (mock — thay bằng API khi có backend) ─────
-        var commonBosses = new[]
-        {
-            new Boss { name = "Goblin Chieftain", rarity = "Common", baseHp = 100, baseAttack = 12, baseDefense = 5,  expReward = 30,  goldReward = 40  },
-            new Boss { name = "Stone Golem",      rarity = "Common", baseHp = 130, baseAttack = 10, baseDefense = 10, expReward = 35,  goldReward = 45  },
-            new Boss { name = "Cave Troll",       rarity = "Common", baseHp = 110, baseAttack = 14, baseDefense = 4,  expReward = 28,  goldReward = 38  },
-        };
-        var rareBosses = new[]
-        {
-            new Boss { name = "Shadow Demon",     rarity = "Rare",   baseHp = 200, baseAttack = 22, baseDefense = 9,  expReward = 75,  goldReward = 100 },
-            new Boss { name = "Frost Wyvern",     rarity = "Rare",   baseHp = 220, baseAttack = 20, baseDefense = 12, expReward = 80,  goldReward = 110 },
-        };
-        var epicBosses = new[]
-        {
-            new Boss { name = "Fire Drake",       rarity = "Epic",   baseHp = 350, baseAttack = 35, baseDefense = 18, expReward = 150, goldReward = 220 },
-            new Boss { name = "Void Serpent",     rarity = "Epic",   baseHp = 380, baseAttack = 32, baseDefense = 20, expReward = 160, goldReward = 230 },
-        };
-        var legendaryBosses = new[]
-        {
-            new Boss { name = "Ancient Lich",     rarity = "Legendary", baseHp = 600, baseAttack = 55, baseDefense = 30, expReward = 300, goldReward = 500 },
-        };
-        var mythicBosses = new[]
-        {
-            new Boss { name = "World Eater",      rarity = "Mythic",    baseHp = 1200, baseAttack = 90, baseDefense = 50, expReward = 800, goldReward = 1500 },
-        };
+        // Lấy danh sách boss từ GameShared.Config.GameConstants.BossCatalog (Dùng chung với Backend 100%)
+        var candidates = GameShared.Config.GameConstants.BossCatalog
+            .Where(b => b != null && b.rarity.Equals(selectedRarity, StringComparison.OrdinalIgnoreCase))
+            .ToList();
 
-        // ── Chọn boss trong rarity vừa roll ──────────────────────────────────────
-        Boss[] pool = selectedRarity switch
-        {
-            "Rare"      => rareBosses,
-            "Epic"      => epicBosses,
-            "Legendary" => legendaryBosses,
-            "Mythic"    => mythicBosses,
-            _           => commonBosses
-        };
+        if (candidates.Count == 0) candidates = GameShared.Config.GameConstants.BossCatalog;
 
-        Boss picked = pool[UnityEngine.Random.Range(0, pool.Length)];
+        Boss picked = candidates[UnityEngine.Random.Range(0, candidates.Count)];
 
-        // ── Tính Boss Level theo công thức thiết kế gốc ──────────────────────────
-        int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
-        int randomModifier = UnityEngine.Random.Range(-3, 4); // -3 đến +3
-        int bossLevel = Mathf.Max(1, playerLevel + rarityModifier + randomModifier);
+        // ── Tính Boss Level: Ở level 1-3 thì Boss Level chính xác = Player Level ─────
+        int randomModifier = (playerLevel <= 3) ? 0 : UnityEngine.Random.Range(-1, 2);
+        int bossLevel = (playerLevel <= 3) ? playerLevel : Mathf.Max(1, playerLevel + rarityModifier + randomModifier);
 
         CurrentBoss = new Boss
         {
-            bossId       = System.Guid.NewGuid().ToString("N"),
+            bossId       = picked.bossId,  // Dùng đúng bossId của GameConstants
             name         = picked.name,
             rarity       = picked.rarity,
             level        = bossLevel,
             baseHp       = picked.baseHp + bossLevel * 5,
             baseAttack   = picked.baseAttack + bossLevel,
             baseDefense  = picked.baseDefense,
-            speed        = 10,
-            criticalRate = 0.10f,
+            speed        = picked.speed,
+            criticalRate = picked.criticalRate,
             expReward    = picked.expReward,
             goldReward   = picked.goldReward,
             skillSetJson = "[]",
             imageUrl     = string.Empty
         };
 
-        Debug.Log($"[GameProgressService] SpawnRandomBoss: {CurrentBoss.name} (Rarity={CurrentBoss.rarity}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp})");
+        Debug.Log($"[GameProgressService] SpawnRandomBoss: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Rarity={CurrentBoss.rarity}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp})");
     }
 
 
@@ -470,11 +446,17 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.experience += CurrentBoss.expReward;
             HandleLevelUpIfNeeded();
 
+            // Roll ngẫu nhiên vật phẩm từ GameConstants theo rarity của Boss
+            var droppedItemTemplate = GameShared.Config.GameConstants.RollRandomItemByRarity(CurrentBoss?.rarity ?? "Common")
+                                   ?? GameShared.Config.GameConstants.GetItemById("item_rusty_sword");
+
+            string droppedItemId = droppedItemTemplate != null ? droppedItemTemplate.itemId : "item_rusty_sword";
+
             LootDrop loot = new LootDrop
             {
                 lootId = Guid.NewGuid().ToString("N"),
                 battleId = battle.battleId,
-                itemId = items.Count > 0 ? items[0].itemId : string.Empty,
+                itemId = droppedItemId,
                 quantity = 1,
                 dropRate = 1f,
                 sourceType = "BossDrop",
@@ -485,10 +467,8 @@ public class GameProgressService : MonoBehaviour
             lootDrops.Add(loot);
             dropped.Add(loot);
 
-            if (!string.IsNullOrEmpty(loot.itemId))
-            {
-                AddItemToInventory(loot.itemId, loot.quantity, false);
-            }
+            // GHI CHÚ: Không gọi AddItemToInventory ở đây nữa để tránh bị trùng lặp 2 lần! 
+            // Vật phẩm đã chọn sẽ được chính thức thêm vào CSDL khi người chơi nhấn nút Confirm ở màn hình Victory.
         }
 
         int resolvedPlayerHp = battleData.turns != null && battleData.turns.Count > 0
@@ -693,32 +673,15 @@ public class GameProgressService : MonoBehaviour
         };
 
         items.Clear();
-        items.Add(new Item
-        {
-            itemId = Guid.NewGuid().ToString("N"),
-            name = "Rusty Sword",
-            rarity = "Common",
-            itemType = "Weapon",
-            attackBonus = 4,
-            defenseBonus = 0,
-            hpBonus = 0,
-            criticalBonus = 0.01f,
-            imageUrl = string.Empty,
-            description = "Thanh kiếm cũ nhưng vẫn còn hữu dụng.",
-            stackable = false,
-            sellPrice = 15,
-            buyPrice = 35,
-            requiredLevel = 1,
-            slotType = "Weapon",
-            effectJson = "{}"
-        });
+        var starterItem = GameShared.Config.GameConstants.GetItemById("item_rusty_sword");
+        if (starterItem != null) items.Add(starterItem);
 
         inventory.Clear();
         inventory.Add(new Inventory
         {
             inventoryId = Guid.NewGuid().ToString("N"),
             characterId = CurrentCharacter.characterId,
-            itemId = items[0].itemId,
+            itemId = "item_rusty_sword",
             quantity = 1,
             equipped = true,
             slotIndex = 0,
@@ -902,19 +865,29 @@ public class GameProgressService : MonoBehaviour
         }
     }
 
-    private void AddItemToInventory(string itemId, int quantity, bool equipped)
+    public void AddItemToInventory(string itemId, int quantity = 1, bool equipped = false)
     {
-        Inventory existing = inventory.Find(entry => entry.itemId == itemId && entry.equipped == equipped);
-        if (existing != null)
+        if (inventory == null) return;
+
+        var template = GameShared.Config.GameConstants.GetItemById(itemId);
+        bool isStackable = template != null && template.stackable;
+
+        // Chỉ cộng dồn với các vật phẩm có tính chất stackable (như Thuốc hồi máu)
+        if (isStackable)
         {
-            existing.quantity += quantity;
-            return;
+            Inventory existing = inventory.Find(entry => entry.itemId == itemId && entry.equipped == equipped);
+            if (existing != null)
+            {
+                existing.quantity += quantity;
+                return;
+            }
         }
 
+        // Các trang bị (Weapon, Armor, Accessory) luôn có mã inventoryId duy nhất cho từng món
         inventory.Add(new Inventory
         {
             inventoryId = Guid.NewGuid().ToString("N"),
-            characterId = CurrentCharacter.characterId,
+            characterId = CurrentCharacter != null ? CurrentCharacter.characterId : "local_char",
             itemId = itemId,
             quantity = quantity,
             equipped = equipped,
@@ -922,5 +895,136 @@ public class GameProgressService : MonoBehaviour
             locked = false,
             acquiredAt = DateTime.UtcNow
         });
+    }
+
+    private int nextAccessorySlotToReplace = 1; // 1 hoặc 2 (Dùng xoay vòng khi thay thế trang sức khi đã trang bị đủ 2 món)
+
+    public bool IsItemEquipped(string itemId)
+    {
+        if (inventory == null) return false;
+        var item = inventory.Find(i => i.itemId.Equals(itemId, StringComparison.OrdinalIgnoreCase));
+        return item != null && item.equipped;
+    }
+
+    public bool ToggleEquipItem(string identifier)
+    {
+        return ToggleEquipItemByInventoryId(identifier);
+    }
+
+    public bool ToggleEquipItemByInventoryId(string inventoryIdOrItemId)
+    {
+        if (inventory == null) return false;
+        // Tìm đúng bản ghi theo inventoryId duy nhất, nếu không thấy thì fallback tìm theo itemId
+        var targetItem = inventory.Find(i => i.inventoryId == inventoryIdOrItemId) 
+                      ?? inventory.Find(i => i.itemId.Equals(inventoryIdOrItemId, StringComparison.OrdinalIgnoreCase));
+        if (targetItem == null) return false;
+
+        string itemId = targetItem.itemId;
+        ItemType itemType = ItemData.GetItemTypeFromId(itemId);
+        var template = GameShared.Config.GameConstants.GetItemById(itemId);
+        if (template != null && Enum.TryParse<ItemType>(template.itemType, true, out var parsedType))
+        {
+            itemType = parsedType;
+        }
+
+        // 1. NẾU VẬT PHẨM ĐANG ĐƯỢC TRANG BỊ -> THÁO TRANG BỊ (UNEQUIP)
+        if (targetItem.equipped)
+        {
+            targetItem.equipped = false;
+            RecalculateCharacterStats();
+            Debug.Log($"🛡️ [UNEQUIP] Đã tháo vật phẩm '{itemId}' (ID={targetItem.inventoryId}, {itemType}).");
+            return false;
+        }
+
+        // 2. NẾU VẬT PHẨM CHƯA ĐƯỢC TRANG BỊ -> TRANG BỊ HỢP LỆ THEO QUY TẮC GIỚI HẠN:
+        if (itemType == ItemType.Weapon || itemType == ItemType.Armor)
+        {
+            foreach (var inv in inventory)
+            {
+                if (inv.equipped && inv.inventoryId != targetItem.inventoryId)
+                {
+                    ItemType currentType = ItemData.GetItemTypeFromId(inv.itemId);
+                    var t = GameShared.Config.GameConstants.GetItemById(inv.itemId);
+                    if (t != null && Enum.TryParse<ItemType>(t.itemType, true, out var pt)) currentType = pt;
+
+                    if (currentType == itemType)
+                    {
+                        inv.equipped = false; // Tự động tháo trang bị cũ cùng loại!
+                        Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo '{inv.itemId}' (ID={inv.inventoryId}, {itemType}) cũ để nhường chỗ cho '{itemId}'.");
+                    }
+                }
+            }
+
+            targetItem.equipped = true;
+        }
+        else if (itemType == ItemType.Accessory)
+        {
+            var equippedAccessories = inventory.Where(i => i.equipped && ItemData.GetItemTypeFromId(i.itemId) == ItemType.Accessory).ToList();
+
+            if (equippedAccessories.Count < 2)
+            {
+                targetItem.equipped = true;
+                Debug.Log($"💍 [EQUIP ACCESSORY] Đã trang bị trang sức '{itemId}' (ID={targetItem.inventoryId}) vào Slot {equippedAccessories.Count + 1}.");
+            }
+            else
+            {
+                int replaceIndex = (nextAccessorySlotToReplace == 1) ? 0 : 1;
+                var itemToUnequip = equippedAccessories[replaceIndex];
+                itemToUnequip.equipped = false;
+
+                targetItem.equipped = true;
+                Debug.Log($"🔄 [REPLACE ACCESSORY] Đã tháo trang sức '{itemToUnequip.itemId}' ở Slot {nextAccessorySlotToReplace} và thay bằng '{itemId}'.");
+
+                nextAccessorySlotToReplace = (nextAccessorySlotToReplace == 1) ? 2 : 1;
+            }
+        }
+        else
+        {
+            targetItem.equipped = true;
+        }
+
+        RecalculateCharacterStats();
+
+        Debug.Log($"⚔️ [EQUIP SYSTEM] Đã trang bị '{itemId}' (ID={targetItem.inventoryId}, {itemType}) thành công! Sức mạnh mới của {CurrentCharacter.name}: Attack={CurrentCharacter.attack}, Defense={CurrentCharacter.defense}, MaxHP={CurrentCharacter.maxHp}");
+        return targetItem.equipped;
+    }
+
+    public void RecalculateCharacterStats()
+    {
+        if (CurrentCharacter == null || inventory == null) return;
+
+        int baseHp = 100 + (CurrentCharacter.level - 1) * 12;
+        int baseAtk = 10 + (CurrentCharacter.level - 1) * 3;
+        int baseDef = 5 + (CurrentCharacter.level - 1) * 2;
+
+        int bonusAtk = 0;
+        int bonusDef = 0;
+        int bonusHp = 0;
+
+        foreach (var inv in inventory)
+        {
+            if (inv.equipped)
+            {
+                var template = GameShared.Config.GameConstants.GetItemById(inv.itemId);
+                if (template != null)
+                {
+                    bonusAtk += template.attackBonus;
+                    bonusDef += template.defenseBonus;
+                    bonusHp += template.hpBonus;
+                }
+                else
+                {
+                    ItemType type = ItemData.GetItemTypeFromId(inv.itemId);
+                    if (type == ItemType.Weapon) bonusAtk += 5;
+                    else if (type == ItemType.Armor) bonusDef += 5;
+                    else if (type == ItemType.Accessory) { bonusAtk += 2; bonusDef += 2; bonusHp += 10; }
+                }
+            }
+        }
+
+        CurrentCharacter.maxHp = baseHp + bonusHp;
+        CurrentCharacter.attack = baseAtk + bonusAtk;
+        CurrentCharacter.defense = baseDef + bonusDef;
+        CurrentCharacter.hp = Mathf.Min(CurrentCharacter.hp, CurrentCharacter.maxHp);
     }
 }
