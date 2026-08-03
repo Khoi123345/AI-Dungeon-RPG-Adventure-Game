@@ -30,7 +30,7 @@ public class InventoryManager : MonoBehaviour
 
     [Header("--- Inventory Data ---")]
     public List<ItemData> allItems = new List<ItemData>(); // Danh sách toàn bộ item đang có
-    private List<ItemData> filteredItems = new List<ItemData>(); // Danh sách sau khi lọc
+    private List<ItemData> filteredItems = new List<ItemData>(); // Danh sách sau khi lọc (chỉ chứa món chưa trang bị)
 
     private int currentPage = 1;
     private int itemsPerPage = 49; // Đúng bằng số ô vuông trên 1 trang
@@ -146,7 +146,7 @@ public class InventoryManager : MonoBehaviour
     {
         AutoFindEquipmentSlots();
 
-        // 1. Xóa hiển thị ô trang bị bên trái
+        // 1. Xóa hiển thị 4 ô trang bị bên trái
         if (slotHelmet != null) slotHelmet.ClearSlot();
         if (slotArmor != null) slotArmor.ClearSlot();
         if (slotAccessory != null) slotAccessory.ClearSlot();
@@ -179,7 +179,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // 4. Áp dụng bộ lọc và render trang bên phải (Right Grid)
+        // 4. Áp dụng bộ lọc và render các món CHƯA TRANG BỊ sang lưới bên phải (Right Grid)
         ApplyFilter();
     }
 
@@ -274,14 +274,17 @@ public class InventoryManager : MonoBehaviour
 
         int filterIndex = dropdownFilter != null ? dropdownFilter.value : 0; // 0: All, 1: Weapon, 2: Armor, 3: Accessory, 4: Consumable
 
+        // 🎯 LỌC DUY NHẤT CÁC MÓN CHƯA TRANG BỊ (!item.isEquipped) ĐỂ HIỂN THỊ BÊN PHẢI!
+        List<ItemData> unequippedItems = allItems.FindAll(item => !item.isEquipped);
+
         if (filterIndex == 0)
         {
-            filteredItems.AddRange(allItems);
+            filteredItems.AddRange(unequippedItems);
         }
         else
         {
             ItemType selectedType = (ItemType)(filterIndex - 1);
-            filteredItems = allItems.FindAll(item => item.itemType == selectedType);
+            filteredItems = unequippedItems.FindAll(item => item.itemType == selectedType);
         }
 
         // Tính tổng số trang
@@ -311,7 +314,7 @@ public class InventoryManager : MonoBehaviour
 
         if (gridSlotsContainer == null) return;
 
-        // --- Hiển thị item lên từng ô Slot bên phải ---
+        // --- Hiển thị item CHƯA TRANG BỊ lên từng ô Slot bên phải ---
         int startIndex = (currentPage - 1) * itemsPerPage;
         int slotCount  = gridSlotsContainer.childCount;
 
@@ -329,7 +332,7 @@ public class InventoryManager : MonoBehaviour
                 if (slotUI != null)
                 {
                     slotUI.AddItemToSlot(item, item.quantity);
-                    slotUI.SetEquipped(item.isEquipped);
+                    slotUI.SetEquipped(false);
 
                     string capturedInvId = item.inventoryId;
                     slotUI.onSlotClicked = (clickedSlot) =>

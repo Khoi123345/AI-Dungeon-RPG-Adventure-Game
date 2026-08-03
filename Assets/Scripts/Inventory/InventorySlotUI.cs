@@ -19,22 +19,14 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void SetEquipped(bool equipped)
     {
         isEquipped = equipped;
-        if (isEquipped)
+        transform.localScale = Vector3.one;
+        if (hasItem && itemData != null)
         {
-            if (backgroundImage != null) backgroundImage.color = new Color(0.2f, 0.9f, 0.3f, 1f); // Viền Xanh lá cây báo hiệu ĐÃ TRANG BỊ
-            transform.localScale = new Vector3(1.08f, 1.08f, 1f);
+            UpdateRarityBackground(itemData.itemRarity);
         }
-        else
+        else if (backgroundImage != null)
         {
-            transform.localScale = Vector3.one;
-            if (hasItem && itemData != null)
-            {
-                UpdateRarityBackground(itemData.itemRarity);
-            }
-            else if (backgroundImage != null)
-            {
-                backgroundImage.color = colorDefault;
-            }
+            backgroundImage.color = colorDefault;
         }
     }
 
@@ -108,12 +100,17 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
             UpdateRarityBackground(newItem.itemRarity);
         }
 
-        // 3. Hiển thị số lượng (chỉ hiện text nếu số lượng > 1)
+        // 3. Hiển thị số lượng hoặc Tên (nếu thiếu Icon)
         if (txtQuantity != null)
         {
             if (quantity > 1)
             {
                 txtQuantity.text = quantity.ToString();
+                txtQuantity.gameObject.SetActive(true);
+            }
+            else if (newItem != null && newItem.itemIcon == null && !string.IsNullOrEmpty(newItem.itemName))
+            {
+                txtQuantity.text = newItem.itemName;
                 txtQuantity.gameObject.SetActive(true);
             }
             else
