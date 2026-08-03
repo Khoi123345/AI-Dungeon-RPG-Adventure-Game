@@ -52,17 +52,17 @@ public class InventoryManager : MonoBehaviour
             if (itemDatabase != null)
             {
                 matchData = itemDatabase.Find(x => x != null && 
-                    (x.name.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase) || 
-                     x.itemName.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase)));
+                    !string.IsNullOrEmpty(x.itemName) &&
+                    x.itemName.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase));
             }
 
             if (matchData == null)
             {
-                ItemData fallbackData = allSlots[slotIndex].GetComponent<ItemData>();
-                if (fallbackData == null) fallbackData = allSlots[slotIndex].gameObject.AddComponent<ItemData>();
-                fallbackData.itemName = string.IsNullOrEmpty(inv.itemId) ? "Inventory Item" : inv.itemId;
-                fallbackData.itemType = ItemData.GetItemTypeFromId(inv.itemId);
-                matchData = fallbackData;
+                matchData = new ItemData
+                {
+                    itemName = string.IsNullOrEmpty(inv.itemId) ? "Inventory Item" : inv.itemId,
+                    itemType = ItemData.GetItemTypeFromId(inv.itemId)
+                };
             }
             else
             {

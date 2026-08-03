@@ -378,8 +378,8 @@ public class BattleEndUIController : MonoBehaviour
                 if (itemDatabase != null)
                 {
                     matchData = itemDatabase.Find(x => x != null && 
-                        (x.name.Equals(drop.itemId, StringComparison.OrdinalIgnoreCase) || 
-                         x.itemName.Equals(drop.itemId, StringComparison.OrdinalIgnoreCase)));
+                        !string.IsNullOrEmpty(x.itemName) &&
+                        x.itemName.Equals(drop.itemId, StringComparison.OrdinalIgnoreCase));
                 }
 
                 if (matchData != null)
@@ -391,10 +391,11 @@ public class BattleEndUIController : MonoBehaviour
                 else
                 {
                     Debug.LogWarning($"[BattleEndUI] Chưa gán ItemData cho itemId '{drop.itemId}' trong itemDatabase Inspector. Đang tự động tạo dữ liệu tạm.");
-                    ItemData fallbackData = itemSlots[i].GetComponent<ItemData>();
-                    if (fallbackData == null) fallbackData = itemSlots[i].gameObject.AddComponent<ItemData>();
-                    fallbackData.itemName = string.IsNullOrEmpty(drop.itemId) ? "Loot Item" : drop.itemId;
-                    fallbackData.itemType = ItemData.GetItemTypeFromId(drop.itemId);
+                    ItemData fallbackData = new ItemData
+                    {
+                        itemName = string.IsNullOrEmpty(drop.itemId) ? "Loot Item" : drop.itemId,
+                        itemType = ItemData.GetItemTypeFromId(drop.itemId)
+                    };
                     itemSlots[i].AddItemToSlot(fallbackData, drop.quantity);
                     itemSlots[i].gameObject.SetActive(true);
                     Debug.Log($"🎁 [LOOT DROP LOG] Slot {slotNum}: Đã kích hoạt hiển thị tạm '{fallbackData.itemName}' x{drop.quantity}");
