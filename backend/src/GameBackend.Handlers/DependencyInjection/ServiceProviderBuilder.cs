@@ -2,6 +2,11 @@ using System;
 using System.IO;
 using Amazon.DynamoDBv2;
 using Amazon.CognitoIdentityProvider;
+using GameBackend.Core.AIStory;
+using GameBackend.Core.AIStory.Builder;
+using GameBackend.Core.AIStory.Builder.Impl;
+using GameBackend.Core.AIStory.Formatters;
+using GameBackend.Core.AIStory.Formatters.Interfaces;
 using GameBackend.Core.AIStory.Services;
 using GameBackend.Core.AIStory.Services.Impl;
 using GameBackend.Core.Repositories;
@@ -96,6 +101,13 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<IBedrockService, BedrockService>();
                 services.AddSingleton<IStorySummaryService, StorySummaryService>();
                 services.AddSingleton<IInventoryService, InventoryService>();
+
+                // Formatters & Story Builders
+                services.AddSingleton<ICharacterFormatter, CharacterFormatter>();
+                services.AddSingleton<IInventoryFormatter, InventoryFormatter>();
+                services.AddSingleton<IRecentTurnsFormatter, RecentTurnsFormatter>();
+                services.AddSingleton<IGamePromptContextBuilder, GamePromptContextBuilder>();
+                services.AddSingleton<IPromptBuilder>(sp => new PromptBuilder(Directory.GetCurrentDirectory()));
 
                 _serviceProvider = services.BuildServiceProvider();
             }

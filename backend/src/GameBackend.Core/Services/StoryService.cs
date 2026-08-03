@@ -13,8 +13,8 @@ namespace GameBackend.Core.Services
 {
     public class StoryService : IStoryService
     {
-        private const string DefaultLocation = "Ancient Ruins";
-        private const string DefaultChapterId = "intro";
+        private const string DefaultLocation = "prologue";
+        private const string DefaultChapterId = "introduction";
         private const string DefaultSystemPrompt = "You are a dungeon master for a dark fantasy RPG game. Respond in Vietnamese.";
 
         private readonly IStoryRepository _storyRepository;
