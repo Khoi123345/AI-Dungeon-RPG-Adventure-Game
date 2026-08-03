@@ -2339,14 +2339,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be434137584b75448d1ed5e2fb69216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
-  gridSlotsContainer: {fileID: 0}
-  dropdownFilter: {fileID: 0}
-  txtStats: {fileID: 0}
-  txtPageNumber: {fileID: 0}
-  btnFirst: {fileID: 0}
-  btnPrev: {fileID: 0}
-  btnNext: {fileID: 0}
-  btnLast: {fileID: 0}
+  gridSlotsContainer: {fileID: 966316543}
+  dropdownFilter: {fileID: 708321958}
+  txtAtk: {fileID: 1084284368}
+  txtDef: {fileID: 1623603753}
+  txtPageNumber: {fileID: 907668075}
+  btnClose: {fileID: 1475596843}
+  btnFirst: {fileID: 1546382726}
+  btnPrev: {fileID: 1126380388}
+  btnNext: {fileID: 1856053135}
+  btnLast: {fileID: 1305091759}
+  itemDatabase: []
   allItems: []
 --- !u!1 &519420028
 GameObject:
