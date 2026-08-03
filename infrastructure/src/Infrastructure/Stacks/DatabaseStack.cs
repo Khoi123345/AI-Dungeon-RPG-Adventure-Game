@@ -27,7 +27,6 @@ namespace Infrastructure.Stacks
             StorySessionsTable = CreateTable("GameStorySessions", "sessionId");
             StoryActionsTable = CreateTable("GameStoryActions", "actionId");
             InventoryTable = CreateTable("GameInventory", "inventoryId");
-            BossesTable = CreateTable("GameBosses", "bossId");             // Missing → 502 BossRepository crash
             LootDropsTable = CreateTable("GameLootDrops", "lootId");       // Missing → 502 BattleRepository crash
 
             // GSI cho Character lookup by userId
