@@ -1,53 +1,75 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
-    // Danh sách tất cả các Slots hiển thị trong Grid_Slots_Container
-    [SerializeField] private List<InventorySlotUI> allSlots = new List<InventorySlotUI>();
+    [Header("--- UI References ---")]
+    public Transform gridSlotsContainer; 
+    public TMP_Dropdown dropdownFilter;
+    public TextMeshProUGUI txtAtk;       // Text (TMP) (1) — Tấn công
+    public TextMeshProUGUI txtDef;       // Text (TMP) (2) — Phòng thủ
+    public TextMeshProUGUI txtPageNumber;
+    public Button btnClose;
+
+    [Header("--- Pagination Buttons ---")]
+    public Button btnFirst;
+    public Button btnPrev;
+    public Button btnNext;
+    public Button btnLast;
+
+    [Header("--- Templates & Database ---")]
     [SerializeField] private List<ItemData> itemDatabase = new List<ItemData>();
+
+    [Header("--- Inventory Data ---")]
+    public List<ItemData> allItems = new List<ItemData>(); // Danh sách toàn bộ item đang có
+    private List<ItemData> filteredItems = new List<ItemData>(); // Danh sách sau khi lọc
+
+    private int currentPage = 1;
+    private int itemsPerPage = 49; // Đúng bằng số ô vuông trên 1 trang
+    private int totalPages = 1;
+
+    void Start()
+    {
+        // Gán sự kiện cho Dropdown, Nút phân trang và Nút Đóng UI
+        if (dropdownFilter != null)
+            dropdownFilter.onValueChanged.AddListener(OnFilterChanged);
+
+        if (btnFirst != null)
+            btnFirst.onClick.AddListener(() => ChangePage(1));
+        if (btnPrev != null)
+            btnPrev.onClick.AddListener(() => ChangePage(currentPage - 1));
+        if (btnNext != null)
+            btnNext.onClick.AddListener(() => ChangePage(currentPage + 1));
+        if (btnLast != null)
+            btnLast.onClick.AddListener(() => ChangePage(totalPages));
+        if (btnClose != null)
+            btnClose.onClick.AddListener(() => gameObject.SetActive(false));
+
+        RefreshInventoryUI();
+    }
 
     private void OnEnable()
     {
         RefreshInventoryUI();
     }
 
-    private void Start()
-    {
-        RefreshInventoryUI();
-    }
-
-    // ==========================================
-    // MODULE 1: LOGIC LỌC VÀ HIỂN THỊ TÚI ĐỒ
-    // ==========================================
-
     public void RefreshInventoryUI()
     {
-        // Tự động quét tìm allSlots nếu danh sách rỗng trong Inspector
-        if (allSlots == null || allSlots.Count == 0)
-        {
-            allSlots = new List<InventorySlotUI>(GetComponentsInChildren<InventorySlotUI>(true));
-        }
+        LoadInventoryFromProgressService();
+        ApplyFilter();
+    }
 
-        // Làm sạch tất cả ô
-        foreach (var slot in allSlots)
-        {
-            if (slot != null)
-            {
-                slot.ClearSlot();
-                slot.gameObject.SetActive(true); // Giữ ô hiển thị để đẹp lưới UI
-            }
-        }
-
+    private void LoadInventoryFromProgressService()
+    {
+        allItems.Clear();
         if (GameProgressService.Instance == null) return;
         var inventoryItems = GameProgressService.Instance.GetInventory();
         if (inventoryItems == null || inventoryItems.Count == 0) return;
 
-        int slotIndex = 0;
         foreach (var inv in inventoryItems)
         {
-            if (slotIndex >= allSlots.Count) break;
-
             ItemData matchData = null;
             if (itemDatabase != null)
             {
@@ -69,74 +91,141 @@ public class InventoryManager : MonoBehaviour
                 matchData.itemType = ItemData.GetItemTypeFromId(inv.itemId);
             }
 
-            InventorySlotUI slotScript = allSlots[slotIndex];
-            slotScript.AddItemToSlot(matchData, inv.quantity);
-            slotScript.SetEquipped(inv.equipped);
-            slotScript.gameObject.SetActive(true);
+            matchData.quantity = inv.quantity;
+            matchData.inventoryId = !string.IsNullOrEmpty(inv.inventoryId) ? inv.inventoryId : inv.itemId;
+            matchData.isEquipped = inv.equipped;
 
-            // Gán sự kiện Bấm vào ô để Trang bị / Tháo trang bị theo ID định danh duy nhất (inventoryId)
-            string capturedInventoryId = !string.IsNullOrEmpty(inv.inventoryId) ? inv.inventoryId : inv.itemId;
-            slotScript.onSlotClicked = (clickedSlot) =>
-            {
-                if (clickedSlot.hasItem && !string.IsNullOrEmpty(capturedInventoryId))
-                {
-                    GameProgressService.Instance.ToggleEquipItemByInventoryId(capturedInventoryId);
-                    RefreshInventoryUI(); // Cập nhật lại giao diện để hiển thị đúng viền trang bị ô người chơi vừa chọn!
-                }
-            };
-
-            slotIndex++;
+            allItems.Add(matchData);
         }
-
-        Debug.Log($"🎒 [INVENTORY UI REFRESH] Đã tải thành công {slotIndex} vật phẩm từ GameProgressService vào giao diện Túi đồ!");
     }
 
-    public void FilterInventory(string typeString)
+    public void LoadItems(List<ItemData> items)
     {
-        if (string.IsNullOrEmpty(typeString) || typeString.Equals("All", System.StringComparison.OrdinalIgnoreCase))
+        if (items == null || items.Count == 0) return;
+        allItems = items;
+        currentPage = 1;
+        ApplyFilter();
+    }
+
+    void OnFilterChanged(int value)
+    {
+        currentPage = 1; // Về trang 1 khi đổi bộ lọc
+        ApplyFilter();
+    }
+
+    public void ApplyFilter()
+    {
+        filteredItems.Clear();
+
+        int filterIndex = dropdownFilter != null ? dropdownFilter.value : 0; // 0: All, 1: Weapon, 2: Armor, 3: Accessory, 4: Consumable
+
+        if (filterIndex == 0)
         {
-            ShowAllInventory();
-            return;
+            filteredItems.AddRange(allItems);
+        }
+        else
+        {
+            ItemType selectedType = (ItemType)(filterIndex - 1);
+            filteredItems = allItems.FindAll(item => item.itemType == selectedType);
         }
 
-        // Tự động chuẩn hóa tên danh mục (ví dụ: "Consumable Item" -> "Consumable")
-        string cleanTypeStr = typeString.Replace(" ", "").Replace("Item", "");
+        // Tính tổng số trang
+        totalPages = Mathf.CeilToInt((float)filteredItems.Count / itemsPerPage);
+        if (totalPages < 1) totalPages = 1;
 
-        if (!System.Enum.TryParse<ItemType>(cleanTypeStr, true, out ItemType selectedType))
-        {
-            Debug.LogWarning($"[InventoryManager] Không thể nhận diện danh mục filter '{typeString}'.");
-            return;
-        }
+        RenderPage();
+    }
 
-        int activeCount = 0;
-        foreach (var slot in allSlots)
+    void ChangePage(int newPage)
+    {
+        currentPage = Mathf.Clamp(newPage, 1, totalPages);
+        RenderPage();
+    }
+
+    void RenderPage()
+    {
+        // --- Cập nhật Text trang ---
+        if (txtPageNumber != null)
+            txtPageNumber.text = $"{currentPage} / {totalPages}";
+
+        // --- Khóa/Mở nút bấm phân trang ---
+        if (btnFirst != null) btnFirst.interactable = (currentPage > 1);
+        if (btnPrev  != null) btnPrev.interactable  = (currentPage > 1);
+        if (btnNext  != null) btnNext.interactable  = (currentPage < totalPages);
+        if (btnLast  != null) btnLast.interactable  = (currentPage < totalPages);
+
+        if (gridSlotsContainer == null) return;
+
+        // --- Hiển thị item lên từng ô Slot ---
+        int startIndex = (currentPage - 1) * itemsPerPage;
+        int slotCount  = gridSlotsContainer.childCount;
+
+        for (int i = 0; i < slotCount; i++)
         {
-            if (slot != null)
+            Transform slot = gridSlotsContainer.GetChild(i);
+            InventorySlotUI slotUI = slot.GetComponent<InventorySlotUI>();
+
+            int itemIndex = startIndex + i;
+
+            if (itemIndex < filteredItems.Count)
             {
-                // Kiểm tra chính xác 100% itemData.itemType của vật phẩm trong ô
-                if (slot.hasItem && slot.itemData != null && slot.itemData.itemType == selectedType)
+                ItemData item = filteredItems[itemIndex];
+
+                if (slotUI != null)
                 {
-                    slot.gameObject.SetActive(true);
-                    activeCount++;
+                    slotUI.AddItemToSlot(item, item.quantity);
+                    slotUI.SetEquipped(item.isEquipped);
+
+                    string capturedInvId = item.inventoryId;
+                    slotUI.onSlotClicked = (clickedSlot) =>
+                    {
+                        if (clickedSlot.hasItem && !string.IsNullOrEmpty(capturedInvId))
+                        {
+                            GameProgressService.Instance?.ToggleEquipItemByInventoryId(capturedInvId);
+                            RefreshInventoryUI();
+                        }
+                    };
                 }
-                else
-                {
-                    slot.gameObject.SetActive(false); 
-                }
+                slot.gameObject.SetActive(true);
             }
-        }
-
-        Debug.Log($"🎒 [INVENTORY FILTER] Đã lọc theo danh mục '{selectedType}': Hiển thị {activeCount} vật phẩm hợp lệ.");
-    }
-
-    public void ShowAllInventory()
-    {
-        foreach (var slot in allSlots)
-        {
-            if (slot != null)
+            else
             {
+                if (slotUI != null)
+                {
+                    slotUI.ClearSlot();
+                }
                 slot.gameObject.SetActive(true);
             }
         }
+
+        // --- Cập nhật bảng Stats ---
+        UpdateStatsDisplay();
+    }
+
+    // Tính tổng ATK + DEF từ toàn bộ item trong túi rồi hiển thị
+    void UpdateStatsDisplay()
+    {
+        int totalAtk = 0;
+        int totalDef = 0;
+
+        if (GameProgressService.Instance != null && GameProgressService.Instance.CurrentCharacter != null)
+        {
+            totalAtk = GameProgressService.Instance.CurrentCharacter.attack;
+            totalDef = GameProgressService.Instance.CurrentCharacter.defense;
+        }
+        else
+        {
+            foreach (ItemData item in allItems)
+            {
+                if (item.isEquipped)
+                {
+                    totalAtk += item.atkBonus;
+                    totalDef += item.defBonus;
+                }
+            }
+        }
+
+        if (txtAtk != null) txtAtk.text = $"Tấn công: {totalAtk}";
+        if (txtDef != null) txtDef.text = $"Phòng thủ: {totalDef}";
     }
 }
