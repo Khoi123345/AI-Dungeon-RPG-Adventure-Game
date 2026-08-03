@@ -39,7 +39,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private Color colorCommon = new Color(0.6f, 0.6f, 0.6f, 1f); // Xám
     [SerializeField] private Color colorRare = new Color(0.2f, 0.5f, 0.9f, 1f);   // Xanh dương
     [SerializeField] private Color colorEpic = new Color(0.6f, 0.2f, 0.8f, 1f);   // Tím
-    [SerializeField] private Color colorDefault = new Color(0.2f, 0.2f, 0.2f, 0.4f); // Nền trống mặc định
+    [SerializeField] private Color colorDefault = Color.white; // Nền ô màu trắng mặc định
 
     private void AutoFindComponentsIfNeeded()
     {
