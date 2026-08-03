@@ -7,5 +7,8 @@ namespace GameShared.DTOs.Battle
     {
         public string characterId;
         public string sessionId;
+        public string bossId;
+        public string encounterId;
+        public int bossLevel;
     }
 }
