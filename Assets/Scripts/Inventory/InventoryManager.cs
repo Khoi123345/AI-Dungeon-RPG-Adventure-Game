@@ -40,18 +40,36 @@ public class InventoryManager : MonoBehaviour
     {
         // Gán sự kiện cho Dropdown, Nút phân trang và Nút Đóng UI
         if (dropdownFilter != null)
+        {
+            dropdownFilter.onValueChanged.RemoveAllListeners();
             dropdownFilter.onValueChanged.AddListener(OnFilterChanged);
+        }
 
         if (btnFirst != null)
+        {
+            btnFirst.onClick.RemoveAllListeners();
             btnFirst.onClick.AddListener(() => ChangePage(1));
+        }
         if (btnPrev != null)
+        {
+            btnPrev.onClick.RemoveAllListeners();
             btnPrev.onClick.AddListener(() => ChangePage(currentPage - 1));
+        }
         if (btnNext != null)
+        {
+            btnNext.onClick.RemoveAllListeners();
             btnNext.onClick.AddListener(() => ChangePage(currentPage + 1));
+        }
         if (btnLast != null)
+        {
+            btnLast.onClick.RemoveAllListeners();
             btnLast.onClick.AddListener(() => ChangePage(totalPages));
+        }
         if (btnClose != null)
-            btnClose.onClick.AddListener(() => gameObject.SetActive(false));
+        {
+            btnClose.onClick.RemoveAllListeners();
+            btnClose.onClick.AddListener(CloseInventoryPanel);
+        }
 
         AutoFindEquipmentSlots();
         RefreshInventoryUI();
@@ -61,6 +79,35 @@ public class InventoryManager : MonoBehaviour
     {
         AutoFindEquipmentSlots();
         RefreshInventoryUI();
+    }
+
+    public void CloseInventoryPanel()
+    {
+        // 🛡️ CHỐNG TẮT GAMEMANAGER: Chỉ tắt duy nhất Panel_Inventory!
+        GameObject panelObj = null;
+
+        if (this.gameObject.name != "GameManager" && this.gameObject.name.Contains("Inventory"))
+        {
+            panelObj = this.gameObject;
+        }
+        else
+        {
+            Transform panelTr = transform.Find("Panel_Inventory");
+            if (panelTr == null && transform.parent != null && transform.parent.name.Contains("Inventory"))
+                panelTr = transform.parent;
+            if (panelTr != null) panelObj = panelTr.gameObject;
+            else panelObj = GameObject.Find("Panel_Inventory");
+        }
+
+        if (panelObj != null && panelObj.name != "GameManager")
+        {
+            panelObj.SetActive(false);
+            Debug.Log("🚪 [INVENTORY CLOSED] Đã ẩn giao diện Panel_Inventory (GameManager vẫn hoạt động).");
+        }
+        else
+        {
+            Debug.LogWarning("[InventoryManager] Không thể tắt Panel_Inventory vì tránh làm ngắt kết nối GameManager.");
+        }
     }
 
     private void AutoFindEquipmentSlots()
@@ -176,34 +223,32 @@ public class InventoryManager : MonoBehaviour
         {
             var template = GameShared.Config.GameConstants.GetItemById(inv.itemId);
 
-            ItemData matchData = null;
+            ItemData dbMatch = null;
             if (itemDatabase != null && itemDatabase.Count > 0)
             {
-                matchData = itemDatabase.Find(x => x != null && 
+                dbMatch = itemDatabase.Find(x => x != null && 
                     !string.IsNullOrEmpty(x.itemName) &&
                     (x.itemName.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase) ||
                      (template != null && x.itemName.Equals(template.name, System.StringComparison.OrdinalIgnoreCase))));
             }
 
-            if (matchData == null)
+            // Tạo bản sao độc lập duy nhất cho từng món trong túi đồ!
+            ItemData matchData = new ItemData
             {
-                matchData = new ItemData
-                {
-                    itemName = template != null ? template.name : (string.IsNullOrEmpty(inv.itemId) ? "Inventory Item" : inv.itemId),
-                    itemType = template != null && System.Enum.TryParse<ItemType>(template.itemType, true, out var parsedType) 
-                                ? parsedType 
-                                : ItemData.GetItemTypeFromId(inv.itemId),
-                    atkBonus = template != null ? template.attackBonus : 0,
-                    defBonus = template != null ? template.defenseBonus : 0,
-                    itemRarity = template != null && System.Enum.TryParse<ItemRarity>(template.rarity, true, out var parsedRarity)
-                                ? parsedRarity
-                                : ItemRarity.Common
-                };
-            }
-
-            matchData.quantity = inv.quantity;
-            matchData.inventoryId = !string.IsNullOrEmpty(inv.inventoryId) ? inv.inventoryId : inv.itemId;
-            matchData.isEquipped = inv.equipped;
+                itemName = dbMatch != null && !string.IsNullOrEmpty(dbMatch.itemName) 
+                            ? dbMatch.itemName 
+                            : (template != null ? template.name : (string.IsNullOrEmpty(inv.itemId) ? "Inventory Item" : inv.itemId)),
+                itemIcon = dbMatch?.itemIcon,
+                itemType = template != null && System.Enum.TryParse<ItemType>(template.itemType, true, out var parsedType) 
+                            ? parsedType 
+                            : ItemData.GetItemTypeFromId(inv.itemId),
+                atkBonus = dbMatch != null && dbMatch.atkBonus != 0 ? dbMatch.atkBonus : (template != null ? template.attackBonus : 0),
+                defBonus = dbMatch != null && dbMatch.defBonus != 0 ? dbMatch.defBonus : (template != null ? template.defenseBonus : 0),
+                itemRarity = dbMatch != null ? dbMatch.itemRarity : (template != null && System.Enum.TryParse<ItemRarity>(template.rarity, true, out var parsedRarity) ? parsedRarity : ItemRarity.Common),
+                quantity = inv.quantity,
+                inventoryId = !string.IsNullOrEmpty(inv.inventoryId) ? inv.inventoryId : inv.itemId,
+                isEquipped = inv.equipped
+            };
 
             allItems.Add(matchData);
         }
@@ -273,7 +318,7 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < slotCount; i++)
         {
             Transform slot = gridSlotsContainer.GetChild(i);
-            InventorySlotUI slotUI = slot.GetComponent<InventorySlotUI>();
+            InventorySlotUI slotUI = GetOrAddSlotUI(slot);
 
             int itemIndex = startIndex + i;
 
@@ -304,7 +349,7 @@ public class InventoryManager : MonoBehaviour
                 {
                     slotUI.ClearSlot();
                 }
-                slot.gameObject.SetActive(true);
+                slot.gameObject.SetActive(true); // Giữ ô hiển thị để có màu nền tối đẹp mắt
             }
         }
 
