@@ -3,7 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems; // Hỗ trợ bắt sự kiện di chuột (Hover)
 using TMPro; // Quản lý chữ TextMeshPro hiển thị số lượng
 
-public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InventorySlotUI : MonoBehaviour,
+    IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     // Ô này dùng để kiểm tra xem Slot này đang chứa đồ hay đang trống
     public bool hasItem = false;
@@ -101,24 +102,29 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
     }
 
-    #region INTERFACE IMPLEMENTATIONS: EVENT SYSTEMS (HỘ TRỢ TOOLTIP HOVER)
-    // Kích hoạt khi con chuột di chuyển vào khu vực của Slot này
+    #region INTERFACE IMPLEMENTATIONS: EVENT SYSTEMS (TOOLTIP + CLICK)
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (hasItem && itemData != null)
-        {
-            // Hiển thị thông tin tên và loại vật phẩm ra Console (Có thể mở rộng thành popup tooltip UI thực tế)
-            Debug.Log($"[Tooltip] {itemData.itemName} - {itemData.itemType} (Độ hiếm: {itemData.itemRarity})");
-        }
+        if (hasItem && itemData != null && ItemTooltipUI.Instance != null)
+            ItemTooltipUI.Instance.ShowTooltip(itemData);
     }
 
-    // Kích hoạt khi con chuột rời khỏi khu vực của Slot này
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (hasItem && itemData != null)
-        {
-            Debug.Log($"[Tooltip] Đóng Tooltip của {itemData.itemName}");
-        }
+        if (ItemTooltipUI.Instance != null)
+            ItemTooltipUI.Instance.HideTooltip();
+    }
+
+    // Chuột PHẢI → mở context menu "Trang bị"
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!hasItem || itemData == null) return;
+
+        // Chỉ xử lý khi click chuột PHẢI
+        if (eventData.button != PointerEventData.InputButton.Right) return;
+
+        if (EquipmentManager.Instance != null)
+            EquipmentManager.Instance.OnInventorySlotClicked(this);
     }
     #endregion
 }

@@ -25,6 +25,12 @@ public class InventoryManager : MonoBehaviour
     public List<ItemData> allItems = new List<ItemData>(); // Danh sách toàn bộ item đang có
     private List<ItemData> filteredItems = new List<ItemData>(); // Danh sách sau khi lọc
 
+    [Header("--- Test / Debug ---")]
+    [Tooltip("Tích vào để tự động tạo dữ liệu giả khi Play (dùng để test tooltip)")]
+    public bool useDummyData = true;
+    [Tooltip("Số lượng item giả muốn tạo")]
+    public int dummyItemCount = 20;
+
     private int currentPage = 1;
     private int itemsPerPage = 49; // Đúng bằng số ô vuông trên 1 trang của bạn
     private int totalPages = 1;
@@ -44,7 +50,14 @@ public class InventoryManager : MonoBehaviour
         if (btnLast != null)
             btnLast.onClick.AddListener(() => ChangePage(totalPages));
 
-        // Nếu đã có dữ liệu thật (load từ API), render luôn
+        // Tạo dữ liệu giả để test nếu được bật và chưa có dữ liệu thật
+        if (useDummyData && allItems.Count == 0)
+        {
+            GenerateDummyData(dummyItemCount);
+            Debug.Log($"[InventoryManager] Đã tạo {dummyItemCount} item giả để test.");
+        }
+
+        // Render lên UI
         if (gridSlotsContainer != null)
         {
             ApplyFilter();
@@ -52,6 +65,51 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Debug.LogWarning("[InventoryManager] Chưa gán 'Grid Slots Container' trong Inspector.");
+        }
+    }
+
+    /// <summary>
+    /// Tạo danh sách item ngẫu nhiên để test UI — KHÔNG dùng trong production.
+    /// </summary>
+    public void GenerateDummyData(int count = 20)
+    {
+        allItems.Clear();
+
+        // Tên mẫu theo từng loại
+        string[] weaponNames  = { "Kiếm Lửa", "Đại Kiếm Bóng Tối", "Cung Gió", "Trượng Phù Thủy", "Dao Găm Máu" };
+        string[] armorNames   = { "Giáp Rồng", "Áo Choàng Bóng", "Khiên Thần Thánh", "Giáp Sắt", "Áo Giáp Da" };
+        string[] accessNames  = { "Nhẫn Lửa", "Vòng Cổ Tinh Tú", "Bùa Hộ Mệnh", "Huy Hiệu Dũng Sĩ", "Khuyên Tai Bí Ẩn" };
+        string[] consumeNames = { "Bình Máu", "Bình Phép", "Thuốc Tăng Lực", "Cuộn Hồi Sinh", "Đá Mài Kiếm" };
+
+        ItemType[]   types    = { ItemType.Weapon, ItemType.Armor, ItemType.Accessory, ItemType.Consumable };
+        ItemRarity[] rarities = { ItemRarity.Common, ItemRarity.Rare, ItemRarity.Epic };
+        string[][]   namePool = { weaponNames, armorNames, accessNames, consumeNames };
+
+        for (int i = 0; i < count; i++)
+        {
+            int typeIdx   = i % types.Length;  // Xoay vòng đều 4 loại
+            ItemType   t  = types[typeIdx];
+            ItemRarity r  = rarities[Random.Range(0, rarities.Length)];
+
+            string[] pool = namePool[typeIdx];
+            string name   = pool[Random.Range(0, pool.Length)];
+
+            // Thêm số thứ tự để tên không bị trùng
+            if (count > pool.Length)
+                name += $" +{i / types.Length}";
+
+            ItemData item = new ItemData
+            {
+                itemName    = name,
+                itemType    = t,
+                itemRarity  = r,
+                itemIcon    = null, // Không có icon — ô sẽ hiển thị trắng, tooltip vẫn hoạt động
+                atkBonus    = (t == ItemType.Weapon)    ? Random.Range(5, 50)  : Random.Range(0, 10),
+                defBonus    = (t == ItemType.Armor)     ? Random.Range(5, 40)  : Random.Range(0, 8),
+                quantity    = (t == ItemType.Consumable) ? Random.Range(1, 10) : 1
+            };
+
+            allItems.Add(item);
         }
     }
 
@@ -72,6 +130,24 @@ public class InventoryManager : MonoBehaviour
         ApplyFilter();
 
         Debug.Log($"[InventoryManager] Đã nạp {allItems.Count} item vào túi đồ.");
+    }
+
+    /// <summary>Thêm item về túi đồ (dùng khi gỡ trang bị).</summary>
+    public void AddItemToInventory(ItemData item)
+    {
+        if (item == null) return;
+        allItems.Add(item);
+        ApplyFilter();
+        Debug.Log($"[InventoryManager] Đã thêm {item.itemName} về túi đồ.");
+    }
+
+    /// <summary>Xóa item khỏi túi đồ (dùng khi trang bị).</summary>
+    public void RemoveItemFromInventory(ItemData item)
+    {
+        if (item == null) return;
+        allItems.Remove(item);
+        ApplyFilter();
+        Debug.Log($"[InventoryManager] Đã xóa {item.itemName} khỏi túi đồ.");
     }
 
     void OnFilterChanged(int value)
