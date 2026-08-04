@@ -992,6 +992,10 @@ public class GameProgressService : MonoBehaviour
                     if (currentType == itemType)
                     {
                         inv.equipped = false; // Tự động tháo trang bị cũ cùng loại!
+                        if (CurrentCharacter != null && !string.IsNullOrEmpty(CurrentCharacter.characterId) && !string.IsNullOrEmpty(inv.inventoryId))
+                        {
+                            _ = ApiClient.Instance?.PostAsync<object>($"inventory/{CurrentCharacter.characterId}/unequip", new GameShared.DTOs.Inventory.UnequipItemRequest { inventoryId = inv.inventoryId });
+                        }
                         Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo '{inv.itemId}' (ID={inv.inventoryId}, {itemType}) cũ để nhường chỗ cho '{itemId}'.");
                     }
                 }
@@ -1026,6 +1030,21 @@ public class GameProgressService : MonoBehaviour
         }
 
         RecalculateCharacterStats();
+
+        // Gửi API đồng bộ trạng thái trang bị lên AWS DynamoDB
+        if (CurrentCharacter != null && !string.IsNullOrEmpty(CurrentCharacter.characterId) && !string.IsNullOrEmpty(targetItem.inventoryId))
+        {
+            string charId = CurrentCharacter.characterId;
+            string invId = targetItem.inventoryId;
+            if (targetItem.equipped)
+            {
+                _ = ApiClient.Instance?.PostAsync<object>($"inventory/{charId}/equip", new GameShared.DTOs.Inventory.EquipItemRequest { inventoryId = invId });
+            }
+            else
+            {
+                _ = ApiClient.Instance?.PostAsync<object>($"inventory/{charId}/unequip", new GameShared.DTOs.Inventory.UnequipItemRequest { inventoryId = invId });
+            }
+        }
 
         Debug.Log($"⚔️ [EQUIP SYSTEM] Đã trang bị '{itemId}' (ID={targetItem.inventoryId}, {itemType}) thành công! Sức mạnh mới của {CurrentCharacter.name}: Attack={CurrentCharacter.attack}, Defense={CurrentCharacter.defense}, MaxHP={CurrentCharacter.maxHp}");
         return targetItem.equipped;
