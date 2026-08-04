@@ -7,5 +7,6 @@ namespace GameShared.DTOs.Battle
     {
         public string characterId;
         public string encounterId;
+        public System.Collections.Generic.List<string> equippedItemIds;
     }
 }

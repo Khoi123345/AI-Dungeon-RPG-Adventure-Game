@@ -146,6 +146,16 @@ namespace GameBackend.Core.Services
             //    Player Power = Attack(Total) + Defense * 0.5 + HP * 0.05 + Level Bonus
             //    Thêm defense và hp vào để cân bằng với Boss Power (vốn đã bao gồm baseDefense)
             var equippedItems = await _inventoryRepository.GetEquippedItemsAsync(character.characterId);
+            if ((equippedItems == null || equippedItems.Count == 0) && request.equippedItemIds != null && request.equippedItemIds.Count > 0)
+            {
+                equippedItems = request.equippedItemIds.Select(id => new Inventory
+                {
+                    inventoryId = Guid.NewGuid().ToString("N"),
+                    characterId = character.characterId,
+                    itemId = id,
+                    equipped = true
+                }).ToList();
+            }
             var itemLookup = BuildItemLookup(equippedItems);
             var effectiveStats = _characterService.CalculateEffectiveStats(character, equippedItems, itemLookup);
 
@@ -204,7 +214,7 @@ namespace GameBackend.Core.Services
                 playerPower, bossPower, randomFactor, luckyFactor, battleScore, isVictory ? "Victory" : "Defeat");
 
             // 5. Cập nhật encounter
-            encounter.playerHpAfter = isVictory ? character.hp : 0;
+            encounter.playerHpAfter = isVictory ? effectiveStats.maxHp : 0;
             encounter.bossHpAfter = isVictory ? 0 : encounter.bossHpBefore;
             encounter.status = isVictory ? "Victory" : "Defeat";
             await _battleRepository.SaveEncounterAsync(encounter);
@@ -230,7 +240,7 @@ namespace GameBackend.Core.Services
             await _battleRepository.SaveBattleAsync(battleRecord);
 
             // 7. Sinh chuỗi lượt đánh chi tiết (Multi-turn Battle Simulation) cho UI Playback
-            int playerMaxHp = character.maxHp > 0 ? character.maxHp : 100;
+            int playerMaxHp = effectiveStats.maxHp > 0 ? effectiveStats.maxHp : 100;
             int bossMaxHp = encounter.bossHpBefore > 0 ? encounter.bossHpBefore : 100;
 
             var turns = GenerateBattleTurns(
@@ -301,12 +311,12 @@ namespace GameBackend.Core.Services
                     name = character.name,
                     level = character.level,
                     experience = character.experience,
-                    hp = character.hp,
-                    maxHp = character.maxHp,
-                    attack = character.attack,
-                    defense = character.defense,
-                    criticalRate = character.criticalRate,
-                    luckyRate = character.luckyRate,
+                    hp = isVictory ? effectiveStats.maxHp : 0,
+                    maxHp = effectiveStats.maxHp,
+                    attack = effectiveStats.attack,
+                    defense = effectiveStats.defense,
+                    criticalRate = effectiveStats.criticalRate,
+                    luckyRate = effectiveStats.luckyRate,
                     gold = character.gold,
                     status = character.status
                 }

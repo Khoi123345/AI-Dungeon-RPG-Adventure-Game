@@ -1038,16 +1038,30 @@ public class GameProgressService : MonoBehaviour
             string invId = targetItem.inventoryId;
             if (targetItem.equipped)
             {
-                _ = ApiClient.Instance?.PostAsync<object>($"inventory/{charId}/equip", new GameShared.DTOs.Inventory.EquipItemRequest { inventoryId = invId });
+                _ = ApiClient.Instance?.PostAsync<object>($"inventory/{charId}/equip", new GameShared.DTOs.Inventory.EquipItemRequest { inventoryId = invId, itemId = targetItem.itemId });
             }
             else
             {
-                _ = ApiClient.Instance?.PostAsync<object>($"inventory/{charId}/unequip", new GameShared.DTOs.Inventory.UnequipItemRequest { inventoryId = invId });
+                _ = ApiClient.Instance?.PostAsync<object>($"inventory/{charId}/unequip", new GameShared.DTOs.Inventory.UnequipItemRequest { inventoryId = invId, itemId = targetItem.itemId });
             }
         }
 
         Debug.Log($"⚔️ [EQUIP SYSTEM] Đã trang bị '{itemId}' (ID={targetItem.inventoryId}, {itemType}) thành công! Sức mạnh mới của {CurrentCharacter.name}: Attack={CurrentCharacter.attack}, Defense={CurrentCharacter.defense}, MaxHP={CurrentCharacter.maxHp}");
         return targetItem.equipped;
+    }
+
+    public List<string> GetEquippedInventoryItemIds()
+    {
+        var list = new List<string>();
+        if (inventory == null) return list;
+        foreach (var inv in inventory)
+        {
+            if (inv.equipped && !string.IsNullOrEmpty(inv.itemId))
+            {
+                list.Add(inv.itemId);
+            }
+        }
+        return list;
     }
 
     public void RecalculateCharacterStats()

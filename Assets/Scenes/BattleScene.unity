@@ -761,7 +761,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
   itemQuantity: 0
-  itemData: {fileID: 0}
+  itemData:
+    itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
   itemTypeTest: 0
   itemIconImage: {fileID: 1208414645}
   backgroundImage: {fileID: 351168101}
@@ -1642,7 +1651,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
   m_sharedMaterial: {fileID: 1260715531048141648, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
@@ -2369,7 +2378,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
   itemQuantity: 2
-  itemData: {fileID: 0}
+  itemData:
+    itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
   itemTypeTest: 1
   itemIconImage: {fileID: 960906930}
   backgroundImage: {fileID: 859751586}
@@ -2795,7 +2813,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
   m_sharedMaterial: {fileID: 1260715531048141648, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
@@ -3741,15 +3759,39 @@ MonoBehaviour:
   overlay: {fileID: 798538373}
   victoryPanel: {fileID: 961664665}
   defeatPanel: {fileID: 705113243}
-  confirmButton: {fileID: 0}
+  confirmButton: {fileID: 1868659005}
   itemSlots:
   - {fileID: 859751588}
   - {fileID: 1325073560}
   - {fileID: 351168103}
   itemDatabase:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
+  - itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
+  - itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
 --- !u!1 &1251885698
 GameObject:
   m_ObjectHideFlags: 0
@@ -3918,7 +3960,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
   itemQuantity: 0
-  itemData: {fileID: 0}
+  itemData:
+    itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
   itemTypeTest: 0
   itemIconImage: {fileID: 1177730229}
   backgroundImage: {fileID: 1325073558}

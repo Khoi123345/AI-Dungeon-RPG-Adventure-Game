@@ -122,7 +122,12 @@ public class BattlePresenter : MonoBehaviour
                   $"👹 Boss Name: {spawnRes.bossName} (Lv.{spawnRes.bossLevel}, Rarity: {spawnRes.bossRarity})\n" +
                   $"❤️ Boss HP: {spawnRes.bossHp} | ⚔️ Attack: {spawnRes.bossAttack} | 🛡️ Defense: {spawnRes.bossDefense}");
 
-        var resolveReq = new GameShared.DTOs.Battle.BattleResolveRequest { characterId = charId, encounterId = spawnRes.encounterId };
+        var equippedList = GameProgressService.Instance?.GetEquippedInventoryItemIds() ?? new System.Collections.Generic.List<string>();
+        var resolveReq = new GameShared.DTOs.Battle.BattleResolveRequest { 
+            characterId = charId, 
+            encounterId = spawnRes.encounterId,
+            equippedItemIds = equippedList
+        };
         var resolveRes = await ApiClient.Instance.PostAsync<GameShared.DTOs.Battle.BattleResolveResponse>("battle/resolve", resolveReq);
 
         if (resolveRes == null)

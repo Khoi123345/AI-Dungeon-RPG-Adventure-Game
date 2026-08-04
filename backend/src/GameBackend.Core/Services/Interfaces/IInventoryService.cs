@@ -17,10 +17,10 @@ namespace GameBackend.Core.Services.Interfaces
         /// Trang bị item. Tự động gỡ item cùng item_type đang equipped.
         /// Kiểm tra requiredLevel của item so với character level.
         /// </summary>
-        Task<InventoryResponse> EquipItemAsync(string characterId, string inventoryId);
+        Task<InventoryResponse> EquipItemAsync(string characterId, string inventoryId, string? fallbackItemId = null);
 
         /// <summary>Gỡ trang bị item (đặt equipped = false).</summary>
-        Task<InventoryResponse> UnequipItemAsync(string characterId, string inventoryId);
+        Task<InventoryResponse> UnequipItemAsync(string characterId, string inventoryId, string? fallbackItemId = null);
 
         /// <summary>
         /// Sử dụng vật phẩm tiêu hao (Consumable). Apply effectJson lên Character.
