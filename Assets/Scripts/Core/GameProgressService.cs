@@ -673,21 +673,63 @@ public class GameProgressService : MonoBehaviour
         };
 
         items.Clear();
-        var starterItem = GameShared.Config.GameConstants.GetItemById("item_rusty_sword");
-        if (starterItem != null) items.Add(starterItem);
+        foreach (var it in GameShared.Config.GameConstants.ItemCatalog)
+            items.Add(it);
 
         inventory.Clear();
+
+        // ── Vũ khí đang trang bị ──────────────────────────────────────
         inventory.Add(new Inventory
         {
             inventoryId = Guid.NewGuid().ToString("N"),
             characterId = CurrentCharacter.characterId,
-            itemId = "item_rusty_sword",
-            quantity = 1,
-            equipped = true,
-            slotIndex = 0,
-            locked = false,
-            acquiredAt = DateTime.UtcNow.AddDays(-1)
+            itemId      = "item_rusty_sword",
+            quantity    = 1,
+            equipped    = true,
+            slotIndex   = 0,
+            locked      = false,
+            acquiredAt  = DateTime.UtcNow.AddDays(-5)
         });
+
+        // ── Các item CHƯA trang bị (để test lưới inventory bên phải) ──
+        var seedItems = new[]
+        {
+            // Weapon
+            ("item_steel_dagger",    1, false),
+            ("item_shadow_blade",    1, false),
+            ("item_excalibur",       1, false),
+            // Armor
+            ("item_leather_vest",    1, false),
+            ("item_iron_shield",     1, false),
+            ("item_dragon_scale",    1, false),
+            ("item_aegis",           1, false),
+            // Accessory
+            ("item_wooden_ring",     1, false),
+            ("item_silver_amulet",   1, false),
+            ("item_void_ring",       1, false),
+            ("item_ring_of_gods",    1, false),
+            // Consumable (stackable)
+            ("item_health_potion_s", 5, false),
+            ("item_health_potion_m", 3, false),
+            ("item_elixir",          2, false),
+            ("item_divine_elixir",   1, false),
+        };
+
+        int slot = 1;
+        foreach (var (itemId, qty, eq) in seedItems)
+        {
+            inventory.Add(new Inventory
+            {
+                inventoryId = Guid.NewGuid().ToString("N"),
+                characterId = CurrentCharacter.characterId,
+                itemId      = itemId,
+                quantity    = qty,
+                equipped    = eq,
+                slotIndex   = slot++,
+                locked      = false,
+                acquiredAt  = DateTime.UtcNow.AddDays(-new System.Random().Next(0, 5))
+            });
+        }
 
         CurrentBoss = new Boss
         {
@@ -950,6 +992,10 @@ public class GameProgressService : MonoBehaviour
                     if (currentType == itemType)
                     {
                         inv.equipped = false; // Tự động tháo trang bị cũ cùng loại!
+                        if (CurrentCharacter != null && !string.IsNullOrEmpty(CurrentCharacter.characterId) && !string.IsNullOrEmpty(inv.inventoryId))
+                        {
+                            _ = ApiClient.Instance?.PostAsync<object>($"inventory/{CurrentCharacter.characterId}/unequip", new GameShared.DTOs.Inventory.UnequipItemRequest { inventoryId = inv.inventoryId });
+                        }
                         Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo '{inv.itemId}' (ID={inv.inventoryId}, {itemType}) cũ để nhường chỗ cho '{itemId}'.");
                     }
                 }
@@ -959,24 +1005,24 @@ public class GameProgressService : MonoBehaviour
         }
         else if (itemType == ItemType.Accessory)
         {
-            var equippedAccessories = inventory.Where(i => i.equipped && ItemData.GetItemTypeFromId(i.itemId) == ItemType.Accessory).ToList();
-
-            if (equippedAccessories.Count < 2)
+            // Tự động tháo phụ kiện cũ (nếu có) — UI chỉ có 1 ô Accessory
+            foreach (var inv in inventory)
             {
-                targetItem.equipped = true;
-                Debug.Log($"💍 [EQUIP ACCESSORY] Đã trang bị trang sức '{itemId}' (ID={targetItem.inventoryId}) vào Slot {equippedAccessories.Count + 1}.");
-            }
-            else
-            {
-                int replaceIndex = (nextAccessorySlotToReplace == 1) ? 0 : 1;
-                var itemToUnequip = equippedAccessories[replaceIndex];
-                itemToUnequip.equipped = false;
+                if (inv.equipped && inv.inventoryId != targetItem.inventoryId)
+                {
+                    ItemType currentType = ItemData.GetItemTypeFromId(inv.itemId);
+                    var t = GameShared.Config.GameConstants.GetItemById(inv.itemId);
+                    if (t != null && Enum.TryParse<ItemType>(t.itemType, true, out var pt)) currentType = pt;
 
-                targetItem.equipped = true;
-                Debug.Log($"🔄 [REPLACE ACCESSORY] Đã tháo trang sức '{itemToUnequip.itemId}' ở Slot {nextAccessorySlotToReplace} và thay bằng '{itemId}'.");
-
-                nextAccessorySlotToReplace = (nextAccessorySlotToReplace == 1) ? 2 : 1;
+                    if (currentType == ItemType.Accessory)
+                    {
+                        inv.equipped = false;
+                        Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo phụ kiện '{inv.itemId}' (ID={inv.inventoryId}) để nhường chỗ cho '{itemId}'.");
+                    }
+                }
             }
+            targetItem.equipped = true;
+            Debug.Log($"💍 [EQUIP ACCESSORY] Đã trang bị phụ kiện '{itemId}' (ID={targetItem.inventoryId}).");
         }
         else
         {
@@ -985,8 +1031,37 @@ public class GameProgressService : MonoBehaviour
 
         RecalculateCharacterStats();
 
+        // Gửi API đồng bộ trạng thái trang bị lên AWS DynamoDB
+        if (CurrentCharacter != null && !string.IsNullOrEmpty(CurrentCharacter.characterId) && !string.IsNullOrEmpty(targetItem.inventoryId))
+        {
+            string charId = CurrentCharacter.characterId;
+            string invId = targetItem.inventoryId;
+            if (targetItem.equipped)
+            {
+                _ = ApiClient.Instance?.PostAsync<object>($"inventory/{charId}/equip", new GameShared.DTOs.Inventory.EquipItemRequest { inventoryId = invId, itemId = targetItem.itemId });
+            }
+            else
+            {
+                _ = ApiClient.Instance?.PostAsync<object>($"inventory/{charId}/unequip", new GameShared.DTOs.Inventory.UnequipItemRequest { inventoryId = invId, itemId = targetItem.itemId });
+            }
+        }
+
         Debug.Log($"⚔️ [EQUIP SYSTEM] Đã trang bị '{itemId}' (ID={targetItem.inventoryId}, {itemType}) thành công! Sức mạnh mới của {CurrentCharacter.name}: Attack={CurrentCharacter.attack}, Defense={CurrentCharacter.defense}, MaxHP={CurrentCharacter.maxHp}");
         return targetItem.equipped;
+    }
+
+    public List<string> GetEquippedInventoryItemIds()
+    {
+        var list = new List<string>();
+        if (inventory == null) return list;
+        foreach (var inv in inventory)
+        {
+            if (inv.equipped && !string.IsNullOrEmpty(inv.itemId))
+            {
+                list.Add(inv.itemId);
+            }
+        }
+        return list;
     }
 
     public void RecalculateCharacterStats()
@@ -1022,9 +1097,19 @@ public class GameProgressService : MonoBehaviour
             }
         }
 
+        int oldMaxHp = CurrentCharacter.maxHp;
         CurrentCharacter.maxHp = baseHp + bonusHp;
         CurrentCharacter.attack = baseAtk + bonusAtk;
         CurrentCharacter.defense = baseDef + bonusDef;
-        CurrentCharacter.hp = Mathf.Min(CurrentCharacter.hp, CurrentCharacter.maxHp);
+
+        // Nếu Max HP tăng lên nhờ mặc đồ, tự động hồi Máu hiện tại theo đúng lượng tăng!
+        if (CurrentCharacter.maxHp > oldMaxHp)
+        {
+            CurrentCharacter.hp = Mathf.Min(CurrentCharacter.maxHp, CurrentCharacter.hp + (CurrentCharacter.maxHp - oldMaxHp));
+        }
+        else
+        {
+            CurrentCharacter.hp = Mathf.Min(CurrentCharacter.hp, CurrentCharacter.maxHp);
+        }
     }
 }

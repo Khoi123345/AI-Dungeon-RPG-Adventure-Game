@@ -17,6 +17,8 @@ namespace Infrastructure.Stacks
         public Function SpawnBossFunction { get; }
         public Function ResolveBattleFunction { get; }
         public Function GetInventoryFunction { get; }
+        public Function EquipItemFunction { get; }
+        public Function UnequipItemFunction { get; }
 
         public LambdaStack(Construct scope, string id, DatabaseStack dbStack, CognitoStack cognitoStack, IStackProps? props = null) : base(scope, id, props)
         {
@@ -100,6 +102,14 @@ namespace Infrastructure.Stacks
                 "GameBackend.Handlers::GameBackend.Handlers.Inventory.GetInventoryHandler::Handler",
                 commonProps);
 
+            EquipItemFunction = CreateFunction("EquipItemFunction",
+                "GameBackend.Handlers::GameBackend.Handlers.Inventory.EquipItemHandler::Handler",
+                commonProps);
+
+            UnequipItemFunction = CreateFunction("UnequipItemFunction",
+                "GameBackend.Handlers::GameBackend.Handlers.Inventory.UnequipItemHandler::Handler",
+                commonProps);
+
             // Grant DynamoDB Permissions
             // Auth
             dbStack.UsersTable.GrantReadWriteData(LoginFunction);
@@ -146,6 +156,12 @@ namespace Infrastructure.Stacks
             // Inventory
             dbStack.InventoryTable.GrantReadData(GetInventoryFunction);
             dbStack.CharactersTable.GrantReadData(GetInventoryFunction);
+
+            dbStack.InventoryTable.GrantReadWriteData(EquipItemFunction);
+            dbStack.CharactersTable.GrantReadWriteData(EquipItemFunction);
+
+            dbStack.InventoryTable.GrantReadWriteData(UnequipItemFunction);
+            dbStack.CharactersTable.GrantReadWriteData(UnequipItemFunction);
 
             // Grant Cognito Permissions
             cognitoStack.UserPool.Grant(LoginFunction, "cognito-idp:InitiateAuth");

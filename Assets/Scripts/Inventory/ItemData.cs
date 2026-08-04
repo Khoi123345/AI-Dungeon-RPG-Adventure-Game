@@ -31,6 +31,8 @@ public class ItemData
     public int atkBonus;
     public int defBonus;
     public int quantity = 1; // Số lượng mặc định là 1
+    public string inventoryId;
+    public bool isEquipped;
 
     public static ItemType GetItemTypeFromId(string itemId)
     {

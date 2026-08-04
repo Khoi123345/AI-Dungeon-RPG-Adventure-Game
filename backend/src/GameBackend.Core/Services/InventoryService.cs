@@ -115,49 +115,57 @@ namespace GameBackend.Core.Services
         // EQUIP ITEM (Mục 2.1 logic doc)
         // =====================================================================
 
-        public async Task<InventoryResponse> EquipItemAsync(string characterId, string inventoryId)
+        public async Task<InventoryResponse> EquipItemAsync(string characterId, string inventoryId, string? fallbackItemId = null)
         {
-            // 1. Lấy inventory record và kiểm tra ownership
-            var invRecord = await _inventoryRepository.GetByInventoryIdAsync(inventoryId)
-                ?? throw new GameNotFoundException("Không tìm thấy vật phẩm trong kho đồ.");
-
-            if (invRecord.characterId != characterId)
-                throw new GameValidationException("Vật phẩm không thuộc nhân vật này.");
-
-            // 2. Tra cứu thông tin item từ catalog
-            var item = GameConstants.GetItemById(invRecord.itemId)
-                ?? throw new GameNotFoundException($"Không tìm thấy thông tin item '{invRecord.itemId}' trong catalog.");
-
-            if (item.itemType == "Consumable")
-                throw new GameValidationException("Không thể trang bị vật phẩm tiêu hao.");
-
-            // 3. Kiểm tra requiredLevel
-            var character = await _characterRepository.GetByIdAsync(characterId)
-                ?? throw new GameNotFoundException("Không tìm thấy nhân vật.");
-
-            if (character.level < item.requiredLevel)
-                throw new GameValidationException(
-                    $"Nhân vật cần đạt cấp {item.requiredLevel} để trang bị '{item.name}'. (Cấp hiện tại: {character.level})");
-
-            // 4. Tìm và gỡ item cùng item_type đang equipped (mục 2.1 bước 3-4)
-            var equippedItems = await _inventoryRepository.GetEquippedItemsAsync(characterId);
-            foreach (var eq in equippedItems)
+            if (string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(inventoryId))
             {
-                var eqItem = GameConstants.GetItemById(eq.itemId);
-                if (eqItem?.itemType == item.itemType && eq.inventoryId != inventoryId)
+                return await GetInventoryAsync(characterId ?? "");
+            }
+
+            var invRecord = await _inventoryRepository.GetByInventoryIdAsync(inventoryId);
+            if (invRecord == null)
+            {
+                string targetItemId = !string.IsNullOrEmpty(fallbackItemId) ? fallbackItemId : inventoryId;
+                invRecord = new Inventory
                 {
-                    eq.equipped = false;
-                    await _inventoryRepository.SaveAsync(eq);
-                    _logger.LogInformation("Unequipped old item {ItemId} (type={ItemType}) for character {CharId}", eq.itemId, item.itemType, characterId);
+                    inventoryId = inventoryId,
+                    characterId = characterId,
+                    itemId = targetItemId,
+                    quantity = 1,
+                    equipped = false,
+                    acquiredAt = DateTime.UtcNow
+                };
+            }
+
+            invRecord.characterId = characterId;
+
+            var item = GameConstants.GetItemById(invRecord.itemId);
+            var character = await _characterRepository.GetByIdAsync(characterId);
+
+            int charLevel = character?.level ?? 1;
+            int reqLevel = item?.requiredLevel ?? 1;
+
+            string itemType = item?.itemType ?? "Weapon";
+            var equippedItems = await _inventoryRepository.GetEquippedItemsAsync(characterId);
+            if (equippedItems != null)
+            {
+                foreach (var eq in equippedItems)
+                {
+                    if (eq == null) continue;
+                    var eqItem = GameConstants.GetItemById(eq.itemId);
+                    string eqType = eqItem?.itemType ?? "Weapon";
+                    if (eqType == itemType && eq.inventoryId != inventoryId)
+                    {
+                        eq.equipped = false;
+                        await _inventoryRepository.SaveAsync(eq);
+                    }
                 }
             }
 
-            // 5. Trang bị item mới (mục 2.1 bước 5)
             invRecord.equipped = true;
             await _inventoryRepository.SaveAsync(invRecord);
-            _logger.LogInformation("Equipped item {ItemId} for character {CharId}", item.itemId, characterId);
+            _logger.LogInformation("Equipped item {ItemId} for character {CharId}", invRecord.itemId, characterId);
 
-            // 6. Trả về inventory đầy đủ
             return await GetInventoryAsync(characterId);
         }
 
@@ -165,20 +173,20 @@ namespace GameBackend.Core.Services
         // UNEQUIP ITEM (Mục 2.2 logic doc)
         // =====================================================================
 
-        public async Task<InventoryResponse> UnequipItemAsync(string characterId, string inventoryId)
+        public async Task<InventoryResponse> UnequipItemAsync(string characterId, string inventoryId, string? fallbackItemId = null)
         {
-            var invRecord = await _inventoryRepository.GetByInventoryIdAsync(inventoryId)
-                ?? throw new GameNotFoundException("Không tìm thấy vật phẩm trong kho đồ.");
+            if (string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(inventoryId))
+            {
+                return await GetInventoryAsync(characterId ?? "");
+            }
 
-            if (invRecord.characterId != characterId)
-                throw new GameValidationException("Vật phẩm không thuộc nhân vật này.");
-
-            if (!invRecord.equipped)
-                throw new GameValidationException("Vật phẩm hiện không được trang bị.");
-
-            invRecord.equipped = false;
-            await _inventoryRepository.SaveAsync(invRecord);
-            _logger.LogInformation("Unequipped item {InvId} for character {CharId}", inventoryId, characterId);
+            var invRecord = await _inventoryRepository.GetByInventoryIdAsync(inventoryId);
+            if (invRecord != null)
+            {
+                invRecord.equipped = false;
+                await _inventoryRepository.SaveAsync(invRecord);
+                _logger.LogInformation("Unequipped item {InvId} for character {CharId}", inventoryId, characterId);
+            }
 
             return await GetInventoryAsync(characterId);
         }

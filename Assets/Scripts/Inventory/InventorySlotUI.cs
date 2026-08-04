@@ -19,22 +19,14 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void SetEquipped(bool equipped)
     {
         isEquipped = equipped;
-        if (isEquipped)
+        transform.localScale = Vector3.one;
+        if (hasItem && itemData != null)
         {
-            if (backgroundImage != null) backgroundImage.color = new Color(0.2f, 0.9f, 0.3f, 1f); // Viền Xanh lá cây báo hiệu ĐÃ TRANG BỊ
-            transform.localScale = new Vector3(1.08f, 1.08f, 1f);
+            UpdateRarityBackground(itemData.itemRarity);
         }
-        else
+        else if (backgroundImage != null)
         {
-            transform.localScale = Vector3.one;
-            if (hasItem && itemData != null)
-            {
-                UpdateRarityBackground(itemData.itemRarity);
-            }
-            else if (backgroundImage != null)
-            {
-                backgroundImage.color = colorDefault;
-            }
+            backgroundImage.color = colorDefault;
         }
     }
 
@@ -47,7 +39,7 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private Color colorCommon = new Color(0.6f, 0.6f, 0.6f, 1f); // Xám
     [SerializeField] private Color colorRare = new Color(0.2f, 0.5f, 0.9f, 1f);   // Xanh dương
     [SerializeField] private Color colorEpic = new Color(0.6f, 0.2f, 0.8f, 1f);   // Tím
-    [SerializeField] private Color colorDefault = new Color(0.2f, 0.2f, 0.2f, 0.4f); // Nền trống mặc định
+    [SerializeField] private Color colorDefault = Color.white; // Nền ô màu trắng mặc định
 
     private void AutoFindComponentsIfNeeded()
     {
@@ -88,10 +80,18 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
         itemQuantity = quantity;
 
         // 1. Cập nhật Icon hiển thị
-        if (itemIconImage != null && newItem != null && newItem.itemIcon != null)
+        if (itemIconImage != null)
         {
-            itemIconImage.sprite = newItem.itemIcon;
-            itemIconImage.gameObject.SetActive(true);
+            if (newItem != null && newItem.itemIcon != null)
+            {
+                itemIconImage.sprite = newItem.itemIcon;
+                itemIconImage.color = Color.white;
+                itemIconImage.gameObject.SetActive(true);
+            }
+            else
+            {
+                itemIconImage.gameObject.SetActive(false);
+            }
         }
 
         // 2. Cập nhật màu nền theo độ hiếm
@@ -100,12 +100,17 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
             UpdateRarityBackground(newItem.itemRarity);
         }
 
-        // 3. Hiển thị số lượng (chỉ hiện text nếu số lượng > 1)
+        // 3. Hiển thị số lượng hoặc Tên (nếu thiếu Icon)
         if (txtQuantity != null)
         {
             if (quantity > 1)
             {
                 txtQuantity.text = quantity.ToString();
+                txtQuantity.gameObject.SetActive(true);
+            }
+            else if (newItem != null && newItem.itemIcon == null && !string.IsNullOrEmpty(newItem.itemName))
+            {
+                txtQuantity.text = newItem.itemName;
                 txtQuantity.gameObject.SetActive(true);
             }
             else
@@ -205,29 +210,33 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
     }
 
-    #region INTERFACE IMPLEMENTATIONS: EVENT SYSTEMS (HỘ TRỢ TOOLTIP HOVER)
-    // Kích hoạt khi con chuột di chuyển vào khu vực của Slot này
+    #region INTERFACE IMPLEMENTATIONS: EVENT SYSTEMS (TOOLTIP + CLICK)
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (hasItem && itemData != null)
-        {
-            // Hiển thị thông tin tên và loại vật phẩm ra Console (Có thể mở rộng thành popup tooltip UI thực tế)
-            Debug.Log($"[Tooltip] {itemData.itemName} - {itemData.itemType} (Độ hiếm: {itemData.itemRarity})");
-        }
+        if (hasItem && itemData != null && ItemTooltipUI.Instance != null)
+            ItemTooltipUI.Instance.ShowTooltip(itemData);
     }
 
-    // Kích hoạt khi con chuột rời khỏi khu vực của Slot này
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (hasItem && itemData != null)
-        {
-            Debug.Log($"[Tooltip] Đóng Tooltip của {itemData.itemName}");
-        }
+        if (ItemTooltipUI.Instance != null)
+            ItemTooltipUI.Instance.HideTooltip();
     }
 
-    // Kích hoạt khi người chơi click / chạm vào Slot này
+    // Xử lý click: chuột PHẢI → context menu "Trang bị", chuột TRÁI → fire callback
     public void OnPointerClick(PointerEventData eventData)
     {
+        // Chuột PHẢI → mở context menu trang bị
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (!hasItem || itemData == null) return;
+
+            if (EquipmentManager.Instance != null)
+                EquipmentManager.Instance.OnInventorySlotClicked(this);
+            return;
+        }
+
+        // Chuột TRÁI → log thông tin và fire callback
         if (hasItem && itemData != null)
         {
             Debug.Log($"🎯 [ITEM CLICKED LOG] Bạn đã BẤM CHỌN vật phẩm: '{itemData.itemName}' | Phẩm chất: {itemData.itemRarity} | Loại: {itemData.itemType} x{itemQuantity}");
