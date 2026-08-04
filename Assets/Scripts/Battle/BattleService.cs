@@ -101,7 +101,14 @@ public class BattlePresenter : MonoBehaviour
             }
         }
 
-        var spawnReq = new GameShared.DTOs.Battle.BossSpawnRequest { characterId = charId, sessionId = sessionId };
+        var currentBoss = GameProgressService.Instance?.CurrentBoss;
+        var spawnReq = new GameShared.DTOs.Battle.BossSpawnRequest
+        {
+            characterId = charId,
+            sessionId   = sessionId,
+            bossId      = currentBoss?.bossId ?? string.Empty,   // Truyền bossId từ cốt truyện lên
+            bossLevel   = currentBoss?.level ?? 0                 // Truyền bossLevel từ cốt truyện lên
+        };
         var spawnRes = await ApiClient.Instance.PostAsync<GameShared.DTOs.Battle.BossSpawnResponse>("battle/spawn-boss", spawnReq);
 
         if (spawnRes == null || string.IsNullOrEmpty(spawnRes.encounterId))
@@ -144,14 +151,19 @@ public class BattlePresenter : MonoBehaviour
             name = GameProgressService.Instance?.CurrentCharacter?.name ?? "Player",
             level = GameProgressService.Instance?.CurrentCharacter?.level ?? 1,
             maxHP = GameProgressService.Instance?.CurrentCharacter?.maxHp ?? 100,
-            currentHP = GameProgressService.Instance?.CurrentCharacter?.hp ?? 100
+            currentHP = GameProgressService.Instance?.CurrentCharacter?.hp ?? 100,
+            attack = GameProgressService.Instance?.CurrentCharacter?.attack ?? 10,
+            defense = GameProgressService.Instance?.CurrentCharacter?.defense ?? 5
         };
 
         realData.boss = new FighterStats {
             name = spawnRes.bossName,
             level = spawnRes.bossLevel,
             maxHP = spawnRes.bossHp,
-            currentHP = spawnRes.bossHp
+            currentHP = spawnRes.bossHp,
+            attack = spawnRes.bossAttack,
+            defense = spawnRes.bossDefense,
+            criticalRate = spawnRes.bossCriticalRate
         };
 
         realData.turns = new List<BattleTurn>();
@@ -166,6 +178,9 @@ public class BattlePresenter : MonoBehaviour
         }
 
         apiDroppedItems.Clear();
+        lastGoldEarned = resolveRes.rewards?.goldEarned ?? 40;
+        lastExpEarned = resolveRes.rewards?.expEarned ?? 30;
+
         if (resolveRes.rewards != null && resolveRes.rewards.lootItems != null)
         {
             foreach (var loot in resolveRes.rewards.lootItems)
@@ -180,6 +195,9 @@ public class BattlePresenter : MonoBehaviour
 
         StartPlayback(realData);
     }
+
+    private int lastGoldEarned = 0;
+    private int lastExpEarned = 0;
 
     // Bắt đầu luồng hiển thị
     public void StartPlayback(BattleData data)
@@ -241,7 +259,7 @@ public class BattlePresenter : MonoBehaviour
         {
             if (data.isPlayerVictory)
             {
-                endUIController.TriggerVictory(droppedItems);
+                endUIController.TriggerVictory(droppedItems, lastGoldEarned, lastExpEarned);
             }
             else
             {
@@ -255,8 +273,8 @@ public class BattlePresenter : MonoBehaviour
     {
         BattleData mock = new BattleData();
         
-        mock.player = new FighterStats { name = "Hiệp sĩ", level = 10, maxHP = 100, currentHP = 100 };
-        mock.boss = new FighterStats { name = "Shadow Demon", level = 45, maxHP = 200, currentHP = 200 };
+        mock.player = new FighterStats { name = "Hiệp sĩ", level = 10, maxHP = 100, currentHP = 100, attack = 15, defense = 8 };
+        mock.boss = new FighterStats { name = "Shadow Demon", level = 45, maxHP = 200, currentHP = 200, attack = 22, defense = 9, criticalRate = 0.15f };
         mock.isPlayerVictory = true;
 
         mock.turns = new List<BattleTurn>

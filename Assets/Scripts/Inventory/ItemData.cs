@@ -31,4 +31,19 @@ public class ItemData
     public int atkBonus;
     public int defBonus;
     public int quantity = 1; // Số lượng mặc định là 1
+    public string inventoryId;
+    public bool isEquipped;
+
+    public static ItemType GetItemTypeFromId(string itemId)
+    {
+        if (string.IsNullOrEmpty(itemId)) return ItemType.Weapon;
+        string lower = itemId.ToLower();
+        if (lower.Contains("ring") || lower.Contains("amulet") || lower.Contains("necklace") || lower.Contains("accessory") || lower.Contains("void"))
+            return ItemType.Accessory;
+        if (lower.Contains("armor") || lower.Contains("vest") || lower.Contains("shield") || lower.Contains("plate") || lower.Contains("helmet") || lower.Contains("boots"))
+            return ItemType.Armor;
+        if (lower.Contains("potion") || lower.Contains("elixir") || lower.Contains("consumable"))
+            return ItemType.Consumable;
+        return ItemType.Weapon;
+    }
 }

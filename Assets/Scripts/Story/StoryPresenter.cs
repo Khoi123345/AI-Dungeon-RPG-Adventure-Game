@@ -280,7 +280,10 @@ public class StoryPresenter : MonoBehaviour
 
         // ── Random Boss Encounter ─────────────────────────────────
         // Roll xác suất sau khi đã hiển thị response cốt truyện
-        StartCoroutine(TryTriggerBossEncounterDelayed());
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(TryTriggerBossEncounterDelayed());
+        }
     }
 
     /// <summary>

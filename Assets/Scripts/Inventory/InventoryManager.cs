@@ -3,9 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-// InventoryGridItem đã bị loại bỏ — thay bằng ItemData (xem ItemData.cs)
-// ItemData giờ là [System.Serializable] nên có thể "new" trực tiếp trong code
-
 public class InventoryManager : MonoBehaviour
 {
     [Header("--- UI References ---")]
@@ -14,6 +11,13 @@ public class InventoryManager : MonoBehaviour
     public TextMeshProUGUI txtAtk;       // Text (TMP) (1) — Tấn công
     public TextMeshProUGUI txtDef;       // Text (TMP) (2) — Phòng thủ
     public TextMeshProUGUI txtPageNumber;
+    public Button btnClose;
+
+    [Header("--- Equipment Slots (Left Panel) ---")]
+    public InventorySlotUI slotHelmet;
+    public InventorySlotUI slotArmor;
+    public InventorySlotUI slotAccessory;
+    public InventorySlotUI slotWeapon;
 
     [Header("--- Pagination Buttons ---")]
     public Button btnFirst;
@@ -21,133 +25,241 @@ public class InventoryManager : MonoBehaviour
     public Button btnNext;
     public Button btnLast;
 
+    [Header("--- Templates & Database ---")]
+    [SerializeField] private List<ItemData> itemDatabase = new List<ItemData>();
+
     [Header("--- Inventory Data ---")]
     public List<ItemData> allItems = new List<ItemData>(); // Danh sách toàn bộ item đang có
-    private List<ItemData> filteredItems = new List<ItemData>(); // Danh sách sau khi lọc
-
-    [Header("--- Test / Debug ---")]
-    [Tooltip("Tích vào để tự động tạo dữ liệu giả khi Play (dùng để test tooltip)")]
-    public bool useDummyData = true;
-    [Tooltip("Số lượng item giả muốn tạo")]
-    public int dummyItemCount = 20;
+    private List<ItemData> filteredItems = new List<ItemData>(); // Danh sách sau khi lọc (chỉ chứa món chưa trang bị)
 
     private int currentPage = 1;
-    private int itemsPerPage = 49; // Đúng bằng số ô vuông trên 1 trang của bạn
+    private int itemsPerPage = 49; // Đúng bằng số ô vuông trên 1 trang
     private int totalPages = 1;
 
     void Start()
     {
-        // Gán sự kiện cho Dropdown và Nút phân trang
+        // Gán sự kiện cho Dropdown, Nút phân trang và Nút Đóng UI
         if (dropdownFilter != null)
-            dropdownFilter.onValueChanged.AddListener(OnFilterChanged);
-
-        if (btnFirst != null)
-            btnFirst.onClick.AddListener(() => ChangePage(1));
-        if (btnPrev != null)
-            btnPrev.onClick.AddListener(() => ChangePage(currentPage - 1));
-        if (btnNext != null)
-            btnNext.onClick.AddListener(() => ChangePage(currentPage + 1));
-        if (btnLast != null)
-            btnLast.onClick.AddListener(() => ChangePage(totalPages));
-
-        // Tạo dữ liệu giả để test nếu được bật và chưa có dữ liệu thật
-        if (useDummyData && allItems.Count == 0)
         {
-            GenerateDummyData(dummyItemCount);
-            Debug.Log($"[InventoryManager] Đã tạo {dummyItemCount} item giả để test.");
+            dropdownFilter.onValueChanged.RemoveAllListeners();
+            dropdownFilter.onValueChanged.AddListener(OnFilterChanged);
         }
 
-        // Render lên UI
-        if (gridSlotsContainer != null)
+        if (btnFirst != null)
         {
-            ApplyFilter();
+            btnFirst.onClick.RemoveAllListeners();
+            btnFirst.onClick.AddListener(() => ChangePage(1));
+        }
+        if (btnPrev != null)
+        {
+            btnPrev.onClick.RemoveAllListeners();
+            btnPrev.onClick.AddListener(() => ChangePage(currentPage - 1));
+        }
+        if (btnNext != null)
+        {
+            btnNext.onClick.RemoveAllListeners();
+            btnNext.onClick.AddListener(() => ChangePage(currentPage + 1));
+        }
+        if (btnLast != null)
+        {
+            btnLast.onClick.RemoveAllListeners();
+            btnLast.onClick.AddListener(() => ChangePage(totalPages));
+        }
+        if (btnClose != null)
+        {
+            btnClose.onClick.RemoveAllListeners();
+            btnClose.onClick.AddListener(CloseInventoryPanel);
+        }
+
+        AutoFindEquipmentSlots();
+        RefreshInventoryUI();
+    }
+
+    private void OnEnable()
+    {
+        AutoFindEquipmentSlots();
+        RefreshInventoryUI();
+    }
+
+    public void CloseInventoryPanel()
+    {
+        // 🛡️ CHỐNG TẮT GAMEMANAGER: Chỉ tắt duy nhất Panel_Inventory!
+        GameObject panelObj = null;
+
+        if (this.gameObject.name != "GameManager" && this.gameObject.name.Contains("Inventory"))
+        {
+            panelObj = this.gameObject;
         }
         else
         {
-            Debug.LogWarning("[InventoryManager] Chưa gán 'Grid Slots Container' trong Inspector.");
+            Transform panelTr = transform.Find("Panel_Inventory");
+            if (panelTr == null && transform.parent != null && transform.parent.name.Contains("Inventory"))
+                panelTr = transform.parent;
+            if (panelTr != null) panelObj = panelTr.gameObject;
+            else panelObj = GameObject.Find("Panel_Inventory");
+        }
+
+        if (panelObj != null && panelObj.name != "GameManager")
+        {
+            panelObj.SetActive(false);
+            Debug.Log("🚪 [INVENTORY CLOSED] Đã ẩn giao diện Panel_Inventory (GameManager vẫn hoạt động).");
+        }
+        else
+        {
+            Debug.LogWarning("[InventoryManager] Không thể tắt Panel_Inventory vì tránh làm ngắt kết nối GameManager.");
         }
     }
 
-    /// <summary>
-    /// Tạo danh sách item ngẫu nhiên để test UI — KHÔNG dùng trong production.
-    /// </summary>
-    public void GenerateDummyData(int count = 20)
+    private void AutoFindEquipmentSlots()
+    {
+        Transform leftPanel = transform.Find("Left_CharacterPanel");
+        if (leftPanel == null && transform.parent != null)
+            leftPanel = transform.parent.Find("Left_CharacterPanel");
+        if (leftPanel == null)
+            leftPanel = GameObject.Find("Left_CharacterPanel")?.transform;
+
+        if (leftPanel != null)
+        {
+            Transform equipGroup = leftPanel.Find("Equipment_Slots");
+            if (equipGroup != null)
+            {
+                if (slotHelmet == null) slotHelmet = GetOrAddSlotUI(equipGroup.Find("Slot_Helmet"));
+                if (slotArmor == null) slotArmor = GetOrAddSlotUI(equipGroup.Find("Slot_Armor"));
+                if (slotAccessory == null) slotAccessory = GetOrAddSlotUI(equipGroup.Find("Slot_Accessory"));
+                if (slotWeapon == null) slotWeapon = GetOrAddSlotUI(equipGroup.Find("Slot_Weapon"));
+            }
+        }
+    }
+
+    private InventorySlotUI GetOrAddSlotUI(Transform slotTr)
+    {
+        if (slotTr == null) return null;
+        InventorySlotUI slotUI = slotTr.GetComponent<InventorySlotUI>();
+        if (slotUI == null)
+        {
+            slotUI = slotTr.gameObject.AddComponent<InventorySlotUI>();
+        }
+        return slotUI;
+    }
+
+    public void RefreshInventoryUI()
+    {
+        AutoFindEquipmentSlots();
+
+        // 1. Xóa hiển thị 4 ô trang bị bên trái
+        if (slotHelmet != null) slotHelmet.ClearSlot();
+        if (slotArmor != null) slotArmor.ClearSlot();
+        if (slotAccessory != null) slotAccessory.ClearSlot();
+        if (slotWeapon != null) slotWeapon.ClearSlot();
+
+        // 2. Nạp dữ liệu từ GameProgressService
+        LoadInventoryFromProgressService();
+
+        // 3. Đưa các món ĐÃ TRANG BỊ lên 4 ô tương ứng bên trái (Left Panel)
+        foreach (var item in allItems)
+        {
+            if (item.isEquipped)
+            {
+                InventorySlotUI targetLeftSlot = GetTargetEquipmentSlot(item, item.itemName);
+                if (targetLeftSlot != null)
+                {
+                    targetLeftSlot.AddItemToSlot(item, item.quantity);
+                    targetLeftSlot.SetEquipped(true);
+
+                    string capturedInvId = item.inventoryId;
+                    targetLeftSlot.onSlotClicked = (clickedSlot) =>
+                    {
+                        if (clickedSlot.hasItem && !string.IsNullOrEmpty(capturedInvId))
+                        {
+                            GameProgressService.Instance?.ToggleEquipItemByInventoryId(capturedInvId);
+                            RefreshInventoryUI();
+                        }
+                    };
+                }
+            }
+        }
+
+        // 4. Áp dụng bộ lọc và render các món CHƯA TRANG BỊ sang lưới bên phải (Right Grid)
+        ApplyFilter();
+    }
+
+    private InventorySlotUI GetTargetEquipmentSlot(ItemData item, string itemIdOrName)
+    {
+        var template = GameShared.Config.GameConstants.GetItemById(itemIdOrName);
+        string slotType = template?.slotType?.ToLower() ?? "";
+        string lowerId = (itemIdOrName ?? "").ToLower();
+
+        if (slotType.Contains("helmet") || slotType.Contains("head") || lowerId.Contains("helmet") || lowerId.Contains("cap") || lowerId.Contains("crown") || lowerId.Contains("hood"))
+        {
+            return slotHelmet;
+        }
+
+        if (item.itemType == ItemType.Armor || slotType.Contains("armor") || lowerId.Contains("armor") || lowerId.Contains("vest") || lowerId.Contains("plate"))
+        {
+            return slotArmor;
+        }
+
+        if (item.itemType == ItemType.Accessory || slotType.Contains("accessory") || lowerId.Contains("ring") || lowerId.Contains("amulet") || lowerId.Contains("necklace"))
+        {
+            return slotAccessory;
+        }
+
+        if (item.itemType == ItemType.Weapon || slotType.Contains("weapon") || lowerId.Contains("sword") || lowerId.Contains("bow") || lowerId.Contains("staff") || lowerId.Contains("shield") || lowerId.Contains("blade"))
+        {
+            return slotWeapon;
+        }
+
+        return slotWeapon; // Mặc định
+    }
+
+    private void LoadInventoryFromProgressService()
     {
         allItems.Clear();
+        if (GameProgressService.Instance == null) return;
+        var inventoryItems = GameProgressService.Instance.GetInventory();
+        if (inventoryItems == null || inventoryItems.Count == 0) return;
 
-        // Tên mẫu theo từng loại
-        string[] weaponNames  = { "Kiếm Lửa", "Đại Kiếm Bóng Tối", "Cung Gió", "Trượng Phù Thủy", "Dao Găm Máu" };
-        string[] armorNames   = { "Giáp Rồng", "Áo Choàng Bóng", "Khiên Thần Thánh", "Giáp Sắt", "Áo Giáp Da" };
-        string[] accessNames  = { "Nhẫn Lửa", "Vòng Cổ Tinh Tú", "Bùa Hộ Mệnh", "Huy Hiệu Dũng Sĩ", "Khuyên Tai Bí Ẩn" };
-        string[] consumeNames = { "Bình Máu", "Bình Phép", "Thuốc Tăng Lực", "Cuộn Hồi Sinh", "Đá Mài Kiếm" };
-
-        ItemType[]   types    = { ItemType.Weapon, ItemType.Armor, ItemType.Accessory, ItemType.Consumable };
-        ItemRarity[] rarities = { ItemRarity.Common, ItemRarity.Rare, ItemRarity.Epic };
-        string[][]   namePool = { weaponNames, armorNames, accessNames, consumeNames };
-
-        for (int i = 0; i < count; i++)
+        foreach (var inv in inventoryItems)
         {
-            int typeIdx   = i % types.Length;  // Xoay vòng đều 4 loại
-            ItemType   t  = types[typeIdx];
-            ItemRarity r  = rarities[Random.Range(0, rarities.Length)];
+            var template = GameShared.Config.GameConstants.GetItemById(inv.itemId);
 
-            string[] pool = namePool[typeIdx];
-            string name   = pool[Random.Range(0, pool.Length)];
-
-            // Thêm số thứ tự để tên không bị trùng
-            if (count > pool.Length)
-                name += $" +{i / types.Length}";
-
-            ItemData item = new ItemData
+            ItemData dbMatch = null;
+            if (itemDatabase != null && itemDatabase.Count > 0)
             {
-                itemName    = name,
-                itemType    = t,
-                itemRarity  = r,
-                itemIcon    = null, // Không có icon — ô sẽ hiển thị trắng, tooltip vẫn hoạt động
-                atkBonus    = (t == ItemType.Weapon)    ? Random.Range(5, 50)  : Random.Range(0, 10),
-                defBonus    = (t == ItemType.Armor)     ? Random.Range(5, 40)  : Random.Range(0, 8),
-                quantity    = (t == ItemType.Consumable) ? Random.Range(1, 10) : 1
+                dbMatch = itemDatabase.Find(x => x != null && 
+                    !string.IsNullOrEmpty(x.itemName) &&
+                    (x.itemName.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase) ||
+                     (template != null && x.itemName.Equals(template.name, System.StringComparison.OrdinalIgnoreCase))));
+            }
+
+            // Tạo bản sao độc lập duy nhất cho từng món trong túi đồ!
+            ItemData matchData = new ItemData
+            {
+                itemName = dbMatch != null && !string.IsNullOrEmpty(dbMatch.itemName) 
+                            ? dbMatch.itemName 
+                            : (template != null ? template.name : (string.IsNullOrEmpty(inv.itemId) ? "Inventory Item" : inv.itemId)),
+                itemIcon = dbMatch?.itemIcon,
+                itemType = template != null && System.Enum.TryParse<ItemType>(template.itemType, true, out var parsedType) 
+                            ? parsedType 
+                            : ItemData.GetItemTypeFromId(inv.itemId),
+                atkBonus = dbMatch != null && dbMatch.atkBonus != 0 ? dbMatch.atkBonus : (template != null ? template.attackBonus : 0),
+                defBonus = dbMatch != null && dbMatch.defBonus != 0 ? dbMatch.defBonus : (template != null ? template.defenseBonus : 0),
+                itemRarity = dbMatch != null ? dbMatch.itemRarity : (template != null && System.Enum.TryParse<ItemRarity>(template.rarity, true, out var parsedRarity) ? parsedRarity : ItemRarity.Common),
+                quantity = inv.quantity,
+                inventoryId = !string.IsNullOrEmpty(inv.inventoryId) ? inv.inventoryId : inv.itemId,
+                isEquipped = inv.equipped
             };
 
-            allItems.Add(item);
+            allItems.Add(matchData);
         }
     }
 
-    /// <summary>
-    /// Gọi hàm này để nạp dữ liệu thật từ API vào túi đồ.
-    /// Ví dụ: InventoryManager.Instance.LoadItems(responseData);
-    /// </summary>
     public void LoadItems(List<ItemData> items)
     {
-        if (items == null || items.Count == 0)
-        {
-            Debug.LogWarning("[InventoryManager] Dữ liệu item trống, không có gì để hiển thị.");
-            return;
-        }
-
+        if (items == null || items.Count == 0) return;
         allItems = items;
         currentPage = 1;
         ApplyFilter();
-
-        Debug.Log($"[InventoryManager] Đã nạp {allItems.Count} item vào túi đồ.");
-    }
-
-    /// <summary>Thêm item về túi đồ (dùng khi gỡ trang bị).</summary>
-    public void AddItemToInventory(ItemData item)
-    {
-        if (item == null) return;
-        allItems.Add(item);
-        ApplyFilter();
-        Debug.Log($"[InventoryManager] Đã thêm {item.itemName} về túi đồ.");
-    }
-
-    /// <summary>Xóa item khỏi túi đồ (dùng khi trang bị).</summary>
-    public void RemoveItemFromInventory(ItemData item)
-    {
-        if (item == null) return;
-        allItems.Remove(item);
-        ApplyFilter();
-        Debug.Log($"[InventoryManager] Đã xóa {item.itemName} khỏi túi đồ.");
     }
 
     void OnFilterChanged(int value)
@@ -156,22 +268,23 @@ public class InventoryManager : MonoBehaviour
         ApplyFilter();
     }
 
-    void ApplyFilter()
+    public void ApplyFilter()
     {
-        // Kiểm tra null để tránh lỗi khi dropdownFilter chưa được gán
-        if (dropdownFilter == null) return;
-
-        int filterIndex = dropdownFilter.value; // 0: All, 1: Weapon, 2: Armor, 3: Accessory, 4: Consumable
         filteredItems.Clear();
+
+        int filterIndex = dropdownFilter != null ? dropdownFilter.value : 0; // 0: All, 1: Weapon, 2: Armor, 3: Accessory, 4: Consumable
+
+        // 🎯 LỌC DUY NHẤT CÁC MÓN CHƯA TRANG BỊ (!item.isEquipped) ĐỂ HIỂN THỊ BÊN PHẢI!
+        List<ItemData> unequippedItems = allItems.FindAll(item => !item.isEquipped);
 
         if (filterIndex == 0)
         {
-            filteredItems.AddRange(allItems);
+            filteredItems.AddRange(unequippedItems);
         }
         else
         {
             ItemType selectedType = (ItemType)(filterIndex - 1);
-            filteredItems = allItems.FindAll(item => item.itemType == selectedType);
+            filteredItems = unequippedItems.FindAll(item => item.itemType == selectedType);
         }
 
         // Tính tổng số trang
@@ -199,16 +312,16 @@ public class InventoryManager : MonoBehaviour
         if (btnNext  != null) btnNext.interactable  = (currentPage < totalPages);
         if (btnLast  != null) btnLast.interactable  = (currentPage < totalPages);
 
-        // --- Hiển thị item lên từng ô Slot ---
+        if (gridSlotsContainer == null) return;
+
+        // --- Hiển thị item CHƯA TRANG BỊ lên từng ô Slot bên phải ---
         int startIndex = (currentPage - 1) * itemsPerPage;
         int slotCount  = gridSlotsContainer.childCount;
 
         for (int i = 0; i < slotCount; i++)
         {
             Transform slot = gridSlotsContainer.GetChild(i);
-
-            // Lấy component InventorySlotUI trên slot đó
-            InventorySlotUI slotUI = slot.GetComponent<InventorySlotUI>();
+            InventorySlotUI slotUI = GetOrAddSlotUI(slot);
 
             int itemIndex = startIndex + i;
 
@@ -218,48 +331,33 @@ public class InventoryManager : MonoBehaviour
 
                 if (slotUI != null)
                 {
-                    // ✅ Gọi đúng hàm — hiển thị icon, độ hiếm, số lượng
                     slotUI.AddItemToSlot(item, item.quantity);
-                }
-                else
-                {
-                    // Fallback: nếu slot không có InventorySlotUI thì chỉ đổi màu đơn giản
-                    Image slotImage = slot.GetComponent<Image>();
-                    if (slotImage != null)
-                        slotImage.color = GetColorByItemType(item.itemType);
-                }
+                    slotUI.SetEquipped(false);
 
+                    string capturedInvId = item.inventoryId;
+                    slotUI.onSlotClicked = (clickedSlot) =>
+                    {
+                        if (clickedSlot.hasItem && !string.IsNullOrEmpty(capturedInvId))
+                        {
+                            GameProgressService.Instance?.ToggleEquipItemByInventoryId(capturedInvId);
+                            RefreshInventoryUI();
+                        }
+                    };
+                }
                 slot.gameObject.SetActive(true);
             }
             else
             {
-                // Ô trống — xóa hiển thị
                 if (slotUI != null)
-                    slotUI.ClearSlot();
-                else
                 {
-                    Image slotImage = slot.GetComponent<Image>();
-                    if (slotImage != null)
-                        slotImage.color = Color.white;
+                    slotUI.ClearSlot();
                 }
+                slot.gameObject.SetActive(true); // Giữ ô hiển thị để có màu nền tối đẹp mắt
             }
         }
 
         // --- Cập nhật bảng Stats ---
         UpdateStatsDisplay();
-    }
-
-    // Fallback color — chỉ dùng khi slot không có InventorySlotUI
-    Color GetColorByItemType(ItemType type)
-    {
-        switch (type)
-        {
-            case ItemType.Weapon:    return new Color(1f, 0.4f, 0.4f);  // Đỏ nhẹ
-            case ItemType.Armor:     return new Color(0.4f, 0.6f, 1f);  // Xanh dương
-            case ItemType.Accessory: return new Color(1f, 0.9f, 0.3f);  // Vàng
-            case ItemType.Consumable:return new Color(0.4f, 1f, 0.4f);  // Xanh lá
-            default:                 return Color.white;
-        }
     }
 
     // Tính tổng ATK + DEF từ toàn bộ item trong túi rồi hiển thị
@@ -268,10 +366,21 @@ public class InventoryManager : MonoBehaviour
         int totalAtk = 0;
         int totalDef = 0;
 
-        foreach (ItemData item in allItems)
+        if (GameProgressService.Instance != null && GameProgressService.Instance.CurrentCharacter != null)
         {
-            totalAtk += item.atkBonus;
-            totalDef += item.defBonus;
+            totalAtk = GameProgressService.Instance.CurrentCharacter.attack;
+            totalDef = GameProgressService.Instance.CurrentCharacter.defense;
+        }
+        else
+        {
+            foreach (ItemData item in allItems)
+            {
+                if (item.isEquipped)
+                {
+                    totalAtk += item.atkBonus;
+                    totalDef += item.defBonus;
+                }
+            }
         }
 
         if (txtAtk != null) txtAtk.text = $"Tấn công: {totalAtk}";

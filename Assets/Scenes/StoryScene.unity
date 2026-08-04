@@ -2344,10 +2344,12 @@ MonoBehaviour:
   txtAtk: {fileID: 1084284368}
   txtDef: {fileID: 1623603753}
   txtPageNumber: {fileID: 907668075}
+  btnClose: {fileID: 1475596843}
   btnFirst: {fileID: 1546382726}
   btnPrev: {fileID: 1126380388}
   btnNext: {fileID: 1856053135}
   btnLast: {fileID: 1305091759}
+  itemDatabase: []
   allItems: []
 --- !u!1 &519420028
 GameObject:
