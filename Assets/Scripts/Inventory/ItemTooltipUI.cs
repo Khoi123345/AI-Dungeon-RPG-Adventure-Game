@@ -47,6 +47,12 @@ public class ItemTooltipUI : MonoBehaviour
     [Tooltip("Khoảng cách lệch so với con trỏ chuột — chỉ dùng khi useFixedPosition = false (pixel)")]
     [SerializeField] private Vector2 offset = new Vector2(15f, -15f);
 
+    [Header("Tùy chỉnh kích thước")]
+    [Tooltip("Hệ số phóng to tooltip. Mặc định = 1.5. Tăng lên để to hơn, giảm xuống để nhỏ hơn.")]
+    [Range(0.5f, 4f)]
+    [SerializeField] private float tooltipScale = 2.5f;
+
+
     // RectTransform của tooltipPanel để tính toán vị trí
     private RectTransform tooltipRect;
     // Canvas mà tooltip thuộc về (dùng để convert tọa độ)
@@ -71,14 +77,54 @@ public class ItemTooltipUI : MonoBehaviour
         if (tooltipPanel != null)
             tooltipRect = tooltipPanel.GetComponent<RectTransform>();
 
+        // FIX: GetComponentInParent có thể trả null nếu script không nằm trực tiếp trong Canvas
         parentCanvas = GetComponentInParent<Canvas>();
+        if (parentCanvas == null)
+            parentCanvas = FindFirstObjectByType<Canvas>();
 
         // Tự động tắt Raycast Target trên toàn bộ tooltip (panel + text)
-        // Đây là nguyên nhân gây ra flicker: tooltip che chuột → slot mất hover
         DisableAllRaycastTargets();
+    }
 
-        // Ẩn tooltip lúc đầu
-        HideTooltip();
+    void Start()
+    {
+        if (tooltipPanel != null)
+        {
+            tooltipPanel.SetActive(false);
+            tooltipPanel.transform.localScale = Vector3.one * tooltipScale;
+        }
+        ValidateSetup();
+    }
+
+    /// <summary>Kiểm tra toàn bộ setup và in log rõ ràng ra Console.</summary>
+    [ContextMenu("Validate Tooltip Setup")]
+    public void ValidateSetup()
+    {
+        bool ok = true;
+        if (tooltipPanel == null)
+        {
+            Debug.LogError("[ItemTooltipUI] ❌ tooltipPanel chưa được gán trong Inspector!");
+            ok = false;
+        }
+        if (txtItemName == null)  { Debug.LogWarning("[ItemTooltipUI] ⚠️ txtItemName chưa gán."); }
+        if (txtItemType == null)  { Debug.LogWarning("[ItemTooltipUI] ⚠️ txtItemType chưa gán."); }
+        if (txtItemStats == null) { Debug.LogWarning("[ItemTooltipUI] ⚠️ txtItemStats chưa gán."); }
+        if (parentCanvas == null)
+        {
+            Debug.LogError("[ItemTooltipUI] ❌ Không tìm thấy Canvas nào trong Scene!");
+            ok = false;
+        }
+        if (tooltipRect == null && tooltipPanel != null)
+        {
+            tooltipRect = tooltipPanel.GetComponent<RectTransform>();
+            if (tooltipRect == null)
+            {
+                Debug.LogError("[ItemTooltipUI] ❌ tooltipPanel không có RectTransform!");
+                ok = false;
+            }
+        }
+        if (ok)
+            Debug.Log("[ItemTooltipUI] ✅ Setup hợp lệ — Tooltip sẵn sàng hoạt động.");
     }
 
     void Update()
@@ -143,6 +189,9 @@ public class ItemTooltipUI : MonoBehaviour
 
         tooltipPanel.SetActive(true);
 
+        // Áp dụng scale (cho phép điều chỉnh runtime trong Inspector)
+        tooltipPanel.transform.localScale = Vector3.one * tooltipScale;
+
         // Đặt vị trí tooltip
         if (useFixedPosition && fixedAnchor != null)
             tooltipRect.position = fixedAnchor.position;
@@ -156,8 +205,16 @@ public class ItemTooltipUI : MonoBehaviour
     public void HideTooltip()
     {
         if (hideCoroutine != null)
+        {
             StopCoroutine(hideCoroutine);
-        hideCoroutine = StartCoroutine(HideAfterDelay(0.08f));
+            hideCoroutine = null;
+        }
+
+        // FIX: Chỉ dùng coroutine nếu GameObject đang active, tránh lỗi silent
+        if (gameObject.activeInHierarchy)
+            hideCoroutine = StartCoroutine(HideAfterDelay(0.08f));
+        else if (tooltipPanel != null)
+            tooltipPanel.SetActive(false);
     }
 
     private System.Collections.IEnumerator HideAfterDelay(float delay)
@@ -187,45 +244,60 @@ public class ItemTooltipUI : MonoBehaviour
     {
         if (tooltipRect == null || parentCanvas == null) return;
 
-        // Chuyển tọa độ chuột (screen space) sang local space của Canvas
-        Vector2 mousePos = Input.mousePosition;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            parentCanvas.GetComponent<RectTransform>(),
-            mousePos,
-            parentCanvas.worldCamera,
-            out Vector2 localPos
-        );
+        Camera uiCam = (parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : parentCanvas.worldCamera;
+        RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
 
-        // Áp dụng offset
-        Vector2 targetPos = localPos + offset;
+        // Chuyển vị trí chuột → local space của Canvas
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvasRect, Input.mousePosition, uiCam, out Vector2 localPoint))
+            return;
 
-        // Giữ tooltip trong giới hạn màn hình
-        ClampToCanvas(ref targetPos);
+        // Áp dụng offset (đơn vị = canvas pixels)
+        localPoint += offset;
 
-        tooltipRect.anchoredPosition = targetPos;
+        // Chuyển local canvas → world space rồi gán vào tooltip
+        // Dùng TransformPoint thay vì anchoredPosition để tránh lỗi anchor/pivot khác nhau
+        tooltipRect.position = canvasRect.TransformPoint(new Vector3(localPoint.x, localPoint.y, 0f));
+
+        // Đẩy vào trong màn hình nếu bị tràn mép
+        ClampToScreen(uiCam);
     }
 
-    /// <summary>Đẩy tooltip vào trong Canvas nếu bị tràn ra ngoài mép.</summary>
-    private void ClampToCanvas(ref Vector2 pos)
+    /// <summary>Đẩy tooltip vào trong màn hình nếu bị tràn ra ngoài mép (dựa trên corners thực tế).</summary>
+    private void ClampToScreen(Camera uiCam)
     {
-        if (parentCanvas == null || tooltipRect == null) return;
+        if (tooltipRect == null || parentCanvas == null) return;
 
-        RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
-        Vector2 canvasSize  = canvasRect.sizeDelta;
-        Vector2 tooltipSize = tooltipRect.sizeDelta;
+        // Lấy 4 góc thực tế của tooltip (sau ContentSizeFitter tính kích thước xong)
+        Vector3[] corners = new Vector3[4];
+        tooltipRect.GetWorldCorners(corners);
 
-        float halfW = canvasSize.x * 0.5f;
-        float halfH = canvasSize.y * 0.5f;
+        // corners[0]=bottom-left, corners[2]=top-right
+        Vector2 screenMin = RectTransformUtility.WorldToScreenPoint(uiCam, corners[0]);
+        Vector2 screenMax = RectTransformUtility.WorldToScreenPoint(uiCam, corners[2]);
 
-        // Giới hạn X
-        float minX = -halfW + tooltipSize.x * 0.5f;
-        float maxX =  halfW - tooltipSize.x * 0.5f;
-        // Giới hạn Y
-        float minY = -halfH + tooltipSize.y * 0.5f;
-        float maxY =  halfH - tooltipSize.y * 0.5f;
+        float shiftX = 0f, shiftY = 0f;
+        if (screenMin.x < 0)             shiftX = -screenMin.x;
+        if (screenMax.x > Screen.width)  shiftX = Screen.width - screenMax.x;
+        if (screenMin.y < 0)             shiftY = -screenMin.y;
+        if (screenMax.y > Screen.height) shiftY = Screen.height - screenMax.y;
 
-        pos.x = Mathf.Clamp(pos.x, minX, maxX);
-        pos.y = Mathf.Clamp(pos.y, minY, maxY);
+        if (shiftX == 0f && shiftY == 0f) return;
+
+        // ScreenSpaceOverlay: world position = screen pixels → shift trực tiếp
+        if (parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
+        {
+            tooltipRect.position += new Vector3(shiftX, shiftY, 0f);
+        }
+        else
+        {
+            // Camera/World Space: chuyển screen pixels → canvas local units rồi dịch chuyển
+            RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
+            float sx = Screen.width  > 0 ? shiftX / Screen.width  : 0f;
+            float sy = Screen.height > 0 ? shiftY / Screen.height : 0f;
+            tooltipRect.position += canvasRect.TransformVector(
+                new Vector3(sx * canvasRect.rect.width, sy * canvasRect.rect.height, 0f));
+        }
     }
 
     // ── Chuyển Enum sang tên Tiếng Việt ──────────

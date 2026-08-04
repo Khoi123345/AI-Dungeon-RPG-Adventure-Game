@@ -386,4 +386,44 @@ public class InventoryManager : MonoBehaviour
         if (txtAtk != null) txtAtk.text = $"Tấn công: {totalAtk}";
         if (txtDef != null) txtDef.text = $"Phòng thủ: {totalDef}";
     }
+
+    /// <summary>
+    /// Thêm vật phẩm vào túi đồ (được gọi khi gỡ trang bị hoặc hoán đổi).
+    /// </summary>
+    public void AddItemToInventory(ItemData item)
+    {
+        if (item == null) return;
+
+        // Kiểm tra xem item đã tồn tại chưa (so sánh inventoryId)
+        var existing = allItems.Find(x => x != null && !string.IsNullOrEmpty(x.inventoryId)
+                                          && x.inventoryId == item.inventoryId);
+        if (existing != null)
+        {
+            existing.quantity += item.quantity;
+        }
+        else
+        {
+            item.isEquipped = false;
+            allItems.Add(item);
+        }
+
+        ApplyFilter();
+    }
+
+    /// <summary>
+    /// Xóa vật phẩm khỏi túi đồ (được gọi khi trang bị thành công).
+    /// </summary>
+    public void RemoveItemFromInventory(ItemData item)
+    {
+        if (item == null) return;
+
+        var toRemove = allItems.Find(x => x != null && !string.IsNullOrEmpty(x.inventoryId)
+                                          && x.inventoryId == item.inventoryId);
+        if (toRemove != null)
+        {
+            allItems.Remove(toRemove);
+        }
+
+        ApplyFilter();
+    }
 }

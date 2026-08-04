@@ -673,21 +673,63 @@ public class GameProgressService : MonoBehaviour
         };
 
         items.Clear();
-        var starterItem = GameShared.Config.GameConstants.GetItemById("item_rusty_sword");
-        if (starterItem != null) items.Add(starterItem);
+        foreach (var it in GameShared.Config.GameConstants.ItemCatalog)
+            items.Add(it);
 
         inventory.Clear();
+
+        // ── Vũ khí đang trang bị ──────────────────────────────────────
         inventory.Add(new Inventory
         {
             inventoryId = Guid.NewGuid().ToString("N"),
             characterId = CurrentCharacter.characterId,
-            itemId = "item_rusty_sword",
-            quantity = 1,
-            equipped = true,
-            slotIndex = 0,
-            locked = false,
-            acquiredAt = DateTime.UtcNow.AddDays(-1)
+            itemId      = "item_rusty_sword",
+            quantity    = 1,
+            equipped    = true,
+            slotIndex   = 0,
+            locked      = false,
+            acquiredAt  = DateTime.UtcNow.AddDays(-5)
         });
+
+        // ── Các item CHƯA trang bị (để test lưới inventory bên phải) ──
+        var seedItems = new[]
+        {
+            // Weapon
+            ("item_steel_dagger",    1, false),
+            ("item_shadow_blade",    1, false),
+            ("item_excalibur",       1, false),
+            // Armor
+            ("item_leather_vest",    1, false),
+            ("item_iron_shield",     1, false),
+            ("item_dragon_scale",    1, false),
+            ("item_aegis",           1, false),
+            // Accessory
+            ("item_wooden_ring",     1, false),
+            ("item_silver_amulet",   1, false),
+            ("item_void_ring",       1, false),
+            ("item_ring_of_gods",    1, false),
+            // Consumable (stackable)
+            ("item_health_potion_s", 5, false),
+            ("item_health_potion_m", 3, false),
+            ("item_elixir",          2, false),
+            ("item_divine_elixir",   1, false),
+        };
+
+        int slot = 1;
+        foreach (var (itemId, qty, eq) in seedItems)
+        {
+            inventory.Add(new Inventory
+            {
+                inventoryId = Guid.NewGuid().ToString("N"),
+                characterId = CurrentCharacter.characterId,
+                itemId      = itemId,
+                quantity    = qty,
+                equipped    = eq,
+                slotIndex   = slot++,
+                locked      = false,
+                acquiredAt  = DateTime.UtcNow.AddDays(-new System.Random().Next(0, 5))
+            });
+        }
 
         CurrentBoss = new Boss
         {

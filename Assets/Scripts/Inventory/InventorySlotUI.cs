@@ -223,30 +223,20 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
             ItemTooltipUI.Instance.HideTooltip();
     }
 
-    // Chuột PHẢI → mở context menu "Trang bị"
+    // Xử lý click: chuột PHẢI → context menu "Trang bị", chuột TRÁI → fire callback
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!hasItem || itemData == null) return;
-
-        // Chỉ xử lý khi click chuột PHẢI
-        if (eventData.button != PointerEventData.InputButton.Right) return;
-
-        if (EquipmentManager.Instance != null)
-            EquipmentManager.Instance.OnInventorySlotClicked(this);
-    }
-
-    // Kích hoạt khi người chơi click / chạm vào Slot này
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (hasItem && itemData != null)
+        // Chuột PHẢI → mở context menu trang bị
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
-            Debug.Log($"[Tooltip] Đóng Tooltip của {itemData.itemName}");
-        }
-    }
+            if (!hasItem || itemData == null) return;
 
-    // Kích hoạt khi người chơi click / chạm vào Slot này
-    public void OnPointerClick(PointerEventData eventData)
-    {
+            if (EquipmentManager.Instance != null)
+                EquipmentManager.Instance.OnInventorySlotClicked(this);
+            return;
+        }
+
+        // Chuột TRÁI → log thông tin và fire callback
         if (hasItem && itemData != null)
         {
             Debug.Log($"🎯 [ITEM CLICKED LOG] Bạn đã BẤM CHỌN vật phẩm: '{itemData.itemName}' | Phẩm chất: {itemData.itemRarity} | Loại: {itemData.itemType} x{itemQuantity}");
