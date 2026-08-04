@@ -1001,24 +1001,24 @@ public class GameProgressService : MonoBehaviour
         }
         else if (itemType == ItemType.Accessory)
         {
-            var equippedAccessories = inventory.Where(i => i.equipped && ItemData.GetItemTypeFromId(i.itemId) == ItemType.Accessory).ToList();
-
-            if (equippedAccessories.Count < 2)
+            // Tự động tháo phụ kiện cũ (nếu có) — UI chỉ có 1 ô Accessory
+            foreach (var inv in inventory)
             {
-                targetItem.equipped = true;
-                Debug.Log($"💍 [EQUIP ACCESSORY] Đã trang bị trang sức '{itemId}' (ID={targetItem.inventoryId}) vào Slot {equippedAccessories.Count + 1}.");
-            }
-            else
-            {
-                int replaceIndex = (nextAccessorySlotToReplace == 1) ? 0 : 1;
-                var itemToUnequip = equippedAccessories[replaceIndex];
-                itemToUnequip.equipped = false;
+                if (inv.equipped && inv.inventoryId != targetItem.inventoryId)
+                {
+                    ItemType currentType = ItemData.GetItemTypeFromId(inv.itemId);
+                    var t = GameShared.Config.GameConstants.GetItemById(inv.itemId);
+                    if (t != null && Enum.TryParse<ItemType>(t.itemType, true, out var pt)) currentType = pt;
 
-                targetItem.equipped = true;
-                Debug.Log($"🔄 [REPLACE ACCESSORY] Đã tháo trang sức '{itemToUnequip.itemId}' ở Slot {nextAccessorySlotToReplace} và thay bằng '{itemId}'.");
-
-                nextAccessorySlotToReplace = (nextAccessorySlotToReplace == 1) ? 2 : 1;
+                    if (currentType == ItemType.Accessory)
+                    {
+                        inv.equipped = false;
+                        Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo phụ kiện '{inv.itemId}' (ID={inv.inventoryId}) để nhường chỗ cho '{itemId}'.");
+                    }
+                }
             }
+            targetItem.equipped = true;
+            Debug.Log($"💍 [EQUIP ACCESSORY] Đã trang bị phụ kiện '{itemId}' (ID={targetItem.inventoryId}).");
         }
         else
         {

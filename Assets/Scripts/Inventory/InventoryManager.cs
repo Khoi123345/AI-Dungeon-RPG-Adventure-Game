@@ -147,36 +147,40 @@ public class InventoryManager : MonoBehaviour
         AutoFindEquipmentSlots();
 
         // 1. Xóa hiển thị 4 ô trang bị bên trái
-        if (slotHelmet != null) slotHelmet.ClearSlot();
-        if (slotArmor != null) slotArmor.ClearSlot();
+        if (slotHelmet    != null) slotHelmet.ClearSlot();
+        if (slotArmor     != null) slotArmor.ClearSlot();
         if (slotAccessory != null) slotAccessory.ClearSlot();
-        if (slotWeapon != null) slotWeapon.ClearSlot();
+        if (slotWeapon    != null) slotWeapon.ClearSlot();
 
         // 2. Nạp dữ liệu từ GameProgressService
         LoadInventoryFromProgressService();
 
-        // 3. Đưa các món ĐÃ TRANG BỊ lên 4 ô tương ứng bên trái (Left Panel)
+        // 3. Đưa các món ĐÃ TRANG BỊ lên 4 ô tương ứng bên trái — MỖI Ô CHỈ NHẬN 1 ITEM
+        var filledSlots = new System.Collections.Generic.HashSet<InventorySlotUI>();
+
         foreach (var item in allItems)
         {
-            if (item.isEquipped)
-            {
-                InventorySlotUI targetLeftSlot = GetTargetEquipmentSlot(item, item.itemName);
-                if (targetLeftSlot != null)
-                {
-                    targetLeftSlot.AddItemToSlot(item, item.quantity);
-                    targetLeftSlot.SetEquipped(true);
+            if (!item.isEquipped) continue;
 
-                    string capturedInvId = item.inventoryId;
-                    targetLeftSlot.onSlotClicked = (clickedSlot) =>
-                    {
-                        if (clickedSlot.hasItem && !string.IsNullOrEmpty(capturedInvId))
-                        {
-                            GameProgressService.Instance?.ToggleEquipItemByInventoryId(capturedInvId);
-                            RefreshInventoryUI();
-                        }
-                    };
+            InventorySlotUI targetLeftSlot = GetTargetEquipmentSlot(item, item.inventoryId);
+            if (targetLeftSlot == null) continue;
+
+            // ✅ Nếu slot này đã có item rồi → bỏ qua, không cho đè lên
+            if (filledSlots.Contains(targetLeftSlot)) continue;
+
+            filledSlots.Add(targetLeftSlot);
+            targetLeftSlot.AddItemToSlot(item, item.quantity);
+            targetLeftSlot.SetEquipped(true);
+
+            string capturedInvId = item.inventoryId;
+            targetLeftSlot.onSlotClicked = (clickedSlot) =>
+            {
+                if (clickedSlot.hasItem && !string.IsNullOrEmpty(capturedInvId))
+                {
+                    GameProgressService.Instance?.ToggleEquipItemByInventoryId(capturedInvId);
+                    RefreshInventoryUI();
                 }
-            }
+            };
         }
 
         // 4. Áp dụng bộ lọc và render các món CHƯA TRANG BỊ sang lưới bên phải (Right Grid)
