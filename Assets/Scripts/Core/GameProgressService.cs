@@ -1083,9 +1083,19 @@ public class GameProgressService : MonoBehaviour
             }
         }
 
+        int oldMaxHp = CurrentCharacter.maxHp;
         CurrentCharacter.maxHp = baseHp + bonusHp;
         CurrentCharacter.attack = baseAtk + bonusAtk;
         CurrentCharacter.defense = baseDef + bonusDef;
-        CurrentCharacter.hp = Mathf.Min(CurrentCharacter.hp, CurrentCharacter.maxHp);
+
+        // Nếu Max HP tăng lên nhờ mặc đồ, tự động hồi Máu hiện tại theo đúng lượng tăng!
+        if (CurrentCharacter.maxHp > oldMaxHp)
+        {
+            CurrentCharacter.hp = Mathf.Min(CurrentCharacter.maxHp, CurrentCharacter.hp + (CurrentCharacter.maxHp - oldMaxHp));
+        }
+        else
+        {
+            CurrentCharacter.hp = Mathf.Min(CurrentCharacter.hp, CurrentCharacter.maxHp);
+        }
     }
 }
