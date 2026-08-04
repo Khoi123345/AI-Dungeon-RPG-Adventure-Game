@@ -210,29 +210,33 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
     }
 
-    #region INTERFACE IMPLEMENTATIONS: EVENT SYSTEMS (HỘ TRỢ TOOLTIP HOVER)
-    // Kích hoạt khi con chuột di chuyển vào khu vực của Slot này
+    #region INTERFACE IMPLEMENTATIONS: EVENT SYSTEMS (TOOLTIP + CLICK)
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (hasItem && itemData != null)
-        {
-            // Hiển thị thông tin tên và loại vật phẩm ra Console (Có thể mở rộng thành popup tooltip UI thực tế)
-            Debug.Log($"[Tooltip] {itemData.itemName} - {itemData.itemType} (Độ hiếm: {itemData.itemRarity})");
-        }
+        if (hasItem && itemData != null && ItemTooltipUI.Instance != null)
+            ItemTooltipUI.Instance.ShowTooltip(itemData);
     }
 
-    // Kích hoạt khi con chuột rời khỏi khu vực của Slot này
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (hasItem && itemData != null)
-        {
-            Debug.Log($"[Tooltip] Đóng Tooltip của {itemData.itemName}");
-        }
+        if (ItemTooltipUI.Instance != null)
+            ItemTooltipUI.Instance.HideTooltip();
     }
 
-    // Kích hoạt khi người chơi click / chạm vào Slot này
+    // Xử lý click: chuột PHẢI → context menu "Trang bị", chuột TRÁI → fire callback
     public void OnPointerClick(PointerEventData eventData)
     {
+        // Chuột PHẢI → mở context menu trang bị
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (!hasItem || itemData == null) return;
+
+            if (EquipmentManager.Instance != null)
+                EquipmentManager.Instance.OnInventorySlotClicked(this);
+            return;
+        }
+
+        // Chuột TRÁI → log thông tin và fire callback
         if (hasItem && itemData != null)
         {
             Debug.Log($"🎯 [ITEM CLICKED LOG] Bạn đã BẤM CHỌN vật phẩm: '{itemData.itemName}' | Phẩm chất: {itemData.itemRarity} | Loại: {itemData.itemType} x{itemQuantity}");
