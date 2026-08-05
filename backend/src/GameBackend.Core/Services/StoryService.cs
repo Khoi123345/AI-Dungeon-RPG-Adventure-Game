@@ -208,7 +208,28 @@ namespace GameBackend.Core.Services
         private async Task<StoryAiResponse> GenerateStoryAiResponseAsync(StoryActionProcessingContext context, string defaultActionType)
         {
             var prompt = _promptBuilder.Build(context.PromptContext);
-            prompt += "\n\nReturn ONLY valid JSON for StoryAiResponse. No markdown, no code fences, no extra commentary. Use camelCase property names.";
+            prompt += "\n\nReturn ONLY a valid JSON object matching the following schema. Do NOT wrap in markdown code blocks like ```json, and do NOT include any extra text:\n" +
+                      "{\n" +
+                      "  \"narrativeText\": \"Vietnamese story response description text here\",\n" +
+                      "  \"currentNodeId\": \"current node ID\",\n" +
+                      "  \"currentLocation\": \"current location ID\",\n" +
+                      "  \"currentChapterId\": \"current chapter ID\",\n" +
+                      "  \"storySummary\": \"brief updated summary of the story so far\",\n" +
+                      "  \"actionType\": \"player_action\",\n" +
+                      "  \"triggerBattle\": false,\n" +
+                      "  \"bossId\": \"\",\n" +
+                      "  \"bossName\": \"\",\n" +
+                      "  \"bossLevel\": null,\n" +
+                      "  \"characterDelta\": {\n" +
+                      "    \"hpDelta\": 0,\n" +
+                      "    \"goldDelta\": 0,\n" +
+                      "    \"expDelta\": 0,\n" +
+                      "    \"mpDelta\": 0,\n" +
+                      "    \"status\": \"Alive\",\n" +
+                      "    \"currentLocationId\": \"location ID\"\n" +
+                      "  },\n" +
+                      "  \"inventoryChanges\": []\n" +
+                      "}";
 
             var rawResponse = await GenerateRawAiResponseAsync(DefaultSystemPrompt, prompt, context.Session.storySummary ?? string.Empty);
             return StoryAiResponseParser.Parse(rawResponse, context.Session, defaultActionType, _logger);
