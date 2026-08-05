@@ -47,7 +47,7 @@ namespace GameBackend.Core.Services
                 try
                 {
                     var modelId = string.IsNullOrWhiteSpace(_options.ModelId)
-                        ? "anthropic.claude-sonnet-4-5-20250929-v1:0"
+                        ? "apac.amazon.nova-pro-v1:0"
                         : _options.ModelId;
 
                     _logger.LogInformation("Calling AWS Bedrock ConverseAsync for model: {ModelId} in region: {Region}", modelId, _options.Region);

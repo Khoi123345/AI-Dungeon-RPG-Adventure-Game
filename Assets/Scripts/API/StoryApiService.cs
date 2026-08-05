@@ -1,28 +1,29 @@
 using System.Threading.Tasks;
 using UnityEngine;
+using GameShared.DTOs.Story;
 
 /// <summary>
 /// API service cho Story feature.
-/// POST /story/start và POST /story/action
+/// POST story/start và POST story/action
 /// </summary>
 public class StoryApiService
 {
-    public async Task<string> StartStoryAsync(string characterId, string storyFileId)
+    public async Task<StoryActionResponse> StartStoryAsync(string characterId, string storyFileId = "prologue")
     {
-        var body = JsonUtility.ToJson(new StoryStartBody { characterId = characterId, storyFileId = storyFileId });
-        return await ApiClient.Instance.PostRawAsync("/story/start", body);
+        var body = new StoryStartBody { characterId = characterId, storyFileId = storyFileId };
+        return await ApiClient.Instance.PostAsync<StoryActionResponse>("story/start", body);
     }
 
-    public async Task<string> SendActionAsync(string characterId, string sessionId, int choiceIndex, string playerInput)
+    public async Task<StoryActionResponse> SendActionAsync(string characterId, string sessionId, int choiceIndex, string playerInput)
     {
-        var body = JsonUtility.ToJson(new StoryActionBody
+        var body = new StoryActionBody
         {
             characterId = characterId,
             sessionId = sessionId,
             choiceIndex = choiceIndex,
             playerInput = playerInput
-        });
-        return await ApiClient.Instance.PostRawAsync("/story/action", body);
+        };
+        return await ApiClient.Instance.PostAsync<StoryActionResponse>("story/action", body);
     }
 
     [System.Serializable]
