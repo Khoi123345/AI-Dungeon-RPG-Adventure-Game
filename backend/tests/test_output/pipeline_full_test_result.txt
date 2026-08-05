@@ -133,7 +133,7 @@ Tấn công quái vật canh giữ báu vật
   "currentNodeId": "intro",
   "currentChapterId": "chapter_1",
   "status": "Active",
-  "updatedAt": "2026-08-03T07:16:31.1029225Z",
+  "updatedAt": "2026-08-05T06:22:59.4048133Z",
   "endedAt": null,
   "storyVersion": null,
   "storySummary": "Anh hùng bắt đầu cuộc hành trình tại tàn tích cổ. Bóng tối trong tàn tích cổ khẽ rung lên như đang thở. Mỗi bước chân của bạn vang lại thành một lời cảnh báo.",
