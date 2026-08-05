@@ -94,6 +94,13 @@ namespace GameBackend.Core.AIStory.Services.Impl
                 return folderPath;
             }
 
+            var cleanId = id.StartsWith("boss_") ? id[5..] : id;
+            var cleanFolderPath = Path.Combine(_contentRoot, folder, $"{cleanId}.md");
+            if (File.Exists(cleanFolderPath))
+            {
+                return cleanFolderPath;
+            }
+
             return Path.Combine(_contentRoot, $"{id}.md");
         }
 
@@ -119,6 +126,13 @@ namespace GameBackend.Core.AIStory.Services.Impl
 
             folderPath = Path.Combine(_contentRoot, folder, $"{id}.md");
             if (File.Exists(folderPath))
+            {
+                return true;
+            }
+
+            var cleanId = id.StartsWith("boss_") ? id[5..] : id;
+            var cleanFolderPath = Path.Combine(_contentRoot, folder, $"{cleanId}.md");
+            if (File.Exists(cleanFolderPath))
             {
                 return true;
             }

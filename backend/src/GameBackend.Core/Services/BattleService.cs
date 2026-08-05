@@ -50,18 +50,48 @@ namespace GameBackend.Core.Services
                 throw new Utils.GameValidationException("Cannot spawn boss while character is dead");
             }
 
-            // Mục 3: Rarity roll (weighted random) — dùng GameConstants
-            string rarity = GameConstants.RollBossRarity();
-            var template = GameConstants.GetBossTemplateByRarity(rarity);
+            // 1. Nếu có encounterId được truyền vào từ Cốt truyện, thử lấy encounter đang active
+            BossEncounter? existingEncounter = null;
+            if (!string.IsNullOrWhiteSpace(request.encounterId))
+            {
+                existingEncounter = await _battleRepository.GetEncounterByIdAsync(request.encounterId);
+            }
 
-            // Mục 3: BossLevel = PlayerLevel + RarityModifier + Random(-3,3), clamp ≥ 1
-            int bossLevel = GameConstants.CalculateBossLevel(character.level, rarity);
+            // 2. Tìm Boss template phù hợp từ Cốt truyện (nếu có request.bossId hoặc từ existingEncounter)
+            string targetBossId = !string.IsNullOrWhiteSpace(request.bossId)
+                ? request.bossId
+                : existingEncounter?.bossId ?? string.Empty;
 
-            var encounter = new BossEncounter
+            Boss? template = null;
+            if (!string.IsNullOrWhiteSpace(targetBossId))
+            {
+                template = GameConstants.BossCatalog.FirstOrDefault(b =>
+                    targetBossId.Equals(b.bossId, StringComparison.OrdinalIgnoreCase) ||
+                    targetBossId.StartsWith(b.bossId, StringComparison.OrdinalIgnoreCase) ||
+                    b.bossId.StartsWith(targetBossId, StringComparison.OrdinalIgnoreCase));
+            }
+
+            string rarity = template != null ? template.rarity : GameConstants.RollBossRarity();
+            if (template == null)
+            {
+                template = GameConstants.GetBossTemplateByRarity(rarity);
+            }
+
+            int bossLevel = request.bossLevel > 0
+                ? request.bossLevel
+                : (existingEncounter != null && existingEncounter.bossLevel > 0
+                    ? existingEncounter.bossLevel
+                    : GameConstants.CalculateBossLevel(character.level, rarity));
+
+            string actualBossId = !string.IsNullOrWhiteSpace(targetBossId)
+                ? targetBossId
+                : $"{template.bossId}_{Guid.NewGuid().ToString("N")[..8]}";
+
+            var encounter = existingEncounter ?? new BossEncounter
             {
                 encounterId    = Guid.NewGuid().ToString("N"),
                 characterId    = character.characterId,
-                bossId         = $"{template.bossId}_{Guid.NewGuid().ToString("N")[..8]}",
+                bossId         = actualBossId,
                 bossLevel      = bossLevel,
                 bossRarity     = rarity,
                 playerHpBefore = character.hp,
@@ -70,9 +100,13 @@ namespace GameBackend.Core.Services
                 encounterTime  = DateTime.UtcNow
             };
 
-            await _battleRepository.SaveEncounterAsync(encounter);
-            _logger.LogInformation("Boss spawned: {BossId} (Lv.{Level}, {Rarity}) for character: {CharacterId}",
-                encounter.bossId, bossLevel, rarity, character.characterId);
+            if (existingEncounter == null)
+            {
+                await _battleRepository.SaveEncounterAsync(encounter);
+            }
+
+            _logger.LogInformation("Boss spawned: {BossId} ({BossName}, Lv.{Level}, {Rarity}) for character: {CharacterId}",
+                encounter.bossId, template.name, bossLevel, rarity, character.characterId);
 
             return new BossSpawnResponse
             {
@@ -109,12 +143,26 @@ namespace GameBackend.Core.Services
             }
 
             // 2. Tính Player Power (Mục 4)
-            //    Player Power = Attack(Total, đã bao gồm equipment bonus) + Level Bonus
+            //    Player Power = Attack(Total) + Defense * 0.5 + HP * 0.05 + Level Bonus
+            //    Thêm defense và hp vào để cân bằng với Boss Power (vốn đã bao gồm baseDefense)
             var equippedItems = await _inventoryRepository.GetEquippedItemsAsync(character.characterId);
+            if ((equippedItems == null || equippedItems.Count == 0) && request.equippedItemIds != null && request.equippedItemIds.Count > 0)
+            {
+                equippedItems = request.equippedItemIds.Select(id => new Inventory
+                {
+                    inventoryId = Guid.NewGuid().ToString("N"),
+                    characterId = character.characterId,
+                    itemId = id,
+                    equipped = true
+                }).ToList();
+            }
             var itemLookup = BuildItemLookup(equippedItems);
             var effectiveStats = _characterService.CalculateEffectiveStats(character, equippedItems, itemLookup);
 
-            double playerPower = effectiveStats.attack + character.level * 2;
+            double playerPower = effectiveStats.attack
+                               + effectiveStats.defense * 0.5
+                               + effectiveStats.maxHp   * 0.05
+                               + character.level * 2;
 
             // 3. Tính Boss Power (Mục 4)
             //    Boss Power = Base Attack × (1 + Level × 0.1) + Base Defense + Level Modifier
@@ -166,7 +214,7 @@ namespace GameBackend.Core.Services
                 playerPower, bossPower, randomFactor, luckyFactor, battleScore, isVictory ? "Victory" : "Defeat");
 
             // 5. Cập nhật encounter
-            encounter.playerHpAfter = isVictory ? character.hp : 0;
+            encounter.playerHpAfter = isVictory ? effectiveStats.maxHp : 0;
             encounter.bossHpAfter = isVictory ? 0 : encounter.bossHpBefore;
             encounter.status = isVictory ? "Victory" : "Defeat";
             await _battleRepository.SaveEncounterAsync(encounter);
@@ -191,9 +239,22 @@ namespace GameBackend.Core.Services
             };
             await _battleRepository.SaveBattleAsync(battleRecord);
 
-            // 7. Xử lý phần thưởng (Victory) hoặc Death (Defeat)
+            // 7. Sinh chuỗi lượt đánh chi tiết (Multi-turn Battle Simulation) cho UI Playback
+            int playerMaxHp = effectiveStats.maxHp > 0 ? effectiveStats.maxHp : 100;
+            int bossMaxHp = encounter.bossHpBefore > 0 ? encounter.bossHpBefore : 100;
+
+            var turns = GenerateBattleTurns(
+                character.name,
+                bossTemplate.name,
+                playerMaxHp,
+                bossMaxHp,
+                playerPower,
+                bossPower,
+                isVictory,
+                luckyEffects);
+
+            // 8. Xử lý phần thưởng (Victory) hoặc Death (Defeat)
             BattleRewardData? rewards = null;
-            var turns = new List<BattleTurnData>();
 
             if (isVictory)
             {
@@ -218,18 +279,6 @@ namespace GameBackend.Core.Services
                     }).ToList()
                 };
 
-                turns.Add(new BattleTurnData
-                {
-                    attackerName = character.name,
-                    logMessage = luckyEffects.Count > 0
-                        ? $"{character.name} chiến thắng với {string.Join(", ", luckyEffects)}! (Score: {battleScore:F1})"
-                        : $"{character.name} chiến thắng! (Score: {battleScore:F1})",
-                    damage = (int)Math.Round(playerPower),
-                    playerHpRemaining = character.hp,
-                    bossHpRemaining = 0,
-                    isCritical = luckyEffects.Contains("Critical Hit")
-                });
-
                 // Lưu character (gold đã cộng, XP đã xử lý trong ApplyExperienceAndLevelUp)
                 await _characterRepository.SaveAsync(character);
             }
@@ -240,16 +289,6 @@ namespace GameBackend.Core.Services
                 character.status = "Dead";
                 character.reviveTime = DateTime.UtcNow.AddMinutes(GameConstants.ReviveWaitMinutes);
                 await _characterRepository.SaveAsync(character);
-
-                turns.Add(new BattleTurnData
-                {
-                    attackerName = "Boss",
-                    logMessage = $"{character.name} đã bị đánh bại. Hồi sinh sau {GameConstants.ReviveWaitMinutes} phút. (Score: {battleScore:F1})",
-                    damage = (int)Math.Round(bossPower),
-                    playerHpRemaining = 0,
-                    bossHpRemaining = encounter.bossHpBefore,
-                    isCritical = false
-                });
 
                 _logger.LogInformation("Character {CharacterId} died. Revive at {ReviveTime}",
                     character.characterId, character.reviveTime);
@@ -272,12 +311,12 @@ namespace GameBackend.Core.Services
                     name = character.name,
                     level = character.level,
                     experience = character.experience,
-                    hp = character.hp,
-                    maxHp = character.maxHp,
-                    attack = character.attack,
-                    defense = character.defense,
-                    criticalRate = character.criticalRate,
-                    luckyRate = character.luckyRate,
+                    hp = isVictory ? effectiveStats.maxHp : 0,
+                    maxHp = effectiveStats.maxHp,
+                    attack = effectiveStats.attack,
+                    defense = effectiveStats.defense,
+                    criticalRate = effectiveStats.criticalRate,
+                    luckyRate = effectiveStats.luckyRate,
                     gold = character.gold,
                     status = character.status
                 }
@@ -308,5 +347,134 @@ namespace GameBackend.Core.Services
             }
             return lookup;
         }
+
+        /// <summary>
+        /// Sinh danh sách lượt đánh chi tiết (Multi-turn battle simulation) cho UI Unity Playback.
+        /// </summary>
+        private List<BattleTurnData> GenerateBattleTurns(
+            string playerName,
+            string bossName,
+            int playerMaxHp,
+            int bossMaxHp,
+            double playerPower,
+            double bossPower,
+            bool isVictory,
+            List<string> luckyEffects)
+        {
+            var turns = new List<BattleTurnData>();
+            int currentPlayerHp = playerMaxHp;
+            int currentBossHp = bossMaxHp;
+
+            int targetTurns = _random.Next(4, 7);
+
+            if (isVictory)
+            {
+                // Người chơi CHIẾN THẮNG: Boss bị hạ gục về 0 HP ở lượt cuối
+                int pDmgPerTurn = Math.Max(5, bossMaxHp / targetTurns);
+                int bDmgPerTurn = Math.Max(1, (int)((playerMaxHp * 0.7) / targetTurns));
+
+                for (int t = 1; t <= targetTurns; t++)
+                {
+                    bool isLastTurn = (t == targetTurns);
+                    bool isCritThisTurn = luckyEffects.Contains("Critical Hit") && (isLastTurn || _random.NextDouble() < 0.3);
+
+                    int pDmg = isLastTurn ? currentBossHp : Math.Min(currentBossHp - 1, isCritThisTurn ? (int)(pDmgPerTurn * 1.5) : pDmgPerTurn);
+                    pDmg = Math.Max(1, pDmg);
+                    currentBossHp = Math.Max(0, currentBossHp - pDmg);
+
+                    string pLog = (currentBossHp <= 0)
+                        ? (luckyEffects.Count > 0
+                            ? $"🎉 {playerName} tung đòn dứt điểm hạ gục {bossName} ({string.Join(", ", luckyEffects)})!"
+                            : $"🎉 {playerName} tung đòn dứt điểm hạ gục {bossName} CHIẾN THẮNG!")
+                        : (isCritThisTurn
+                            ? $"⚔️ {playerName} bộc phát đòn Chí Mạng vào {bossName} gây {pDmg} sát thương!"
+                            : $"⚔️ {playerName} tấn công {bossName} gây {pDmg} sát thương!");
+
+                    turns.Add(new BattleTurnData
+                    {
+                        attackerName = playerName,
+                        logMessage = pLog,
+                        damage = pDmg,
+                        playerHpRemaining = currentPlayerHp,
+                        bossHpRemaining = currentBossHp,
+                        isCritical = isCritThisTurn
+                    });
+
+                    if (currentBossHp <= 0) break;
+
+                    // Boss đánh trả
+                    bool isDodge = luckyEffects.Contains("Dodge") && _random.NextDouble() < 0.5;
+                    int bDmg = isDodge ? 0 : Math.Min(currentPlayerHp - 10, bDmgPerTurn);
+                    bDmg = Math.Max(0, bDmg);
+                    currentPlayerHp = Math.Max(1, currentPlayerHp - bDmg);
+
+                    string bLog = isDodge
+                        ? $"🛡️ {playerName} nhanh nhạy né tránh hoàn toàn đòn đánh của {bossName}!"
+                        : $"👹 {bossName} phản công {playerName} gây {bDmg} sát thương!";
+
+                    turns.Add(new BattleTurnData
+                    {
+                        attackerName = bossName,
+                        logMessage = bLog,
+                        damage = bDmg,
+                        playerHpRemaining = currentPlayerHp,
+                        bossHpRemaining = currentBossHp,
+                        isCritical = false
+                    });
+                }
+            }
+            else
+            {
+                // Người chơi THẤT BẠI: Player bị đánh gục về 0 HP ở lượt cuối
+                int pDmgPerTurn = Math.Max(1, (int)((bossMaxHp * 0.7) / targetTurns));
+                int bDmgPerTurn = Math.Max(5, playerMaxHp / targetTurns);
+
+                for (int t = 1; t <= targetTurns; t++)
+                {
+                    bool isLastTurn = (t == targetTurns);
+
+                    // Player đánh trước
+                    int pDmg = Math.Min(currentBossHp - 10, pDmgPerTurn);
+                    pDmg = Math.Max(1, pDmg);
+                    currentBossHp = Math.Max(1, currentBossHp - pDmg);
+
+                    string pLog = $"⚔️ {playerName} tấn công {bossName} gây {pDmg} sát thương!";
+
+                    turns.Add(new BattleTurnData
+                    {
+                        attackerName = playerName,
+                        logMessage = pLog,
+                        damage = pDmg,
+                        playerHpRemaining = currentPlayerHp,
+                        bossHpRemaining = currentBossHp,
+                        isCritical = false
+                    });
+
+                    // Boss đánh trả
+                    int bDmg = isLastTurn ? currentPlayerHp : Math.Min(currentPlayerHp - 1, bDmgPerTurn);
+                    bDmg = Math.Max(1, bDmg);
+                    currentPlayerHp = Math.Max(0, currentPlayerHp - bDmg);
+
+                    string bLog = (currentPlayerHp <= 0)
+                        ? $"💀 {bossName} tung đòn sấm sét đánh gục {playerName}! THẤT BẠI!"
+                        : $"👹 {bossName} phản công {playerName} gây {bDmg} sát thương!";
+
+                    turns.Add(new BattleTurnData
+                    {
+                        attackerName = bossName,
+                        logMessage = bLog,
+                        damage = bDmg,
+                        playerHpRemaining = currentPlayerHp,
+                        bossHpRemaining = currentBossHp,
+                        isCritical = false
+                    });
+
+                    if (currentPlayerHp <= 0) break;
+                }
+            }
+
+            return turns;
+        }
     }
 }
+

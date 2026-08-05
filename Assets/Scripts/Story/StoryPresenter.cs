@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class StoryPresenter : MonoBehaviour
 {
@@ -14,12 +15,21 @@ public class StoryPresenter : MonoBehaviour
     [SerializeField] private string richTextOpeningTag = string.Empty;
     [SerializeField] private string richTextClosingTag = string.Empty;
 
+    [Header("Navigation")]
+    [SerializeField] private string menuScene = "Menu";
+    [SerializeField] private string battleScene = "BattleScene";
+
+    [Header("Boss Encounter")]
+    [Tooltip("Xác suất gặp boss sau mỗi hành động người chơi (0.0 - 1.0)")]
+    [SerializeField] private float bossEncounterChance = 0.35f;
+
     private StoryData currentData;
     private Coroutine playbackCoroutine;
     private bool isTyping;
     private bool skipTyping;
     private bool waitingForAdvance;
     private bool awaitingChoice;
+    private bool isBossPopupShowing;  // chặn advance khi popup boss đang hiện
 
     private readonly Queue<StoryLineData> pendingLines = new Queue<StoryLineData>();
 
@@ -33,6 +43,8 @@ public class StoryPresenter : MonoBehaviour
         if (view != null)
         {
             view.BindAdvance(HandleAdvancePressed);
+            view.BindSubmitAction(HandleUserActionSubmitted);
+            view.BindBack(OnBackClicked);
         }
 
         GameProgressService.EnsureInstance();
@@ -82,6 +94,8 @@ public class StoryPresenter : MonoBehaviour
         view.SetNextIndicatorVisible(false);
         view.SetChoiceButtonsVisible(false);
         view.SetChoiceInteractable(false);
+        view.SetInputPanelVisible(false);
+        view.ClearInputField();
         view.SetAdvanceInteractable(true);
         view.SetCharacterState(currentData.node.character);
         pendingLines.Clear();
@@ -122,9 +136,8 @@ public class StoryPresenter : MonoBehaviour
         }
 
         view.SetNextIndicatorVisible(false);
-        view.SetChoiceButtonsVisible(true);
-        view.SetChoiceInteractable(true);
-        view.SetChoices(currentData.node.choices != null ? currentData.node.choices.ToArray() : null, OnChoiceSelected);
+        view.SetInputPanelVisible(true);
+        view.SetInputInteractable(true);
         awaitingChoice = true;
     }
 
@@ -187,6 +200,9 @@ public class StoryPresenter : MonoBehaviour
 
     private void HandleAdvancePressed()
     {
+        // Không xử lý advance khi popup boss đang hiện
+        if (isBossPopupShowing) return;
+
         if (awaitingChoice)
         {
             return;
@@ -224,6 +240,144 @@ public class StoryPresenter : MonoBehaviour
         }
 
         Debug.Log("Story choice selected: " + choice.label + " -> " + choice.nextNodeId);
+    }
+
+    private void HandleUserActionSubmitted(string userText)
+    {
+        if (string.IsNullOrWhiteSpace(userText) || !awaitingChoice)
+        {
+            return;
+        }
+
+        awaitingChoice = false;
+        view.SetInputInteractable(false);
+        view.SetInputPanelVisible(false);
+        view.ClearInputField();
+
+        // Ghi nhận hành động vừa gõ của người chơi vào ô log hội thoại
+        view.AppendStoryText($"\n\n<b>> Bạn:</b> \"{userText}\"\n\n");
+
+        // Sinh dữ liệu cốt truyện tiếp theo từ văn bản gõ
+        StoryData nextStoryData = GameProgressService.Instance != null
+            ? GameProgressService.Instance.ExecuteCustomStoryAction(userText)
+            : CreateMockCustomResponse(userText);
+
+        if (nextStoryData != null && nextStoryData.node != null && nextStoryData.node.lines != null)
+        {
+            currentData = nextStoryData;
+            pendingLines.Clear();
+            for (int index = 0; index < currentData.node.lines.Count; index++)
+            {
+                pendingLines.Enqueue(currentData.node.lines[index]);
+            }
+
+            if (playbackCoroutine != null)
+            {
+                StopCoroutine(playbackCoroutine);
+            }
+            playbackCoroutine = StartCoroutine(PlayStoryRoutine());
+        }
+
+        // ── Random Boss Encounter ─────────────────────────────────
+        // Roll xác suất sau khi đã hiển thị response cốt truyện
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(TryTriggerBossEncounterDelayed());
+        }
+    }
+
+    /// <summary>
+    /// Đợi story response hiển thị xong rồi mới roll boss encounter.
+    /// Delay đủ để người chơi đọc được phản hồi cốt truyện trước.
+    /// </summary>
+    private IEnumerator TryTriggerBossEncounterDelayed()
+    {
+        // Đợi người chơi đọc story response
+        yield return new WaitForSeconds(2.5f);
+
+        float roll = UnityEngine.Random.value;
+        if (roll > bossEncounterChance) yield break;
+
+        // Spawn boss ngẫu nhiên
+        if (GameProgressService.Instance == null) yield break;
+
+        GameProgressService.Instance.SpawnRandomBoss();
+        var boss = GameProgressService.Instance.CurrentBoss;
+        if (boss == null) yield break;
+
+        // ── Bước 1: Cảnh báo nhỏ trong story log ─────────────────────
+        view.AppendStoryText(
+            $"\n\n<i><color=#FFAA00>Bạn cảm nhận một luồng khí lạnh... Có gì đó đang tiến đến!</color></i>\n"
+        );
+
+        yield return new WaitForSeconds(1.0f);
+
+        // ── Bước 2: Overlay con mắt xuất hiện TRƯỚC (full opacity) ───
+        isBossPopupShowing = true;
+        view.ShowBossOverlay();
+
+        // Đợi người chơi "thấm" hình overlay
+        yield return new WaitForSeconds(1.5f);
+
+        // ── Bước 3: Sau đó mới hiện panel thông tin boss ─────────────
+        view.ShowBossPanel(
+            bossName:   boss.name,
+            bossRarity: boss.rarity,
+            bossLevel:  boss.level,
+            onFight:    OnBossPopupFight,
+            onFlee:     OnBossPopupFlee
+        );
+    }
+
+    private void OnBossPopupFight()
+    {
+        isBossPopupShowing = false;
+        view.HideBossEncounterPopup();
+        Debug.Log($"[StoryPresenter] Người chơi chọn Chiến đấu! Boss: {GameProgressService.Instance?.CurrentBoss?.name}");
+        SceneManager.LoadScene(battleScene);
+    }
+
+    private void OnBossPopupFlee()
+    {
+        isBossPopupShowing = false;
+        view.HideBossEncounterPopup();
+        Debug.Log("[StoryPresenter] Người chơi bỏ chạy! Tiếp tục story...");
+
+        // Thông báo nhỏ trong story log
+        view.AppendStoryText(
+            "\n<i><color=#AAAAAA>Bạn đã bỏ chạy thành công... Nhưng boss vẫn đang rình rập đâu đó.</color></i>\n"
+        );
+
+        // Mở lại ô nhập hành động
+        awaitingChoice = true;
+        view.SetInputPanelVisible(true);
+        view.SetInputInteractable(true);
+    }
+
+    private void OnBackClicked()
+    {
+        Debug.Log("[StoryPresenter] Quay về Menu.");
+        SceneManager.LoadScene(menuScene);
+    }
+
+    private StoryData CreateMockCustomResponse(string userText)
+    {
+        return new StoryData
+        {
+            title = "Continuation",
+            node = new StoryNodeData
+            {
+                nodeId = "custom_mock",
+                lines = new List<StoryLineData>
+                {
+                    new StoryLineData
+                    {
+                        text = $"Hành động của bạn ('{userText}') đã tạo nên bước ngoặt mới trong hầm ngục...",
+                        pauseAfter = 0.2f
+                    }
+                }
+            }
+        };
     }
 
     private void StopCurrentPlayback()

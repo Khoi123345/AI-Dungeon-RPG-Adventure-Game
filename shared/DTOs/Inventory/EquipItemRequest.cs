@@ -8,6 +8,8 @@ namespace GameShared.DTOs.Inventory
     {
         /// <summary>inventoryId của bản ghi trong kho đồ cần trang bị.</summary>
         public string inventoryId;
+        /// <summary>itemId mẫu của trang bị (dùng fallback khi tạo mới).</summary>
+        public string itemId;
     }
 
     /// <summary>Request body cho POST /inventory/{characterId}/unequip</summary>
@@ -16,6 +18,8 @@ namespace GameShared.DTOs.Inventory
     {
         /// <summary>inventoryId của bản ghi trong kho đồ cần gỡ trang bị.</summary>
         public string inventoryId;
+        /// <summary>itemId mẫu của trang bị (dùng fallback khi tạo mới).</summary>
+        public string itemId;
     }
 
     /// <summary>Request body cho POST /inventory/{characterId}/use</summary>

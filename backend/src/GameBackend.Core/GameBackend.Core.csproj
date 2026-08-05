@@ -28,4 +28,11 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <None Update="AIStory\Content\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

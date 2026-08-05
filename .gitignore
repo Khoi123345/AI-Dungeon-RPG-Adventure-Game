@@ -13,8 +13,8 @@
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
-[Oo]bj/
-[Bb]in/
+**/[Oo]bj/
+**/[Bb]in/
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
@@ -127,4 +127,11 @@ shared/**/obj/
 # ════════════════════════════════════════════════════════════
 infrastructure/cdk.out/
 infrastructure/node_modules/
+
+# ════════════════════════════════════════════════════════════
+# Temporary files & exports
+# ════════════════════════════════════════════════════════════
+Assets/_Recovery/
+export.json
+
 

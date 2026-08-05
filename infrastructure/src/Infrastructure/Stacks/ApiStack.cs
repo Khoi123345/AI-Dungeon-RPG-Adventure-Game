@@ -33,6 +33,8 @@ namespace Infrastructure.Stacks
             var spawnBossIntegration = new LambdaIntegration(lambdaStack.SpawnBossFunction);
             var resolveBattleIntegration = new LambdaIntegration(lambdaStack.ResolveBattleFunction);
             var getInventoryIntegration = new LambdaIntegration(lambdaStack.GetInventoryFunction);
+            var equipItemIntegration = new LambdaIntegration(lambdaStack.EquipItemFunction);
+            var unequipItemIntegration = new LambdaIntegration(lambdaStack.UnequipItemFunction);
 
             // 2. Cognito Authorizer
             var authorizer = new CognitoUserPoolsAuthorizer(this, "GameCognitoAuthorizer", new CognitoUserPoolsAuthorizerProps
@@ -86,6 +88,12 @@ namespace Infrastructure.Stacks
             var inventoryResource = api.Root.AddResource("inventory");
             var inventoryCharacterIdResource = inventoryResource.AddResource("{characterId}");
             inventoryCharacterIdResource.AddMethod("GET", getInventoryIntegration, authOptionsWithAuthorizer);
+
+            var equipResource = inventoryCharacterIdResource.AddResource("equip");
+            equipResource.AddMethod("POST", equipItemIntegration, authOptionsWithAuthorizer);
+
+            var unequipResource = inventoryCharacterIdResource.AddResource("unequip");
+            unequipResource.AddMethod("POST", unequipItemIntegration, authOptionsWithAuthorizer);
 
             // Output API endpoint URL
             _ = new CfnOutput(this, "ApiUrl", new CfnOutputProps

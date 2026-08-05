@@ -240,9 +240,15 @@ MonoBehaviour:
   txtPlayerName: {fileID: 1962201610}
   txtPlayerHP: {fileID: 775620968}
   imgPlayerHPFill: {fileID: 910293980}
+  txtPlayerAttack: {fileID: 873632008}
+  txtPlayerDefense: {fileID: 958056397}
+  txtPlayerLucky: {fileID: 1912078564}
   txtBossName: {fileID: 871319858}
   txtBossHP: {fileID: 938789845}
   imgBossHPFill: {fileID: 1251885700}
+  txtBossAttack: {fileID: 817360932}
+  txtBossDefense: {fileID: 134560244}
+  txtBossLucky: {fileID: 824412969}
   txtBattleLog: {fileID: 1760081762}
 --- !u!1 &134560242
 GameObject:
@@ -278,7 +284,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.5700684, y: -34.430084}
+  m_AnchoredPosition: {x: 3.5700684, y: -60.630005}
   m_SizeDelta: {x: 218.86, y: 51.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &134560244
@@ -622,8 +628,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -716, y: 98}
-  m_SizeDelta: {x: -1544.92, y: -294.39}
+  m_AnchoredPosition: {x: -670.30005, y: 86.600006}
+  m_SizeDelta: {x: -1453.53, y: -223.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &209292289
 MonoBehaviour:
@@ -681,7 +687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &351168100
 RectTransform:
   m_ObjectHideFlags: 0
@@ -700,8 +706,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 631.6998, y: -89.57994}
-  m_SizeDelta: {x: 220.67995, y: 179.15988}
+  m_AnchoredPosition: {x: 678.86676, y: -89.58}
+  m_SizeDelta: {x: 126.3467, y: 179.16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &351168101
 MonoBehaviour:
@@ -755,7 +761,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
   itemQuantity: 0
-  itemData: {fileID: 0}
+  itemData:
+    itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
   itemTypeTest: 0
   itemIconImage: {fileID: 1208414645}
   backgroundImage: {fileID: 351168101}
@@ -764,6 +779,8 @@ MonoBehaviour:
   colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
   colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
   colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
+  selectionHighlightImage: {fileID: 0}
+  colorSelected: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &515413721
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,8 +820,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 667, y: 90.42}
-  m_SizeDelta: {x: -1544.92, y: -294.39}
+  m_AnchoredPosition: {x: 666, y: 86.60501}
+  m_SizeDelta: {x: -1453.5, y: -223.71}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &515413723
 MonoBehaviour:
@@ -1634,7 +1651,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
   m_sharedMaterial: {fileID: 1260715531048141648, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
@@ -1766,7 +1783,7 @@ MonoBehaviour:
   m_text: Confirm
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 0}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2029,7 +2046,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.5700684, y: 16.939941}
+  m_AnchoredPosition: {x: 3.5700684, y: -9.260002}
   m_SizeDelta: {x: 218.86, y: 51.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &817360932
@@ -2166,7 +2183,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.5700684, y: -85.80005}
+  m_AnchoredPosition: {x: 3.5700684, y: -112}
   m_SizeDelta: {x: 218.86, y: 51.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &824412969
@@ -2306,8 +2323,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 110.339966, y: -89.57994}
-  m_SizeDelta: {x: 220.67995, y: 179.15988}
+  m_AnchoredPosition: {x: 204.67336, y: -89.58}
+  m_SizeDelta: {x: 409.3467, y: 179.16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &859751586
 MonoBehaviour:
@@ -2361,7 +2378,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
   itemQuantity: 2
-  itemData: {fileID: 0}
+  itemData:
+    itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
   itemTypeTest: 1
   itemIconImage: {fileID: 960906930}
   backgroundImage: {fileID: 859751586}
@@ -2370,6 +2396,8 @@ MonoBehaviour:
   colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
   colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
   colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
+  selectionHighlightImage: {fileID: 0}
+  colorSelected: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &871319856
 GameObject:
   m_ObjectHideFlags: 0
@@ -2404,8 +2432,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.5700684, y: 68.309906}
-  m_SizeDelta: {x: 218.86, y: 51.37}
+  m_AnchoredPosition: {x: 3.5700684, y: 85.19}
+  m_SizeDelta: {x: 218.86, y: 95.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &871319858
 MonoBehaviour:
@@ -2541,7 +2569,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.5700684, y: 16.939941}
+  m_AnchoredPosition: {x: 3.5700684, y: -15.260006}
   m_SizeDelta: {x: 218.86, y: 51.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &873632008
@@ -2679,8 +2707,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 21.434998, y: -165.19998}
-  m_SizeDelta: {x: 42.869995, y: -225.83997}
+  m_AnchoredPosition: {x: 25.789978, y: -224.62}
+  m_SizeDelta: {x: 51.58, y: -284.59}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &910293980
 MonoBehaviour:
@@ -2785,7 +2813,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
   m_sharedMaterial: {fileID: 1260715531048141648, guid: 9a14a8a1184c5f14fbce3338ea4d7a35, type: 2}
@@ -2999,7 +3027,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.5700684, y: -34.430084}
+  m_AnchoredPosition: {x: 3.5700684, y: -66.630005}
   m_SizeDelta: {x: 218.86, y: 51.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &958056397
@@ -3731,14 +3759,39 @@ MonoBehaviour:
   overlay: {fileID: 798538373}
   victoryPanel: {fileID: 961664665}
   defeatPanel: {fileID: 705113243}
+  confirmButton: {fileID: 1868659005}
   itemSlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 859751588}
+  - {fileID: 1325073560}
+  - {fileID: 351168103}
   itemDatabase:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
+  - itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
+  - itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
 --- !u!1 &1251885698
 GameObject:
   m_ObjectHideFlags: 0
@@ -3774,8 +3827,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -21.000122, y: -153.42001}
-  m_SizeDelta: {x: 42.869995, y: -225.83997}
+  m_AnchoredPosition: {x: -24.684998, y: -224}
+  m_SizeDelta: {x: 49.37, y: -287.56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1251885700
 MonoBehaviour:
@@ -3833,7 +3886,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1325073557
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3852,8 +3905,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 371.0199, y: -89.57994}
-  m_SizeDelta: {x: 220.67995, y: 179.15988}
+  m_AnchoredPosition: {x: 512.5201, y: -89.58}
+  m_SizeDelta: {x: 126.3467, y: 179.16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1325073558
 MonoBehaviour:
@@ -3907,7 +3960,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventorySlotUI
   hasItem: 0
   itemQuantity: 0
-  itemData: {fileID: 0}
+  itemData:
+    itemName: 
+    itemIcon: {fileID: 0}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 1
+    inventoryId: 
+    isEquipped: 0
   itemTypeTest: 0
   itemIconImage: {fileID: 1177730229}
   backgroundImage: {fileID: 1325073558}
@@ -3916,6 +3978,8 @@ MonoBehaviour:
   colorRare: {r: 0.2, g: 0.5, b: 0.9, a: 1}
   colorEpic: {r: 0.6, g: 0.2, b: 0.8, a: 1}
   colorDefault: {r: 0.2, g: 0.2, b: 0.2, a: 0.4}
+  selectionHighlightImage: {fileID: 0}
+  colorSelected: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &1366553057
 GameObject:
   m_ObjectHideFlags: 0
@@ -4226,8 +4290,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -482, y: 83}
-  m_SizeDelta: {x: -1684, y: -486}
+  m_AnchoredPosition: {x: -421.40002, y: 57.22}
+  m_SizeDelta: {x: -1616.55, y: -427.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1627157746
 MonoBehaviour:
@@ -4698,8 +4762,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 450, y: 113}
-  m_SizeDelta: {x: -1684, y: -486}
+  m_AnchoredPosition: {x: 451, y: 57.22}
+  m_SizeDelta: {x: -1616.5, y: -427.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1864877351
 MonoBehaviour:
@@ -4821,7 +4885,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1868659006}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1247425268}
+        m_TargetAssemblyTypeName: BattleEndUIController, Assembly-CSharp
+        m_MethodName: OnConfirmVictory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1868659006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4894,7 +4970,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.5700684, y: -85.80005}
+  m_AnchoredPosition: {x: 3.5700684, y: -118}
   m_SizeDelta: {x: 218.86, y: 51.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1912078564
@@ -5031,8 +5107,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.5700684, y: 68.309906}
-  m_SizeDelta: {x: 218.86, y: 51.37}
+  m_AnchoredPosition: {x: 3.5700684, y: 91.64}
+  m_SizeDelta: {x: 218.86, y: 100.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1962201610
 MonoBehaviour:

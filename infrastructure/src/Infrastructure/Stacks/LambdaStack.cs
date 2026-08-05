@@ -17,6 +17,8 @@ namespace Infrastructure.Stacks
         public Function SpawnBossFunction { get; }
         public Function ResolveBattleFunction { get; }
         public Function GetInventoryFunction { get; }
+        public Function EquipItemFunction { get; }
+        public Function UnequipItemFunction { get; }
 
         public LambdaStack(Construct scope, string id, DatabaseStack dbStack, CognitoStack cognitoStack, IStackProps? props = null) : base(scope, id, props)
         {
@@ -35,8 +37,8 @@ namespace Infrastructure.Stacks
                     { "STORY_SESSIONS_TABLE", dbStack.StorySessionsTable.TableName },
                     { "STORY_ACTIONS_TABLE", dbStack.StoryActionsTable.TableName },
                     { "INVENTORY_TABLE", dbStack.InventoryTable.TableName },
-                    { "LOOT_DROPS_TABLE", dbStack.LootDropsTable.TableName },
-                    { "BOSSES_TABLE", dbStack.BossesTable.TableName },
+                    { "BOSSES_TABLE", dbStack.BossesTable.TableName },       // Bắt buộc: BossRepository.Table.LoadTable()
+                    { "LOOT_DROPS_TABLE", dbStack.LootDropsTable.TableName }, // Bắt buộc: BattleRepository.Table.LoadTable()
                     { "COGNITO_USER_POOL_ID", cognitoStack.UserPool.UserPoolId },
                     { "COGNITO_CLIENT_ID", cognitoStack.UserPoolClient.UserPoolClientId }
                 }
@@ -100,44 +102,66 @@ namespace Infrastructure.Stacks
                 "GameBackend.Handlers::GameBackend.Handlers.Inventory.GetInventoryHandler::Handler",
                 commonProps);
 
+            EquipItemFunction = CreateFunction("EquipItemFunction",
+                "GameBackend.Handlers::GameBackend.Handlers.Inventory.EquipItemHandler::Handler",
+                commonProps);
+
+            UnequipItemFunction = CreateFunction("UnequipItemFunction",
+                "GameBackend.Handlers::GameBackend.Handlers.Inventory.UnequipItemHandler::Handler",
+                commonProps);
+
             // Grant DynamoDB Permissions
+            // Auth
             dbStack.UsersTable.GrantReadWriteData(LoginFunction);
             dbStack.UsersTable.GrantReadWriteData(RegisterFunction);
             dbStack.UsersTable.GrantReadWriteData(ConfirmSignUpFunction);
             dbStack.UsersTable.GrantReadWriteData(RefreshTokenFunction);
 
-            // Grant DynamoDB Permissions to all Game Play Lambdas
-            var gameTables = new[]
-            {
-                dbStack.UsersTable,
-                dbStack.CharactersTable,
-                dbStack.BossesTable,
-                dbStack.BossEncountersTable,
-                dbStack.BattlesTable,
-                dbStack.StorySessionsTable,
-                dbStack.StoryActionsTable,
-                dbStack.InventoryTable,
-                dbStack.LootDropsTable
-            };
+            // Character
+            dbStack.CharactersTable.GrantReadData(GetCharacterFunction);
+            dbStack.UsersTable.GrantReadData(GetCharacterFunction);
+            dbStack.InventoryTable.GrantReadData(GetCharacterFunction);
 
-            var gameFunctions = new[]
-            {
-                GetCharacterFunction,
-                CreateCharacterFunction,
-                StartStoryFunction,
-                StoryActionFunction,
-                SpawnBossFunction,
-                ResolveBattleFunction,
-                GetInventoryFunction
-            };
+            dbStack.CharactersTable.GrantReadWriteData(CreateCharacterFunction);
+            dbStack.UsersTable.GrantReadWriteData(CreateCharacterFunction);
+            dbStack.InventoryTable.GrantReadWriteData(CreateCharacterFunction);
 
-            foreach (var table in gameTables)
-            {
-                foreach (var function in gameFunctions)
-                {
-                    table.GrantReadWriteData(function);
-                }
-            }
+            // Story
+            dbStack.StorySessionsTable.GrantReadWriteData(StartStoryFunction);
+            dbStack.CharactersTable.GrantReadData(StartStoryFunction);
+            dbStack.InventoryTable.GrantReadData(StartStoryFunction);
+            dbStack.BossesTable.GrantReadData(StartStoryFunction);
+
+            dbStack.StorySessionsTable.GrantReadWriteData(StoryActionFunction);
+            dbStack.StoryActionsTable.GrantReadWriteData(StoryActionFunction);
+            dbStack.CharactersTable.GrantReadWriteData(StoryActionFunction);
+            dbStack.InventoryTable.GrantReadWriteData(StoryActionFunction);
+            dbStack.BossesTable.GrantReadData(StoryActionFunction);
+
+            // Battle
+            dbStack.BossEncountersTable.GrantReadWriteData(SpawnBossFunction);
+            dbStack.CharactersTable.GrantReadData(SpawnBossFunction);
+            dbStack.BossesTable.GrantReadData(SpawnBossFunction);
+            dbStack.BattlesTable.GrantReadData(SpawnBossFunction);
+            dbStack.LootDropsTable.GrantReadData(SpawnBossFunction);
+            dbStack.InventoryTable.GrantReadData(SpawnBossFunction);
+
+            dbStack.BossEncountersTable.GrantReadWriteData(ResolveBattleFunction);
+            dbStack.BattlesTable.GrantReadWriteData(ResolveBattleFunction);
+            dbStack.CharactersTable.GrantReadWriteData(ResolveBattleFunction);
+            dbStack.InventoryTable.GrantReadWriteData(ResolveBattleFunction);
+            dbStack.LootDropsTable.GrantReadWriteData(ResolveBattleFunction);
+            dbStack.BossesTable.GrantReadData(ResolveBattleFunction);
+
+            // Inventory
+            dbStack.InventoryTable.GrantReadData(GetInventoryFunction);
+            dbStack.CharactersTable.GrantReadData(GetInventoryFunction);
+
+            dbStack.InventoryTable.GrantReadWriteData(EquipItemFunction);
+            dbStack.CharactersTable.GrantReadWriteData(EquipItemFunction);
+
+            dbStack.InventoryTable.GrantReadWriteData(UnequipItemFunction);
+            dbStack.CharactersTable.GrantReadWriteData(UnequipItemFunction);
 
             // Grant Cognito Permissions
             cognitoStack.UserPool.Grant(LoginFunction, "cognito-idp:InitiateAuth");

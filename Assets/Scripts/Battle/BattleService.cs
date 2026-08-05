@@ -32,10 +32,34 @@ public class BattlePresenter : MonoBehaviour
         }
         else
         {
+            // Đảm bảo ApiClient có token trước khi gọi bất kỳ API nào.
+            // Kiểm tra ApiClient.IsAuthenticated thay vì AuthManager.IsLoggedIn
+            // vì AuthManager có thể bị race condition khi Start() chạy song song.
+            ApiClient.EnsureInstance();
+            if (!ApiClient.Instance.IsAuthenticated)
+            {
+                Debug.Log("[BattleService] ApiClient chưa có token, đang khôi phục từ PlayerPrefs...");
+                bool restored = await new RealAuthService().TryRestoreSessionAsync();
+                if (!restored)
+                {
+                    Debug.LogWarning("[BattleService] Không khôi phục được session. Chuyển về Mock Mode.");
+                    StartPlayback(GameProgressService.Instance != null
+                        ? GameProgressService.Instance.CreateBattleDemoData()
+                        : CreateMockData());
+                    return;
+                }
+                Debug.Log("[BattleService] Token đã được nạp vào ApiClient thành công.");
+            }
+            else
+            {
+                Debug.Log("[BattleService] ApiClient đã có token hợp lệ.");
+            }
+
             Debug.Log("[BattleService] Đang gọi API lấy dữ liệu Battle...");
             await LoadRealBattleDataAsync();
         }
     }
+
 
     private async System.Threading.Tasks.Task LoadRealBattleDataAsync()
     {
@@ -50,17 +74,60 @@ public class BattlePresenter : MonoBehaviour
             }
         }
 
-        var spawnReq = new GameShared.DTOs.Battle.BossSpawnRequest { characterId = charId, sessionId = sessionId };
+        // Nếu charId chưa là ID thật trên DynamoDB, tự động tạo nhân vật mặc định trên AWS
+        if ((charId == "mock-id" || string.IsNullOrEmpty(charId)) && GameConfigSO.Instance != null && !GameConfigSO.Instance.useMockMode)
+        {
+            try
+            {
+                var charApi = new CharacterApiService();
+                string userId = GameProgressService.Instance?.CurrentUser?.userId ?? "default_user";
+                string displayName = GameProgressService.Instance?.CurrentUser?.displayName ?? "Default Hero";
+                string charJson = await charApi.CreateCharacterAsync(userId, displayName, "Adventurer");
+                if (!string.IsNullOrEmpty(charJson))
+                {
+                    var container = JsonUtility.FromJson<BattleResponseContainer<GameShared.DTOs.Character.CharacterResponse>>(charJson);
+                    if (container != null && container.success && container.data != null && !string.IsNullOrEmpty(container.data.characterId))
+                    {
+                        var model = MapResponseToModel(container.data);
+                        charId = model.characterId;
+                        GameProgressService.Instance?.SetCurrentCharacter(model);
+                        Debug.Log($"[BattleService] Tự động tạo nhân vật mặc định trên AWS DynamoDB thành công: {model.name} (id={charId})");
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[BattleService] Không thể tạo tự động nhân vật mặc định trên AWS: {ex.Message}");
+            }
+        }
+
+        var currentBoss = GameProgressService.Instance?.CurrentBoss;
+        var spawnReq = new GameShared.DTOs.Battle.BossSpawnRequest
+        {
+            characterId = charId,
+            sessionId   = sessionId,
+            bossId      = currentBoss?.bossId ?? string.Empty,   // Truyền bossId từ cốt truyện lên
+            bossLevel   = currentBoss?.level ?? 0                 // Truyền bossLevel từ cốt truyện lên
+        };
         var spawnRes = await ApiClient.Instance.PostAsync<GameShared.DTOs.Battle.BossSpawnResponse>("battle/spawn-boss", spawnReq);
 
-        if (spawnRes == null)
+        if (spawnRes == null || string.IsNullOrEmpty(spawnRes.encounterId))
         {
-            Debug.LogError("[BattleService] Lỗi API Spawn Boss. Tự động chuyển về Mock Mode.");
+            Debug.LogError("[BattleService] Lỗi API Spawn Boss (Không tìm thấy Boss/Character hoặc payload lỗi). Tự động chuyển về Mock Mode.");
             StartPlayback(CreateMockData());
             return;
         }
 
-        var resolveReq = new GameShared.DTOs.Battle.BattleResolveRequest { characterId = charId, encounterId = spawnRes.encounterId };
+        Debug.Log($"[BOSS SPAWN LOG]\n" +
+                  $"👹 Boss Name: {spawnRes.bossName} (Lv.{spawnRes.bossLevel}, Rarity: {spawnRes.bossRarity})\n" +
+                  $"❤️ Boss HP: {spawnRes.bossHp} | ⚔️ Attack: {spawnRes.bossAttack} | 🛡️ Defense: {spawnRes.bossDefense}");
+
+        var equippedList = GameProgressService.Instance?.GetEquippedInventoryItemIds() ?? new System.Collections.Generic.List<string>();
+        var resolveReq = new GameShared.DTOs.Battle.BattleResolveRequest { 
+            characterId = charId, 
+            encounterId = spawnRes.encounterId,
+            equippedItemIds = equippedList
+        };
         var resolveRes = await ApiClient.Instance.PostAsync<GameShared.DTOs.Battle.BattleResolveResponse>("battle/resolve", resolveReq);
 
         if (resolveRes == null)
@@ -70,6 +137,17 @@ public class BattlePresenter : MonoBehaviour
             return;
         }
 
+        string luckyText = (resolveRes.luckyEffects != null && resolveRes.luckyEffects.Count > 0)
+            ? string.Join(", ", resolveRes.luckyEffects)
+            : "None";
+
+        Debug.Log($"[BATTLE RESULT STATS LOG]\n" +
+                  $"⚔️ Player Power (Sức mạnh người chơi): {resolveRes.playerPower:F1}\n" +
+                  $"👹 Boss Power (Sức mạnh Trùm): {resolveRes.bossPower:F1}\n" +
+                  $"🍀 Lucky Effects (Hiệu ứng may mắn): {luckyText}\n" +
+                  $"📊 Battle Score (Điểm kết quả = PP - BP + Lucky): {resolveRes.battleScore:F1}\n" +
+                  $"🏆 Kết quả trận đấu: {(resolveRes.isPlayerVictory ? "CHIẾN THẮNG 🎉" : "THẤT BẠI 💀")}");
+
         // Chuyển đổi dữ liệu Backend về định dạng UI
         BattleData realData = new BattleData();
         realData.isPlayerVictory = resolveRes.isPlayerVictory;
@@ -78,14 +156,19 @@ public class BattlePresenter : MonoBehaviour
             name = GameProgressService.Instance?.CurrentCharacter?.name ?? "Player",
             level = GameProgressService.Instance?.CurrentCharacter?.level ?? 1,
             maxHP = GameProgressService.Instance?.CurrentCharacter?.maxHp ?? 100,
-            currentHP = GameProgressService.Instance?.CurrentCharacter?.hp ?? 100
+            currentHP = GameProgressService.Instance?.CurrentCharacter?.hp ?? 100,
+            attack = GameProgressService.Instance?.CurrentCharacter?.attack ?? 10,
+            defense = GameProgressService.Instance?.CurrentCharacter?.defense ?? 5
         };
 
         realData.boss = new FighterStats {
             name = spawnRes.bossName,
             level = spawnRes.bossLevel,
             maxHP = spawnRes.bossHp,
-            currentHP = spawnRes.bossHp
+            currentHP = spawnRes.bossHp,
+            attack = spawnRes.bossAttack,
+            defense = spawnRes.bossDefense,
+            criticalRate = spawnRes.bossCriticalRate
         };
 
         realData.turns = new List<BattleTurn>();
@@ -100,6 +183,9 @@ public class BattlePresenter : MonoBehaviour
         }
 
         apiDroppedItems.Clear();
+        lastGoldEarned = resolveRes.rewards?.goldEarned ?? 40;
+        lastExpEarned = resolveRes.rewards?.expEarned ?? 30;
+
         if (resolveRes.rewards != null && resolveRes.rewards.lootItems != null)
         {
             foreach (var loot in resolveRes.rewards.lootItems)
@@ -114,6 +200,9 @@ public class BattlePresenter : MonoBehaviour
 
         StartPlayback(realData);
     }
+
+    private int lastGoldEarned = 0;
+    private int lastExpEarned = 0;
 
     // Bắt đầu luồng hiển thị
     public void StartPlayback(BattleData data)
@@ -175,7 +264,7 @@ public class BattlePresenter : MonoBehaviour
         {
             if (data.isPlayerVictory)
             {
-                endUIController.TriggerVictory(droppedItems);
+                endUIController.TriggerVictory(droppedItems, lastGoldEarned, lastExpEarned);
             }
             else
             {
@@ -189,8 +278,8 @@ public class BattlePresenter : MonoBehaviour
     {
         BattleData mock = new BattleData();
         
-        mock.player = new FighterStats { name = "Hiệp sĩ", level = 10, maxHP = 100, currentHP = 100 };
-        mock.boss = new FighterStats { name = "Shadow Demon", level = 45, maxHP = 200, currentHP = 200 };
+        mock.player = new FighterStats { name = "Hiệp sĩ", level = 10, maxHP = 100, currentHP = 100, attack = 15, defense = 8 };
+        mock.boss = new FighterStats { name = "Shadow Demon", level = 45, maxHP = 200, currentHP = 200, attack = 22, defense = 9, criticalRate = 0.15f };
         mock.isPlayerVictory = true;
 
         mock.turns = new List<BattleTurn>
@@ -203,5 +292,36 @@ public class BattlePresenter : MonoBehaviour
         };
 
         return mock;
+    }
+
+    private GameShared.Models.Character MapResponseToModel(GameShared.DTOs.Character.CharacterResponse res)
+    {
+        if (res == null) return null;
+        return new GameShared.Models.Character
+        {
+            characterId = res.characterId,
+            name = res.name,
+            level = res.level,
+            experience = res.experience,
+            hp = res.hp,
+            maxHp = res.maxHp,
+            attack = res.attack,
+            defense = res.defense,
+            criticalRate = res.criticalRate,
+            luckyRate = res.luckyRate,
+            gold = res.gold,
+            className = res.className,
+            status = res.status,
+            currentLocationId = res.currentLocationId
+        };
+    }
+
+    [System.Serializable]
+    private class BattleResponseContainer<T> where T : class
+    {
+        public bool success;
+        public string message;
+        public string errorCode;
+        public T data;
     }
 }

@@ -11,10 +11,11 @@ using GameShared.DTOs.Inventory; // Import LootDropDTO dùng chung từ shared/D
 public class BattleEndUIController : MonoBehaviour
 {
     #region REGION 1: UI REFERENCES (CÁC THAM CHIẾU GIAO DIỆN)
-    [Header("UI Panels")]
+    [Header("UI Panels & Buttons")]
     [SerializeField] private Image overlay;                // Nền tối mờ phía sau các bảng pop-up
     [SerializeField] private GameObject victoryPanel;      // Bảng chiến thắng (Victory Panel)
     [SerializeField] private GameObject defeatPanel;       // Bảng thất bại (Defeat Panel)
+    [SerializeField] private Button confirmButton;         // Nút Confirm chiến thắng
 
     [Header("Item Slots")]
     [Tooltip("Danh sách chứa 3 ô hiển thị hình ảnh vật phẩm rơi ra khi chiến thắng")]
@@ -25,6 +26,9 @@ public class BattleEndUIController : MonoBehaviour
     [SerializeField] private List<ItemData> itemDatabase = new List<ItemData>();
 
     private List<LootDrop> currentBattleDrops; // Lưu trữ danh sách vật phẩm rơi để gửi API khi bấm Confirm
+    private int lastGoldEarned = 0;
+    private int lastExpEarned = 0;
+    private bool isConfirmProcessed = false; // Guard chống nút Confirm bị kích hoạt 2 lần trong 1 lần click
     #endregion
 
     #region REGION 2: UNITY LIFE CYCLE (VÒNG ĐỜI UNITY)
@@ -39,13 +43,21 @@ public class BattleEndUIController : MonoBehaviour
     /// <summary>
     /// Kích hoạt màn hình Chiến Thắng và hiển thị vật phẩm rơi ra.
     /// </summary>
-    /// <param name="droppedItems">Danh sách vật phẩm rơi ra nhận về từ backend</param>
-    public void TriggerVictory(List<LootDrop> droppedItems)
+    public void TriggerVictory(List<LootDrop> droppedItems, int goldEarned = 0, int expEarned = 0)
     {
+        isConfirmProcessed = false; // Reset cờ bảo vệ khi màn Victory xuất hiện
+
         // Stop any running animations to avoid conflicts
         StopAllCoroutines();
 
-        currentBattleDrops = droppedItems; // Lưu lại danh sách vật phẩm rơi để sử dụng khi người chơi ấn Xác Nhận
+        currentBattleDrops = droppedItems ?? new List<LootDrop>();
+        lastGoldEarned = goldEarned;
+        lastExpEarned = expEarned;
+
+        Debug.Log($"🎉 [BATTLE VICTORY] CHIẾN THẮNG TRẬN ĐẤU!\n" +
+                  $"💰 Vàng nhận được: +{goldEarned} Gold\n" +
+                  $"⭐ EXP nhận được: +{expEarned} XP\n" +
+                  $"🎁 Số lượng Vật phẩm rơi ra: {currentBattleDrops.Count}");
 
         // 1. Hiển thị và chạy hiệu ứng làm mờ nền tối
         if (overlay != null)
@@ -62,7 +74,7 @@ public class BattleEndUIController : MonoBehaviour
         }
 
         // 3. Đổ dữ liệu vật phẩm vào các slot UI
-        PopulateLootItems(droppedItems);
+        PopulateLootItems(currentBattleDrops);
     }
 
     /// <summary>
@@ -93,77 +105,76 @@ public class BattleEndUIController : MonoBehaviour
     /// Hàm xử lý sự kiện bấm nút "Xác nhận" (Confirm) ở Victory Panel.
     /// Gửi thông tin lên Backend để lưu vật phẩm vào túi đồ và chuyển Scene.
     /// </summary>
-    public async void OnConfirmVictory()
+    public void OnConfirmVictory()
     {
-        Debug.Log("[BattleEndUI] Người chơi xác nhận kết quả. Đang đồng bộ phần thưởng với Backend...");
-
-        if (currentBattleDrops == null || currentBattleDrops.Count == 0)
+        if (isConfirmProcessed)
         {
-            Debug.LogWarning("[BattleEndUI] Không tìm thấy danh sách vật phẩm rơi ra để đồng bộ.");
-            SceneManager.LoadScene("StoryScene");
+            Debug.LogWarning("⚠️ [CONFIRM SKIPPED] Sự kiện Confirm đã xử lý rồi, bỏ qua lần gọi trùng lặp.");
             return;
         }
+        isConfirmProcessed = true;
 
-        try
+        Debug.Log("▶️ [CONFIRM CLICKED] Người chơi nhấn nút Confirm (Xác nhận nhận phần thưởng).");
+
+        List<LootDrop> selectedDrops = new List<LootDrop>();
+        for (int i = 0; i < itemSlots.Count; i++)
         {
-            // 1. Lấy ID người chơi và ID trận đấu từ danh sách vật phẩm rơi
-            string charId = "mock-player-id";
-            if (GameProgressService.Instance != null && GameProgressService.Instance.CurrentCharacter != null)
+            if (itemSlots[i] != null && itemSlots[i].isSelected && i < currentBattleDrops.Count)
             {
-                charId = GameProgressService.Instance.CurrentCharacter.characterId;
+                selectedDrops.Add(currentBattleDrops[i]);
+                break; // Chỉ chọn duy nhất 1 món chiến lợi phẩm!
+            }
+        }
+
+        // Nếu người chơi chưa bấm chọn ô nào, mặc định chọn món đầu tiên
+        if (selectedDrops.Count == 0 && currentBattleDrops != null && currentBattleDrops.Count > 0)
+        {
+            selectedDrops.Add(currentBattleDrops[0]);
+        }
+
+        Debug.Log($"🎒 [INVENTORY UPDATE] Đã chọn duy nhất {selectedDrops.Count} vật phẩm chiến lợi phẩm để thêm vào CSDL và Túi đồ.");
+        foreach (var drop in selectedDrops)
+        {
+            if (GameProgressService.Instance != null)
+            {
+                GameProgressService.Instance.AddItemToInventory(drop.itemId, drop.quantity, false);
+            }
+            Debug.Log($"✨ [ITEM ADDED TO INVENTORY] +1 Vật phẩm '{drop.itemId}' (Số lượng: {drop.quantity}) đã chọn được lưu chính thức vào Túi đồ!");
+        }
+
+        Debug.Log($"💰 [REWARD UPDATE] Thêm +{lastGoldEarned} Gold | ⭐ +{lastExpEarned} EXP vào tài khoản Nhân vật.");
+
+        if (GameProgressService.Instance != null && GameProgressService.Instance.CurrentCharacter != null)
+        {
+            var character = GameProgressService.Instance.CurrentCharacter;
+            int oldLevel = character.level;
+            character.gold += lastGoldEarned;
+            character.experience += lastExpEarned;
+
+            // Kiểm tra thăng cấp đơn giản (Mỗi 100 EXP = +1 Level)
+            int requiredXp = character.level * 100;
+            while (character.experience >= requiredXp)
+            {
+                character.experience -= requiredXp;
+                character.level++;
+                character.maxHp += 12;
+                character.hp = character.maxHp;
+                character.attack += 3;
+                character.defense += 2;
+                requiredXp = character.level * 100;
             }
 
-            string bId = "mock-battle-id";
-            if (currentBattleDrops.Count > 0 && currentBattleDrops[0] != null)
+            if (character.level > oldLevel)
             {
-                bId = currentBattleDrops[0].battleId;
-            }
-
-            // 2. Chuyển đổi sang danh sách các item kèm số lượng tương ứng với bảng LootDrop trong CSDL
-            List<LootItemDTO> itemsPayload = new List<LootItemDTO>();
-            foreach (var drop in currentBattleDrops)
-            {
-                if (drop != null && !string.IsNullOrEmpty(drop.itemId))
-                {
-                    itemsPayload.Add(new LootItemDTO
-                    {
-                        itemId = drop.itemId,
-                        quantity = drop.quantity
-                    });
-                }
-            }
-
-            // 3. Chuẩn bị payload DTO đồng bộ đầy đủ các trường của CSDL (LootDrop & Inventory)
-            LootDropDTO payload = new LootDropDTO
-            {
-                playerId = charId,
-                battleId = bId,
-                items = itemsPayload
-            };
-
-            Debug.Log($"[BattleEndUI] Gửi API POST /api/inventory/add-loot cho Player: {charId}, Battle: {bId}");
-
-            // 4. Gọi API gửi dạng POST RAW JSON
-            string jsonPayload = JsonUtility.ToJson(payload);
-            string responseJson = await ApiClient.Instance.PostRawAsync("/api/inventory/add-loot", jsonPayload);
-
-            if (responseJson != null)
-            {
-                Debug.Log($"[BattleEndUI] Gửi API thành công! Phản hồi từ server: {responseJson}");
+                Debug.Log($"🎉 [LEVEL UP!] CHÚC MỪNG! Nhân vật đã thăng cấp từ Lv.{oldLevel} ➔ Lv.{character.level}! HP Max = {character.maxHp}, Attack = {character.attack}, Defense = {character.defense}");
             }
             else
             {
-                Debug.LogError("[BattleEndUI] Gửi API thất bại hoặc server không phản hồi kết quả thành công.");
+                Debug.Log($"📊 [CHARACTER STATUS] Cấp độ hiện tại: Lv.{character.level} ({character.experience}/{requiredXp} EXP) | Vàng: {character.gold} Gold");
             }
         }
-        catch (Exception ex)
-        {
-            // Xử lý lỗi nếu server sập hoặc mất mạng
-            Debug.LogError($"[BattleEndUI] Lỗi kết nối API trong quá trình đồng bộ: {ex.Message}");
-        }
 
-        // Chuyển scene về StoryScene
-        Debug.Log("[BattleEndUI] Đang chuyển hướng về StoryScene.unity...");
+        Debug.Log("🚗 [SCENE TRANSITION] Quay trở lại StoryScene.unity để tiếp tục hành trình...");
         SceneManager.LoadScene("StoryScene");
     }
 
@@ -174,7 +185,7 @@ public class BattleEndUIController : MonoBehaviour
     public void OnReturnToMainMenu()
     {
         Debug.Log("[BattleEndUI] Quay trở lại Menu chính...");
-        SceneManager.LoadScene("DemoMenu");
+        SceneManager.LoadScene("Menu");
     }
     #endregion
 
@@ -244,6 +255,36 @@ public class BattleEndUIController : MonoBehaviour
         if (victoryPanel != null) victoryPanel.SetActive(false);
         if (defeatPanel != null) defeatPanel.SetActive(false);
 
+        // Tự động tìm kiếm và gán sự kiện onClick cho Nút Confirm nếu chưa kéo vào Inspector
+        if (confirmButton == null)
+        {
+            Transform btnTr = transform.Find("btn_Confirm");
+            if (btnTr == null && victoryPanel != null) btnTr = victoryPanel.transform.Find("btn_Confirm");
+            if (btnTr == null)
+            {
+                Button[] btns = GetComponentsInChildren<Button>(true);
+                foreach (var b in btns)
+                {
+                    if (b.name.Equals("btn_Confirm", StringComparison.OrdinalIgnoreCase) || b.name.Contains("Confirm"))
+                    {
+                        confirmButton = b;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                confirmButton = btnTr.GetComponent<Button>();
+            }
+        }
+
+        if (confirmButton != null)
+        {
+            confirmButton.onClick.RemoveListener(OnConfirmVictory);
+            confirmButton.onClick.AddListener(OnConfirmVictory);
+            Debug.Log("[BattleEndUI] Tự động gán thành công sự kiện OnConfirmVictory cho nút Confirm!");
+        }
+
         foreach (var slot in itemSlots)
         {
             if (slot != null)
@@ -256,34 +297,123 @@ public class BattleEndUIController : MonoBehaviour
 
     private void PopulateLootItems(List<LootDrop> droppedItems)
     {
+        if (droppedItems == null) droppedItems = new List<LootDrop>();
+
+        // 1. Loại bỏ các phần tử null trong danh sách itemSlots nếu có
+        if (itemSlots != null)
+        {
+            itemSlots.RemoveAll(x => x == null);
+        }
+
+        // 2. Tự động tìm kiếm các ô InventorySlotUI dưới victoryPanel nếu chưa kéo vào Inspector
+        if (itemSlots == null || itemSlots.Count == 0)
+        {
+            if (victoryPanel != null)
+            {
+                InventorySlotUI[] foundSlots = victoryPanel.GetComponentsInChildren<InventorySlotUI>(true);
+                if (foundSlots != null && foundSlots.Length > 0)
+                {
+                    itemSlots = new List<InventorySlotUI>(foundSlots);
+                }
+                else
+                {
+                    // Tự động tìm container "ItemContainer" và gắn script InventorySlotUI cho các ô Slot 1, Slot 2, Slot 3
+                    Transform container = victoryPanel.transform.Find("ItemContainer");
+                    if (container == null) container = victoryPanel.transform;
+
+                    itemSlots = new List<InventorySlotUI>();
+                    foreach (Transform child in container)
+                    {
+                        if (child.name.StartsWith("Slot", StringComparison.OrdinalIgnoreCase))
+                        {
+                            InventorySlotUI slotScript = child.GetComponent<InventorySlotUI>();
+                            if (slotScript == null)
+                            {
+                                slotScript = child.gameObject.AddComponent<InventorySlotUI>();
+                            }
+                            itemSlots.Add(slotScript);
+                        }
+                    }
+                }
+                Debug.Log($"[BattleEndUI] Tự động quét và gán thành công {itemSlots?.Count ?? 0} ô InventorySlotUI từ victoryPanel.");
+            }
+        }
+
+        Debug.Log($"🎁 [LOOT DROP LOG] Tiến hành đổ {droppedItems.Count} vật phẩm vào {itemSlots?.Count ?? 0} ô Loot UI...");
+
+        if (itemSlots == null || itemSlots.Count == 0)
+        {
+            Debug.LogWarning("[BattleEndUI] ⚠️ Không tìm thấy ô InventorySlotUI nào trong victoryPanel! Hãy kiểm tra Unity Inspector.");
+            return;
+        }
+
         for (int i = 0; i < itemSlots.Count; i++)
         {
-            // Kiểm tra an toàn tránh NullReferenceException nếu ô Slot UI chưa được gán trong Inspector
             if (itemSlots[i] == null) continue;
+
+            int slotNum = i + 1;
+            itemSlots[i].onSlotClicked = (clickedSlot) =>
+            {
+                if (clickedSlot.hasItem && clickedSlot.itemData != null)
+                {
+                    // 1. Tắt Highlight tất cả các ô khác (Single-Choice Mode / Chỉ cho phép chọn 1 món duy nhất)
+                    foreach (var s in itemSlots)
+                    {
+                        if (s != null && s != clickedSlot)
+                        {
+                            s.SetSelected(false);
+                        }
+                    }
+
+                    // 2. Bật Highlight duy nhất cho ô vừa được bấm chọn
+                    clickedSlot.SetSelected(true);
+                    Debug.Log($"🎯 [SINGLE REWARD SELECTED] Người chơi CHỌN DUY NHẤT 1 MÓN CHIẾN LỢI PHẨM: '{clickedSlot.itemData.itemName}' ở Slot {slotNum}!");
+                }
+            };
 
             if (i < droppedItems.Count && droppedItems[i] != null)
             {
                 LootDrop drop = droppedItems[i];
-                // Tìm kiếm ItemData mẫu (Thêm kiểm tra x != null để tránh lỗi nếu danh sách database chứa phần tử rỗng/None)
-                ItemData matchData = itemDatabase.Find(x => x != null && (x.name == drop.itemId || x.itemName == drop.itemId));
+                ItemData matchData = null;
+                if (itemDatabase != null)
+                {
+                    matchData = itemDatabase.Find(x => x != null && 
+                        !string.IsNullOrEmpty(x.itemName) &&
+                        x.itemName.Equals(drop.itemId, StringComparison.OrdinalIgnoreCase));
+                }
 
                 if (matchData != null)
                 {
                     itemSlots[i].AddItemToSlot(matchData, drop.quantity);
                     itemSlots[i].gameObject.SetActive(true);
-
-                    Debug.Log($"[BattleEndUI] Đã thêm hình ảnh vật phẩm '{matchData.itemName}' x{drop.quantity} vào ô hiển thị UI.");
+                    Debug.Log($"🎁 [LOOT DROP LOG] Slot {slotNum}: Thêm thành công '{matchData.itemName}' (ID: {drop.itemId}) x{drop.quantity}");
                 }
                 else
                 {
-                    Debug.LogWarning($"[BattleEndUI] Không tìm thấy ItemData mẫu cho itemId '{drop.itemId}' trong Database.");
-                    itemSlots[i].ClearSlot();
-                    itemSlots[i].gameObject.SetActive(false);
+                    Debug.LogWarning($"[BattleEndUI] Chưa gán ItemData cho itemId '{drop.itemId}' trong itemDatabase Inspector. Đang tự động tạo dữ liệu tạm.");
+                    ItemData fallbackData = new ItemData
+                    {
+                        itemName = string.IsNullOrEmpty(drop.itemId) ? "Loot Item" : drop.itemId,
+                        itemType = ItemData.GetItemTypeFromId(drop.itemId)
+                    };
+                    itemSlots[i].AddItemToSlot(fallbackData, drop.quantity);
+                    itemSlots[i].gameObject.SetActive(true);
+                    Debug.Log($"🎁 [LOOT DROP LOG] Slot {slotNum}: Đã kích hoạt hiển thị tạm '{fallbackData.itemName}' x{drop.quantity}");
+                }
+
+                // Tự động Highlight ô đầu tiên khi mở bảng Victory
+                if (i == 0)
+                {
+                    itemSlots[i].SetSelected(true);
+                }
+                else
+                {
+                    itemSlots[i].SetSelected(false);
                 }
             }
             else
             {
-                // Ẩn ô thừa nếu số lượng vật phẩm rơi ra ít hơn 3
+                // Ẩn ô thừa nếu số lượng vật phẩm rớt ít hơn số lượng slot UI
                 itemSlots[i].ClearSlot();
                 itemSlots[i].gameObject.SetActive(false);
             }

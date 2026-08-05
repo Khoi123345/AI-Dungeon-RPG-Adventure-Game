@@ -40,7 +40,7 @@ namespace GameBackend.Handlers.Inventory
                 if (body == null || string.IsNullOrWhiteSpace(body.inventoryId))
                     return ResponseBuilder.Error(400, "inventoryId là bắt buộc.", "INVALID_REQUEST");
 
-                var result = await _inventoryService.UnequipItemAsync(characterId, body.inventoryId);
+                var result = await _inventoryService.UnequipItemAsync(characterId, body.inventoryId, body.itemId);
                 return ResponseBuilder.Success(result);
             }
             catch (GameNotFoundException ex)
