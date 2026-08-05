@@ -319,10 +319,6 @@ public class StoryPresenter : MonoBehaviour
                         StartCoroutine(TriggerBossEncounterFromAi(response.bossId));
                     }
                 }
-                else if (gameObject.activeInHierarchy)
-                {
-                    StartCoroutine(TryTriggerBossEncounterDelayed());
-                }
             }
             else
             {
@@ -382,10 +378,6 @@ public class StoryPresenter : MonoBehaviour
                     {
                         StartCoroutine(TriggerBossEncounterFromAi(response.bossId));
                     }
-                }
-                else if (gameObject.activeInHierarchy)
-                {
-                    StartCoroutine(TryTriggerBossEncounterDelayed());
                 }
             }
             else
