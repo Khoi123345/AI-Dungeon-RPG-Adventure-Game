@@ -128,15 +128,22 @@ namespace Infrastructure.Stacks
 
             // Story
             dbStack.StorySessionsTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.CharactersTable.GrantReadData(StartStoryFunction);
-            dbStack.InventoryTable.GrantReadData(StartStoryFunction);
-            dbStack.BossesTable.GrantReadData(StartStoryFunction);
+            dbStack.StoryActionsTable.GrantReadWriteData(StartStoryFunction);
+            dbStack.CharactersTable.GrantReadWriteData(StartStoryFunction);
+            dbStack.InventoryTable.GrantReadWriteData(StartStoryFunction);
+            dbStack.BossesTable.GrantReadWriteData(StartStoryFunction);
+            dbStack.BossEncountersTable.GrantReadWriteData(StartStoryFunction);
+            dbStack.BattlesTable.GrantReadWriteData(StartStoryFunction);
+            dbStack.LootDropsTable.GrantReadWriteData(StartStoryFunction);
 
             dbStack.StorySessionsTable.GrantReadWriteData(StoryActionFunction);
             dbStack.StoryActionsTable.GrantReadWriteData(StoryActionFunction);
             dbStack.CharactersTable.GrantReadWriteData(StoryActionFunction);
             dbStack.InventoryTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.BossesTable.GrantReadData(StoryActionFunction);
+            dbStack.BossesTable.GrantReadWriteData(StoryActionFunction);
+            dbStack.BossEncountersTable.GrantReadWriteData(StoryActionFunction);
+            dbStack.BattlesTable.GrantReadWriteData(StoryActionFunction);
+            dbStack.LootDropsTable.GrantReadWriteData(StoryActionFunction);
 
             // Battle
             dbStack.BossEncountersTable.GrantReadWriteData(SpawnBossFunction);
@@ -173,7 +180,12 @@ namespace Infrastructure.Stacks
             var bedrockPolicy = new Amazon.CDK.AWS.IAM.PolicyStatement(new Amazon.CDK.AWS.IAM.PolicyStatementProps
             {
                 Effect = Amazon.CDK.AWS.IAM.Effect.ALLOW,
-                Actions = new[] { "bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream" },
+                Actions = new[] { 
+                    "bedrock:InvokeModel", 
+                    "bedrock:InvokeModelWithResponseStream",
+                    "bedrock:Converse",
+                    "bedrock:ConverseStream"
+                },
                 Resources = new[] { "*" }
             });
             StartStoryFunction.AddToRolePolicy(bedrockPolicy);

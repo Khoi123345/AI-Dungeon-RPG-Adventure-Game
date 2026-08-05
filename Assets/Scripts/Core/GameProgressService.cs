@@ -103,6 +103,36 @@ public class GameProgressService : MonoBehaviour
         Debug.Log($"[GameProgressService] CurrentCharacter set: {character.name} (id={character.characterId})");
     }
 
+    /// <summary>
+    /// Cập nhật thông tin StorySession từ API response của backend.
+    /// </summary>
+    public void SetCurrentStorySession(string sessionId, string currentNodeId = "intro", string currentLocation = "Ancient Ruins")
+    {
+        if (CurrentStorySession == null)
+        {
+            CurrentStorySession = new StorySession
+            {
+                sessionId = string.IsNullOrEmpty(sessionId) ? Guid.NewGuid().ToString("N") : sessionId,
+                characterId = CurrentCharacter?.characterId ?? Guid.NewGuid().ToString("N"),
+                currentLocation = currentLocation,
+                currentNodeId = currentNodeId,
+                status = "Active",
+                updatedAt = DateTime.UtcNow,
+                storyVersion = "1.0",
+                sourceType = "AI"
+            };
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(sessionId)) CurrentStorySession.sessionId = sessionId;
+            if (!string.IsNullOrEmpty(currentNodeId)) CurrentStorySession.currentNodeId = currentNodeId;
+            if (!string.IsNullOrEmpty(currentLocation)) CurrentStorySession.currentLocation = currentLocation;
+            CurrentStorySession.updatedAt = DateTime.UtcNow;
+        }
+
+        Debug.Log($"[GameProgressService] StorySession updated: sessionId={CurrentStorySession.sessionId}, node={CurrentStorySession.currentNodeId}");
+    }
+
     /// <summary>Xóa session khi logout.</summary>
     public void ClearUser()
     {

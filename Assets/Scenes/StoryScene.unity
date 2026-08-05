@@ -2512,7 +2512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoryPresenter
   view: {fileID: 97519519}
-  useMockStoryOnStart: 1
+  useMockStoryOnStart: 0
   characterDelay: 0.03
   linePause: 0.6
   chunkSize: 70
