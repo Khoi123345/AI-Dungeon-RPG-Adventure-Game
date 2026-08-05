@@ -202,6 +202,60 @@ public class GameProgressService : MonoBehaviour
         Debug.Log($"[GameProgressService] SpawnRandomBoss: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Rarity={CurrentBoss.rarity}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp})");
     }
 
+    /// <summary>
+    /// Sinh Boss chính xác theo bossId do AI Bedrock chỉ định.
+    /// </summary>
+    public void SpawnBossById(string bossId)
+    {
+        InitializeIfNeeded();
+
+        if (string.IsNullOrWhiteSpace(bossId))
+        {
+            SpawnRandomBoss();
+            return;
+        }
+
+        var cleanId = bossId.StartsWith("boss_") ? bossId[5..] : bossId;
+
+        // Tìm Boss template trong GameConstants.BossCatalog khớp với bossId từ AI Bedrock
+        Boss picked = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b =>
+            b != null && (
+                b.bossId.Equals(bossId, StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.Equals($"boss_{cleanId}", StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.EndsWith(cleanId, StringComparison.OrdinalIgnoreCase)
+            )
+        );
+
+        if (picked == null)
+        {
+            Debug.LogWarning($"[GameProgressService] Không tìm thấy bossId '{bossId}' trong BossCatalog, fallback ngẫu nhiên.");
+            SpawnRandomBoss();
+            return;
+        }
+
+        int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
+        int bossLevel = (playerLevel <= 3) ? playerLevel : Mathf.Max(1, playerLevel);
+
+        CurrentBoss = new Boss
+        {
+            bossId       = picked.bossId,
+            name         = picked.name,
+            rarity       = picked.rarity,
+            level        = bossLevel,
+            baseHp       = picked.baseHp + bossLevel * 5,
+            baseAttack   = picked.baseAttack + bossLevel,
+            baseDefense  = picked.baseDefense,
+            speed        = picked.speed,
+            criticalRate = picked.criticalRate,
+            expReward    = picked.expReward,
+            goldReward   = picked.goldReward,
+            skillSetJson = "[]",
+            imageUrl     = string.Empty
+        };
+
+        Debug.Log($"[GameProgressService] SpawnBossById: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Rarity={CurrentBoss.rarity}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp})");
+    }
+
 
     public StoryData CreateStoryDemoData()
     {

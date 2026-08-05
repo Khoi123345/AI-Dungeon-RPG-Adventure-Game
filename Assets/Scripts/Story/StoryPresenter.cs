@@ -435,7 +435,7 @@ public class StoryPresenter : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         if (GameProgressService.Instance == null) yield break;
-        GameProgressService.Instance.SpawnRandomBoss();
+        GameProgressService.Instance.SpawnBossById(bossId);
         var boss = GameProgressService.Instance.CurrentBoss;
         if (boss == null) yield break;
 
