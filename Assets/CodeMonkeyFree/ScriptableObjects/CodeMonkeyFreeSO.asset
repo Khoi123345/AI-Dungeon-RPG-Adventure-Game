@@ -14,35 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
-  lastShownTimestamp: 1785854596
+  lastShownTimestamp: 1785940997
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1785854596
+  checkedLastUpdateTimestamp: 1785940997
   lastQOTDResponse:
-    questionId: 328
-    questionText: 'What is the possible error in this code:
-
-      <p>tickTimer +=
-      Time.deltaTime;</p>
-
-      <p>if (tickTimer &gt;= TICK_TIMER_MAX) {</p>
-
-      <p>&nbsp;
-      &nbsp; tickTimer -= TICK_TIMER_MAX;</p>
-
-      <p>&nbsp; &nbsp; tick++;</p>
-
-      <p>&nbsp;
-      &nbsp; OnTickEvent(this, EventArgs.Empty);</p>
-
-      <p>}</p>'
-    answerA: None
-    answerB: NullReferenceException
-    answerC: 2 ticks at once
+    questionId: 329
+    questionText: What is the main difference between the out and ref keywords? (behaviour
+      inside the function)
+    answerA: out doesn't need to be set; ref MUST be set
+    answerB: out MUST be set; ref doesn't need to be set
+    answerC: No difference
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1785854596
+  lastQotdTimestamp: 1785940997
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/summer2025CodeMonkeyBundle.png
     topText: Get 80% OFF on ALL my Courses and Games!!!
@@ -50,11 +36,11 @@ MonoBehaviour:
     bottomText: DONT MISS the latest important trends, sign up for my FREE Weekly
       Newsletter!
     bottomLink: gamedevreport
-  lastDynamicHeaderTimestamp: 1785854596
+  lastDynamicHeaderTimestamp: 1785940997
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1785854596
+  websiteLatestMessageTimestamp: 1785940997
   websiteLatestVideos:
     videos:
     - youTubeId: 2oHitHMNyNw
@@ -65,4 +51,4 @@ MonoBehaviour:
       title: TOP 10 NEW Systems and Tools JULY 2026! | Unity Asset Store
     - youTubeId: _0Lp-iXEhfU
       title: Join my Game Dev Practice Lab for FREE!
-  websiteLatestVideosTimestamp: 1785854596
+  websiteLatestVideosTimestamp: 1785940997
