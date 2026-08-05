@@ -1755,6 +1755,7 @@ MonoBehaviour:
   useFixedPosition: 0
   fixedAnchor: {fileID: 0}
   offset: {x: 15, y: -15}
+  tooltipScale: 2.5
 --- !u!1 &438387722
 GameObject:
   m_ObjectHideFlags: 0
@@ -2520,7 +2521,7 @@ MonoBehaviour:
   richTextClosingTag: 
   menuScene: Menu
   battleScene: BattleScene
-  bossEncounterChance: 1
+  bossEncounterChance: 0.35
 --- !u!4 &514578129
 Transform:
   m_ObjectHideFlags: 0
