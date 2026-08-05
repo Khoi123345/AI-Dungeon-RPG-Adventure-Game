@@ -115,6 +115,23 @@ public class InventoryManager : MonoBehaviour
         Transform leftPanel = transform.Find("Left_CharacterPanel");
         if (leftPanel == null && transform.parent != null)
             leftPanel = transform.parent.Find("Left_CharacterPanel");
+            
+        // Tìm kiếm Left_CharacterPanel thông qua gridSlotsContainer (rất an toàn vì gridSlotsContainer nằm trong Panel_Inventory)
+        if (leftPanel == null && gridSlotsContainer != null)
+        {
+            Transform currentParent = gridSlotsContainer.parent;
+            while (currentParent != null)
+            {
+                Transform found = currentParent.Find("Left_CharacterPanel");
+                if (found != null)
+                {
+                    leftPanel = found;
+                    break;
+                }
+                currentParent = currentParent.parent;
+            }
+        }
+
         if (leftPanel == null)
             leftPanel = GameObject.Find("Left_CharacterPanel")?.transform;
 
