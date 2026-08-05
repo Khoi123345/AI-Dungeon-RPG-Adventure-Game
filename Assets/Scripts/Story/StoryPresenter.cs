@@ -308,16 +308,23 @@ public class StoryPresenter : MonoBehaviour
 
             if (response != null && !string.IsNullOrEmpty(response.narrativeText))
             {
+                Debug.Log($"<color=#00FF00>[StoryPresenter] Nhận phản hồi từ AI Bedrock (Choice):</color>\n- triggerBattle: <b>{response.triggerBattle}</b>\n- bossId: <b>{response.bossId}</b>\n- location: <b>{response.currentLocation}</b>");
+
                 GameProgressService.Instance?.SetCurrentStorySession(response.sessionId, response.currentNodeId, response.currentLocation);
                 StoryData nextStoryData = MapActionResponseToStoryData(response);
                 PlayNextStoryNode(nextStoryData);
 
                 if (response.triggerBattle)
                 {
+                    Debug.Log($"<color=#FF5500><b>[StoryPresenter] AI CHÍNH THỨC KÍCH HOẠT TRẬN ĐÁNH BOSS!</b> BossId = '{response.bossId}'</color>");
                     if (gameObject.activeInHierarchy)
                     {
                         StartCoroutine(TriggerBossEncounterFromAi(response.bossId));
                     }
+                }
+                else
+                {
+                    Debug.Log("<color=#FFFF00>[StoryPresenter] AI Bedrock không kích hoạt trận đánh ở lượt này (triggerBattle = false).</color>");
                 }
             }
             else
@@ -368,16 +375,23 @@ public class StoryPresenter : MonoBehaviour
 
             if (response != null && !string.IsNullOrEmpty(response.narrativeText))
             {
+                Debug.Log($"<color=#00FF00>[StoryPresenter] Nhận phản hồi từ AI Bedrock:</color>\n- triggerBattle: <b>{response.triggerBattle}</b>\n- bossId: <b>{response.bossId}</b>\n- location: <b>{response.currentLocation}</b>");
+
                 GameProgressService.Instance?.SetCurrentStorySession(response.sessionId, response.currentNodeId, response.currentLocation);
                 StoryData nextStoryData = MapActionResponseToStoryData(response);
                 PlayNextStoryNode(nextStoryData);
 
                 if (response.triggerBattle)
                 {
+                    Debug.Log($"<color=#FF5500><b>[StoryPresenter] AI CHÍNH THỨC KÍCH HOẠT TRẬN ĐÁNH BOSS!</b> BossId = '{response.bossId}'</color>");
                     if (gameObject.activeInHierarchy)
                     {
                         StartCoroutine(TriggerBossEncounterFromAi(response.bossId));
                     }
+                }
+                else
+                {
+                    Debug.Log("<color=#FFFF00>[StoryPresenter] AI Bedrock không kích hoạt trận đánh ở lượt này (triggerBattle = false).</color>");
                 }
             }
             else
