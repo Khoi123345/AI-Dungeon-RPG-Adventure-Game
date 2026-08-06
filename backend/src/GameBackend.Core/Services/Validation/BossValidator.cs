@@ -40,22 +40,36 @@ namespace GameBackend.Core.Services.Validation
                 return;
             }
 
-            // Tự động nhận diện chính xác BossId dựa theo tên Boss xuất hiện trong văn bản
-            var lowerText = (response.NarrativeText ?? string.Empty).ToLowerInvariant();
-            if (lowerText.Contains("goblin"))
+            // Chỉ tự điền bossId khi AI không gán — KHÔNG ghi đè bossId AI đã chỉ định (kể cả mob_*)
+            if (string.IsNullOrWhiteSpace(response.BossId))
             {
-                response.BossId = "goblin_king";
-                response.BossName = "Vua Goblin";
+                var lowerText = (response.NarrativeText ?? string.Empty).ToLowerInvariant();
+                if (lowerText.Contains("goblin"))
+                {
+                    // Random encounter: dùng mob goblin chứ không phải chapter boss
+                    response.BossId = "mob_goblin_scout";
+                    response.BossName = "Goblin Scout";
+                }
+                else if (lowerText.Contains("demon") || lowerText.Contains("ác demon"))
+                {
+                    response.BossId = "shadow_demon";
+                    response.BossName = "Ác Demon Bóng Tối";
+                }
+                else if (lowerText.Contains("dragon") || lowerText.Contains("rồng"))
+                {
+                    response.BossId = "dragon_king";
+                    response.BossName = "Hỏa Long Vương";
+                }
             }
-            else if (lowerText.Contains("demon") || lowerText.Contains("ác demon"))
+
+            // Chapter boss (goblin_king) chỉ được phép khi player đang ở boss_room
+            bool isChapterBoss = (response.BossId ?? "").Contains("goblin_king", StringComparison.OrdinalIgnoreCase);
+            bool isInBossRoom  = (context.Session.currentNodeId ?? "").Equals("boss_room", StringComparison.OrdinalIgnoreCase);
+            if (isChapterBoss && !isInBossRoom)
             {
-                response.BossId = "shadow_demon";
-                response.BossName = "Ác Demon Bóng Tối";
-            }
-            else if (lowerText.Contains("dragon") || lowerText.Contains("rồng"))
-            {
-                response.BossId = "dragon_king";
-                response.BossName = "Hỏa Long Vương";
+                _logger.LogInformation("Downgraded goblin_king → mob_goblin_guard: player not in boss_room (node={Node})", context.Session.currentNodeId);
+                response.BossId   = "mob_goblin_guard";
+                response.BossName = "Goblin Guard";
             }
 
             var id = response.BossId;

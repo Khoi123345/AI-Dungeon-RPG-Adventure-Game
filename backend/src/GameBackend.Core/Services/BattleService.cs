@@ -264,8 +264,9 @@ namespace GameBackend.Core.Services
 
             if (isVictory)
             {
-                // Record the defeated boss if it's a valid boss catalog item
-                var isCatalogBoss = GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(encounter.bossId, StringComparison.OrdinalIgnoreCase));
+                // Record the defeated boss — chỉ lưu chapter boss, không lưu mob (mob_* prefix)
+                bool isMob = encounter.bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase);
+                var isCatalogBoss = !isMob && GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(encounter.bossId, StringComparison.OrdinalIgnoreCase));
                 if (isCatalogBoss)
                 {
                     try
