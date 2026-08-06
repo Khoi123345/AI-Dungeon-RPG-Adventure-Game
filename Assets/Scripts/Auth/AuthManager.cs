@@ -214,9 +214,11 @@ public class AuthManager : MonoBehaviour
         try
         {
             var apiService = new CharacterApiService();
-            string displayName = !string.IsNullOrEmpty(user.displayName) ? user.displayName : "Default Hero";
             string userId = !string.IsNullOrEmpty(user.userId) ? user.userId : "user_default";
+            string displayName = !string.IsNullOrEmpty(user.displayName) ? user.displayName : "Default Hero";
 
+            // POST /character là idempotent: nếu userId đã có character, backend trả về character cũ
+            // Nếu chưa có thì tạo mới. Không cần GET trước.
             string json = await apiService.CreateCharacterAsync(userId, displayName, "Adventurer");
             if (!string.IsNullOrEmpty(json))
             {
@@ -225,13 +227,18 @@ public class AuthManager : MonoBehaviour
                 {
                     var model = MapResponseToModel(container.data);
                     GameProgressService.Instance.SetCurrentCharacter(model);
-                    Debug.Log($"[AuthManager] Nhân vật mặc định đã tạo thành công trên AWS DynamoDB: {model.name} (id={model.characterId})");
+                    // Lưu characterId để auto-restore session sau này không cần gọi API lại
+                    UnityEngine.PlayerPrefs.SetString("lastCharacterId", model.characterId);
+                    UnityEngine.PlayerPrefs.Save();
+                    Debug.Log($"[AuthManager] Character loaded/created từ AWS: {model.name} (id={model.characterId}, gold={model.gold}, lv={model.level})");
+                    return;
                 }
             }
+            Debug.LogWarning("[AuthManager] CreateCharacterAsync không trả về data hợp lệ.");
         }
         catch (System.Exception ex)
         {
-            Debug.LogWarning($"[AuthManager] Không thể tạo nhân vật mặc định trên AWS: {ex.Message}");
+            Debug.LogWarning($"[AuthManager] Không thể load/tạo nhân vật từ AWS: {ex.Message}");
         }
     }
 

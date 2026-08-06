@@ -42,6 +42,18 @@ namespace GameBackend.Core.Services
 
         public async Task<CharacterResponse> CreateCharacterAsync(CreateCharacterRequest request)
         {
+            // Idempotent: nếu userId đã có character, trả về character hiện có thay vì tạo mới
+            if (!string.IsNullOrWhiteSpace(request.userId))
+            {
+                var existing = await _characterRepository.GetByUserIdAsync(request.userId);
+                if (existing != null && existing.Count > 0)
+                {
+                    var found = existing[0];
+                    _logger.LogInformation("Character already exists for userId {UserId}, returning existing: {CharacterId}", request.userId, found.characterId);
+                    return MapToResponse(found);
+                }
+            }
+
             int startingGold = (request.name != null && request.name.Equals("khoi", StringComparison.OrdinalIgnoreCase)) ? 999999 : 50;
 
             var character = new Character
