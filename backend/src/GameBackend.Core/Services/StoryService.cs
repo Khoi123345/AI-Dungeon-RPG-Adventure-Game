@@ -195,77 +195,6 @@ namespace GameBackend.Core.Services
                 };
                 return BuildResponse(safeSession, safeChar, "Bạn bước vào khu vực đầu tiên của Etherea, Rừng Thì Thầm. Ánh trăng chiếu xuống, tạo nên bóng đổ rập khuôn giữa những cây cổ thụ.");
             }
-            StorySession? existingSession = null;
-            try
-            {
-                existingSession = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Could not fetch session for character {CharacterId}", character.characterId);
-            }
-
-            if (existingSession != null && existingSession.status == "Active")
-            {
-                var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(existingSession.sessionId);
-                var latestAction = allRecentActions.OrderByDescending(a => a.createdAt).FirstOrDefault();
-                var lastNarrative = latestAction?.aiResponse ?? existingSession.storySummary ?? string.Empty;
-                List<StoryChoiceOption>? lastChoices = null;
-                if (latestAction != null)
-                {
-                    try
-                    {
-                        var parsed = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(latestAction.aiResponse, existingSession, "choice");
-                        lastNarrative = parsed.NarrativeText;
-                        lastChoices = parsed.Choices;
-                    }
-                    catch { }
-                }
-
-                return BuildResponse(existingSession, character, lastNarrative, lastChoices);
-            }
-
-            var session = new StorySession
-            {
-                sessionId = Guid.NewGuid().ToString("N"),
-                characterId = character.characterId,
-                currentLocation = DefaultLocation,
-                currentChapterId = string.IsNullOrWhiteSpace(request.storyFileId) ? DefaultChapterId : request.storyFileId,
-                currentNodeId = DefaultChapterId,
-                status = "Active",
-                updatedAt = DateTime.UtcNow,
-                storyVersion = string.IsNullOrWhiteSpace(request.storyFileId) ? "1.0" : request.storyFileId,
-                storySummary = "Mở đầu cuộc phiêu lưu tại tàn tích cổ.",
-                sourceType = "AI"
-            };
-
-            // Sync character's starting location with the story session location
-            character.currentLocationId = session.currentLocation;
-
-            var openingContext = new StoryActionProcessingContext
-            {
-                Character = character,
-                Session = session,
-                PlayerInput = string.Empty,
-                RecentActions = new List<StoryAction>(),
-                PromptContext = await _gamePromptContextBuilder.BuildAsync(character, new List<Item>(), new List<StoryAction>(), session, string.Empty)
-            };
-
-            var openingResponse = await GenerateStoryAiResponseAsync(openingContext, "opening");
-            openingResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, openingResponse);
-
-            try
-            {
-                await _storyStateUpdater.ApplyAsync(session, character, openingResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Could not persist story state to DB, continuing in-memory");
-            }
-
-            _logger.LogInformation("Story session started: {SessionId} for character: {CharacterId}", session.sessionId, character.characterId);
-
-            return BuildResponse(session, character, openingResponse.NarrativeText, openingResponse.Choices);
         }
 
         public async Task<StoryActionResponse> ProcessActionAsync(StoryActionRequest request)
@@ -339,6 +268,24 @@ namespace GameBackend.Core.Services
                     storySummary = "Mở đầu cuộc phiêu lưu tại tàn tích cổ.",
                     sourceType = "AI"
                 };
+            }
+
+            // Trừ 5 Gold mỗi lượt AI kể chuyện (StoryCostPerTurn)
+            if (character.gold >= GameShared.Config.GameConstants.StoryCostPerTurn)
+            {
+                character.gold -= GameShared.Config.GameConstants.StoryCostPerTurn;
+            }
+            else
+            {
+                character.gold = 0; // Không đủ vàng vẫn cho chơi nhưng trừ hết vàng còn lại
+            }
+            try
+            {
+                await _characterRepository.SaveAsync(character);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Could not persist gold deduction for character {CharacterId}", character.characterId);
             }
 
             string? systemInjectedEvent = null;
