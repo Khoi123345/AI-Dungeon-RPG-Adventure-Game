@@ -173,6 +173,7 @@ namespace Infrastructure.Stacks
             // Grant Cognito Permissions
             cognitoStack.UserPool.Grant(LoginFunction, "cognito-idp:InitiateAuth");
             cognitoStack.UserPool.Grant(RegisterFunction, "cognito-idp:SignUp");
+            cognitoStack.UserPool.Grant(RegisterFunction, "cognito-idp:ListUsers"); // check email duplicate
             cognitoStack.UserPool.Grant(ConfirmSignUpFunction, "cognito-idp:ConfirmSignUp");
             cognitoStack.UserPool.Grant(RefreshTokenFunction, "cognito-idp:InitiateAuth");
 
