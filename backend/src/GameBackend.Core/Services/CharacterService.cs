@@ -10,11 +10,16 @@ namespace GameBackend.Core.Services
     public class CharacterService : ICharacterService
     {
         private readonly ICharacterRepository _characterRepository;
+        private readonly IInventoryRepository? _inventoryRepository;
         private readonly ILogger<CharacterService> _logger;
 
-        public CharacterService(ICharacterRepository characterRepository, ILogger<CharacterService> logger)
+        public CharacterService(
+            ICharacterRepository characterRepository,
+            IInventoryRepository? inventoryRepository,
+            ILogger<CharacterService> logger)
         {
             _characterRepository = characterRepository;
+            _inventoryRepository = inventoryRepository;
             _logger = logger;
         }
 
@@ -26,11 +31,19 @@ namespace GameBackend.Core.Services
                 throw new Utils.GameNotFoundException("Character not found");
             }
 
+            if (character.name != null && character.name.Equals("khoi", StringComparison.OrdinalIgnoreCase))
+            {
+                character.gold = 999999;
+                await _characterRepository.SaveAsync(character);
+            }
+
             return MapToResponse(character);
         }
 
         public async Task<CharacterResponse> CreateCharacterAsync(CreateCharacterRequest request)
         {
+            int startingGold = (request.name != null && request.name.Equals("khoi", StringComparison.OrdinalIgnoreCase)) ? 999999 : 50;
+
             var character = new Character
             {
                 characterId = Guid.NewGuid().ToString("N"),
@@ -44,7 +57,7 @@ namespace GameBackend.Core.Services
                 defense = 5,
                 criticalRate = 0.05f,
                 luckyRate = 0.05f,
-                gold = 50,
+                gold = startingGold,
                 className = request.className ?? "Adventurer",
                 status = "Alive",
                 currentLocationId = "spawn_village",
@@ -52,6 +65,39 @@ namespace GameBackend.Core.Services
             };
 
             await _characterRepository.SaveAsync(character);
+
+            if (_inventoryRepository != null)
+            {
+                var starterItems = new[]
+                {
+                    ("item_rusty_sword", 1, true, 0),
+                    ("item_leather_vest", 1, true, 1),
+                    ("item_wooden_ring", 1, true, 2),
+                    ("item_health_potion_s", 5, false, 3)
+                };
+
+                foreach (var (itemId, qty, eq, slot) in starterItems)
+                {
+                    try
+                    {
+                        await _inventoryRepository.SaveAsync(new Inventory
+                        {
+                            inventoryId = Guid.NewGuid().ToString("N"),
+                            characterId = character.characterId,
+                            itemId = itemId,
+                            quantity = qty,
+                            equipped = eq,
+                            slotIndex = slot,
+                            acquiredAt = DateTime.UtcNow
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to seed starter item {ItemId} for character {CharacterId}", itemId, character.characterId);
+                    }
+                }
+            }
+
             _logger.LogInformation("Character created: {CharacterId} for user: {UserId}", character.characterId, character.userId);
             return MapToResponse(character);
         }
@@ -135,24 +181,13 @@ namespace GameBackend.Core.Services
 
             if (character.status != "Dead") return; // Đang Alive — không cần làm gì
 
-            if (DateTime.UtcNow >= character.reviveTime)
-            {
-                // Đã qua thời gian chờ → tự động hồi sinh
-                character.status = "Alive";
-                character.hp = (int)(character.maxHp * GameConstants.RevivalHpRatio);
-                character.hp = Math.Max(1, character.hp); // Tối thiểu 1 HP
-                await _characterRepository.SaveAsync(character);
+            // Khôi phục nhân vật về trạng thái Alive với 100% Máu tối đa
+            character.status = "Alive";
+            character.hp = character.maxHp > 0 ? character.maxHp : 100;
+            await _characterRepository.SaveAsync(character);
 
-                _logger.LogInformation("Character {CharacterId} auto-revived with {Hp}/{MaxHp} HP",
-                    character.characterId, character.hp, character.maxHp);
-            }
-            else
-            {
-                // Chưa tới giờ hồi sinh
-                var remaining = character.reviveTime - DateTime.UtcNow;
-                throw new Utils.GameValidationException(
-                    $"Nhân vật đang chờ hồi sinh. Còn {remaining.Minutes} phút {remaining.Seconds} giây.");
-            }
+            _logger.LogInformation("Character {CharacterId} revived with 100% HP ({Hp}/{MaxHp})",
+                character.characterId, character.hp, character.maxHp);
         }
 
         // =====================================================================

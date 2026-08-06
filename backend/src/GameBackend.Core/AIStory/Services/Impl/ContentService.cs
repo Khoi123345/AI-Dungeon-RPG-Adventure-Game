@@ -20,12 +20,34 @@ namespace GameBackend.Core.AIStory.Services.Impl
 
         public async Task<string> GetChapterAsync(string chapterId)
         {
-            return await ReadContentAsync("Chapters", chapterId);
+            var resolvedId = NormalizeChapterId(chapterId);
+            return await ReadContentAsync("Chapters", resolvedId);
         }
 
         public async Task<string> GetLocationAsync(string locationId)
         {
-            return await ReadContentAsync("Locations", locationId);
+            var resolvedId = NormalizeLocationId(locationId);
+            return await ReadContentAsync("Locations", resolvedId);
+        }
+
+        private static string NormalizeChapterId(string chapterId)
+        {
+            if (string.IsNullOrWhiteSpace(chapterId) || chapterId.Equals("introduction", System.StringComparison.OrdinalIgnoreCase) || chapterId.Equals("prologue", System.StringComparison.OrdinalIgnoreCase) || chapterId.Equals("1"))
+            {
+                return "chapter_1";
+            }
+            if (chapterId.Equals("2")) return "chapter_2";
+            if (chapterId.Equals("3")) return "chapter_3";
+            return chapterId;
+        }
+
+        private static string NormalizeLocationId(string locationId)
+        {
+            if (string.IsNullOrWhiteSpace(locationId) || locationId.Equals("prologue", System.StringComparison.OrdinalIgnoreCase) || locationId.Equals("start", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return "ancient_cave";
+            }
+            return locationId;
         }
 
         public async Task<string> GetBossAsync(string bossId)

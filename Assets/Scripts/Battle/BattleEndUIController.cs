@@ -17,6 +17,12 @@ public class BattleEndUIController : MonoBehaviour
     [SerializeField] private GameObject defeatPanel;       // Bảng thất bại (Defeat Panel)
     [SerializeField] private Button confirmButton;         // Nút Confirm chiến thắng
 
+    [Header("Defeat UI Buttons (Màn Thua Cuộc)")]
+    [Tooltip("Nút Continue - Hồi sinh bằng 50 Vàng và quay lại câu chuyện trước khi đánh boss")]
+    [SerializeField] private Button btnContinueRevive;     // Nút Continue
+    [Tooltip("Nút Back to Menu - Chấp nhận chết luôn (chơi lại từ đầu) và về Menu chính")]
+    [SerializeField] private Button btnBackToMenuReset;    // Nút Back to menu
+
     [Header("Item Slots")]
     [Tooltip("Danh sách chứa 3 ô hiển thị hình ảnh vật phẩm rơi ra khi chiến thắng")]
     [SerializeField] private List<InventorySlotUI> itemSlots = new List<InventorySlotUI>();
@@ -78,7 +84,7 @@ public class BattleEndUIController : MonoBehaviour
     }
 
     /// <summary>
-    /// Kích hoạt màn hình Thất Bại.
+    /// Kích hoạt màn hình Thất Bại và gán tự động sự kiện cho 2 nút bấm Continue & Back to menu.
     /// </summary>
     public void TriggerDefeat()
     {
@@ -96,11 +102,89 @@ public class BattleEndUIController : MonoBehaviour
         {
             defeatPanel.SetActive(true);
             StartCoroutine(PopupPanel(defeatPanel, 0.6f));
+
+            // Tự động tìm 2 nút bấm trong defeatPanel nếu chưa kéo thả thủ công
+            Button[] buttons = defeatPanel.GetComponentsInChildren<Button>(true);
+            if (btnContinueRevive == null && buttons.Length > 0)
+            {
+                btnContinueRevive = buttons[0];
+            }
+            if (btnBackToMenuReset == null && buttons.Length > 1)
+            {
+                btnBackToMenuReset = buttons[1];
+            }
+
+            // Gán sự kiện Click
+            if (btnContinueRevive != null)
+            {
+                btnContinueRevive.onClick.RemoveAllListeners();
+                btnContinueRevive.onClick.AddListener(OnReviveWithGold);
+            }
+
+            if (btnBackToMenuReset != null)
+            {
+                btnBackToMenuReset.onClick.RemoveAllListeners();
+                btnBackToMenuReset.onClick.AddListener(OnGiveUpAndResetToMenu);
+            }
         }
     }
     #endregion
 
     #region REGION 4: INTERACTION BUTTONS (SỰ KIỆN NÚT BẤM)
+    /// <summary>
+    /// Sự kiện gán cho Nút 1: "Continue" (Hồi sinh bằng Vàng).
+    /// Tốn 50 Vàng, hồi sinh 100% HP và quay lại câu chuyện trước khi đánh Boss để chơi tiếp.
+    /// </summary>
+    public void OnReviveWithGold()
+    {
+        int cost = GameShared.Config.GameConstants.InstantReviveCost; // 50 Gold
+        var character = GameProgressService.Instance?.CurrentCharacter;
+
+        if (character == null)
+        {
+            Debug.LogWarning("[BattleEndUI] Không tìm thấy dữ liệu Nhân vật.");
+            SceneManager.LoadScene("StoryScene");
+            return;
+        }
+
+        if (character.gold < cost)
+        {
+            Debug.LogWarning($"⚠️ [REVIATION FAILED] Không đủ Vàng để hồi sinh! (Yêu cầu: {cost} Gold, Hiện có: {character.gold} Gold).");
+            // Người chơi không đủ tiền -> Buộc phải chọn Chết luôn để reset game
+            return;
+        }
+
+        bool revived = GameProgressService.Instance.ReviveCharacterWithGold(cost);
+        if (revived)
+        {
+            Debug.Log($"✨ [REVIATION SUCCESS] Đã trừ {cost} Gold. Nhân vật {character.name} được hồi sinh 100% HP!");
+            Debug.Log("🚗 [SCENE TRANSITION] Quay trở lại StoryScene.unity trước khi đánh Boss để tiếp tục hành trình...");
+            SceneManager.LoadScene("StoryScene");
+        }
+    }
+
+    /// <summary>
+    /// Sự kiện gán cho Nút 2: "Back to menu" (Chấp nhận chết luôn - Chơi lại từ đầu).
+    /// Không mất tiền hồi sinh, reset toàn bộ tiến trình game về Chương 1 và quay lại Menu chính.
+    /// </summary>
+    public void OnGiveUpAndResetToMenu()
+    {
+        Debug.Log("[BattleEndUI] Người chơi chọn Chết luôn (Chấp nhận thua) -> Không tốn tiền hồi sinh, Reset game mới & Về Menu chính...");
+        if (GameProgressService.Instance != null)
+        {
+            GameProgressService.Instance.ResetGameProgressToStartNew();
+        }
+        SceneManager.LoadScene("Menu");
+    }
+
+    /// <summary>
+    /// Hàm xử lý sự kiện bấm nút "Return to main menu" cũ (Bảo lưu tương thích).
+    /// </summary>
+    public void OnReturnToMainMenu()
+    {
+        OnGiveUpAndResetToMenu();
+    }
+
     /// <summary>
     /// Hàm xử lý sự kiện bấm nút "Xác nhận" (Confirm) ở Victory Panel.
     /// Gửi thông tin lên Backend để lưu vật phẩm vào túi đồ và chuyển Scene.
@@ -176,16 +260,6 @@ public class BattleEndUIController : MonoBehaviour
 
         Debug.Log("🚗 [SCENE TRANSITION] Quay trở lại StoryScene.unity để tiếp tục hành trình...");
         SceneManager.LoadScene("StoryScene");
-    }
-
-    /// <summary>
-    /// Hàm xử lý sự kiện bấm nút "Return to main menu" ở Defeat Panel.
-    /// Đưa người chơi quay lại màn hình Menu chính.
-    /// </summary>
-    public void OnReturnToMainMenu()
-    {
-        Debug.Log("[BattleEndUI] Quay trở lại Menu chính...");
-        SceneManager.LoadScene("Menu");
     }
     #endregion
 

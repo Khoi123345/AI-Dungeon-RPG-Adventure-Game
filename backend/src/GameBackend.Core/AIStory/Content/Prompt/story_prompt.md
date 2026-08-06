@@ -1,49 +1,46 @@
- story_prompt.md
+# story_prompt.md
 
 Dựa vào ngữ cảnh hiện tại của trò chơi, hãy phản hồi lại hành động mới nhất của người chơi.
 
-<game_context>
-- **Vị trí hiện tại (Location):** {{current_location_name}} - {{current_location_lore}}
-- **Nhiệm vụ hiện tại (Quest):** {{current_quest_description}}
-- **Chỉ số nhân vật (Stats & HP):** HP: {{player_hp}}/{{player_max_hp}} | Cấp độ: {{player_level}}
-- **Vật phẩm trong túi (Inventory):** {{player_inventory}}
-- **Boss đã đánh bại:** {{defeated_bosses}}
-</game_context>
+**Hành động mới nhất của người chơi:** "{{action}}"
 
-<recent_story_history>
-{{recent_story_summary}}
-</recent_story_history>
+---
 
-<system_event>
-<!-- Hệ thống sẽ tự động điền nếu có sự kiện random như rớt đồ, gặp quái. Nếu trống, bỏ qua -->
-{{system_injected_event}} 
-</system_event>
+### QUY TẮC ĐÁNH GIÁ TRẬN ĐÁNH & PHẢN HỒI:
 
-**Hành động của người chơi:** "{{action}}"
+1. **TUYỆT ĐỐI KHÔNG BỊA QUÁI VẬT KHÔNG CÓ TRONG CỐT TRUYỆN:**
+   - **NGHIÊM CẤM** tự bịa ra nhện độc khổng lồ hay quái phụ ngoài luồng. Ở Chương 1 (`ancient_cave`), kẻ thù duy nhất là **Băng nhóm Goblin & Vua Goblin (`goblin_king`)**.
 
-**Yêu cầu BẮT BUỘC về phản hồi JSON:**
-Bạn LUÔN LUÔN phải trả về phản hồi dưới dạng chuỗi JSON duy nhất:
-```json
-{
-  "narrativeText": "Mô tả câu chuyện kết quả hành động của người chơi ngắn gọn (3-5 câu, 100-150 từ, văn phong Dark Fantasy)...",
-  "triggerBattle": true hoặc false,
-  "bossId": "goblin_king" hoặc "shadow_demon" hoặc "dragon_king" hoặc null,
-  "bossName": "Vua Goblin" hoặc "Ác Demon Bóng Tối" hoặc "Hỏa Long Vương" hoặc null
-}
-```
+2. **DẪN DẮT CỐT TRUYỆN & KÍCH HOẠT TRẬN ĐÁNH TỰ ĐỘNG (POKEMON-STYLE):**
+   - Hãy chủ động dẫn dắt diễn biến câu chuyện khi người chơi bước vào hang động, di chuyển hoặc lục soát.
+   - Mô tả ngay Vua Goblin (hoặc toán tay sai Goblin dưới chướng Vua Goblin) phục kích chặn đường và **BẮT BUỘC ĐẶT `"triggerBattle": true` NGAY TẠI LƯỢT ĐÓ!** (Không cần chờ người chơi gõ chữ "tấn công" hay "chiến đấu").
+   - **Gán BossId Chuẩn theo Chương hiện tại:**
+     - Chương 1 ➔ `"bossId": "goblin_king"`, `"bossName": "Vua Goblin"`
+     - Chương 2 ➔ `"bossId": "shadow_demon"`, `"bossName": "Ác Demon Bóng Tối"`
+     - Chương 3 ➔ `"bossId": "dragon_king"`, `"bossName": "Hỏa Long Vương"`
+     - TUYỆT ĐỐI KHÔNG bịa bossId nào khác ngoài 3 ID trên!
+
+3. **QUY TẮC CHỐNG NHẢY CHƯƠNG / NHẢY BOSS (ANTI-SEQUENCE BREAKING):**
+   - Nếu người chơi ở Chương 1 mà nhắn đòi gặp Boss Chương 2/Chương 3 hoặc đòi qua Chương mới:
+   - AI **BẮT BUỘC TỪ CHỐI** nhập vai (ví dụ: sương độc/rào cản ma thuật của Vua Goblin phong tỏa, bắt buộc phải hạ Vua Goblin ở Chương 1 trước).
+
+---
 
 **Danh sách Boss chuẩn có sẵn trong Game (BẮT BUỘC CHỈ CHỌN TRONG DANH SÁCH NÀY, TUYỆT ĐỐI KHÔNG BỊA BOSS KHÁC):**
 - `goblin_king`: Vua Goblin
 - `shadow_demon`: Ác Demon Bóng Tối
 - `dragon_king`: Hỏa Long Vương
 
-**Quy tắc Đánh giá Trận đánh (triggerBattle):**
-1. Nếu hành động của người chơi ("{{action}}") chọn chiến đấu, khiêu chiến, tấn công, tiếp cận sào huyệt, hoặc nhập các từ như: "chiến đấu", "đánh boss", "khiêu chiến", "tấn công", "vào trận", "gặp boss", "đánh quái", hoặc khi tình huống dẫn đến giao tranh -> Bạn BẮT BUỘC phải đặt `"triggerBattle": true`.
-2. **Quy tắc chọn bossId chuẩn xác (RẤT QUAN TRỌNG):**
-   - Nếu chiến đấu với Goblin / Vua Goblin -> BẮT BUỘC chọn `"bossId": "goblin_king"`, `"bossName": "Vua Goblin"`.
-   - Nếu chiến đấu với Demon / Ác Demon -> BẮT BUỘC chọn `"bossId": "shadow_demon"`, `"bossName": "Ác Demon Bóng Tối"`.
-   - Nếu chiến đấu với Rồng / Hỏa Long -> BẮT BUỘC chọn `"bossId": "dragon_king"`, `"bossName": "Hỏa Long Vương"`.
-3. Nếu người chơi chỉ đang đi dạo, trò chuyện, mở rương, kiểm tra xung quanh -> Đặt `"triggerBattle": false`, `"bossId": null`, `"bossName": null`.
+**Yêu cầu BẮT BUỘC về phản hồi JSON:**
+Bạn LUÔN LUÔN phải trả về phản hồi dưới dạng chuỗi JSON duy nhất:
+```json
+{
+  "narrativeText": "Mô tả câu chuyện kết quả hành động của người chơi ngắn gọn (3-5 câu, 100-150 từ, văn phong Dark Fantasy lôi cuốn)...",
+  "triggerBattle": true hoặc false,
+  "bossId": "goblin_king" hoặc "shadow_demon" hoặc "dragon_king" hoặc null,
+  "bossName": "Vua Goblin" hoặc "Ác Demon Bóng Tối" hoặc "Hỏa Long Vương" hoặc null
+}
+```
 
 WORLD
 ------

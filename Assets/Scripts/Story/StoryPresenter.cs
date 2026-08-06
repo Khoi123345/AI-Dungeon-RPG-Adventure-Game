@@ -72,6 +72,18 @@ public class StoryPresenter : MonoBehaviour
             view.SetNextIndicatorVisible(false);
             view.SetChoiceButtonsVisible(false);
             view.SetInputPanelVisible(false);
+
+            if (GameProgressService.Instance?.CurrentCharacter != null)
+            {
+                var curChar = GameProgressService.Instance.CurrentCharacter;
+                view.SetCharacterState(new StoryCharacterState
+                {
+                    characterName = curChar.name,
+                    level = curChar.level,
+                    hp = curChar.hp,
+                    gold = curChar.gold
+                });
+            }
         }
 
         string characterId = GameProgressService.Instance?.CurrentCharacter?.characterId;
@@ -266,6 +278,26 @@ public class StoryPresenter : MonoBehaviour
 
         StoryChoiceData choice = currentData.node.choices[choiceIndex];
 
+        int cost = GameShared.Config.GameConstants.StoryCostPerTurn;
+        var character = GameProgressService.Instance?.CurrentCharacter;
+        if (character != null)
+        {
+            if (character.gold < cost)
+            {
+                view.AppendStoryText($"\n\n<b><color=#FF4444>⚠️ Bạn không đủ Vàng! Mỗi lượt AI kể chuyện yêu cầu {cost} Gold. (Hiện có: {character.gold} Gold). Hãy chiến đấu đánh quái/Boss để kiếm thêm Vàng!</color></b>\n\n");
+                return;
+            }
+            character.gold -= cost;
+            view.SetCharacterState(new StoryCharacterState
+            {
+                characterName = character.name,
+                level = character.level,
+                hp = character.hp,
+                gold = character.gold
+            });
+            Debug.Log($"[StoryPresenter] Đã trừ trực tiếp {cost} Gold trên client (Choice). Vàng còn lại: {character.gold}");
+        }
+
         awaitingChoice = false;
         view.SetChoiceButtonsVisible(false);
         view.SetInputInteractable(false);
@@ -324,6 +356,26 @@ public class StoryPresenter : MonoBehaviour
         if (string.IsNullOrWhiteSpace(userText) || !awaitingChoice)
         {
             return;
+        }
+
+        int cost = GameShared.Config.GameConstants.StoryCostPerTurn;
+        var character = GameProgressService.Instance?.CurrentCharacter;
+        if (character != null)
+        {
+            if (character.gold < cost)
+            {
+                view.AppendStoryText($"\n\n<b><color=#FF4444>⚠️ Bạn không đủ Vàng! Mỗi lượt AI kể chuyện yêu cầu {cost} Gold. (Hiện có: {character.gold} Gold). Hãy chiến đấu đánh quái/Boss để kiếm thêm Vàng!</color></b>\n\n");
+                return;
+            }
+            character.gold -= cost;
+            view.SetCharacterState(new StoryCharacterState
+            {
+                characterName = character.name,
+                level = character.level,
+                hp = character.hp,
+                gold = character.gold
+            });
+            Debug.Log($"[StoryPresenter] Đã trừ trực tiếp {cost} Gold trên client. Vàng còn lại: {character.gold}");
         }
 
         awaitingChoice = false;
@@ -401,6 +453,11 @@ public class StoryPresenter : MonoBehaviour
         if (nextStoryData != null && nextStoryData.node != null && nextStoryData.node.lines != null)
         {
             currentData = nextStoryData;
+            if (currentData.node.character != null)
+            {
+                view.SetCharacterState(currentData.node.character);
+            }
+
             pendingLines.Clear();
             for (int index = 0; index < currentData.node.lines.Count; index++)
             {
@@ -442,12 +499,17 @@ public class StoryPresenter : MonoBehaviour
 
     private StoryData MapActionResponseToStoryData(StoryActionResponse response)
     {
+        string charName = response.character != null ? response.character.name : (GameProgressService.Instance?.CurrentCharacter?.name ?? "Player");
+        int charGold = GameProgressService.Instance?.CurrentCharacter != null 
+            ? GameProgressService.Instance.CurrentCharacter.gold 
+            : (response.character != null ? response.character.gold : 0);
+
         var characterState = new StoryCharacterState
         {
-            characterName = response.character != null ? response.character.name : (GameProgressService.Instance?.CurrentCharacter?.name ?? "Player"),
+            characterName = charName,
             level = response.character != null ? response.character.level : (GameProgressService.Instance?.CurrentCharacter?.level ?? 1),
             hp = response.character != null ? response.character.hp : (GameProgressService.Instance?.CurrentCharacter?.hp ?? 100),
-            gold = response.character != null ? response.character.gold : (GameProgressService.Instance?.CurrentCharacter?.gold ?? 0)
+            gold = charGold
         };
 
         var lines = new List<StoryLineData>

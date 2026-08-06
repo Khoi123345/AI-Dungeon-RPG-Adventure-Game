@@ -137,7 +137,10 @@ namespace GameBackend.Core.Services
 				}
 
 				existing.quantity = Math.Max(0, existing.quantity + change.QuantityDelta);
-				existing.equipped = change.Equipped;
+				if (change.Equipped)
+				{
+					existing.equipped = true;
+				}
 				existing.slotIndex = change.SlotIndex ?? existing.slotIndex;
 				existing.locked = change.Locked;
 				await _inventoryRepository.SaveAsync(existing);

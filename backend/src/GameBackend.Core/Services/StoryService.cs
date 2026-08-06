@@ -13,8 +13,8 @@ namespace GameBackend.Core.Services
 {
     public class StoryService : IStoryService
     {
-        private const string DefaultLocation = "prologue";
-        private const string DefaultChapterId = "introduction";
+        private const string DefaultLocation = "ancient_cave";
+        private const string DefaultChapterId = "chapter_1";
         private const string DefaultSystemPrompt = "You are a dungeon master for a dark fantasy RPG game. Respond in Vietnamese.";
 
         private readonly IStoryRepository _storyRepository;
@@ -83,37 +83,118 @@ namespace GameBackend.Core.Services
         public async Task<StoryActionResponse> StartStoryAsync(StoryStartRequest request)
         {
             Character? character = null;
+            StorySession? session = null;
             try
             {
-                if (!string.IsNullOrWhiteSpace(request.characterId))
+                try
                 {
-                    character = await _characterRepository.GetByIdAsync(request.characterId);
+                    if (!string.IsNullOrWhiteSpace(request.characterId))
+                    {
+                        character = await _characterRepository.GetByIdAsync(request.characterId);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not fetch character {CharacterId} from DB, using fallback character", request.characterId);
+                }
+
+                if (character == null)
+                {
+                    character = new Character
+                    {
+                        characterId = string.IsNullOrWhiteSpace(request.characterId) ? "demo_char_id" : request.characterId,
+                        userId = "demo_user",
+                        name = "Adventurer",
+                        level = 1,
+                        hp = 100,
+                        maxHp = 100,
+                        attack = 15,
+                        defense = 5,
+                        gold = 50,
+                        className = "Adventurer",
+                        status = "Alive",
+                        currentLocationId = DefaultLocation
+                    };
+                }
+
+                try
+                {
+                    session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not fetch session for character {CharacterId}", character.characterId);
+                }
+
+                if (session != null && session.status == "Active" && !string.IsNullOrWhiteSpace(session.storySummary))
+                {
+                    return BuildResponse(session, character, session.storySummary);
+                }
+
+                session = new StorySession
+                {
+                    sessionId = Guid.NewGuid().ToString("N"),
+                    characterId = character.characterId,
+                    currentLocation = DefaultLocation,
+                    currentChapterId = string.IsNullOrWhiteSpace(request.storyFileId) ? DefaultChapterId : request.storyFileId,
+                    currentNodeId = DefaultChapterId,
+                    status = "Active",
+                    updatedAt = DateTime.UtcNow,
+                    storyVersion = string.IsNullOrWhiteSpace(request.storyFileId) ? "1.0" : request.storyFileId,
+                    storySummary = "Mở đầu cuộc phiêu lưu tại tàn tích cổ.",
+                    sourceType = "AI"
+                };
+
+                var openingContext = new StoryActionProcessingContext
+                {
+                    Character = character,
+                    Session = session,
+                    PlayerInput = string.Empty,
+                    RecentActions = new List<StoryAction>(),
+                    PromptContext = await _gamePromptContextBuilder.BuildAsync(character, new List<Item>(), new List<StoryAction>(), session, string.Empty)
+                };
+
+                var openingResponse = await GenerateStoryAiResponseAsync(openingContext, "opening");
+                openingResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, openingResponse);
+
+                try
+                {
+                    await _storyStateUpdater.ApplyAsync(session, character, openingResponse);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not persist story state to DB, continuing in-memory");
+                }
+
+                _logger.LogInformation("Story session started: {SessionId} for character: {CharacterId}", session.sessionId, character.characterId);
+
+                return BuildResponse(session, character, openingResponse.NarrativeText);
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Could not fetch character {CharacterId} from DB, using fallback character", request.characterId);
-            }
-
-            if (character == null)
-            {
-                character = new Character
+                _logger.LogError(ex, "StartStoryAsync error for request character {CharacterId}. Returning safe fallback response.", request.characterId);
+                var safeSession = session ?? new StorySession
                 {
-                    characterId = string.IsNullOrWhiteSpace(request.characterId) ? "demo_char_id" : request.characterId,
-                    userId = "demo_user",
+                    sessionId = Guid.NewGuid().ToString("N"),
+                    characterId = request.characterId ?? "demo_char_id",
+                    currentLocation = DefaultLocation,
+                    currentChapterId = DefaultChapterId,
+                    currentNodeId = DefaultChapterId,
+                    status = "Active",
+                    updatedAt = DateTime.UtcNow,
+                    storySummary = "Mở đầu cuộc phiêu lưu tại tàn tích cổ."
+                };
+                var safeChar = character ?? new Character
+                {
+                    characterId = request.characterId ?? "demo_char_id",
                     name = "Adventurer",
                     level = 1,
                     hp = 100,
                     maxHp = 100,
-                    attack = 15,
-                    defense = 5,
-                    gold = 50,
-                    className = "Adventurer",
-                    status = "Alive",
-                    currentLocationId = DefaultLocation
+                    gold = 999999
                 };
+                return BuildResponse(safeSession, safeChar, "Bạn bước vào khu vực đầu tiên của Etherea, Rừng Thì Thầm. Ánh trăng chiếu xuống, tạo nên bóng đổ rập khuôn giữa những cây cổ thụ.");
             }
-
             StorySession? existingSession = null;
             try
             {

@@ -135,6 +135,10 @@ namespace GameShared.Config
         public const int ReviveWaitMinutes = 5;
         public const double RevivalHpRatio = 0.5;
 
+        // GOLD ECONOMY
+        public const int StoryCostPerTurn = 5;          // Mỗi lượt AI kể chuyện tốn 5 Gold
+        public const int InstantReviveCost = 50;         // Hồi sinh bằng Vàng tốn 50 Gold
+
         private static readonly Random _random = new();
 
         public static string RollBossRarity()
@@ -154,7 +158,19 @@ namespace GameShared.Config
 
         public static int CalculateBossLevel(int playerLevel, string rarity)
         {
-            if (playerLevel <= 3) return playerLevel;
+            if (playerLevel <= 1) return 1;
+
+            if (playerLevel <= 3) 
+            {
+                return Math.Max(1, playerLevel + _random.Next(-1, 2)); // -1, 0, 1
+            }
+            
+            if (rarity == "Common")
+            {
+                int penalty = playerLevel / 5;
+                return Math.Max(1, playerLevel - penalty + _random.Next(0, 2)); // 0 or +1
+            }
+
             int rarityMod = GetBossRarityLevelModifier(rarity);
             int randomMod = _random.Next(-1, 2);
             return Math.Max(1, playerLevel + rarityMod + randomMod);

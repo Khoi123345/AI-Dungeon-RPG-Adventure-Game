@@ -16,6 +16,7 @@ namespace GameBackend.Core.Services
         private readonly IInventoryService _inventoryService;
         private readonly IInventoryRepository _inventoryRepository;
         private readonly IDefeatedBossRepository _defeatedBossRepository;
+        private readonly IStoryRepository _storyRepository;
         private readonly ILogger<BattleService> _logger;
         private readonly Random _random = new();
 
@@ -27,6 +28,7 @@ namespace GameBackend.Core.Services
             IInventoryService inventoryService,
             IInventoryRepository inventoryRepository,
             IDefeatedBossRepository defeatedBossRepository,
+            IStoryRepository storyRepository,
             ILogger<BattleService> logger)
         {
             _bossRepository = bossRepository;
@@ -36,6 +38,7 @@ namespace GameBackend.Core.Services
             _inventoryService = inventoryService;
             _inventoryRepository = inventoryRepository;
             _defeatedBossRepository = defeatedBossRepository;
+            _storyRepository = storyRepository;
             _logger = logger;
         }
 
@@ -308,6 +311,9 @@ namespace GameBackend.Core.Services
 
                 // Lưu character (gold đã cộng, XP đã xử lý trong ApplyExperienceAndLevelUp)
                 await _characterRepository.SaveAsync(character);
+
+                // Tự động chuyển Chương trong Story Session khi đánh bại Boss
+                await AdvanceStoryChapterOnBossDefeatAsync(character.characterId, encounter.bossId);
             }
             else
             {
@@ -501,6 +507,75 @@ namespace GameBackend.Core.Services
             }
 
             return turns;
+        }
+
+        private async Task AdvanceStoryChapterOnBossDefeatAsync(string characterId, string bossId)
+        {
+            if (_storyRepository == null || string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(bossId)) return;
+
+            try
+            {
+                var session = await _storyRepository.GetSessionByCharacterIdAsync(characterId);
+                if (session == null || session.status != "Active") return;
+
+                string normalizedBossId = bossId.Trim().ToLowerInvariant().Replace("boss_", "");
+
+                string targetChapterId = "";
+                string targetLocation = "";
+                string chapterTitle = "";
+
+                if (normalizedBossId.Contains("goblin"))
+                {
+                    targetChapterId = "chapter_2";
+                    targetLocation = "forgotten_temple";
+                    chapterTitle = "Chương 2: Vương Quốc Chìm Đắm (Đền Cổ Quên Lãng)";
+                }
+                else if (normalizedBossId.Contains("demon") || normalizedBossId.Contains("shadow"))
+                {
+                    targetChapterId = "chapter_3";
+                    targetLocation = "dragon_nest";
+                    chapterTitle = "Chương 3: Hoang Mạc Thiêu Rụi (Tổ Rồng)";
+                }
+
+                if (!string.IsNullOrEmpty(targetChapterId))
+                {
+                    session.currentChapterId = targetChapterId;
+                    session.currentLocation = targetLocation;
+                    session.updatedAt = DateTime.UtcNow;
+
+                    string summaryNote = $" [ĐÃ HẠ GỤC BOSS {bossId.ToUpperInvariant()} - TIẾN SANG {chapterTitle.ToUpperInvariant()}]";
+                    if (string.IsNullOrWhiteSpace(session.storySummary))
+                    {
+                        session.storySummary = summaryNote.Trim();
+                    }
+                    else if (!session.storySummary.Contains(targetChapterId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        session.storySummary += summaryNote;
+                    }
+
+                    await _storyRepository.SaveSessionAsync(session);
+
+                    var transitionAction = new StoryAction
+                    {
+                        actionId = Guid.NewGuid().ToString("N"),
+                        sessionId = session.sessionId,
+                        playerInput = $"[SỰ KIỆN CHIẾN THẮNG]: Đã tiêu diệt thành công Boss {bossId}!",
+                        aiResponse = $"Vua Goblin ngã xuống! Mảnh Vỡ Lõi Nguyên Tố tỏa sáng rực rỡ giải trừ phong ấn. Bạn chính thức hoàn thành Chương 1 và bước sang {chapterTitle}!",
+                        turnNumber = 999,
+                        actionType = "chapter_transition",
+                        metadataJson = $"{{\"currentChapterId\":\"{targetChapterId}\",\"currentLocation\":\"{targetLocation}\",\"defeatedBoss\":\"{bossId}\"}}",
+                        createdAt = DateTime.UtcNow
+                    };
+
+                    await _storyRepository.SaveActionAsync(transitionAction);
+                    _logger.LogInformation("Advanced session {SessionId} for character {CharacterId} to chapter {ChapterId} ({Location}) after defeating boss {BossId}",
+                        session.sessionId, characterId, targetChapterId, targetLocation, bossId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to auto-advance story chapter after boss defeat for character {CharacterId}", characterId);
+            }
         }
     }
 }

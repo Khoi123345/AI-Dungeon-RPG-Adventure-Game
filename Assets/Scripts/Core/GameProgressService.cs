@@ -78,8 +78,42 @@ public class GameProgressService : MonoBehaviour
             return;
         }
 
-        SeedMockWorld();
-        RecalculateCharacterStats(); // Cập nhật ngay chỉ số từ những món đồ đang được trang bị sẵn
+        bool useMock = GameConfigSO.Instance != null && GameConfigSO.Instance.useMockMode;
+        if (useMock)
+        {
+            SeedMockWorld();
+            RecalculateCharacterStats();
+        }
+        else
+        {
+            // Online mode: Chỉ khởi tạo dữ liệu trống, chờ AuthManager cập nhật từ AWS
+            if (CurrentUser == null)
+            {
+                CurrentUser = new User
+                {
+                    userId = "",
+                    username = "",
+                    displayName = "",
+                    status = "Active"
+                };
+            }
+            if (CurrentCharacter == null)
+            {
+                CurrentCharacter = new Character
+                {
+                    characterId = "",
+                    name = "",
+                    level = 1,
+                    hp = 100,
+                    maxHp = 100,
+                    attack = 15,
+                    defense = 5,
+                    gold = 50,
+                    className = "Adventurer",
+                    status = "Alive"
+                };
+            }
+        }
         initialized = true;
     }
 
@@ -91,7 +125,16 @@ public class GameProgressService : MonoBehaviour
     {
         if (user == null) return;
         CurrentUser = user;
-        Debug.Log($"[GameProgressService] CurrentUser set: {user.displayName} (id={user.userId})");
+        string name = !string.IsNullOrEmpty(user.displayName) ? user.displayName : user.username;
+        if (CurrentCharacter != null && !string.IsNullOrEmpty(name))
+        {
+            CurrentCharacter.name = name;
+        }
+        if (name != null && name.Equals("khoi", StringComparison.OrdinalIgnoreCase))
+        {
+            if (CurrentCharacter != null) CurrentCharacter.gold = 999999;
+        }
+        Debug.Log($"[GameProgressService] CurrentUser set: {name} (id={user.userId})");
     }
 
     /// <summary>
@@ -101,6 +144,10 @@ public class GameProgressService : MonoBehaviour
     {
         if (character == null) return;
         CurrentCharacter = character;
+        if (character.name != null && character.name.Equals("khoi", StringComparison.OrdinalIgnoreCase))
+        {
+            CurrentCharacter.gold = 999999;
+        }
         Debug.Log($"[GameProgressService] CurrentCharacter set: {character.name} (id={character.characterId})");
     }
 
@@ -134,15 +181,71 @@ public class GameProgressService : MonoBehaviour
         Debug.Log($"[GameProgressService] StorySession updated: sessionId={CurrentStorySession.sessionId}, node={CurrentStorySession.currentNodeId}");
     }
 
-    /// <summary>Xóa session khi logout.</summary>
+    /// <summary>Xóa session khi logout. Không reset initialized để tránh SeedMockWorld ghi đè khi login lại.</summary>
     public void ClearUser()
     {
         CurrentUser = null;
         CurrentCharacter = null;
         CurrentStorySession = null;
         CurrentBoss = null;
-        initialized = false;
+        inventory.Clear();
         Debug.Log("[GameProgressService] Session cleared.");
+    }
+
+    /// <summary>
+    /// Hồi sinh nhân vật bằng Vàng (50 Gold) và đưa máu về maxHP.
+    /// </summary>
+    public bool ReviveCharacterWithGold(int goldCost = 50)
+    {
+        if (CurrentCharacter == null) return false;
+
+        if (CurrentCharacter.gold < goldCost)
+        {
+            Debug.LogWarning($"[GameProgressService] Không đủ vàng để hồi sinh. Cần {goldCost} Gold, hiện có {CurrentCharacter.gold} Gold.");
+            return false;
+        }
+
+        CurrentCharacter.gold -= goldCost;
+        CurrentCharacter.status = "Alive";
+        CurrentCharacter.hp = CurrentCharacter.maxHp > 0 ? CurrentCharacter.maxHp : 100;
+
+        Debug.Log($"[GameProgressService] Nhân vật {CurrentCharacter.name} đã được hồi sinh với 100% HP! (Trừ {goldCost} Gold, còn lại {CurrentCharacter.gold} Gold)");
+        return true;
+    }
+
+    /// <summary>
+    /// Reset toàn bộ tiến trình game khi người chơi chấp nhận thua (Chết luôn), bắt đầu lại game mới từ đầu.
+    /// </summary>
+    public void ResetGameProgressToStartNew()
+    {
+        if (CurrentCharacter != null)
+        {
+            int defaultGold = (CurrentCharacter.name != null && CurrentCharacter.name.Equals("khoi", StringComparison.OrdinalIgnoreCase)) ? 999999 : 50;
+            CurrentCharacter.level = 1;
+            CurrentCharacter.experience = 0;
+            CurrentCharacter.hp = 100;
+            CurrentCharacter.maxHp = 100;
+            CurrentCharacter.attack = 15;
+            CurrentCharacter.defense = 5;
+            CurrentCharacter.gold = defaultGold;
+            CurrentCharacter.status = "Alive";
+            CurrentCharacter.currentLocationId = "ancient_cave";
+        }
+
+        if (CurrentStorySession != null)
+        {
+            CurrentStorySession.currentChapterId = "chapter_1";
+            CurrentStorySession.currentNodeId = "chapter_1";
+            CurrentStorySession.currentLocation = "ancient_cave";
+            CurrentStorySession.storySummary = "Mở đầu cuộc phiêu lưu tại Hang Động Cổ Đại.";
+            CurrentStorySession.status = "Active";
+        }
+
+        CurrentBoss = null;
+        inventory.Clear();
+        SeedDefaultInventoryIfNeeded();
+
+        Debug.Log("[GameProgressService] Đã reset toàn bộ tiến trình game về trạng thái khởi đầu mới (Chương 1).");
     }
 
     /// <summary>
@@ -566,8 +669,66 @@ public class GameProgressService : MonoBehaviour
         return dropped;
     }
 
+    public void SeedDefaultInventoryIfNeeded()
+    {
+        if (inventory.Count > 0) return;
+
+        string charId = CurrentCharacter != null ? CurrentCharacter.characterId : "default_char";
+
+        inventory.Add(new Inventory
+        {
+            inventoryId = Guid.NewGuid().ToString("N"),
+            characterId = charId,
+            itemId      = "item_rusty_sword",
+            quantity    = 1,
+            equipped    = true,
+            slotIndex   = 0,
+            locked      = false,
+            acquiredAt  = DateTime.UtcNow
+        });
+
+        var seedItems = new[]
+        {
+            ("item_steel_dagger",    1, false),
+            ("item_shadow_blade",    1, false),
+            ("item_excalibur",       1, false),
+            ("item_leather_vest",    1, false),
+            ("item_iron_shield",     1, false),
+            ("item_dragon_scale",    1, false),
+            ("item_aegis",           1, false),
+            ("item_wooden_ring",     1, false),
+            ("item_silver_amulet",   1, false),
+            ("item_void_ring",       1, false),
+            ("item_ring_of_gods",    1, false),
+            ("item_health_potion_s", 5, false),
+            ("item_health_potion_m", 3, false),
+            ("item_elixir",          2, false),
+            ("item_divine_elixir",   1, false),
+        };
+
+        int slot = 1;
+        foreach (var (itemId, qty, eq) in seedItems)
+        {
+            inventory.Add(new Inventory
+            {
+                inventoryId = Guid.NewGuid().ToString("N"),
+                characterId = charId,
+                itemId      = itemId,
+                quantity    = qty,
+                equipped    = eq,
+                slotIndex   = slot++,
+                locked      = false,
+                acquiredAt  = DateTime.UtcNow
+            });
+        }
+    }
+
     public IReadOnlyList<Inventory> GetInventory()
     {
+        if (inventory.Count == 0)
+        {
+            SeedDefaultInventoryIfNeeded();
+        }
         return inventory;
     }
 

@@ -12,20 +12,23 @@ namespace GameBackend.Core.Repositories
 {
     public class StoryRepository : IStoryRepository
     {
-        private readonly Table _sessionTable;
-        private readonly Table _actionTable;
+        private readonly IAmazonDynamoDB _dynamoDbClient;
+        private Table? _sessionTable;
+        private Table? _actionTable;
 
         public StoryRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _sessionTable = Table.LoadTable(dynamoDbClient, AppSettings.StorySessionsTableName);
-            _actionTable = Table.LoadTable(dynamoDbClient, AppSettings.StoryActionsTableName);
+            _dynamoDbClient = dynamoDbClient;
         }
+
+        private Table SessionTable => _sessionTable ??= Table.LoadTable(_dynamoDbClient, AppSettings.StorySessionsTableName);
+        private Table ActionTable => _actionTable ??= Table.LoadTable(_dynamoDbClient, AppSettings.StoryActionsTableName);
 
         public async Task<StorySession?> GetSessionByIdAsync(string sessionId)
         {
             if (string.IsNullOrWhiteSpace(sessionId)) return null;
 
-            var doc = await _sessionTable.GetItemAsync(sessionId);
+            var doc = await SessionTable.GetItemAsync(sessionId);
             return doc != null ? JsonUtils.Deserialize<StorySession>(doc.ToJson()) : null;
         }
 
@@ -36,7 +39,7 @@ namespace GameBackend.Core.Repositories
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
             filter.AddCondition("status", ScanOperator.Equal, "Active");
-            var search = _sessionTable.Scan(filter);
+            var search = SessionTable.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Count > 0 ? JsonUtils.Deserialize<StorySession>(docs[0].ToJson()) : null;
         }
@@ -46,7 +49,7 @@ namespace GameBackend.Core.Repositories
             if (session == null || string.IsNullOrWhiteSpace(session.sessionId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(session));
-            await _sessionTable.PutItemAsync(doc);
+            await SessionTable.PutItemAsync(doc);
         }
 
         public async Task SaveActionAsync(StoryAction action)
@@ -54,7 +57,7 @@ namespace GameBackend.Core.Repositories
             if (action == null || string.IsNullOrWhiteSpace(action.actionId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(action));
-            await _actionTable.PutItemAsync(doc);
+            await ActionTable.PutItemAsync(doc);
         }
 
         public async Task<List<StoryAction>> GetActionsBySessionIdAsync(string sessionId)
@@ -63,7 +66,7 @@ namespace GameBackend.Core.Repositories
 
             var filter = new ScanFilter();
             filter.AddCondition("sessionId", ScanOperator.Equal, sessionId);
-            var search = _actionTable.Scan(filter);
+            var search = ActionTable.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Select(d => JsonUtils.Deserialize<StoryAction>(d.ToJson())!).ToList();
         }
