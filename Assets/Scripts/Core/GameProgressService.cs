@@ -79,6 +79,7 @@ public class GameProgressService : MonoBehaviour
         }
 
         SeedMockWorld();
+        RecalculateCharacterStats(); // Cập nhật ngay chỉ số từ những món đồ đang được trang bị sẵn
         initialized = true;
     }
 
@@ -996,9 +997,15 @@ public class GameProgressService : MonoBehaviour
         if (inventory == null) return;
 
         var template = GameShared.Config.GameConstants.GetItemById(itemId);
-        bool isStackable = template != null && template.stackable;
+        
+        // Mặc định đọc từ GameConstants. Nếu không có template, tự động cho phép stack nếu là Consumable
+        bool isStackable = template != null ? template.stackable : (ItemData.GetItemTypeFromId(itemId) == ItemType.Consumable);
 
-        // Chỉ cộng dồn với các vật phẩm có tính chất stackable (như Thuốc hồi máu)
+        // NẾU BẠN MUỐN TẤT CẢ VẬT PHẨM (KỂ CẢ VŨ KHÍ, GIÁP) ĐỀU CỘNG DỒN SỐ LƯỢNG KHI RƠI RA,
+        // HÃY BỎ COMMENT DÒNG BÊN DƯỚI ĐỂ ÉP BUỘC LUÔN STACK:
+        isStackable = true; 
+
+        // Chỉ cộng dồn với các vật phẩm có tính chất stackable (như Thuốc hồi máu, hoặc nếu bạn bật true ở trên)
         if (isStackable)
         {
             Inventory existing = inventory.Find(entry => entry.itemId == itemId && entry.equipped == equipped);
@@ -1037,6 +1044,18 @@ public class GameProgressService : MonoBehaviour
         return ToggleEquipItemByInventoryId(identifier);
     }
 
+    private void UnequipAndMergeItem(Inventory itemToUnequip)
+    {
+        itemToUnequip.equipped = false;
+        // Thử tìm trong túi đồ xem có đống nào cùng loại chưa trang bị không để gộp vào
+        var existingStack = inventory.Find(i => i.itemId == itemToUnequip.itemId && !i.equipped && i.inventoryId != itemToUnequip.inventoryId);
+        if (existingStack != null)
+        {
+            existingStack.quantity += itemToUnequip.quantity;
+            inventory.Remove(itemToUnequip); // Hủy cái bị tháo ra vì đã gộp xong
+        }
+    }
+
     public bool ToggleEquipItemByInventoryId(string inventoryIdOrItemId)
     {
         if (inventory == null) return false;
@@ -1053,19 +1072,42 @@ public class GameProgressService : MonoBehaviour
             itemType = parsedType;
         }
 
-        // 1. NẾU VẬT PHẨM ĐANG ĐƯỢC TRANG BỊ -> THÁO TRANG BỊ (UNEQUIP)
+        // 1. NẾU VẬT PHẨM ĐANG ĐƯỢC TRANG BỊ -> THÁO TRANG BỊ (UNEQUIP) VÀ GỘP VÀO TÚI
         if (targetItem.equipped)
         {
-            targetItem.equipped = false;
+            UnequipAndMergeItem(targetItem);
             RecalculateCharacterStats();
-            Debug.Log($"🛡️ [UNEQUIP] Đã tháo vật phẩm '{itemId}' (ID={targetItem.inventoryId}, {itemType}).");
+            Debug.Log($"🛡️ [UNEQUIP] Đã tháo vật phẩm '{itemId}' (Và gộp số lượng nếu có).");
             return false;
         }
 
         // 2. NẾU VẬT PHẨM CHƯA ĐƯỢC TRANG BỊ -> TRANG BỊ HỢP LỆ THEO QUY TẮC GIỚI HẠN:
+        // TÁCH ITEM NẾU SỐ LƯỢNG LỚN HƠN 1
+        if (targetItem.quantity > 1)
+        {
+            targetItem.quantity -= 1; // Bớt 1 món trong đống đang có ở túi
+            
+            // Tạo ra 1 món đồ mới tinh (clone) số lượng 1 để mặc lên người
+            var equippedCopy = new Inventory
+            {
+                inventoryId = Guid.NewGuid().ToString("N"),
+                characterId = targetItem.characterId,
+                itemId = targetItem.itemId,
+                quantity = 1,
+                equipped = false, // Lát nữa ở dưới sẽ set true
+                slotIndex = targetItem.slotIndex,
+                locked = targetItem.locked,
+                acquiredAt = DateTime.UtcNow
+            };
+            inventory.Add(equippedCopy);
+            targetItem = equippedCopy; // Trỏ con trỏ sang món đồ mới cắt ra để xử lý phần dưới
+        }
+
         if (itemType == ItemType.Weapon || itemType == ItemType.Armor)
         {
-            foreach (var inv in inventory)
+            // Do List sẽ bị thay đổi kích thước nếu UnequipAndMergeItem hủy item cũ, ta dùng danh sách copy để duyệt an toàn
+            var currentInventoryCopy = new List<Inventory>(inventory);
+            foreach (var inv in currentInventoryCopy)
             {
                 if (inv.equipped && inv.inventoryId != targetItem.inventoryId)
                 {
@@ -1075,12 +1117,12 @@ public class GameProgressService : MonoBehaviour
 
                     if (currentType == itemType)
                     {
-                        inv.equipped = false; // Tự động tháo trang bị cũ cùng loại!
                         if (CurrentCharacter != null && !string.IsNullOrEmpty(CurrentCharacter.characterId) && !string.IsNullOrEmpty(inv.inventoryId))
                         {
                             _ = ApiClient.Instance?.PostAsync<object>($"inventory/{CurrentCharacter.characterId}/unequip", new GameShared.DTOs.Inventory.UnequipItemRequest { inventoryId = inv.inventoryId });
                         }
-                        Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo '{inv.itemId}' (ID={inv.inventoryId}, {itemType}) cũ để nhường chỗ cho '{itemId}'.");
+                        Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo '{inv.itemId}' cũ để nhường chỗ cho '{itemId}'.");
+                        UnequipAndMergeItem(inv); // Tháo đồ cũ và gộp vô túi
                     }
                 }
             }
@@ -1090,7 +1132,8 @@ public class GameProgressService : MonoBehaviour
         else if (itemType == ItemType.Accessory)
         {
             // Tự động tháo phụ kiện cũ (nếu có) — UI chỉ có 1 ô Accessory
-            foreach (var inv in inventory)
+            var currentInventoryCopy = new List<Inventory>(inventory);
+            foreach (var inv in currentInventoryCopy)
             {
                 if (inv.equipped && inv.inventoryId != targetItem.inventoryId)
                 {
@@ -1100,8 +1143,8 @@ public class GameProgressService : MonoBehaviour
 
                     if (currentType == ItemType.Accessory)
                     {
-                        inv.equipped = false;
-                        Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo phụ kiện '{inv.itemId}' (ID={inv.inventoryId}) để nhường chỗ cho '{itemId}'.");
+                        Debug.Log($"🔄 [AUTO UNEQUIP] Tự động tháo phụ kiện '{inv.itemId}' để nhường chỗ cho '{itemId}'.");
+                        UnequipAndMergeItem(inv);
                     }
                 }
             }
