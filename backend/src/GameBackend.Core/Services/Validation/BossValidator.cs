@@ -58,12 +58,22 @@ namespace GameBackend.Core.Services.Validation
                 response.BossName = "Hỏa Long Vương";
             }
 
-            // Nếu BossId vẫn rỗng hoặc không tồn tại trong hệ thống, tự động gán fallback Boss "goblin_king"
-            if (string.IsNullOrWhiteSpace(response.BossId) || !await _contentService.BossExistsAsync(response.BossId))
+            var id = response.BossId;
+            var existsInCatalog = GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(id, StringComparison.OrdinalIgnoreCase));
+
+            if (!existsInCatalog && !await _contentService.BossExistsAsync(id))
             {
-                _logger.LogInformation("BossId '{BossId}' invalid or missing, falling back to 'goblin_king'", response.BossId);
-                response.BossId = "goblin_king";
-                response.BossName = "Vua Goblin";
+                _logger.LogInformation("Rejected battle trigger because boss {BossId} does not exist in catalog or content", id);
+                ResetBossFields(response);
+                return;
+            }
+
+            var effectiveLocation = response.CurrentLocation ?? context.Session.currentLocation ?? context.Character.currentLocationId;
+            if (!string.IsNullOrWhiteSpace(effectiveLocation) && !await _contentService.LocationExistsAsync(effectiveLocation))
+            {
+                _logger.LogInformation("Rejected battle trigger because boss {BossId} references invalid location {Location}", response.BossId, effectiveLocation);
+                ResetBossFields(response);
+                return;
             }
 
             response.BossName = string.IsNullOrWhiteSpace(response.BossName) ? response.BossId : response.BossName;

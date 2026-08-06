@@ -35,9 +35,12 @@ namespace GameBackend.Core.Services.Validation
                     continue;
                 }
 
-                if (!await _contentService.ItemExistsAsync(change.ItemId))
+                var itemId = change.ItemId;
+                var existsInCatalog = GameShared.Config.GameConstants.ItemCatalog.Any(i => i.itemId.Equals(itemId, StringComparison.OrdinalIgnoreCase));
+
+                if (!existsInCatalog && !await _contentService.ItemExistsAsync(itemId))
                 {
-                    _logger.LogInformation("Rejected inventory change for unknown item {ItemId}", change.ItemId);
+                    _logger.LogInformation("Rejected inventory change for unknown item {ItemId}", itemId);
                     continue;
                 }
 

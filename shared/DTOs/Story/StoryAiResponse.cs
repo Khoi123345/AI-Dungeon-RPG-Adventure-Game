@@ -30,6 +30,8 @@ namespace GameShared.DTOs.Story
         public StoryAiCharacterDelta CharacterDelta { get; set; }
 
         public List<StoryAiInventoryChange> InventoryChanges { get; set; } = new();
+
+        public List<StoryChoiceOption> Choices { get; set; } = new();
     }
 
     [System.Serializable]

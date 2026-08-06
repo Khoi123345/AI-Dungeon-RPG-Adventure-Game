@@ -17,5 +17,9 @@ namespace GameBackend.Core.AIStory.DTOs
         public string RecentTurns { get; set; }
 
         public string UserAction { get; set; }
+
+        public string? SystemInjectedEvent { get; set; }
+
+        public string? DefeatedBossesInfo { get; set; }
     }
 }
