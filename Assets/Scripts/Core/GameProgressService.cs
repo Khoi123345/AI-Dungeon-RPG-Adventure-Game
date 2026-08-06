@@ -527,8 +527,10 @@ public class GameProgressService : MonoBehaviour
 
         if (isVictory)
         {
-            CurrentCharacter.gold += CurrentBoss.goldReward;
-            CurrentCharacter.experience += CurrentBoss.expReward;
+            int goldEarned = GameShared.Config.GameConstants.CalculateGoldReward(CurrentBoss?.level ?? 1, CurrentBoss?.rarity ?? "Common");
+            int expEarned = GameShared.Config.GameConstants.CalculateExpReward(CurrentBoss?.level ?? 1, CurrentBoss?.rarity ?? "Common", CurrentCharacter?.level ?? 1);
+            CurrentCharacter.gold += goldEarned;
+            CurrentCharacter.experience += expEarned;
             HandleLevelUpIfNeeded();
 
             // Roll ngẫu nhiên vật phẩm từ GameConstants theo rarity của Boss

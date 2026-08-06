@@ -76,6 +76,7 @@ namespace GameShared.Config
 
         public static readonly Dictionary<string, (int GoldMod, int ExpMod)> RarityMultipliers = new()
         {
+            { "Minor",     (GoldMod: 2,   ExpMod: 10)  },
             { "Common",    (GoldMod: 10,  ExpMod: 15)  },
             { "Rare",      (GoldMod: 20,  ExpMod: 30)  },
             { "Epic",      (GoldMod: 40,  ExpMod: 60)  },
@@ -194,14 +195,29 @@ namespace GameShared.Config
         {
             if (!RarityMultipliers.TryGetValue(bossRarity, out var mods))
                 mods = RarityMultipliers["Common"];
+            if (bossRarity.Equals("Minor", StringComparison.OrdinalIgnoreCase))
+            {
+                return Math.Max(5, bossLevel * mods.GoldMod + _random.Next(2, 6));
+            }
             return bossLevel * mods.GoldMod + _random.Next(10, 51);
         }
 
-        public static int CalculateExpReward(int bossLevel, string bossRarity)
+        public static int CalculateExpReward(int bossLevel, string bossRarity, int playerLevel = 1)
         {
             if (!RarityMultipliers.TryGetValue(bossRarity, out var mods))
                 mods = RarityMultipliers["Common"];
-            return bossLevel * mods.ExpMod;
+
+            int baseExp = bossLevel * mods.ExpMod;
+
+            // Higher-Level Boss Victory EXP Bonus Multiplier:
+            if (bossLevel > playerLevel)
+            {
+                int gap = bossLevel - playerLevel;
+                double bonusMultiplier = 1.0 + (gap * 0.5); // e.g. gap=1 -> 1.5x, gap=2 -> 2.0x, gap=4 -> 3.0x
+                baseExp = (int)Math.Round(baseExp * bonusMultiplier);
+            }
+
+            return baseExp;
         }
     }
 }

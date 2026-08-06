@@ -178,7 +178,15 @@ public class StoryView : MonoBehaviour
         if (txtStoryLog != null)
         {
             txtStoryLog.text = text;
-            Canvas.ForceUpdateCanvases();
+            try
+            {
+                Canvas.ForceUpdateCanvases();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning("[StoryView] Canvas.ForceUpdateCanvases warning: " + ex.Message);
+            }
+
             if (storyScrollRect != null)
             {
                 storyScrollRect.verticalNormalizedPosition = 0f;
@@ -194,7 +202,15 @@ public class StoryView : MonoBehaviour
         }
 
         txtStoryLog.text += text;
-        Canvas.ForceUpdateCanvases();
+        try
+        {
+            Canvas.ForceUpdateCanvases();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[StoryView] Canvas.ForceUpdateCanvases warning: " + ex.Message);
+        }
+
         if (storyScrollRect != null)
         {
             storyScrollRect.verticalNormalizedPosition = 0f;

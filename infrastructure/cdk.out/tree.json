@@ -1109,7 +1109,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1273,6 +1273,13 @@
                                   "Resource": {
                                     "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
                                   }
+                                },
+                                {
+                                  "Action": "cognito-idp:ListUsers",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
+                                  }
                                 }
                               ],
                               "Version": "2012-10-17"
@@ -1312,7 +1319,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1515,7 +1522,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1718,7 +1725,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -1960,7 +1967,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -2214,7 +2221,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -2500,7 +2507,9 @@
                                 {
                                   "Action": [
                                     "bedrock:InvokeModel",
-                                    "bedrock:InvokeModelWithResponseStream"
+                                    "bedrock:InvokeModelWithResponseStream",
+                                    "bedrock:Converse",
+                                    "bedrock:ConverseStream"
                                   ],
                                   "Effect": "Allow",
                                   "Resource": "*"
@@ -2543,7 +2552,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -2837,7 +2846,9 @@
                                 {
                                   "Action": [
                                     "bedrock:InvokeModel",
-                                    "bedrock:InvokeModelWithResponseStream"
+                                    "bedrock:InvokeModelWithResponseStream",
+                                    "bedrock:Converse",
+                                    "bedrock:ConverseStream"
                                   ],
                                   "Effect": "Allow",
                                   "Resource": "*"
@@ -2880,7 +2891,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -3189,7 +3200,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -3539,7 +3550,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -3760,7 +3771,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -3989,7 +4000,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {
@@ -4218,7 +4229,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
                       },
-                      "s3Key": "4b1d748553ad9f0f3bc15ac94dc11ff524ac4371002998764ace6d1a9f58f7ae.zip"
+                      "s3Key": "de97f44dc5a837d88f020909a02177eb883581274859034692fe58767328d0ad.zip"
                     },
                     "environment": {
                       "variables": {

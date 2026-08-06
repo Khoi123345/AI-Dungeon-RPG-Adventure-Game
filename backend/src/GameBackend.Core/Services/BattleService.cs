@@ -287,7 +287,7 @@ namespace GameBackend.Core.Services
 
                 // Mục 5: Loot System
                 int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, encounter.bossRarity);
-                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity);
+                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity, character.level);
                 character.gold += goldReward;
                 await _characterService.ApplyExperienceAndLevelUp(character, expReward);
 
