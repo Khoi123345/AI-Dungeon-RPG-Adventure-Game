@@ -31,9 +31,12 @@ namespace GameBackend.Core.Services.Validation
                 return;
             }
 
-            if (!await _contentService.BossExistsAsync(response.BossId))
+            var id = response.BossId;
+            var existsInCatalog = GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(id, StringComparison.OrdinalIgnoreCase));
+
+            if (!existsInCatalog && !await _contentService.BossExistsAsync(id))
             {
-                _logger.LogInformation("Rejected battle trigger because boss {BossId} does not exist in content", response.BossId);
+                _logger.LogInformation("Rejected battle trigger because boss {BossId} does not exist in catalog or content", id);
                 ResetBossFields(response);
                 return;
             }

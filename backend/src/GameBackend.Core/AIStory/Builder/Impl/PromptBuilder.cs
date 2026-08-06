@@ -70,7 +70,9 @@ namespace GameBackend.Core.AIStory
                          .Replace("{{location}}", context.Location ?? string.Empty)
                          .Replace("{{summary}}", summaryValue ?? string.Empty)
                          .Replace("{{recentTurns}}", context.RecentTurns ?? string.Empty)
-                         .Replace("{{action}}", context.UserAction ?? string.Empty);
+                         .Replace("{{action}}", context.UserAction ?? string.Empty)
+                         .Replace("{{system_injected_event}}", context.SystemInjectedEvent ?? string.Empty)
+                         .Replace("{{defeated_bosses}}", context.DefeatedBossesInfo ?? "Chưa tiêu diệt Boss nào.");
 
             return final;
         }

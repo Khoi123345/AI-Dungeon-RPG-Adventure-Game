@@ -69,6 +69,7 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<IBattleRepository, BattleRepository>();
                 services.AddSingleton<IStoryRepository, StoryRepository>();
                 services.AddSingleton<IInventoryRepository, InventoryRepository>();
+                services.AddSingleton<IDefeatedBossRepository, DefeatedBossRepository>();
                 services.AddSingleton<IContentService>(sp =>
                 {
                     var contentRoot = Environment.GetEnvironmentVariable("CONTENT_ROOT") ?? Path.Combine(Directory.GetCurrentDirectory(), "Content");

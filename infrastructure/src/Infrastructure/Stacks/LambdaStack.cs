@@ -39,6 +39,7 @@ namespace Infrastructure.Stacks
                     { "INVENTORY_TABLE", dbStack.InventoryTable.TableName },
                     { "BOSSES_TABLE", dbStack.BossesTable.TableName },       // Bắt buộc: BossRepository.Table.LoadTable()
                     { "LOOT_DROPS_TABLE", dbStack.LootDropsTable.TableName }, // Bắt buộc: BattleRepository.Table.LoadTable()
+                    { "DEFEATED_BOSSES_TABLE", dbStack.DefeatedBossesTable.TableName },
                     { "COGNITO_USER_POOL_ID", cognitoStack.UserPool.UserPoolId },
                     { "COGNITO_CLIENT_ID", cognitoStack.UserPoolClient.UserPoolClientId }
                 }
@@ -128,15 +129,18 @@ namespace Infrastructure.Stacks
 
             // Story
             dbStack.StorySessionsTable.GrantReadWriteData(StartStoryFunction);
+            dbStack.StoryActionsTable.GrantReadWriteData(StartStoryFunction);
             dbStack.CharactersTable.GrantReadData(StartStoryFunction);
             dbStack.InventoryTable.GrantReadData(StartStoryFunction);
             dbStack.BossesTable.GrantReadData(StartStoryFunction);
-
+            dbStack.DefeatedBossesTable.GrantReadData(StartStoryFunction);
+ 
             dbStack.StorySessionsTable.GrantReadWriteData(StoryActionFunction);
             dbStack.StoryActionsTable.GrantReadWriteData(StoryActionFunction);
             dbStack.CharactersTable.GrantReadWriteData(StoryActionFunction);
             dbStack.InventoryTable.GrantReadWriteData(StoryActionFunction);
             dbStack.BossesTable.GrantReadData(StoryActionFunction);
+            dbStack.DefeatedBossesTable.GrantReadData(StoryActionFunction);
 
             // Battle
             dbStack.BossEncountersTable.GrantReadWriteData(SpawnBossFunction);
@@ -152,6 +156,7 @@ namespace Infrastructure.Stacks
             dbStack.InventoryTable.GrantReadWriteData(ResolveBattleFunction);
             dbStack.LootDropsTable.GrantReadWriteData(ResolveBattleFunction);
             dbStack.BossesTable.GrantReadData(ResolveBattleFunction);
+            dbStack.DefeatedBossesTable.GrantReadWriteData(ResolveBattleFunction);
 
             // Inventory
             dbStack.InventoryTable.GrantReadData(GetInventoryFunction);

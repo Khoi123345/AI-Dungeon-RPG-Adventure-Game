@@ -55,6 +55,31 @@ namespace GameBackend.Core.Services
             _logger = logger;
         }
 
+        private static readonly Dictionary<string, List<string>> LocationMobs = new()
+        {
+            { "ancient_cave", new() { "mob_cave_spider", "mob_goblin_scout" } },
+            { "forgotten_temple", new() { "mob_shadow_spirit", "mob_temple_golem" } },
+            { "goblin_hideout", new() { "mob_goblin_guard", "mob_goblin_scout" } }
+        };
+
+        private readonly Random _randomEncounterGenerator = new();
+
+        private string? RollRandomEncounter(string locationId)
+        {
+            if (string.IsNullOrWhiteSpace(locationId)) return null;
+
+            // 35% chance of random encounter
+            if (_randomEncounterGenerator.NextDouble() > 0.35) return null;
+
+            var normalizedLocation = locationId.Trim().ToLowerInvariant().Replace(" ", "_").Replace("-", "_");
+            if (LocationMobs.TryGetValue(normalizedLocation, out var mobs) && mobs.Count > 0)
+            {
+                return mobs[_randomEncounterGenerator.Next(mobs.Count)];
+            }
+
+            return null;
+        }
+
         public async Task<StoryActionResponse> StartStoryAsync(StoryStartRequest request)
         {
             var character = await _characterRepository.GetByIdAsync(request.characterId)
@@ -63,7 +88,22 @@ namespace GameBackend.Core.Services
             var existingSession = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
             if (existingSession != null && existingSession.status == "Active")
             {
-                return BuildResponse(existingSession, character, existingSession.storySummary ?? string.Empty);
+                var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(existingSession.sessionId);
+                var latestAction = allRecentActions.OrderByDescending(a => a.createdAt).FirstOrDefault();
+                var lastNarrative = latestAction?.aiResponse ?? existingSession.storySummary ?? string.Empty;
+                List<StoryChoiceOption>? lastChoices = null;
+                if (latestAction != null)
+                {
+                    try
+                    {
+                        var parsed = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(latestAction.aiResponse, existingSession, "choice");
+                        lastNarrative = parsed.NarrativeText;
+                        lastChoices = parsed.Choices;
+                    }
+                    catch { }
+                }
+
+                return BuildResponse(existingSession, character, lastNarrative, lastChoices);
             }
 
             var session = new StorySession
@@ -80,6 +120,9 @@ namespace GameBackend.Core.Services
                 sourceType = "AI"
             };
 
+            // Sync character's starting location with the story session location
+            character.currentLocationId = session.currentLocation;
+
             var openingContext = new StoryActionProcessingContext
             {
                 Character = character,
@@ -94,7 +137,7 @@ namespace GameBackend.Core.Services
             await _storyStateUpdater.ApplyAsync(session, character, openingResponse);
             _logger.LogInformation("Story session started: {SessionId} for character: {CharacterId}", session.sessionId, character.characterId);
 
-            return BuildResponse(session, character, openingResponse.NarrativeText);
+            return BuildResponse(session, character, openingResponse.NarrativeText, openingResponse.Choices);
         }
 
         public async Task<StoryActionResponse> ProcessActionAsync(StoryActionRequest request)
@@ -113,21 +156,36 @@ namespace GameBackend.Core.Services
                 throw new Utils.GameNotFoundException("Session mismatch");
             }
 
+            string? systemInjectedEvent = null;
+            if (session.currentNodeId != "boss_room" && session.status == "Active" && request.choiceIndex != 2) // Do not ambush during rest
+            {
+                var mobId = RollRandomEncounter(session.currentLocation);
+                if (mobId != null)
+                {
+                    var mob = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == mobId);
+                    if (mob != null)
+                    {
+                        systemInjectedEvent = $"[SỰ KIỆN QUÁI VẬT] Một con {mob.name} xuất hiện đột ngột cản đường bạn! Trận chiến bắt đầu! Bạn phải mô tả cuộc chạm trán này trong narrativeText, đồng thời bắt buộc đặt triggerBattle: true, bossId: '{mobId}', bossName: '{mob.name}', bossLevel: {character.level}.";
+                    }
+                }
+            }
+
             // If player provided free-form input, run AI-driven orchestration
             if (!string.IsNullOrWhiteSpace(request.playerInput))
             {
-                return await ProcessFreeFormActionAsync(request, character, session);
+                return await ProcessFreeFormActionAsync(request, character, session, systemInjectedEvent);
             }
 
-            return await ProcessChoiceActionAsync(request, character, session);
+            return await ProcessChoiceActionAsync(request, character, session, systemInjectedEvent);
         }
 
         private async Task<StoryActionResponse> ProcessFreeFormActionAsync(
             StoryActionRequest request,
             Character character,
-            StorySession session)
+            StorySession session,
+            string? systemInjectedEvent)
         {
-            var context = await LoadGameContextAsync(request, character, session);
+            var context = await LoadGameContextAsync(request, character, session, systemInjectedEvent);
             var aiResponse = await GenerateStoryAiResponseAsync(context, "player_action");
 
             if (string.IsNullOrWhiteSpace(aiResponse.NarrativeText))
@@ -147,9 +205,10 @@ namespace GameBackend.Core.Services
         private async Task<StoryActionResponse> ProcessChoiceActionAsync(
             StoryActionRequest request,
             Character character,
-            StorySession session)
+            StorySession session,
+            string? systemInjectedEvent)
         {
-            var context = await LoadGameContextAsync(request, character, session);
+            var context = await LoadGameContextAsync(request, character, session, systemInjectedEvent);
             var aiResponse = await GenerateStoryAiResponseAsync(context, "choice");
 
             if (string.IsNullOrWhiteSpace(aiResponse.NarrativeText))
@@ -169,7 +228,8 @@ namespace GameBackend.Core.Services
         private async Task<StoryActionProcessingContext> LoadGameContextAsync(
             StoryActionRequest request,
             Character character,
-            StorySession session)
+            StorySession session,
+            string? systemInjectedEvent = null)
         {
             var inventoryResponse = await _inventoryService.GetInventoryAsync(character.characterId);
             var inventoryItems = (inventoryResponse?.slots ?? new List<GameShared.DTOs.Inventory.InventorySlot>())
@@ -193,7 +253,8 @@ namespace GameBackend.Core.Services
                 inventoryItems,
                 recentActions,
                 session,
-                request.playerInput);
+                request.playerInput,
+                systemInjectedEvent);
 
             return new StoryActionProcessingContext
             {
@@ -228,7 +289,10 @@ namespace GameBackend.Core.Services
                       "    \"status\": \"Alive\",\n" +
                       "    \"currentLocationId\": \"location ID\"\n" +
                       "  },\n" +
-                      "  \"inventoryChanges\": []\n" +
+                      "  \"inventoryChanges\": [],\n" +
+                      "  \"choices\": [\n" +
+                      "    { \"label\": \"Choice Label\", \"description\": \"Choice Description\", \"nextNodeId\": \"next_node_id\" }\n" +
+                      "  ]\n" +
                       "}";
 
             var rawResponse = await GenerateRawAiResponseAsync(DefaultSystemPrompt, prompt, context.Session.storySummary ?? string.Empty);
@@ -262,7 +326,7 @@ namespace GameBackend.Core.Services
 
         private static StoryActionResponse BuildResponse(StoryActionProcessingContext context, string narrativeText, StoryAiResponse aiResponse)
         {
-            var response = BuildResponse(context.Session, context.Character, narrativeText);
+            var response = BuildResponse(context.Session, context.Character, narrativeText, aiResponse.Choices);
             response.triggerBattle = aiResponse.TriggerBattle;
             response.bossId = aiResponse.BossId;
             return response;
@@ -349,7 +413,7 @@ namespace GameBackend.Core.Services
             };
         }
 
-        private static StoryActionResponse BuildResponse(StorySession session, Character character, string narrativeText)
+        private static StoryActionResponse BuildResponse(StorySession session, Character character, string narrativeText, List<StoryChoiceOption>? aiChoices = null)
         {
             return new StoryActionResponse
             {
@@ -362,16 +426,26 @@ namespace GameBackend.Core.Services
                     characterId = character.characterId,
                     name = character.name,
                     level = character.level,
+                    experience = character.experience,
                     hp = character.hp,
                     maxHp = character.maxHp,
-                    gold = character.gold
+                    attack = character.attack,
+                    defense = character.defense,
+                    criticalRate = character.criticalRate,
+                    luckyRate = character.luckyRate,
+                    gold = character.gold,
+                    className = character.className,
+                    status = character.status,
+                    currentLocationId = character.currentLocationId
                 },
-                choices = new List<StoryChoiceOption>
-                {
-                    new() { label = "Tấn công", description = "Chiến đấu với Boss quái vật", nextNodeId = "battle_path" },
-                    new() { label = "Điều tra", description = "Tìm kiếm lối đi bí ẩn", nextNodeId = "investigate_path" },
-                    new() { label = "Nghỉ ngơi", description = "Hồi phục sức khỏe", nextNodeId = "rest_path" }
-                },
+                choices = (aiChoices != null && aiChoices.Count > 0)
+                    ? aiChoices
+                    : new List<StoryChoiceOption>
+                    {
+                        new() { label = "Tấn công", description = "Chiến đấu với Boss quái vật", nextNodeId = "battle_path" },
+                        new() { label = "Điều tra", description = "Tìm kiếm lối đi bí ẩn", nextNodeId = "investigate_path" },
+                        new() { label = "Nghỉ ngơi", description = "Hồi phục sức khỏe", nextNodeId = "rest_path" }
+                    },
                 triggerBattle = false
             };
         }

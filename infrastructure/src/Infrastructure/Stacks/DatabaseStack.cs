@@ -16,6 +16,7 @@ namespace Infrastructure.Stacks
         public ITable InventoryTable { get; }
         public ITable BossesTable { get; }         // Boss template data
         public ITable LootDropsTable { get; }      // Loot drops per battle
+        public ITable DefeatedBossesTable { get; }
 
         public DatabaseStack(Construct scope, string id, IStackProps? props = null) : base(scope, id, props)
         {
@@ -28,6 +29,16 @@ namespace Infrastructure.Stacks
             StoryActionsTable = CreateTable("GameStoryActions", "actionId");
             InventoryTable = CreateTable("GameInventory", "inventoryId");
             LootDropsTable = CreateTable("GameLootDrops", "lootId");       // Missing → 502 BattleRepository crash
+
+            DefeatedBossesTable = new Table(this, "GameDefeatedBosses", new TableProps
+            {
+                TableName = "GameDefeatedBosses",
+                PartitionKey = new Attribute { Name = "characterId", Type = AttributeType.STRING },
+                SortKey = new Attribute { Name = "bossId", Type = AttributeType.STRING },
+                BillingMode = BillingMode.PAY_PER_REQUEST,
+                RemovalPolicy = RemovalPolicy.RETAIN,
+                PointInTimeRecovery = true
+            });
 
             // GSI cho Character lookup by userId
             (CharactersTable as Table)?.AddGlobalSecondaryIndex(new GlobalSecondaryIndexProps

@@ -15,6 +15,7 @@ namespace GameBackend.Core.Services
         private readonly ICharacterService _characterService;
         private readonly IInventoryService _inventoryService;
         private readonly IInventoryRepository _inventoryRepository;
+        private readonly IDefeatedBossRepository _defeatedBossRepository;
         private readonly ILogger<BattleService> _logger;
         private readonly Random _random = new();
 
@@ -25,6 +26,7 @@ namespace GameBackend.Core.Services
             ICharacterService characterService,
             IInventoryService inventoryService,
             IInventoryRepository inventoryRepository,
+            IDefeatedBossRepository defeatedBossRepository,
             ILogger<BattleService> logger)
         {
             _bossRepository = bossRepository;
@@ -33,6 +35,7 @@ namespace GameBackend.Core.Services
             _characterService = characterService;
             _inventoryService = inventoryService;
             _inventoryRepository = inventoryRepository;
+            _defeatedBossRepository = defeatedBossRepository;
             _logger = logger;
         }
 
@@ -258,6 +261,30 @@ namespace GameBackend.Core.Services
 
             if (isVictory)
             {
+                // Record the defeated boss if it's a valid boss catalog item
+                var isCatalogBoss = GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(encounter.bossId, StringComparison.OrdinalIgnoreCase));
+                if (isCatalogBoss)
+                {
+                    try
+                    {
+                        var defeated = new DefeatedBoss
+                        {
+                            characterId = character.characterId,
+                            bossId = encounter.bossId,
+                            bossName = bossTemplate.name,
+                            bossLevel = encounter.bossLevel,
+                            encounterId = encounter.encounterId,
+                            defeatedAt = DateTime.UtcNow
+                        };
+                        await _defeatedBossRepository.SaveDefeatedBossAsync(defeated);
+                        _logger.LogInformation("Saved defeated boss {BossId} for character {CharacterId}", encounter.bossId, character.characterId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to save defeated boss {BossId} for character {CharacterId}", encounter.bossId, character.characterId);
+                    }
+                }
+
                 // Mục 5: Loot System
                 int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, encounter.bossRarity);
                 int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity);

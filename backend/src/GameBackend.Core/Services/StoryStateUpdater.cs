@@ -38,6 +38,7 @@ namespace GameBackend.Core.Services
 			if (aiResponse == null) throw new ArgumentNullException(nameof(aiResponse));
 
 			ApplySession(session, aiResponse);
+			character.currentLocationId = session.currentLocation; // Sync character location with session location
 			await ApplyCharacterAsync(character, aiResponse);
 			await ApplyInventoryAsync(character, aiResponse.InventoryChanges ?? new List<StoryAiInventoryChange>());
 			await ApplyBattleAsync(character, aiResponse);

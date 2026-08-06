@@ -13,5 +13,6 @@ namespace GameBackend.Core.Config
         public static string StorySessionsTableName => Environment.GetEnvironmentVariable("STORY_SESSIONS_TABLE") ?? "GameStorySessions";
         public static string StoryActionsTableName => Environment.GetEnvironmentVariable("STORY_ACTIONS_TABLE") ?? "GameStoryActions";
         public static string InventoryTableName => Environment.GetEnvironmentVariable("INVENTORY_TABLE") ?? "GameInventory";
+        public static string DefeatedBossesTableName => Environment.GetEnvironmentVariable("DEFEATED_BOSSES_TABLE") ?? "GameDefeatedBosses";
     }
 }
