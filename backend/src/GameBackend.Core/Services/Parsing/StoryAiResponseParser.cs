@@ -19,7 +19,8 @@ namespace GameBackend.Core.Services.Parsing
             {
                 try
                 {
-                    var parsed = JsonSerializer.Deserialize<StoryAiResponse>(rawResponse, Options);
+                    var cleaned = CleanJsonResponse(rawResponse);
+                    var parsed = JsonSerializer.Deserialize<StoryAiResponse>(cleaned, Options);
                     if (parsed != null)
                     {
                         return ApplyDefaults(parsed, session, rawResponse, defaultActionType);
@@ -62,6 +63,27 @@ namespace GameBackend.Core.Services.Parsing
             response.CharacterDelta ??= new StoryAiCharacterDelta();
             response.InventoryChanges ??= new List<StoryAiInventoryChange>();
             return response;
+        }
+
+        private static string CleanJsonResponse(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return string.Empty;
+            var trimmed = input.Trim();
+            if (trimmed.StartsWith("```json", StringComparison.OrdinalIgnoreCase))
+            {
+                trimmed = trimmed[7..];
+            }
+            else if (trimmed.StartsWith("```"))
+            {
+                trimmed = trimmed[3..];
+            }
+
+            if (trimmed.EndsWith("```"))
+            {
+                trimmed = trimmed[..^3];
+            }
+
+            return trimmed.Trim();
         }
     }
 }

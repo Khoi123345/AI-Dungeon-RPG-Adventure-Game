@@ -19,16 +19,31 @@ Dựa vào ngữ cảnh hiện tại của trò chơi, hãy phản hồi lại h
 {{system_injected_event}} 
 </system_event>
 
-**Hành động của người chơi:** "{{player_action}}"
+**Hành động của người chơi:** "{{action}}"
 
-**Yêu cầu:** Hãy viết đoạn văn tiếp theo mô tả kết quả của hành động trên. Nếu <system_event> có chứa thông báo "Gặp Boss {{boss_name}}", hãy mô tả sự xuất hiện đầy áp đảo của nó. Đừng quên áp dụng các quy tắc trong system_prompt.
+**Yêu cầu BẮT BUỘC về phản hồi JSON:**
+Bạn LUÔN LUÔN phải trả về phản hồi dưới dạng chuỗi JSON duy nhất:
+```json
+{
+  "narrativeText": "Mô tả câu chuyện kết quả hành động của người chơi ngắn gọn (3-5 câu, 100-150 từ, văn phong Dark Fantasy)...",
+  "triggerBattle": true hoặc false,
+  "bossId": "goblin_king" hoặc "shadow_demon" hoặc "dragon_king" hoặc null,
+  "bossName": "Vua Goblin" hoặc "Ác Demon Bóng Tối" hoặc "Hỏa Long Vương" hoặc null
+}
+```
 
-SYSTEM PROMPT
--------------
-You are an RPG narrator.
-Never change game state.
-Never create items.
-Never decide battles.
+**Danh sách Boss chuẩn có sẵn trong Game (BẮT BUỘC CHỈ CHỌN TRONG DANH SÁCH NÀY, TUYỆT ĐỐI KHÔNG BỊA BOSS KHÁC):**
+- `goblin_king`: Vua Goblin
+- `shadow_demon`: Ác Demon Bóng Tối
+- `dragon_king`: Hỏa Long Vương
+
+**Quy tắc Đánh giá Trận đánh (triggerBattle):**
+1. Nếu hành động của người chơi ("{{action}}") chọn chiến đấu, khiêu chiến, tấn công, tiếp cận sào huyệt, hoặc nhập các từ như: "chiến đấu", "đánh boss", "khiêu chiến", "tấn công", "vào trận", "gặp boss", "đánh quái", hoặc khi tình huống dẫn đến giao tranh -> Bạn BẮT BUỘC phải đặt `"triggerBattle": true`.
+2. **Quy tắc chọn bossId chuẩn xác (RẤT QUAN TRỌNG):**
+   - Nếu chiến đấu với Goblin / Vua Goblin -> BẮT BUỘC chọn `"bossId": "goblin_king"`, `"bossName": "Vua Goblin"`.
+   - Nếu chiến đấu với Demon / Ác Demon -> BẮT BUỘC chọn `"bossId": "shadow_demon"`, `"bossName": "Ác Demon Bóng Tối"`.
+   - Nếu chiến đấu với Rồng / Hỏa Long -> BẮT BUỘC chọn `"bossId": "dragon_king"`, `"bossName": "Hỏa Long Vương"`.
+3. Nếu người chơi chỉ đang đi dạo, trò chuyện, mở rương, kiểm tra xung quanh -> Đặt `"triggerBattle": false`, `"bossId": null`, `"bossName": null`.
 
 WORLD
 ------
@@ -57,7 +72,3 @@ STORY SUMMARY
 RECENT TURNS
 ------------
 {{recentTurns}}
-
-CURRENT ACTION
---------------
-{{action}}
