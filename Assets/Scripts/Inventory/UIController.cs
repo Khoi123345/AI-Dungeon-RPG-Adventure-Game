@@ -20,7 +20,17 @@ public class UIController : MonoBehaviour
         if (panelInventory != null)
         {
             // Trạng thái ngược lại với trạng thái hiện tại (Đang bật -> Tắt, Đang tắt -> Bật)
-            panelInventory.SetActive(!panelInventory.activeSelf);
+            bool isActive = !panelInventory.activeSelf;
+            panelInventory.SetActive(isActive);
+
+            if (isActive)
+            {
+                InventoryManager invManager = FindObjectOfType<InventoryManager>();
+                if (invManager != null)
+                {
+                    invManager.RefreshInventoryUI();
+                }
+            }
         }
     }
 
