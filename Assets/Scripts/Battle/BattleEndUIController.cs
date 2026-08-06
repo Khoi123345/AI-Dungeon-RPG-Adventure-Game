@@ -285,6 +285,28 @@ public class BattleEndUIController : MonoBehaviour
             Debug.Log("[BattleEndUI] Tự động gán thành công sự kiện OnConfirmVictory cho nút Confirm!");
         }
 
+        // Tự động tìm kiếm nút Return/Menu (dành cho màn hình Defeat)
+        Button[] allButtons = GetComponentsInChildren<Button>(true);
+        Button returnBtn = null;
+        foreach (var b in allButtons)
+        {
+            // Bỏ qua nút Confirm ở trên
+            if (b == confirmButton) continue;
+            
+            if (b.name.Contains("Return") || b.name.Contains("Menu") || b.name.Contains("Defeat"))
+            {
+                returnBtn = b;
+                break;
+            }
+        }
+
+        if (returnBtn != null)
+        {
+            returnBtn.onClick.RemoveListener(OnReturnToMainMenu);
+            returnBtn.onClick.AddListener(OnReturnToMainMenu);
+            Debug.Log("[BattleEndUI] Tự động gán thành công sự kiện OnReturnToMainMenu cho nút " + returnBtn.name);
+        }
+
         foreach (var slot in itemSlots)
         {
             if (slot != null)
