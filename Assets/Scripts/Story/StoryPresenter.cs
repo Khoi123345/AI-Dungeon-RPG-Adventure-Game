@@ -13,7 +13,6 @@ public class StoryPresenter : MonoBehaviour
     [SerializeField] private bool useMockStoryOnStart = false;
     [SerializeField] private float characterDelay = 0.03f;
     [SerializeField] private float linePause = 0.6f;
-    [SerializeField] private float chunkSize = 70f;
     [SerializeField] private string richTextOpeningTag = string.Empty;
     [SerializeField] private string richTextClosingTag = string.Empty;
 
@@ -200,38 +199,24 @@ public class StoryPresenter : MonoBehaviour
             yield break;
         }
 
-        string visibleBuffer = string.Empty;
-        string[] chunks = SplitForDisplay(text, Mathf.Max(1, Mathf.RoundToInt(chunkSize)));
+        string renderedText = string.Empty;
+        int characterIndex = 0;
 
-        for (int chunkIndex = 0; chunkIndex < chunks.Length; chunkIndex++)
+        while (characterIndex < text.Length)
         {
-            string chunk = chunks[chunkIndex];
-            string renderedChunk = string.Empty;
-            int characterIndex = 0;
-
-            while (characterIndex < chunk.Length)
+            if (skipTyping)
             {
-                if (skipTyping)
-                {
-                    renderedChunk = chunk;
-                    break;
-                }
-
-                renderedChunk += chunk[characterIndex];
-                view.SetStoryText(visibleBuffer + renderedChunk);
-                characterIndex++;
-                yield return new WaitForSeconds(characterDelay);
+                renderedText = text;
+                break;
             }
 
-            view.SetStoryText(visibleBuffer + renderedChunk);
-            visibleBuffer += renderedChunk;
-
-            if (chunkIndex < chunks.Length - 1)
-            {
-                visibleBuffer += "\n";
-                view.SetStoryText(visibleBuffer);
-            }
+            renderedText += text[characterIndex];
+            view.SetStoryText(renderedText);
+            characterIndex++;
+            yield return new WaitForSeconds(characterDelay);
         }
+
+        view.SetStoryText(renderedText);
 
         isTyping = false;
         waitingForAdvance = true;
@@ -610,41 +595,6 @@ public class StoryPresenter : MonoBehaviour
         awaitingChoice = false;
     }
 
-    private static string[] SplitForDisplay(string source, int maxChunkSize)
-    {
-        if (string.IsNullOrEmpty(source) || source.Length <= maxChunkSize)
-        {
-            return new[] { source };
-        }
-
-        List<string> chunks = new List<string>();
-        int startIndex = 0;
-
-        while (startIndex < source.Length)
-        {
-            int length = Mathf.Min(maxChunkSize, source.Length - startIndex);
-            int splitIndex = source.LastIndexOf(' ', startIndex + length - 1, length);
-
-            if (splitIndex <= startIndex)
-            {
-                splitIndex = startIndex + length;
-            }
-
-            string chunk = source.Substring(startIndex, splitIndex - startIndex).Trim();
-            if (!string.IsNullOrEmpty(chunk))
-            {
-                chunks.Add(chunk);
-            }
-
-            startIndex = splitIndex;
-            while (startIndex < source.Length && source[startIndex] == ' ')
-            {
-                startIndex++;
-            }
-        }
-
-        return chunks.ToArray();
-    }
 
     private StoryData CreateMockData()
     {
