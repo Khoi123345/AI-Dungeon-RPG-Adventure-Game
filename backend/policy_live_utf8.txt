@@ -1,0 +1,133 @@
+﻿{
+    "RoleName": "GameLambdaStack-StoryActionFunctionServiceRoleD0E16-QRoCZg3tpkIE",
+    "PolicyName": "StoryActionFunctionServiceRoleDefaultPolicy797AD7DA",
+    "PolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:Query",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:BatchWriteItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:DescribeTable"
+                ],
+                "Resource": [
+                    "arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameStorySessions",
+                    "arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameStorySessions/index/*"
+                ],
+                "Effect": "Allow"
+            },
+            {
+                "Action": [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:Query",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:BatchWriteItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:DescribeTable"
+                ],
+                "Resource": [
+                    "arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameStoryActions"
+                ],
+                "Effect": "Allow"
+            },
+            {
+                "Action": [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:Query",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:BatchWriteItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:DescribeTable"
+                ],
+                "Resource": [
+                    "arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameCharacters",
+                    "arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameCharacters/index/*"
+                ],
+                "Effect": "Allow"
+            },
+            {
+                "Action": [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:Query",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:BatchWriteItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:DescribeTable"
+                ],
+                "Resource": [
+                    "arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameInventory"
+                ],
+                "Effect": "Allow"
+            },
+            {
+                "Action": [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:Query",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:DescribeTable"
+                ],
+                "Resource": [
+                    "arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameBosses"
+                ],
+                "Effect": "Allow"
+            },
+            {
+                "Action": [
+                    "dynamodb:BatchGetItem",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:Query",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:ConditionCheckItem",
+                    "dynamodb:DescribeTable"
+                ],
+                "Resource": [
+                    "arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameDefeatedBosses"
+                ],
+                "Effect": "Allow"
+            },
+            {
+                "Action": [
+                    "bedrock:InvokeModel",
+                    "bedrock:InvokeModelWithResponseStream",
+                    "bedrock:Converse",
+                    "bedrock:ConverseStream"
+                ],
+                "Resource": "*",
+                "Effect": "Allow"
+            }
+        ]
+    }
+}

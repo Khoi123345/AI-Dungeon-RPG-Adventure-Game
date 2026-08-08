@@ -96,7 +96,8 @@ namespace GameBackend.Core.Services
                 {
                     try
                     {
-                        var parsed = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(latestAction.aiResponse, existingSession, "choice");
+                        var rawJson = !string.IsNullOrWhiteSpace(latestAction.metadataJson) ? latestAction.metadataJson : latestAction.aiResponse;
+                        var parsed = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(rawJson, existingSession, "choice");
                         lastNarrative = parsed.NarrativeText;
                         lastChoices = parsed.Choices;
                     }
@@ -106,17 +107,23 @@ namespace GameBackend.Core.Services
                 return BuildResponse(existingSession, character, lastNarrative, lastChoices);
             }
 
+            var startLocation = string.IsNullOrWhiteSpace(character.currentLocationId) || character.currentLocationId == "spawn_village"
+                ? DefaultLocation
+                : character.currentLocationId;
+
+            var isPrologue = startLocation == "prologue";
+
             var session = new StorySession
             {
                 sessionId = Guid.NewGuid().ToString("N"),
                 characterId = character.characterId,
-                currentLocation = DefaultLocation,
-                currentChapterId = string.IsNullOrWhiteSpace(request.storyFileId) ? DefaultChapterId : request.storyFileId,
+                currentLocation = startLocation,
+                currentChapterId = isPrologue ? DefaultChapterId : "chapter_1",
                 currentNodeId = DefaultChapterId,
                 status = "Active",
                 updatedAt = DateTime.UtcNow,
                 storyVersion = string.IsNullOrWhiteSpace(request.storyFileId) ? "1.0" : request.storyFileId,
-                storySummary = "Mở đầu cuộc phiêu lưu tại tàn tích cổ.",
+                storySummary = isPrologue ? "Mở đầu cuộc phiêu lưu tại tàn tích cổ." : "Bắt đầu chương 1: Rừng Thì Thầm.",
                 sourceType = "AI"
             };
 
@@ -167,6 +174,40 @@ namespace GameBackend.Core.Services
                     {
                         systemInjectedEvent = $"[SỰ KIỆN QUÁI VẬT] Một con {mob.name} xuất hiện đột ngột cản đường bạn! Trận chiến bắt đầu! Bạn phải mô tả cuộc chạm trán này trong narrativeText, đồng thời bắt buộc đặt triggerBattle: true, bossId: '{mobId}', bossName: '{mob.name}', bossLevel: {character.level}.";
                     }
+                }
+            }
+
+            // If player selected a choice, resolve choiceIndex to playerInput first!
+            if (string.IsNullOrWhiteSpace(request.playerInput))
+            {
+                var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+                var latestAction = allRecentActions.OrderByDescending(a => a.createdAt).FirstOrDefault();
+                if (latestAction != null)
+                {
+                    try
+                    {
+                        var rawJson = !string.IsNullOrWhiteSpace(latestAction.metadataJson) ? latestAction.metadataJson : latestAction.aiResponse;
+                        var parsed = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(rawJson, session, "choice");
+                        if (parsed.Choices != null && request.choiceIndex >= 0 && request.choiceIndex < parsed.Choices.Count)
+                        {
+                            var selectedChoice = parsed.Choices[request.choiceIndex];
+                            request.playerInput = $"{selectedChoice.label}: {selectedChoice.description}";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to parse choices from previous action");
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(request.playerInput))
+                {
+                    request.playerInput = request.choiceIndex switch
+                    {
+                        0 => "Tấn công quái vật",
+                        1 => "Điều tra xung quanh",
+                        _ => "Nghỉ ngơi hồi phục"
+                    };
                 }
             }
 

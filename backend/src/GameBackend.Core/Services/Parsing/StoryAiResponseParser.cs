@@ -10,13 +10,16 @@ namespace GameBackend.Core.Services.Parsing
         private static readonly JsonSerializerOptions Options = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+            IncludeFields = true,
+            PropertyNameCaseInsensitive = true
         };
 
         public static StoryAiResponse Parse(string rawResponse, StorySession session, string defaultActionType, ILogger? logger = null)
         {
             if (!string.IsNullOrWhiteSpace(rawResponse))
             {
+                logger?.LogInformation("Raw AI Response: {RawResponse}", rawResponse);
                 try
                 {
                     var parsed = JsonSerializer.Deserialize<StoryAiResponse>(rawResponse, Options);
