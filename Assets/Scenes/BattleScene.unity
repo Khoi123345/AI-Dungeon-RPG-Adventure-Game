@@ -250,6 +250,7 @@ MonoBehaviour:
   txtBossDefense: {fileID: 134560244}
   txtBossLucky: {fileID: 824412969}
   txtBattleLog: {fileID: 1760081762}
+  logScrollRect: {fileID: 955406152}
 --- !u!1 &134560242
 GameObject:
   m_ObjectHideFlags: 0
@@ -4499,7 +4500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -421.40002, y: 57.22}
+  m_AnchoredPosition: {x: -421.4, y: 57.22}
   m_SizeDelta: {x: -1616.55, y: -427.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1627157746
@@ -4744,8 +4745,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
