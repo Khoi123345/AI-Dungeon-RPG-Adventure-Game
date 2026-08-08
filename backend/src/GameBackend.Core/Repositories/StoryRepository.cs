@@ -44,6 +44,8 @@ namespace GameBackend.Core.Repositories
             return docs.Count > 0 ? JsonUtils.Deserialize<StorySession>(docs[0].ToJson()) : null;
         }
 
+
+
         public async Task SaveSessionAsync(StorySession session)
         {
             if (session == null || string.IsNullOrWhiteSpace(session.sessionId)) return;

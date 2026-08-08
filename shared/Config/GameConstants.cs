@@ -27,6 +27,7 @@ namespace GameShared.Config
             new Boss { bossId = "boss_chaos_titan",     name = "Chaos Titan",      rarity = "Mythic",    baseHp = 900, baseAttack = 55, baseDefense = 35, speed = 15, criticalRate = 0.25f, expReward = 600, goldReward = 1000 },
 
             // --- Minor Monsters (Mobs) for Random Encounters ---
+            new Boss { bossId = "mob_void_remnant",    name = "Void Remnant",     rarity = "Common",    baseHp = 30,  baseAttack = 5,  baseDefense = 1,  speed = 6,  criticalRate = 0.02f, expReward = 15, goldReward = 10  },
             new Boss { bossId = "mob_cave_spider",     name = "Cave Spider",      rarity = "Common",    baseHp = 25,  baseAttack = 4,  baseDefense = 1,  speed = 10, criticalRate = 0.03f, expReward = 8,  goldReward = 8   },
             new Boss { bossId = "mob_goblin_scout",    name = "Goblin Scout",     rarity = "Common",    baseHp = 35,  baseAttack = 5,  baseDefense = 2,  speed = 8,  criticalRate = 0.04f, expReward = 12, goldReward = 12  },
             new Boss { bossId = "mob_shadow_spirit",   name = "Shadow Spirit",    rarity = "Common",    baseHp = 45,  baseAttack = 7,  baseDefense = 2,  speed = 9,  criticalRate = 0.06f, expReward = 18, goldReward = 15  },

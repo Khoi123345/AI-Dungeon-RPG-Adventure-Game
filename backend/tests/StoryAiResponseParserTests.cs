@@ -115,6 +115,46 @@ public class StoryAiResponseParserTests
         Assert.Empty(response.InventoryChanges);
     }
 
+    [Fact]
+    public void Parse_Should_Read_Choices()
+    {
+        var session = CreateSession();
+        var rawJson = """
+        {
+          "choices": [
+            {
+              "label": "Tấn công",
+              "description": "Chiến đấu với Boss quái vật",
+              "nextNodeId": "battle_path"
+            }
+          ]
+        }
+        """;
+        var response = StoryAiResponseParser.Parse(rawJson, session, "player_action");
+        Assert.Single(response.Choices);
+        Assert.Equal("Tấn công", response.Choices[0].label);
+    }
+
+    [Fact]
+    public void Parse_Should_Read_Capitalized_Choices()
+    {
+        var session = CreateSession();
+        var rawJson = """
+        {
+          "choices": [
+            {
+              "Label": "Tấn công",
+              "Description": "Chiến đấu với Boss quái vật",
+              "NextNodeId": "battle_path"
+            }
+          ]
+        }
+        """;
+        var response = StoryAiResponseParser.Parse(rawJson, session, "player_action");
+        Assert.Single(response.Choices);
+        Assert.Equal("Tấn công", response.Choices[0].label);
+    }
+
     private static StorySession CreateSession()
     {
         return new StorySession

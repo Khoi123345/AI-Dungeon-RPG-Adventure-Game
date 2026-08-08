@@ -90,7 +90,14 @@ namespace GameBackend.Core.Services
                 {
                     if (!string.IsNullOrWhiteSpace(request.characterId))
                     {
+<<<<<<< HEAD
                         character = await _characterRepository.GetByIdAsync(request.characterId);
+=======
+                        var rawJson = !string.IsNullOrWhiteSpace(latestAction.metadataJson) ? latestAction.metadataJson : latestAction.aiResponse;
+                        var parsed = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(rawJson, existingSession, "choice");
+                        lastNarrative = parsed.NarrativeText;
+                        lastChoices = parsed.Choices;
+>>>>>>> 42b61a09f252085d2c0b3d556bdd137cefbe6ccc
                     }
                 }
                 catch (Exception ex)
@@ -170,31 +177,45 @@ namespace GameBackend.Core.Services
 
                 return BuildResponse(session, character, openingResponse.NarrativeText);
             }
-            catch (Exception ex)
+
+            var startLocation = string.IsNullOrWhiteSpace(character.currentLocationId) || character.currentLocationId == "spawn_village"
+                ? DefaultLocation
+                : character.currentLocationId;
+
+            var isPrologue = startLocation == "prologue";
+
+            var session = new StorySession
             {
-                _logger.LogError(ex, "StartStoryAsync error for request character {CharacterId}. Returning safe fallback response.", request.characterId);
-                var safeSession = session ?? new StorySession
-                {
-                    sessionId = Guid.NewGuid().ToString("N"),
-                    characterId = request.characterId ?? "demo_char_id",
-                    currentLocation = DefaultLocation,
-                    currentChapterId = DefaultChapterId,
-                    currentNodeId = DefaultChapterId,
-                    status = "Active",
-                    updatedAt = DateTime.UtcNow,
-                    storySummary = "Mở đầu cuộc phiêu lưu tại tàn tích cổ."
-                };
-                var safeChar = character ?? new Character
-                {
-                    characterId = request.characterId ?? "demo_char_id",
-                    name = "Adventurer",
-                    level = 1,
-                    hp = 100,
-                    maxHp = 100,
-                    gold = 999999
-                };
-                return BuildResponse(safeSession, safeChar, "Bạn bước vào khu vực đầu tiên của Etherea, Rừng Thì Thầm. Ánh trăng chiếu xuống, tạo nên bóng đổ rập khuôn giữa những cây cổ thụ.");
-            }
+                sessionId = Guid.NewGuid().ToString("N"),
+                characterId = character.characterId,
+                currentLocation = startLocation,
+                currentChapterId = isPrologue ? DefaultChapterId : "chapter_1",
+                currentNodeId = DefaultChapterId,
+                status = "Active",
+                updatedAt = DateTime.UtcNow,
+                storyVersion = string.IsNullOrWhiteSpace(request.storyFileId) ? "1.0" : request.storyFileId,
+                storySummary = isPrologue ? "Mở đầu cuộc phiêu lưu tại tàn tích cổ." : "Bắt đầu chương 1: Rừng Thì Thầm.",
+                sourceType = "AI"
+            };
+
+            // Sync character's starting location with the story session location
+            character.currentLocationId = session.currentLocation;
+
+            var openingContext = new StoryActionProcessingContext
+            {
+                Character = character,
+                Session = session,
+                PlayerInput = string.Empty,
+                RecentActions = new List<StoryAction>(),
+                PromptContext = await _gamePromptContextBuilder.BuildAsync(character, new List<Item>(), new List<StoryAction>(), session, string.Empty)
+            };
+
+            var openingResponse = await GenerateStoryAiResponseAsync(openingContext, "opening");
+            openingResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, openingResponse);
+            await _storyStateUpdater.ApplyAsync(session, character, openingResponse);
+            _logger.LogInformation("Story session started: {SessionId} for character: {CharacterId}", session.sessionId, character.characterId);
+
+            return BuildResponse(session, character, openingResponse.NarrativeText, openingResponse.Choices);
         }
 
         public async Task<StoryActionResponse> ProcessActionAsync(StoryActionRequest request)
@@ -299,6 +320,40 @@ namespace GameBackend.Core.Services
                     {
                         systemInjectedEvent = $"[SỰ KIỆN QUÁI VẬT] Một con {mob.name} xuất hiện đột ngột cản đường bạn! Trận chiến bắt đầu! Bạn phải mô tả cuộc chạm trán này trong narrativeText, đồng thời bắt buộc đặt triggerBattle: true, bossId: '{mobId}', bossName: '{mob.name}', bossLevel: {character.level}.";
                     }
+                }
+            }
+
+            // If player selected a choice, resolve choiceIndex to playerInput first!
+            if (string.IsNullOrWhiteSpace(request.playerInput))
+            {
+                var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+                var latestAction = allRecentActions.OrderByDescending(a => a.createdAt).FirstOrDefault();
+                if (latestAction != null)
+                {
+                    try
+                    {
+                        var rawJson = !string.IsNullOrWhiteSpace(latestAction.metadataJson) ? latestAction.metadataJson : latestAction.aiResponse;
+                        var parsed = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(rawJson, session, "choice");
+                        if (parsed.Choices != null && request.choiceIndex >= 0 && request.choiceIndex < parsed.Choices.Count)
+                        {
+                            var selectedChoice = parsed.Choices[request.choiceIndex];
+                            request.playerInput = $"{selectedChoice.label}: {selectedChoice.description}";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to parse choices from previous action");
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(request.playerInput))
+                {
+                    request.playerInput = request.choiceIndex switch
+                    {
+                        0 => "Tấn công quái vật",
+                        1 => "Điều tra xung quanh",
+                        _ => "Nghỉ ngơi hồi phục"
+                    };
                 }
             }
 

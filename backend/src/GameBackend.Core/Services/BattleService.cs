@@ -2,6 +2,8 @@ using GameBackend.Core.Config;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Services.Interfaces;
 using GameShared.DTOs.Battle;
+using GameShared.DTOs.Story;
+using GameBackend.Core.Services.Parsing;
 using GameShared.Models;
 using Microsoft.Extensions.Logging;
 
@@ -326,6 +328,71 @@ namespace GameBackend.Core.Services
 
                 _logger.LogInformation("Character {CharacterId} died. Revive at {ReviveTime}",
                     character.characterId, character.reviveTime);
+            }
+
+            // 9. Ghi nhận kết quả trận đấu vào mạch truyện (Story Session Actions)
+            try
+            {
+                var session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
+                if (session != null && session.status == "Active")
+                {
+                    var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+                    var turnNumber = allRecentActions.Count + 1;
+
+                    var goldReward = rewards?.goldEarned ?? 0;
+                    var expReward = rewards?.expEarned ?? 0;
+                    var lootItemsDesc = (rewards?.lootItems != null && rewards.lootItems.Count > 0)
+                        ? string.Join(", ", rewards.lootItems.Select(i => $"{i.itemName} (x{i.quantity})"))
+                        : "Không có";
+
+                    var outcomeText = isVictory ? "Chiến thắng" : "Thất bại";
+                    var bossName = bossTemplate.name;
+
+                    var narrativeText = $"[TRẬN ĐÁNH VỪA KẾT THÚC]\n" +
+                                        $"Kết quả: {outcomeText}.\n" +
+                                        $"Đối thủ: {bossName} (Cấp độ {encounter.bossLevel}).\n" +
+                                        $"Phần thưởng: {goldReward} Vàng, {expReward} EXP.\n" +
+                                        $"Vật phẩm nhận được: {lootItemsDesc}.";
+
+                    var aiResponse = new StoryAiResponse
+                    {
+                        NarrativeText = narrativeText,
+                        CurrentNodeId = session.currentNodeId,
+                        CurrentLocation = session.currentLocation,
+                        CurrentChapterId = session.currentChapterId,
+                        StorySummary = session.storySummary,
+                        ActionType = "battle_result",
+                        TriggerBattle = false,
+                        Choices = new List<StoryChoiceOption>
+                        {
+                            new StoryChoiceOption
+                            {
+                                label = "Tiếp tục",
+                                description = "Sau cuộc chiến, bạn dọn dẹp chiến trường và tiếp tục cuộc hành trình.",
+                                nextNodeId = session.currentNodeId
+                            }
+                        }
+                    };
+
+                    var action = new StoryAction
+                    {
+                        actionId = Guid.NewGuid().ToString("N"),
+                        sessionId = session.sessionId,
+                        playerInput = $"[TRẬN ĐÁNH] Đối mặt và quyết chiến với {bossName}",
+                        aiResponse = narrativeText,
+                        turnNumber = turnNumber,
+                        actionType = "battle_result",
+                        metadataJson = StoryAiResponseParser.Serialize(aiResponse),
+                        createdAt = DateTime.UtcNow
+                    };
+
+                    await _storyRepository.SaveActionAsync(action);
+                    _logger.LogInformation("Saved battle result StoryAction for session {SessionId}", session.sessionId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to save battle result StoryAction for character {CharacterId}", character.characterId);
             }
 
             return new BattleResolveResponse
