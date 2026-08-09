@@ -38,6 +38,8 @@ namespace GameBackend.Core.Services.Parsing
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
             IncludeFields = true,
             PropertyNameCaseInsensitive = true,
+            AllowTrailingCommas = true,
+            ReadCommentHandling = JsonCommentHandling.Skip,
             Converters = { new FlexibleStringConverter() }
         };
 
@@ -61,8 +63,7 @@ namespace GameBackend.Core.Services.Parsing
                 }
             }
 
-            // Fallback: Extract narrativeText if rawResponse is JSON but parsing failed
-            string narrativeText = ExtractNarrativeTextFallback(rawResponse);
+            var (narrativeText, fallbackChoices, triggerBattle, bossId, bossName) = ExtractFallbackFields(rawResponse);
 
             return new StoryAiResponse
             {
@@ -74,7 +75,11 @@ namespace GameBackend.Core.Services.Parsing
                 ActionType = defaultActionType,
                 MetadataJson = "{}",
                 CharacterDelta = new StoryAiCharacterDelta(),
-                InventoryChanges = new List<StoryAiInventoryChange>()
+                InventoryChanges = new List<StoryAiInventoryChange>(),
+                Choices = fallbackChoices,
+                TriggerBattle = triggerBattle,
+                BossId = bossId,
+                BossName = bossName
             };
         }
 
@@ -127,16 +132,23 @@ namespace GameBackend.Core.Services.Parsing
             return trimmed;
         }
 
-        private static string ExtractNarrativeTextFallback(string rawResponse)
+        private static (string narrativeText, List<StoryChoiceOption> choices, bool triggerBattle, string bossId, string bossName) ExtractFallbackFields(string rawResponse)
         {
-            if (string.IsNullOrWhiteSpace(rawResponse)) return string.Empty;
+            string narrative = "Sương mù che khuất tầm nhìn, bạn cảm thấy có một thực thể bí ẩn đang can thiệp vào dòng thời gian. (Lỗi kết nối hắc ám)";
+            var choicesList = new List<StoryChoiceOption>();
+            bool triggerBattle = false;
+            string bossId = null;
+            string bossName = null;
 
+            if (string.IsNullOrWhiteSpace(rawResponse)) return (narrative, choicesList, triggerBattle, bossId, bossName);
+
+            // Cố gắng lấy narrativeText
             try
             {
                 var match = Regex.Match(rawResponse, @"\""narrativeText\""\s*:\s*\""(.*?)\""(?=\s*,\s*\""|\s*\})", RegexOptions.Singleline);
                 if (match.Success)
                 {
-                    return match.Groups[1].Value
+                    narrative = match.Groups[1].Value
                         .Replace("\\\"", "\"")
                         .Replace("\\n", "\n")
                         .Replace("\\r", "");
@@ -144,9 +156,40 @@ namespace GameBackend.Core.Services.Parsing
             }
             catch { }
 
-            // If we can't extract the narrative text, do not return raw JSON to the user.
-            // Log it (handled above) and return a safe fallback message.
-            return "Sương mù che khuất tầm nhìn, bạn cảm thấy có một thực thể bí ẩn đang can thiệp vào dòng thời gian. (Lỗi kết nối hắc ám)";
+            // Cố gắng lấy mảng choices
+            try
+            {
+                var choicesMatch = Regex.Match(rawResponse, @"\""choices\""\s*:\s*(\[.*?\])", RegexOptions.Singleline);
+                if (choicesMatch.Success)
+                {
+                    var choicesJson = choicesMatch.Groups[1].Value;
+                    var extractedChoices = JsonSerializer.Deserialize<List<StoryChoiceOption>>(choicesJson, Options);
+                    if (extractedChoices != null && extractedChoices.Count > 0)
+                    {
+                        choicesList = extractedChoices;
+                    }
+                }
+            }
+            catch { }
+
+            // Cố gắng lấy triggerBattle, bossId, bossName
+            try
+            {
+                var battleMatch = Regex.Match(rawResponse, @"\""triggerBattle\""\s*:\s*(true|false)", RegexOptions.IgnoreCase);
+                if (battleMatch.Success && battleMatch.Groups[1].Value.ToLower() == "true")
+                {
+                    triggerBattle = true;
+                }
+
+                var bossIdMatch = Regex.Match(rawResponse, @"\""bossId\""\s*:\s*\""(.*?)\""");
+                if (bossIdMatch.Success) bossId = bossIdMatch.Groups[1].Value;
+
+                var bossNameMatch = Regex.Match(rawResponse, @"\""bossName\""\s*:\s*\""(.*?)\""");
+                if (bossNameMatch.Success) bossName = bossNameMatch.Groups[1].Value;
+            }
+            catch { }
+
+            return (narrative, choicesList, triggerBattle, bossId, bossName);
         }
     }
 }

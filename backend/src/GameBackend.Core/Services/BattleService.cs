@@ -624,17 +624,23 @@ namespace GameBackend.Core.Services
                 string targetLocation = "";
                 string chapterTitle = "";
 
-                if (normalizedBossId.Contains("goblin"))
+                if (normalizedBossId == "goblin_king")
                 {
                     targetChapterId = "chapter_2";
-                    targetLocation = "forgotten_temple";
-                    chapterTitle = "Chương 2: Vương Quốc Chìm Đắm (Đền Cổ Quên Lãng)";
+                    targetLocation = "sunken_shipwreck";
+                    chapterTitle = "Chương 2: Vương Quốc Chìm Đắm (Xác Tàu Đắm)";
                 }
-                else if (normalizedBossId.Contains("demon") || normalizedBossId.Contains("shadow"))
+                else if (normalizedBossId == "shadow_demon")
                 {
                     targetChapterId = "chapter_3";
                     targetLocation = "dragon_nest";
                     chapterTitle = "Chương 3: Hoang Mạc Thiêu Rụi (Tổ Rồng)";
+                }
+                else if (normalizedBossId == "dragon_king")
+                {
+                    targetChapterId = "chapter_4";
+                    targetLocation = "start"; // Update with real chapter 4 location later
+                    chapterTitle = "Chương 4: Đỉnh Núi Băng Giá";
                 }
 
                 if (!string.IsNullOrEmpty(targetChapterId))

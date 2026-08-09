@@ -33,6 +33,13 @@ namespace GameShared.Config
             new Boss { bossId = "mob_shadow_spirit",   name = "Shadow Spirit",    rarity = "Common",    baseHp = 45,  baseAttack = 7,  baseDefense = 2,  speed = 9,  criticalRate = 0.06f, expReward = 18, goldReward = 15  },
             new Boss { bossId = "mob_temple_golem",    name = "Temple Golem",     rarity = "Common",    baseHp = 60,  baseAttack = 6,  baseDefense = 5,  speed = 4,  criticalRate = 0.02f, expReward = 22, goldReward = 18  },
             new Boss { bossId = "mob_goblin_guard",    name = "Goblin Guard",     rarity = "Common",    baseHp = 50,  baseAttack = 8,  baseDefense = 4,  speed = 6,  criticalRate = 0.05f, expReward = 20, goldReward = 20  },
+            
+            // New Mobs
+            new Boss { bossId = "mob_cave_bat",        name = "Cave Bat",         rarity = "Common",    baseHp = 18,  baseAttack = 6,  baseDefense = 0,  speed = 12, criticalRate = 0.05f, expReward = 10, goldReward = 5   },
+            new Boss { bossId = "mob_rock_slime",      name = "Rock Slime",       rarity = "Common",    baseHp = 55,  baseAttack = 3,  baseDefense = 8,  speed = 3,  criticalRate = 0.01f, expReward = 15, goldReward = 10  },
+            new Boss { bossId = "mob_abyssal_spirit",  name = "Abyssal Spirit",   rarity = "Common",    baseHp = 50,  baseAttack = 9,  baseDefense = 3,  speed = 8,  criticalRate = 0.08f, expReward = 25, goldReward = 22  },
+            new Boss { bossId = "mob_drowned_sailor",  name = "Drowned Sailor",   rarity = "Common",    baseHp = 65,  baseAttack = 7,  baseDefense = 4,  speed = 5,  criticalRate = 0.04f, expReward = 20, goldReward = 18  },
+            new Boss { bossId = "mob_mutated_crab",    name = "Mutated Crab",     rarity = "Common",    baseHp = 40,  baseAttack = 8,  baseDefense = 10, speed = 4,  criticalRate = 0.02f, expReward = 18, goldReward = 15  },
         };
 
         // =====================================================================

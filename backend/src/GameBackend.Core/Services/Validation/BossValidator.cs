@@ -41,9 +41,23 @@ namespace GameBackend.Core.Services.Validation
                 return;
             }
 
-            // Chỉ tự điền bossId khi AI không gán — KHÔNG ghi đè bossId AI đã chỉ định (kể cả mob_*)
-            if (string.IsNullOrWhiteSpace(response.BossId))
+            // Kiểm tra bossId AI gán có hợp lệ không
+            bool isValidBoss = false;
+            if (!string.IsNullOrWhiteSpace(response.BossId))
             {
+                var checkId = response.BossId;
+                isValidBoss = GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(checkId, StringComparison.OrdinalIgnoreCase))
+                              || await _contentService.BossExistsAsync(checkId);
+            }
+
+            // Tự điền hoặc ghi đè bossId nếu trống hoặc không hợp lệ
+            if (!isValidBoss)
+            {
+                if (!string.IsNullOrWhiteSpace(response.BossId))
+                {
+                    _logger.LogInformation("Invalid bossId '{BossId}' provided by AI. Overwriting with fallback.", response.BossId);
+                }
+
                 var currentLoc = (context.Session.currentLocation ?? context.Character.currentLocationId ?? "").ToLowerInvariant();
 
                 if (currentLoc == "forgotten_temple")
