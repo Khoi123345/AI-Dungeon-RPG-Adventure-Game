@@ -8,6 +8,8 @@ public class StoryCharacterState
     public int level;
     public int hp;
     public int gold;
+    public int xp;
+    public int maxXP;
 }
 
 [Serializable]

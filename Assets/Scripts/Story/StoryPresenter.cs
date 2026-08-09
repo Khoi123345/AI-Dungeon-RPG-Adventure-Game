@@ -70,7 +70,7 @@ public class StoryPresenter : MonoBehaviour
     {
         if (view != null)
         {
-            view.SetStoryText("<i><color=#AAAAAA>Đang kết nối AI Bedrock và khởi tạo hầm ngục...</color></i>");
+            view.SetStoryText("<i><color=#AAAAAA>AI đang tạo cốt truyện...</color></i>");
             view.SetNextIndicatorVisible(false);
             view.SetActiveOptionsPanelVisible(false);
             view.SetInputPanelVisible(false);
@@ -83,7 +83,9 @@ public class StoryPresenter : MonoBehaviour
                     characterName = curChar.name,
                     level = curChar.level,
                     hp = curChar.hp,
-                    gold = curChar.gold
+                    gold = curChar.gold,
+                    xp = curChar.experience,
+                    maxXP = curChar.level * 100
                 });
             }
         }
@@ -324,7 +326,9 @@ public class StoryPresenter : MonoBehaviour
                 characterName = character.name,
                 level = character.level,
                 hp = character.hp,
-                gold = character.gold
+                gold = character.gold,
+                xp = character.experience,
+                maxXP = character.level * 100
             });
             Debug.Log($"[StoryPresenter] Đã trừ trực tiếp {cost} Gold trên client (Choice). Vàng còn lại: {character.gold}");
         }
@@ -347,7 +351,7 @@ public class StoryPresenter : MonoBehaviour
         }
         else
         {
-            view.AppendStoryText("<i><color=#888888>[AI Bedrock đang suy nghĩ...]</color></i>\n");
+            view.AppendStoryText("<i><color=#888888>[AI đang tạo cốt truyện...]</color></i>\n");
 
             string characterId = GameProgressService.Instance?.CurrentCharacter?.characterId ?? "demo_char_id";
             string sessionId = GameProgressService.Instance?.CurrentStorySession?.sessionId ?? "";
@@ -404,7 +408,9 @@ public class StoryPresenter : MonoBehaviour
                 characterName = character.name,
                 level = character.level,
                 hp = character.hp,
-                gold = character.gold
+                gold = character.gold,
+                xp = character.experience,
+                maxXP = character.level * 100
             });
             Debug.Log($"[StoryPresenter] Đã trừ trực tiếp {cost} Gold trên client. Vàng còn lại: {character.gold}");
         }
@@ -434,7 +440,7 @@ public class StoryPresenter : MonoBehaviour
         }
         else
         {
-            view.AppendStoryText("<i><color=#888888>[AI Bedrock đang suy nghĩ...]</color></i>\n");
+            view.AppendStoryText("<i><color=#888888>[AI đang tạo cốt truyện...]</color></i>\n");
 
             string characterId = GameProgressService.Instance?.CurrentCharacter?.characterId ?? "demo_char_id";
             string sessionId = GameProgressService.Instance?.CurrentStorySession?.sessionId ?? "";
@@ -555,13 +561,15 @@ public class StoryPresenter : MonoBehaviour
             ? GameProgressService.Instance.CurrentCharacter.gold 
             : (response.character != null ? response.character.gold : 0);
 
-        var curChar = GameProgressService.Instance?.CurrentCharacter;
+        int charXP = GameProgressService.Instance?.CurrentCharacter != null ? GameProgressService.Instance.CurrentCharacter.experience : 0;
+        int charMaxXP = GameProgressService.Instance?.CurrentCharacter != null ? GameProgressService.Instance.CurrentCharacter.level * 100 : 100;
+        
         var characterState = new StoryCharacterState
         {
-            characterName = curChar?.name ?? charName,
-            level = curChar?.level ?? (response.character != null ? response.character.level : 1),
-            hp = curChar?.hp ?? (response.character != null ? response.character.hp : 100),
-            gold = curChar?.gold ?? charGold
+            characterName = charName,
+            level = response.character != null ? response.character.level : (GameProgressService.Instance?.CurrentCharacter?.level ?? 1),
+            hp = response.character != null ? response.character.hp : (GameProgressService.Instance?.CurrentCharacter?.hp ?? 100),
+            gold = charGold
         };
 
 
@@ -733,7 +741,9 @@ public class StoryPresenter : MonoBehaviour
                 characterName = "Player_Name",
                 level = 7,
                 hp = 84,
-                gold = 120
+                gold = 120,
+                xp = 60,
+                maxXP = 700
             },
             lines = new List<StoryLineData>
             {
