@@ -57,27 +57,28 @@ public class UIController : MonoBehaviour
         }
     }
 
-    // Hàm đóng Inventory (dùng riêng cho nút X / nút Đóng bên trong Panel_Inventory)
     public void CloseInventory()
     {
-        if (panelInventory != null && panelInventory.activeSelf)
+        if (panelInventory != null)
         {
             panelInventory.SetActive(false);
-            RestorePanelStates();
         }
+        RestorePanelStates();
     }
 
     private void RestorePanelStates()
     {
-        if (panelsToHide != null && savedStates != null && panelsToHide.Length == savedStates.Length)
+        if (panelsToHide != null)
         {
             for (int i = 0; i < panelsToHide.Length; i++)
             {
                 if (panelsToHide[i] != null)
                 {
-                    panelsToHide[i].SetActive(savedStates[i]);
+                    bool shouldBeActive = (savedStates != null && i < savedStates.Length) ? savedStates[i] : true;
+                    panelsToHide[i].SetActive(shouldBeActive);
                 }
             }
         }
     }
+
 }

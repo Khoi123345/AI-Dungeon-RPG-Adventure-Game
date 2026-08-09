@@ -157,6 +157,16 @@ public class BattleEndUIController : MonoBehaviour
         bool revived = GameProgressService.Instance.ReviveCharacterWithGold(cost);
         if (revived)
         {
+            // ✅ Fix: Reset currentNodeId từ "boss_room" về location hiện tại
+            // để khi resume, backend không tự động trigger battle lại ngay lập tức.
+            var session = GameProgressService.Instance?.CurrentStorySession;
+            if (session != null && string.Equals(session.currentNodeId, "boss_room", System.StringComparison.OrdinalIgnoreCase))
+            {
+                string fallbackNode = session.currentLocation ?? "ancient_cave";
+                Debug.Log($"[BattleEndUI] Revive: Reset currentNodeId từ 'boss_room' → '{fallbackNode}' để tránh re-trigger battle ngay.");
+                GameProgressService.Instance.SetCurrentStorySession(session.sessionId, fallbackNode, session.currentLocation);
+            }
+
             Debug.Log($"✨ [REVIATION SUCCESS] Đã trừ {cost} Gold. Nhân vật {character.name} được hồi sinh 100% HP!");
             Debug.Log("🚗 [SCENE TRANSITION] Quay trở lại StoryScene.unity trước khi đánh Boss để tiếp tục hành trình...");
             SceneManager.LoadScene("StoryScene");

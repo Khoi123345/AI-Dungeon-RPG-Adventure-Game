@@ -60,9 +60,18 @@ namespace GameBackend.Core.Services
 
         private static readonly Dictionary<string, List<string>> LocationMobs = new()
         {
-            { "ancient_cave", new() { "mob_cave_spider", "mob_goblin_scout" } },
-            { "forgotten_temple", new() { "mob_shadow_spirit", "mob_temple_golem", "mob_goblin_scout", "mob_goblin_guard", "mob_cave_spider" } },
-            { "goblin_hideout", new() { "mob_goblin_guard", "mob_goblin_scout" } }
+            // Chapter 1
+            { "ancient_cave",      new() { "mob_cave_spider", "mob_goblin_scout" } },
+            { "forgotten_temple",  new() { "mob_shadow_spirit", "mob_temple_golem", "mob_goblin_scout", "mob_goblin_guard", "mob_cave_spider" } },
+            { "goblin_hideout",    new() { "mob_goblin_guard", "mob_goblin_scout" } },
+            // Chapter 2
+            { "sunken_shipwreck", new() { "mob_void_remnant", "mob_drowned_sailor", "mob_mutated_crab", "mob_shadow_spirit" } },
+            { "abyssal_trench",   new() { "mob_void_remnant", "mob_abyssal_spirit", "mob_drowned_sailor" } },
+            { "coral_palace",     new() { "mob_shadow_spirit", "mob_void_remnant" } },
+            // Chapter 3
+            { "sulfur_mines",     new() { "mob_young_dragon", "mob_fire_lizard", "mob_fire_raptor" } },
+            { "obsidian_peaks",   new() { "mob_adult_dragon", "mob_young_dragon", "mob_fire_raptor" } },
+            { "dragon_nest",      new() { "mob_adult_dragon", "mob_young_dragon" } },
         };
 
         private readonly Random _randomEncounterGenerator = new();
@@ -74,9 +83,14 @@ namespace GameBackend.Core.Services
         {
             return (location ?? "").ToLowerInvariant() switch
             {
+                // Chapter 1
                 "forgotten_temple" => "shadow_demon",
+                "goblin_hideout"   => "goblin_king",
+                // Chapter 2
+                "coral_palace"     => "shadow_demon",
+                // Chapter 3
                 "dragon_nest"      => "dragon_king",
-                _                  => "goblin_king"  // ancient_cave (default Chapter 1)
+                _                  => "goblin_king"  // fallback
             };
         }
 
@@ -142,7 +156,44 @@ namespace GameBackend.Core.Services
                     _logger.LogWarning(ex, "Could not fetch session for character {CharacterId}", character.characterId);
                 }
 
+                // Nếu forceNewSession = true (người chơi chết + bấm Back to Menu):
+                // Xóa session cũ và reset level nhân vật về 1
+                if (request.forceNewSession && session != null)
+                {
+                    _logger.LogInformation("forceNewSession=true: Deleting old session {SessionId} for character {CharacterId}", session.sessionId, character.characterId);
+                    try
+                    {
+                        await _storyRepository.DeleteSessionByCharacterIdAsync(character.characterId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Could not delete old session for character {CharacterId}", character.characterId);
+                    }
+
+                    // Reset level về 1 và stats cơ bản trên DB
+                    character.level = 1;
+                    character.experience = 0;
+                    character.hp = 100;
+                    character.maxHp = 100;
+                    character.attack = 15;
+                    character.defense = 5;
+                    character.status = "Alive";
+                    character.currentLocationId = DefaultLocation;
+                    try
+                    {
+                        await _characterRepository.SaveAsync(character);
+                        _logger.LogInformation("Reset character {CharacterId} to Level 1 after death.", character.characterId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Could not reset character stats for {CharacterId}", character.characterId);
+                    }
+
+                    session = null; // Bắt buộc tạo session mới bên dưới
+                }
+
                 if (session != null && session.status == "Active" && !string.IsNullOrWhiteSpace(session.currentNodeId))
+
                 {
                     // Resume: gọi AI để tạo đoạn tiếp theo phù hợp (không lặp lại storySummary)
                     _logger.LogInformation("Resuming existing session {SessionId} at node {NodeId}", session.sessionId, session.currentNodeId);
@@ -724,9 +775,12 @@ namespace GameBackend.Core.Services
             var response = BuildResponse(context.Session, context.Character, narrativeText, aiResponse.Choices);
             response.triggerBattle = aiResponse.TriggerBattle;
             response.bossId = aiResponse.BossId;
+            response.bossName = aiResponse.BossName;
+            response.bossLevel = aiResponse.BossLevel;
             response.debugPrompt = context.BuiltPrompt;
             return response;
         }
+
 
         private async Task<string> GenerateRawAiResponseAsync(string systemPrompt, string userPrompt, string fallbackNarrative)
         {
@@ -836,15 +890,40 @@ namespace GameBackend.Core.Services
                 },
                 choices = (aiChoices != null && aiChoices.Count > 0)
                     ? aiChoices
-                    : new List<StoryChoiceOption>
-                    {
-                        new() { label = "Tấn công", description = "Chiến đấu với Boss quái vật", nextNodeId = "battle_path" },
-                        new() { label = "Điều tra", description = "Tìm kiếm lối đi bí ẩn", nextNodeId = "investigate_path" },
-                        new() { label = "Nghỉ ngơi", description = "Hồi phục sức khỏe", nextNodeId = "rest_path" }
-                    },
+                    : BuildFallbackChoices(session.currentLocation),
                 triggerBattle = false
             };
         }
+
+        private static List<StoryChoiceOption> BuildFallbackChoices(string? location)
+        {
+            var loc = (location ?? "").ToLowerInvariant();
+            if (loc.Contains("sunken_shipwreck") || loc.Contains("shipwreck"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá tầng dưới xác tàu", description = "Tiến sâu vào bên trong boong tàu", nextNodeId = "shipwreck_deck" },
+                    new() { label = "Lặn xuống Rãnh Sâu Vô Tận", description = "Rời khỏi tàu đắm và tiến vào Rãnh Sâu", nextNodeId = "abyssal_trench" },
+                    new() { label = "Kiểm tra xung quanh", description = "Tìm kiếm các món đồ hữu ích", nextNodeId = "investigate_path" }
+                };
+            }
+            if (loc.Contains("abyssal_trench"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Tiến vào Cung Điện San Hô", description = "Đi về phía ánh sáng tím huyền bí", nextNodeId = "coral_palace" },
+                    new() { label = "Quay lại Xác Tàu Đắm", description = "Trở về khu vực an toàn hơn", nextNodeId = "sunken_shipwreck" },
+                    new() { label = "Cẩn trọng quan sát", description = "Dò tìm sinh vật biển sâu", nextNodeId = "investigate_path" }
+                };
+            }
+            return new List<StoryChoiceOption>
+            {
+                new() { label = "Tiến lên phía trước", description = "Tiếp tục khám phá khu vực", nextNodeId = "explore_path" },
+                new() { label = "Kiểm tra xung quanh", description = "Tìm kiếm dấu vết bí ẩn", nextNodeId = "investigate_path" },
+                new() { label = "Nghỉ ngơi quan sát", description = "Tạm dừng để lấy lại sức mạnh", nextNodeId = "rest_path" }
+            };
+        }
+
 
         private string BuildQuestItemDirective(IEnumerable<Item>? inventoryItems, string currentLocation)
         {
@@ -874,26 +953,40 @@ namespace GameBackend.Core.Services
             if (currentLocation.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase))
             {
                 targetMonster = "Nhện Hang Động (Cave Spider)";
-                targetItem = "Chìa Khóa Cổ Xưa";
+                targetItem = "Chìa Khóa Cổ Xưa (item_ancient_key)";
                 nextLocation = "forgotten_temple";
             }
             else if (currentLocation.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase))
             {
-                targetMonster = "Golem Đền Thờ (Temple Golem) hoặc Oan Hồn Bóng Tối (Shadow Spirit)";
-                targetItem = "Lõi Nguyên Tố";
+                targetMonster = "Golem Đền Thờ (Temple Golem)";
+                targetItem = "Lõi Nguyên Tố (item_elemental_core)";
                 nextLocation = "goblin_hideout";
             }
             else if (currentLocation.Equals("sunken_shipwreck", StringComparison.OrdinalIgnoreCase))
             {
-                targetMonster = "Oan Hồn Biển Sâu (Abyssal Spirit)";
-                targetItem = "Mảnh Ghép Đại Dương";
+                targetMonster = "Thủy Thủ Chết Đuối hoặc Cua Đột Biến";
+                targetItem = "Hải Đồ Biển Sâu (item_sea_compass)";
                 nextLocation = "abyssal_trench";
+            }
+            else if (currentLocation.Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Tàn Dư Hư Không (Void Remnant)";
+                targetItem = "Pha Lê Hư Không (item_void_crystal)";
+                nextLocation = "coral_palace";
+            }
+            else if (currentLocation.Equals("coral_palace", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Oan Hồn Bóng Tối (Shadow Spirit)";
+                targetItem = "Pha Lê Hư Không (dùng mở cổng ngai vàng)";
+                nextLocation = "boss_room";
             }
 
             return $"[NHIỆM VỤ CỐT TRUYỆN: TÌM {targetItem.ToUpperInvariant()}] Người chơi CHƯA SỞ HỮU {targetItem}. " +
-                   $"Bạn TUYỆT ĐỐI KHÔNG ĐƯỢC tạo lựa chọn cho phép sang khu vực mới ({nextLocation})! " +
+                   $"Bạn TUYỆT ĐỐI KHÔNG ĐƯỢC tạo lựa chọn cho phép sang khu vực mới ({nextLocation}) khi chưa thu thập {targetItem}! " +
                    $"THAY VÀO ĐÓ, BẠN BẮT BUỘC PHẢI DẪN TRUYỆN BẰNG CÁCH: Tiết lộ hoặc ám chỉ rằng {targetMonster} đang cất giữ {targetItem}. " +
-                   $"Sau đó, cung cấp các Lựa chọn (choices) xoay quanh việc lần theo dấu vết hoặc trực tiếp khiêu chiến {targetMonster} để giành lấy {targetItem}.";
+                   $"Sau đó, cung cấp các Lựa chọn (choices) xoay quanh việc thám hiểm hoặc khiêu chiến {targetMonster} để giành lấy {targetItem}. " +
+                   $"KHI TIÊU DIỆT HOẶC TÌM THẤY {targetItem}, HÃY TẠO ITEM NÀY TRONG INVENTORYCHANGES: [{{ \"itemId\": \"item_id_tương_ứng\", \"quantityDelta\": 1 }}].";
+
         }
 
         private sealed class StoryActionProcessingContext

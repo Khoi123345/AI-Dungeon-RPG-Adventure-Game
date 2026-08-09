@@ -27,8 +27,15 @@ namespace GameBackend.Core.Services.Validation
         public async Task ValidateAsync(GameRuleValidationContext context)
         {
             var response = context.Response;
-            var requestedLocation = response.CurrentLocation?.Trim();
+            var rawLocation = response.CurrentLocation?.Trim();
+            var requestedLocation = NormalizeLocationId(rawLocation);
             var currentLocation = context.Session.currentLocation ?? context.Character.currentLocationId ?? "ancient_cave";
+
+            // Cập nhật lại response.CurrentLocation đã chuẩn hóa (bỏ tiền tố location_)
+            if (!string.IsNullOrWhiteSpace(requestedLocation))
+            {
+                response.CurrentLocation = requestedLocation;
+            }
 
             // 1. Kiểm tra xem vị trí do AI trả về có tồn tại trong hệ thống (Content Catalog) hay không
             if (!string.IsNullOrWhiteSpace(requestedLocation))
@@ -39,6 +46,10 @@ namespace GameBackend.Core.Services.Validation
                     var inventory = await _inventoryRepository.GetByCharacterIdAsync(context.Character.characterId);
                     bool hasAncientKey = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_ancient_key", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
                     bool hasElementalCore = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_elemental_core", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
+                    bool hasSeaCompass = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_sea_compass", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
+                    bool hasVoidCrystal = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_void_crystal", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
+                    bool hasFireCore = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_fire_core", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
+                    bool hasObsidianKey = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_obsidian_key", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
                     bool hasDragonBloodKey = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_dragon_blood_key", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
 
                     bool isAllowed = true;
@@ -52,11 +63,32 @@ namespace GameBackend.Core.Services.Validation
                         isAllowed = false;
                         _logger.LogWarning("Chặn AI/Player chuyển sang 'goblin_hideout': Nhân vật {CharacterId} chưa có item_elemental_core trong kho đồ", context.Character.characterId);
                     }
+                    else if (string.Equals(requestedLocation, "abyssal_trench", StringComparison.OrdinalIgnoreCase) && !hasSeaCompass)
+                    {
+                        isAllowed = false;
+                        _logger.LogWarning("Chặn AI/Player chuyển sang 'abyssal_trench': Nhân vật {CharacterId} chưa có item_sea_compass trong kho đồ", context.Character.characterId);
+                    }
+                    else if (string.Equals(requestedLocation, "coral_palace", StringComparison.OrdinalIgnoreCase) && !hasVoidCrystal)
+                    {
+                        isAllowed = false;
+                        _logger.LogWarning("Chặn AI/Player chuyển sang 'coral_palace': Nhân vật {CharacterId} chưa có item_void_crystal trong kho đồ", context.Character.characterId);
+                    }
+                    else if (string.Equals(requestedLocation, "sulfur_mines", StringComparison.OrdinalIgnoreCase) && !hasFireCore)
+                    {
+                        isAllowed = false;
+                        _logger.LogWarning("Chặn AI/Player chuyển sang 'sulfur_mines': Nhân vật {CharacterId} chưa có item_fire_core trong kho đồ", context.Character.characterId);
+                    }
+                    else if (string.Equals(requestedLocation, "obsidian_peaks", StringComparison.OrdinalIgnoreCase) && !hasObsidianKey)
+                    {
+                        isAllowed = false;
+                        _logger.LogWarning("Chặn AI/Player chuyển sang 'obsidian_peaks': Nhân vật {CharacterId} chưa có item_obsidian_key trong kho đồ", context.Character.characterId);
+                    }
                     else if (string.Equals(requestedLocation, "dragon_nest", StringComparison.OrdinalIgnoreCase) && !hasDragonBloodKey)
                     {
                         isAllowed = false;
                         _logger.LogWarning("Chặn AI/Player chuyển sang 'dragon_nest': Nhân vật {CharacterId} chưa có item_dragon_blood_key trong kho đồ", context.Character.characterId);
                     }
+
 
                     if (isAllowed)
                     {
@@ -79,6 +111,7 @@ namespace GameBackend.Core.Services.Validation
                     response.CurrentLocation = currentLocation;
                 }
             }
+
             else
             {
                 // Nếu AI không trả về location -> Giữ vị trí hiện tại
@@ -91,5 +124,15 @@ namespace GameBackend.Core.Services.Validation
                 response.CurrentNodeId = context.Session.currentNodeId ?? response.CurrentLocation;
             }
         }
+
+        private static string NormalizeLocationId(string? raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw)) return string.Empty;
+            var clean = raw.Trim().ToLowerInvariant();
+            if (clean.StartsWith("location_")) clean = clean["location_".Length..];
+            if (clean.StartsWith("loc_")) clean = clean["loc_".Length..];
+            return clean;
+        }
     }
 }
+
