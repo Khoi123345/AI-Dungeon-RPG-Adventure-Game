@@ -74,11 +74,19 @@ namespace GameBackend.Core.Services
             Boss? template = null;
             if (!string.IsNullOrWhiteSpace(targetBossId))
             {
+                string cleanTarget = targetBossId.Trim().ToLowerInvariant();
+                string strippedTarget = cleanTarget;
+                if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
+                if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
+
                 template = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    targetBossId.Equals(b.bossId, StringComparison.OrdinalIgnoreCase) ||
-                    targetBossId.StartsWith(b.bossId, StringComparison.OrdinalIgnoreCase) ||
-                    b.bossId.StartsWith(targetBossId, StringComparison.OrdinalIgnoreCase));
+                    b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
+                    b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                    b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase) ||
+                    b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase));
             }
+
 
             string rarity = template != null ? template.rarity : GameConstants.RollBossRarity();
             if (template == null)
@@ -109,10 +117,21 @@ namespace GameBackend.Core.Services
                 encounterTime  = DateTime.UtcNow
             };
 
-            if (existingEncounter == null)
+            if (existingEncounter != null)
+            {
+                existingEncounter.bossId         = actualBossId;
+                existingEncounter.bossLevel      = bossLevel;
+                existingEncounter.bossRarity     = rarity;
+                existingEncounter.bossHpBefore   = GameConstants.ScaleStat(template.baseHp, bossLevel);
+                existingEncounter.playerHpBefore = character.hp;
+                existingEncounter.encounterTime  = DateTime.UtcNow;
+                await _battleRepository.SaveEncounterAsync(existingEncounter);
+            }
+            else
             {
                 await _battleRepository.SaveEncounterAsync(encounter);
             }
+
 
             _logger.LogInformation("Boss spawned: {BossId} ({BossName}, Lv.{Level}, {Rarity}) for character: {CharacterId}",
                 encounter.bossId, template.name, bossLevel, rarity, character.characterId);
@@ -175,11 +194,20 @@ namespace GameBackend.Core.Services
 
             // 3. Tính Boss Power (Mục 4)
             //    Boss Power = Base Attack × (1 + Level × 0.1) + Base Defense + Level Modifier
-            string baseBossId = encounter.bossId.Contains('_')
-                ? string.Join("_", encounter.bossId.Split('_').SkipLast(1))
-                : encounter.bossId;
-            var bossTemplate = GameConstants.BossCatalog.FirstOrDefault(b => encounter.bossId.StartsWith(b.bossId))
+            string targetBossId = encounter.bossId ?? "";
+            string cleanTarget = targetBossId.Trim().ToLowerInvariant();
+            string strippedTarget = cleanTarget;
+            if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
+            if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
+
+            var bossTemplate = GameConstants.BossCatalog.FirstOrDefault(b =>
+                b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase) ||
+                b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase))
                 ?? GameConstants.BossCatalog[0];
+
 
             double bossPower = bossTemplate.baseAttack * (1 + encounter.bossLevel * GameConstants.BossLevelScaleFactor)
                              + bossTemplate.baseDefense
@@ -192,28 +220,27 @@ namespace GameBackend.Core.Services
             double luckyFactor = 0;
             var luckyEffects = new List<string>();
 
-            // 4a. Critical Hit: +Attack(Total) vào điểm
+            // 4a. Critical Hit: +0.3 × Attack(Total) vào điểm
             if (_random.NextDouble() <= effectiveStats.luckyRate)
             {
-                luckyFactor += effectiveStats.attack;
+                luckyFactor += 0.3 * effectiveStats.attack;
                 luckyEffects.Add("Critical Hit");
             }
 
-            // 4b. Dodge: +0.2 × Boss Power vào điểm
+            // 4b. Dodge: +0.1 × Boss Power vào điểm
             if (_random.NextDouble() <= effectiveStats.luckyRate)
             {
-                luckyFactor += GameConstants.DodgeBonusRatio * bossPower;
+                luckyFactor += 0.1 * bossPower;
                 luckyEffects.Add("Dodge");
             }
 
-            // 4c. Damage Bonus: +Random(0.1, 0.3) × Player Power
+            // 4c. Damage Bonus: +0.1 × Player Power
             if (_random.NextDouble() <= effectiveStats.luckyRate)
             {
-                double bonusRatio = GameConstants.DamageBonusMin
-                    + _random.NextDouble() * (GameConstants.DamageBonusMax - GameConstants.DamageBonusMin);
-                luckyFactor += bonusRatio * playerPower;
+                luckyFactor += 0.1 * playerPower;
                 luckyEffects.Add("Damage Bonus");
             }
+
 
             double battleScore = (playerPower - bossPower) + randomFactor + luckyFactor;
             bool isVictory = battleScore >= 0;

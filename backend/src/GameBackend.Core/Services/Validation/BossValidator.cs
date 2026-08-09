@@ -58,7 +58,8 @@ namespace GameBackend.Core.Services.Validation
                     _logger.LogInformation("Invalid bossId '{BossId}' provided by AI. Overwriting with fallback.", response.BossId);
                 }
 
-                var currentLoc = (context.Session.currentLocation ?? context.Character.currentLocationId ?? "").ToLowerInvariant();
+                var rawLoc = response.CurrentLocation ?? context.Session.currentLocation ?? context.Character.currentLocationId ?? "";
+                var currentLoc = NormalizeLocationId(rawLoc);
 
                 if (currentLoc == "forgotten_temple")
                 {
@@ -70,6 +71,32 @@ namespace GameBackend.Core.Services.Validation
                 {
                     response.BossId = "mob_goblin_guard";
                     response.BossName = "Goblin Guard";
+                }
+                else if (currentLoc == "sunken_shipwreck")
+                {
+                    if (lowerText.Contains("crab") || lowerText.Contains("cua")) { response.BossId = "mob_mutated_crab"; response.BossName = "Mutated Crab"; }
+                    else if (lowerText.Contains("sailor") || lowerText.Contains("thủy thủ")) { response.BossId = "mob_drowned_sailor"; response.BossName = "Drowned Sailor"; }
+                    else { response.BossId = "mob_abyssal_spirit"; response.BossName = "Abyssal Spirit"; }
+                }
+                else if (currentLoc == "abyssal_trench")
+                {
+                    if (lowerText.Contains("remnant") || lowerText.Contains("tàn dư")) { response.BossId = "mob_void_remnant"; response.BossName = "Void Remnant"; }
+                    else { response.BossId = "mob_abyssal_spirit"; response.BossName = "Abyssal Spirit"; }
+                }
+                else if (currentLoc == "coral_palace")
+                {
+                    response.BossId = "mob_shadow_spirit";
+                    response.BossName = "Shadow Spirit";
+                }
+                else if (currentLoc == "sulfur_mines")
+                {
+                    if (lowerText.Contains("dragon") || lowerText.Contains("rồng")) { response.BossId = "mob_young_dragon"; response.BossName = "Young Dragon"; }
+                    else { response.BossId = "mob_fire_lizard"; response.BossName = "Fire Lizard"; }
+                }
+                else if (currentLoc == "obsidian_peaks" || currentLoc == "dragon_nest")
+                {
+                    if (lowerText.Contains("adult") || lowerText.Contains("trưởng thành")) { response.BossId = "mob_adult_dragon"; response.BossName = "Adult Dragon"; }
+                    else { response.BossId = "mob_fire_raptor"; response.BossName = "Fire Raptor"; }
                 }
                 else
                 {
@@ -90,7 +117,7 @@ namespace GameBackend.Core.Services.Validation
                 if (string.IsNullOrWhiteSpace(response.BossId) || !isChapterBoss)
                 {
                     // Gán chapter boss mặc định dựa theo location
-                    var chapterBossId = (context.Session.currentLocation ?? "").ToLowerInvariant() switch
+                    var chapterBossId = NormalizeLocationId(context.Session.currentLocation) switch
                     {
                         "coral_palace" => "boss_shadow_demon",
                         "dragon_nest"  => "boss_dragon_king",
@@ -102,10 +129,30 @@ namespace GameBackend.Core.Services.Validation
             }
             else if (isChapterBoss && !isInBossRoom)
             {
-                _logger.LogInformation("Downgraded chapter boss → mob_goblin_guard: player not in boss_room (node={Node})", context.Session.currentNodeId);
-                response.BossId   = "mob_goblin_guard";
-                response.BossName = "Goblin Guard";
+                var loc = NormalizeLocationId(context.Session.currentLocation);
+                if (loc == "coral_palace" || loc == "abyssal_trench" || loc == "sunken_shipwreck")
+                {
+                    response.BossId   = "mob_shadow_spirit";
+                    response.BossName = "Shadow Spirit";
+                }
+                else if (loc == "sulfur_mines")
+                {
+                    response.BossId   = "mob_young_dragon";
+                    response.BossName = "Young Dragon";
+                }
+                else if (loc == "obsidian_peaks" || loc == "dragon_nest")
+                {
+                    response.BossId   = "mob_adult_dragon";
+                    response.BossName = "Adult Dragon";
+                }
+                else
+                {
+                    response.BossId   = "mob_goblin_guard";
+                    response.BossName = "Goblin Guard";
+                }
+                _logger.LogInformation("Downgraded chapter boss → {BossId} for location {Location} (node={Node})", response.BossId, loc, context.Session.currentNodeId);
             }
+
 
             var id = response.BossId;
             var existsInCatalog = GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(id, StringComparison.OrdinalIgnoreCase));
@@ -117,7 +164,7 @@ namespace GameBackend.Core.Services.Validation
                 return;
             }
 
-            var effectiveLocation = response.CurrentLocation ?? context.Session.currentLocation ?? context.Character.currentLocationId;
+            var effectiveLocation = NormalizeLocationId(response.CurrentLocation ?? context.Session.currentLocation ?? context.Character.currentLocationId);
             if (!string.IsNullOrWhiteSpace(effectiveLocation) && !await _contentService.LocationExistsAsync(effectiveLocation))
             {
                 _logger.LogInformation("Rejected battle trigger because boss {BossId} references invalid location {Location}", response.BossId, effectiveLocation);
@@ -125,17 +172,21 @@ namespace GameBackend.Core.Services.Validation
                 return;
             }
 
+
             response.BossName = string.IsNullOrWhiteSpace(response.BossName) ? response.BossId : response.BossName;
             var bossTemplate = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId.Equals(response.BossId, StringComparison.OrdinalIgnoreCase));
-            var calculatedLvl = GameShared.Config.GameConstants.CalculateBossLevel(context.Character.level, bossTemplate?.rarity ?? "Common", response.BossId);
-            
-            if (!response.BossLevel.HasValue || response.BossLevel.Value <= 0 || response.BossLevel.Value == context.Character.level)
+
+            // Ưu tiên bossLevel AI đã gán trong prompt (ví dụ: bossLevel: 10 trong goblin_hideout.md).
+            // Chỉ tính lại bằng CalculateBossLevel khi AI không gán hoặc gán giá trị <= 0.
+            if (!response.BossLevel.HasValue || response.BossLevel.Value <= 0)
             {
-                response.BossLevel = calculatedLvl;
+                response.BossLevel = GameShared.Config.GameConstants.CalculateBossLevel(context.Character.level, bossTemplate?.rarity ?? "Common", response.BossId);
+                _logger.LogInformation("BossLevel not set by AI, calculated fallback: {Level}", response.BossLevel);
             }
             else
             {
                 response.BossLevel = Math.Clamp(response.BossLevel.Value, 1, 200);
+                _logger.LogInformation("BossLevel kept from AI prompt: {Level}", response.BossLevel);
             }
         }
 
@@ -153,5 +204,15 @@ namespace GameBackend.Core.Services.Validation
             response.BossName = null;
             response.BossLevel = null;
         }
+
+        private static string NormalizeLocationId(string? raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw)) return string.Empty;
+            var clean = raw.Trim().ToLowerInvariant();
+            if (clean.StartsWith("location_")) clean = clean["location_".Length..];
+            if (clean.StartsWith("loc_")) clean = clean["loc_".Length..];
+            return clean;
+        }
     }
 }
+

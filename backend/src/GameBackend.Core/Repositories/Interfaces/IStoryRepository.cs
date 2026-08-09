@@ -9,5 +9,7 @@ namespace GameBackend.Core.Repositories.Interfaces
         Task SaveSessionAsync(StorySession session);
         Task SaveActionAsync(StoryAction action);
         Task<List<StoryAction>> GetActionsBySessionIdAsync(string sessionId);
+        /// <summary>Xóa session và tất cả StoryActions của nhân vật khi người chơi chết và chọn Back to Menu.</summary>
+        Task DeleteSessionByCharacterIdAsync(string characterId);
     }
 }

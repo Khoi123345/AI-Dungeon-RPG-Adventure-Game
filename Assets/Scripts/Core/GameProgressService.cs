@@ -37,6 +37,12 @@ public class GameProgressService : MonoBehaviour
 
     private bool initialized;
 
+    /// <summary>
+    /// Nếu true: lần gọi story/start tiếp theo sẽ xóa session cũ và bắt đầu lại từ đầu.
+    /// Được set khi người chơi chết và chọn Back to Menu.
+    /// </summary>
+    public bool ShouldForceNewSession { get; set; } = false;
+
     public static GameProgressService EnsureInstance()
     {
         if (instance != null)
@@ -152,6 +158,30 @@ public class GameProgressService : MonoBehaviour
     }
 
     /// <summary>
+    /// Đồng bộ chỉ số nhân vật (Level, HP, MaxHP, Gold, ATK, DEF) từ response của Backend API.
+    /// </summary>
+    public void SyncCharacterFromResponse(GameShared.DTOs.Character.CharacterResponse res)
+    {
+        if (res == null || CurrentCharacter == null) return;
+
+        if (res.level > CurrentCharacter.level)
+        {
+            CurrentCharacter.level = res.level;
+        }
+        CurrentCharacter.hp = res.hp;
+        CurrentCharacter.maxHp = res.maxHp;
+        CurrentCharacter.attack = res.attack;
+        CurrentCharacter.defense = res.defense;
+        if (CurrentCharacter.name != null && !CurrentCharacter.name.Equals("khoi", StringComparison.OrdinalIgnoreCase))
+        {
+            CurrentCharacter.gold = res.gold;
+        }
+        Debug.Log($"[GameProgressService] Synced Character from backend: {CurrentCharacter.name} (Lv.{CurrentCharacter.level}, HP={CurrentCharacter.hp}/{CurrentCharacter.maxHp}, Gold={CurrentCharacter.gold})");
+    }
+
+
+
+    /// <summary>
     /// Cập nhật thông tin StorySession từ API response của backend.
     /// </summary>
     public void SetCurrentStorySession(string sessionId, string currentNodeId = "intro", string currentLocation = "Ancient Ruins")
@@ -245,7 +275,9 @@ public class GameProgressService : MonoBehaviour
         inventory.Clear();
         SeedDefaultInventoryIfNeeded();
 
-        Debug.Log("[GameProgressService] Đã reset toàn bộ tiến trình game về trạng thái khởi đầu mới (Chương 1).");
+        ShouldForceNewSession = true; // Đánh dấu để story/start tiếp theo sẽ xóa session cũ trên server
+
+        Debug.Log("[GameProgressService] Đã reset toàn bộ tiến trình game về trạng thái khởi đầu mới (Chương 1). ShouldForceNewSession = true.");
     }
 
     /// <summary>
@@ -306,9 +338,9 @@ public class GameProgressService : MonoBehaviour
     }
 
     /// <summary>
-    /// Sinh Boss chính xác theo bossId do AI Bedrock chỉ định.
+    /// Sinh Boss chính xác theo bossId do AI Bedrock chỉ định, cho phép gán Level trực tiếp từ AI.
     /// </summary>
-    public void SpawnBossById(string bossId)
+    public void SpawnBossById(string bossId, int? targetLevel = null)
     {
         InitializeIfNeeded();
 
@@ -337,7 +369,9 @@ public class GameProgressService : MonoBehaviour
         }
 
         int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
-        int bossLevel = GameShared.Config.GameConstants.CalculateBossLevel(playerLevel, picked.rarity, picked.bossId);
+        int bossLevel = (targetLevel.HasValue && targetLevel.Value > 0)
+            ? targetLevel.Value
+            : GameShared.Config.GameConstants.CalculateBossLevel(playerLevel, picked.rarity, picked.bossId);
 
         CurrentBoss = new Boss
         {
@@ -350,14 +384,15 @@ public class GameProgressService : MonoBehaviour
             baseDefense  = GameShared.Config.GameConstants.ScaleStat(picked.baseDefense, bossLevel),
             speed        = picked.speed,
             criticalRate = picked.criticalRate,
-            expReward    = picked.expReward,
-            goldReward   = picked.goldReward,
+            expReward    = GameShared.Config.GameConstants.CalculateExpReward(bossLevel, picked.rarity, playerLevel),
+            goldReward   = GameShared.Config.GameConstants.CalculateGoldReward(bossLevel, picked.rarity),
             skillSetJson = "[]",
             imageUrl     = string.Empty
         };
 
-        Debug.Log($"[GameProgressService] SpawnBossById: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Rarity={CurrentBoss.rarity}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp})");
+        Debug.Log($"[GameProgressService] SpawnBossById: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp}, ATK={CurrentBoss.baseAttack}, DEF={CurrentBoss.baseDefense})");
     }
+
 
 
     public StoryData CreateStoryDemoData()

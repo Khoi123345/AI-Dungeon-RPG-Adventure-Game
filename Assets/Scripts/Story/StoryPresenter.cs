@@ -445,17 +445,24 @@ public class StoryPresenter : MonoBehaviour
             {
                 Debug.Log($"<color=#00FF00>[StoryPresenter] Nhận phản hồi từ AI Bedrock:</color>\n- triggerBattle: <b>{response.triggerBattle}</b>\n- bossId: <b>{response.bossId}</b>\n- location: <b>{response.currentLocation}</b>");
 
+                if (response.character != null)
+                {
+                    GameProgressService.Instance?.SyncCharacterFromResponse(response.character);
+                }
+
                 GameProgressService.Instance?.SetCurrentStorySession(response.sessionId, response.currentNodeId, response.currentLocation);
                 StoryData nextStoryData = MapActionResponseToStoryData(response);
                 PlayNextStoryNode(nextStoryData);
+
 
                 if (response.triggerBattle)
                 {
                     Debug.Log($"<color=#FF5500><b>[StoryPresenter] AI CHÍNH THỨC KÍCH HOẠT TRẬN ĐÁNH BOSS!</b> BossId = '{response.bossId}'</color>");
                     if (gameObject.activeInHierarchy)
                     {
-                        StartCoroutine(TriggerBossEncounterFromAi(response.bossId));
+                        StartCoroutine(TriggerBossEncounterFromAi(response.bossId, response.bossLevel));
                     }
+
                 }
                 else
                 {
@@ -503,7 +510,7 @@ public class StoryPresenter : MonoBehaviour
         }
     }
 
-    private IEnumerator TriggerBossEncounterFromAi(string bossId)
+    private IEnumerator TriggerBossEncounterFromAi(string bossId, int? bossLevel = null)
     {
         // 1. Chờ cốt truyện hiển thị xong hoàn toàn (chữ gõ xong + người chơi bấm tiếp tục)
         if (playbackCoroutine != null)
@@ -515,7 +522,8 @@ public class StoryPresenter : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         if (GameProgressService.Instance == null) yield break;
-        GameProgressService.Instance.SpawnBossById(bossId);
+        GameProgressService.Instance.SpawnBossById(bossId, bossLevel);
+
         var boss = GameProgressService.Instance.CurrentBoss;
         if (boss == null) yield break;
 
@@ -547,13 +555,15 @@ public class StoryPresenter : MonoBehaviour
             ? GameProgressService.Instance.CurrentCharacter.gold 
             : (response.character != null ? response.character.gold : 0);
 
+        var curChar = GameProgressService.Instance?.CurrentCharacter;
         var characterState = new StoryCharacterState
         {
-            characterName = charName,
-            level = response.character != null ? response.character.level : (GameProgressService.Instance?.CurrentCharacter?.level ?? 1),
-            hp = response.character != null ? response.character.hp : (GameProgressService.Instance?.CurrentCharacter?.hp ?? 100),
-            gold = charGold
+            characterName = curChar?.name ?? charName,
+            level = curChar?.level ?? (response.character != null ? response.character.level : 1),
+            hp = curChar?.hp ?? (response.character != null ? response.character.hp : 100),
+            gold = curChar?.gold ?? charGold
         };
+
 
         var lines = new List<StoryLineData>
         {
