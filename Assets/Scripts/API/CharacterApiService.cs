@@ -11,6 +11,11 @@ public class CharacterApiService
         return await ApiClient.Instance.GetRawAsync("/character/" + characterId);
     }
 
+    public async Task<string> GetCharacterByUserIdAsync(string userId)
+    {
+        return await ApiClient.Instance.GetRawAsync("/character/user/" + userId);
+    }
+
     public async Task<string> CreateCharacterAsync(string userId, string name, string className)
     {
         var body = UnityEngine.JsonUtility.ToJson(new CreateBody { userId = userId, name = name, className = className });

@@ -3,6 +3,7 @@ using GameBackend.Core.Services.Interfaces;
 using GameBackend.Core.AIStory.Builder;
 using GameBackend.Core.AIStory;
 using GameBackend.Core.AIStory.DTOs;
+using GameBackend.Core.AIStory.Services;
 using GameBackend.Core.Services.Parsing;
 using GameShared.DTOs.Character;
 using GameShared.DTOs.Story;
@@ -13,9 +14,8 @@ namespace GameBackend.Core.Services
 {
     public class StoryService : IStoryService
     {
-        private const string DefaultLocation = "prologue";
-        private const string DefaultChapterId = "introduction";
-        private const string DefaultSystemPrompt = "You are a dungeon master for a dark fantasy RPG game. Respond in Vietnamese.";
+        private const string DefaultLocation = "ancient_cave";
+        private const string DefaultChapterId = "chapter_1";
 
         private readonly IStoryRepository _storyRepository;
         private readonly ICharacterRepository _characterRepository;
@@ -27,6 +27,7 @@ namespace GameBackend.Core.Services
         private readonly IGameRuleValidator _gameRuleValidator;
         private readonly IPromptBuilder _promptBuilder;
         private readonly IStorySummaryService _storySummaryService;
+        private readonly IContentService _contentService;
         private readonly ILogger<StoryService> _logger;
 
         public StoryService(
@@ -40,6 +41,7 @@ namespace GameBackend.Core.Services
             IGameRuleValidator gameRuleValidator,
             IPromptBuilder promptBuilder,
             IStorySummaryService storySummaryService,
+            IContentService contentService,
             ILogger<StoryService> logger)
         {
             _storyRepository = storyRepository;
@@ -52,96 +54,205 @@ namespace GameBackend.Core.Services
             _gameRuleValidator = gameRuleValidator;
             _promptBuilder = promptBuilder;
             _storySummaryService = storySummaryService;
+            _contentService = contentService;
             _logger = logger;
+        }
+
+        private static readonly Dictionary<string, List<string>> LocationMobs = new()
+        {
+            { "ancient_cave", new() { "mob_cave_spider", "mob_goblin_scout" } },
+            { "forgotten_temple", new() { "mob_shadow_spirit", "mob_temple_golem", "mob_goblin_scout", "mob_goblin_guard", "mob_cave_spider" } },
+            { "goblin_hideout", new() { "mob_goblin_guard", "mob_goblin_scout" } }
+        };
+
+        private readonly Random _randomEncounterGenerator = new();
+
+        /// <summary>
+        /// Trả về bossId của chapter boss tương ứng với location hiện tại.
+        /// </summary>
+        private static string GetChapterBossId(string location)
+        {
+            return (location ?? "").ToLowerInvariant() switch
+            {
+                "forgotten_temple" => "shadow_demon",
+                "dragon_nest"      => "dragon_king",
+                _                  => "goblin_king"  // ancient_cave (default Chapter 1)
+            };
+        }
+
+        private string? RollRandomEncounter(string locationId)
+        {
+            if (string.IsNullOrWhiteSpace(locationId)) return null;
+
+            // 35% chance of random encounter
+            if (_randomEncounterGenerator.NextDouble() > 0.35) return null;
+
+            var normalizedLocation = locationId.Trim().ToLowerInvariant().Replace(" ", "_").Replace("-", "_");
+            if (LocationMobs.TryGetValue(normalizedLocation, out var mobs) && mobs.Count > 0)
+            {
+                return mobs[_randomEncounterGenerator.Next(mobs.Count)];
+            }
+
+            return null;
         }
 
         public async Task<StoryActionResponse> StartStoryAsync(StoryStartRequest request)
         {
             Character? character = null;
+            StorySession? session = null;
             try
             {
-                if (!string.IsNullOrWhiteSpace(request.characterId))
+                try
                 {
-                    character = await _characterRepository.GetByIdAsync(request.characterId);
+                    if (!string.IsNullOrWhiteSpace(request.characterId))
+                    {
+                        character = await _characterRepository.GetByIdAsync(request.characterId);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not fetch character {CharacterId} from DB, using fallback character", request.characterId);
+                }
+
+                if (character == null)
+                {
+                    character = new Character
+                    {
+                        characterId = string.IsNullOrWhiteSpace(request.characterId) ? "demo_char_id" : request.characterId,
+                        userId = "demo_user",
+                        name = "Adventurer",
+                        level = 1,
+                        hp = 100,
+                        maxHp = 100,
+                        attack = 15,
+                        defense = 5,
+                        gold = 50,
+                        className = "Adventurer",
+                        status = "Alive",
+                        currentLocationId = DefaultLocation
+                    };
+                }
+
+                try
+                {
+                    session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not fetch session for character {CharacterId}", character.characterId);
+                }
+
+                if (session != null && session.status == "Active" && !string.IsNullOrWhiteSpace(session.currentNodeId))
+                {
+                    // Resume: gọi AI để tạo đoạn tiếp theo phù hợp (không lặp lại storySummary)
+                    _logger.LogInformation("Resuming existing session {SessionId} at node {NodeId}", session.sessionId, session.currentNodeId);
+
+                    var inventoryResponse = await _inventoryService.GetInventoryAsync(character.characterId);
+                    var inventoryItems = (inventoryResponse?.slots ?? new List<GameShared.DTOs.Inventory.InventorySlot>())
+                        .Select(slot => GameShared.Config.GameConstants.GetItemById(slot.itemId) ?? new Item { itemId = slot.itemId, name = slot.itemId, rarity = "Common", itemType = "General" })
+                        .ToList();
+
+                    var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+                    var recentActions = allRecentActions
+                        .OrderByDescending(action => action.createdAt)
+                        .Take(6)
+                        .OrderBy(action => action.createdAt)
+                        .ToList();
+
+                    string resumeSystemEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave");
+
+                    var resumeContext = new StoryActionProcessingContext
+                    {
+                        Character = character,
+                        Session = session,
+                        PlayerInput = "[SYSTEM: Người chơi vừa quay trở lại game. Hãy tiếp tục câu chuyện từ vị trí hiện tại, nối tiếp diễn biến gần nhất mà không lặp lại bối cảnh cũ.]",
+                        RecentActions = recentActions,
+                        PromptContext = await _gamePromptContextBuilder.BuildAsync(character, inventoryItems, recentActions, session, "resume", resumeSystemEvent)
+                    };
+
+                    var resumeResponse = await GenerateStoryAiResponseAsync(resumeContext, "resume");
+                    resumeResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, resumeResponse);
+
+                    try { await _storyStateUpdater.ApplyAsync(session, character, resumeResponse); }
+                    catch (Exception ex) { _logger.LogWarning(ex, "Could not persist resume state"); }
+
+                    await SaveStoryTurnAsync(resumeContext, resumeResponse, "resume");
+
+                    return BuildResponse(resumeContext, resumeResponse.NarrativeText ?? session.storySummary ?? string.Empty, resumeResponse);
+                }
+
+                var startLocation = string.IsNullOrWhiteSpace(character.currentLocationId) || character.currentLocationId == "spawn_village" || character.currentLocationId == "ancient_cave"
+                    ? "prologue"
+                    : character.currentLocationId;
+
+                var isPrologue = startLocation == "prologue";
+
+                session = new StorySession
+                {
+                    sessionId = Guid.NewGuid().ToString("N"),
+                    characterId = character.characterId,
+                    currentLocation = startLocation,
+                    currentChapterId = isPrologue ? "prologue" : (string.IsNullOrWhiteSpace(request.storyFileId) ? DefaultChapterId : request.storyFileId),
+                    currentNodeId = isPrologue ? "prologue" : DefaultChapterId,
+                    status = "Active",
+                    updatedAt = DateTime.UtcNow,
+                    storyVersion = string.IsNullOrWhiteSpace(request.storyFileId) ? "1.0" : request.storyFileId,
+                    storySummary = isPrologue ? "Mở đầu cuộc phiêu lưu tại Sảnh Khởi Nguyên." : "Bắt đầu cuộc phiêu lưu.",
+                    sourceType = "AI"
+                };
+
+                var openingContext = new StoryActionProcessingContext
+                {
+                    Character = character,
+                    Session = session,
+                    PlayerInput = string.Empty,
+                    RecentActions = new List<StoryAction>(),
+                    PromptContext = await _gamePromptContextBuilder.BuildAsync(character, new List<Item>(), new List<StoryAction>(), session, string.Empty)
+                };
+
+                var openingResponse = await GenerateStoryAiResponseAsync(openingContext, "opening");
+                openingResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, openingResponse);
+
+                try
+                {
+                    await _storyStateUpdater.ApplyAsync(session, character, openingResponse);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not persist story state to DB, continuing in-memory");
+                }
+
+                await SaveStoryTurnAsync(openingContext, openingResponse, "opening");
+
+                _logger.LogInformation("Story session started: {SessionId} for character: {CharacterId}", session.sessionId, character.characterId);
+
+                return BuildResponse(openingContext, openingResponse.NarrativeText, openingResponse);
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Could not fetch character {CharacterId} from DB, using fallback character", request.characterId);
-            }
-
-            if (character == null)
-            {
-                character = new Character
+                _logger.LogError(ex, "StartStoryAsync error for request character {CharacterId}. Returning safe fallback response.", request.characterId);
+                var safeSession = session ?? new StorySession
                 {
-                    characterId = string.IsNullOrWhiteSpace(request.characterId) ? "demo_char_id" : request.characterId,
-                    userId = "demo_user",
+                    sessionId = Guid.NewGuid().ToString("N"),
+                    characterId = request.characterId ?? "demo_char_id",
+                    currentLocation = DefaultLocation,
+                    currentChapterId = DefaultChapterId,
+                    currentNodeId = DefaultChapterId,
+                    status = "Active",
+                    updatedAt = DateTime.UtcNow,
+                    storySummary = "Mở đầu cuộc phiêu lưu tại tàn tích cổ."
+                };
+                var safeChar = character ?? new Character
+                {
+                    characterId = request.characterId ?? "demo_char_id",
                     name = "Adventurer",
                     level = 1,
                     hp = 100,
                     maxHp = 100,
-                    attack = 15,
-                    defense = 5,
-                    gold = 50,
-                    className = "Adventurer",
-                    status = "Alive",
-                    currentLocationId = DefaultLocation
+                    gold = 999999
                 };
+                return BuildResponse(safeSession, safeChar, "Bạn bước vào khu vực đầu tiên của Etherea, Rừng Thì Thầm. Ánh trăng chiếu xuống, tạo nên bóng đổ rập khuôn giữa những cây cổ thụ.");
             }
-
-            StorySession? existingSession = null;
-            try
-            {
-                existingSession = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Could not fetch session for character {CharacterId}", character.characterId);
-            }
-
-            if (existingSession != null && existingSession.status == "Active")
-            {
-                return BuildResponse(existingSession, character, existingSession.storySummary ?? string.Empty);
-            }
-
-            var session = new StorySession
-            {
-                sessionId = Guid.NewGuid().ToString("N"),
-                characterId = character.characterId,
-                currentLocation = DefaultLocation,
-                currentChapterId = string.IsNullOrWhiteSpace(request.storyFileId) ? DefaultChapterId : request.storyFileId,
-                currentNodeId = DefaultChapterId,
-                status = "Active",
-                updatedAt = DateTime.UtcNow,
-                storyVersion = string.IsNullOrWhiteSpace(request.storyFileId) ? "1.0" : request.storyFileId,
-                storySummary = "Mở đầu cuộc phiêu lưu tại tàn tích cổ.",
-                sourceType = "AI"
-            };
-
-            var openingContext = new StoryActionProcessingContext
-            {
-                Character = character,
-                Session = session,
-                PlayerInput = string.Empty,
-                RecentActions = new List<StoryAction>(),
-                PromptContext = await _gamePromptContextBuilder.BuildAsync(character, new List<Item>(), new List<StoryAction>(), session, string.Empty)
-            };
-
-            var openingResponse = await GenerateStoryAiResponseAsync(openingContext, "opening");
-            openingResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, openingResponse);
-
-            try
-            {
-                await _storyStateUpdater.ApplyAsync(session, character, openingResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Could not persist story state to DB, continuing in-memory");
-            }
-
-            _logger.LogInformation("Story session started: {SessionId} for character: {CharacterId}", session.sessionId, character.characterId);
-
-            return BuildResponse(session, character, openingResponse.NarrativeText);
         }
 
         public async Task<StoryActionResponse> ProcessActionAsync(StoryActionRequest request)
@@ -190,14 +301,19 @@ namespace GameBackend.Core.Services
             StorySession? session = null;
             try
             {
-                if (!string.IsNullOrWhiteSpace(request.characterId))
+                if (!string.IsNullOrWhiteSpace(request.sessionId))
+                {
+                    session = await _storyRepository.GetSessionByIdAsync(request.sessionId);
+                }
+
+                if (session == null && !string.IsNullOrWhiteSpace(request.characterId))
                 {
                     session = await _storyRepository.GetSessionByCharacterIdAsync(request.characterId);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Could not fetch session for character {CharacterId}", request.characterId);
+                _logger.LogWarning(ex, "Could not fetch session for session {SessionId} / character {CharacterId}", request.sessionId, request.characterId);
             }
 
             if (session == null)
@@ -217,33 +333,181 @@ namespace GameBackend.Core.Services
                 };
             }
 
+            // Trừ 5 Gold mỗi lượt AI kể chuyện (StoryCostPerTurn)
+            if (character.gold >= GameShared.Config.GameConstants.StoryCostPerTurn)
+            {
+                character.gold -= GameShared.Config.GameConstants.StoryCostPerTurn;
+            }
+            else
+            {
+                character.gold = 0; // Không đủ vàng vẫn cho chơi nhưng trừ hết vàng còn lại
+            }
+            try
+            {
+                await _characterRepository.SaveAsync(character);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Could not persist gold deduction for character {CharacterId}", character.characterId);
+            }
+
+            var inventoryResponse = await _inventoryService.GetInventoryAsync(character.characterId);
+            var inventorySlots = inventoryResponse?.slots ?? new List<GameShared.DTOs.Inventory.InventorySlot>();
+            var inventoryItems = inventorySlots
+                .Select(slot => GameShared.Config.GameConstants.GetItemById(slot.itemId) ?? new Item { itemId = slot.itemId, name = slot.itemId, rarity = "Common", itemType = "General" })
+                .ToList();
+
+            string? systemInjectedEvent = null;
+            bool isInBossRoom = (session.currentNodeId ?? "").Equals("boss_room", StringComparison.OrdinalIgnoreCase);
+
+            var recentActionsList = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+            var last2Actions = recentActionsList?.OrderByDescending(a => a.createdAt).Take(2).ToList();
+            bool recentlyFoughtBattle = last2Actions != null && last2Actions.Any(a => string.Equals(a.actionType, "battle_result", StringComparison.OrdinalIgnoreCase));
+
+            // 1. Dịch choiceIndex ra playerInput nếu playerInput bị trống
+            if (string.IsNullOrWhiteSpace(request.playerInput))
+            {
+                var latestAction = recentActionsList?.OrderByDescending(a => a.createdAt).FirstOrDefault();
+                if (latestAction != null)
+                {
+                    try
+                    {
+                        var rawJson = !string.IsNullOrWhiteSpace(latestAction.metadataJson) ? latestAction.metadataJson : latestAction.aiResponse;
+                        var parsed = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(rawJson, session, "choice");
+                        if (parsed.Choices != null && request.choiceIndex >= 0 && request.choiceIndex < parsed.Choices.Count)
+                        {
+                            var selectedChoice = parsed.Choices[request.choiceIndex];
+                            request.playerInput = $"{selectedChoice.label}: {selectedChoice.description}";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Failed to parse choices from previous action");
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(request.playerInput))
+                {
+                    request.playerInput = request.choiceIndex switch
+                    {
+                        0 => "Tấn công quái vật",
+                        1 => "Điều tra xung quanh",
+                        _ => "Nghỉ ngơi hồi phục"
+                    };
+                }
+            }
+
+            // 2. Kiểm tra ý định chiến đấu
+            bool intentToFight = false;
+            if (!string.IsNullOrWhiteSpace(request.playerInput))
+            {
+                var lowerInput = request.playerInput.ToLowerInvariant();
+                if (lowerInput.Contains("chiến đấu") || lowerInput.Contains("tấn công") || lowerInput.Contains("đánh") || lowerInput.Contains("tiêu diệt"))
+                {
+                    intentToFight = true;
+                }
+            }
+
+            // 3. Xử lý các sự kiện (Boss Room, Ambush, v.v.)
+            if (isInBossRoom && !recentlyFoughtBattle)
+            {
+                var chapterBossId = GetChapterBossId(session.currentLocation);
+                var chapterBoss = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == chapterBossId);
+                if (chapterBoss != null)
+                {
+                    int bossLvl = GameShared.Config.GameConstants.CalculateBossLevel(character.level, chapterBoss.rarity, chapterBossId);
+                    if (intentToFight)
+                    {
+                        systemInjectedEvent = $"[LỆNH HỆ THỐNG] Người chơi đã chọn TẤN CÔNG BOSS! " +
+                            $"BẮT BUỘC đặt triggerBattle: true, bossId: '{chapterBossId}', bossName: '{chapterBoss.name}', bossLevel: {bossLvl}. " +
+                            $"Chỉ miêu tả cảnh người chơi lao vào chuẩn bị chiến đấu, tuyệt đối không miêu tả diễn biến trận đánh!";
+                    }
+                    else
+                    {
+                        systemInjectedEvent = $"[SỰ KIỆN BOSS PHÒNG CUỐI] Người chơi đã bước vào phòng Boss và đối mặt với {chapterBoss.name} (Cấp {bossLvl})! " +
+                            $"Hãy miêu tả sự xuất hiện oai vệ, đáng sợ của Boss này chặn đường đi. " +
+                            $"BẮT BUỘC đặt triggerBattle: false, và tạo ra các lựa chọn (choices) để người chơi quyết định (ví dụ: Tấn công, Chuẩn bị thủ thế, v.v.).";
+                    }
+                }
+            }
+            else
+            {
+                systemInjectedEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave");
+
+                if (recentlyFoughtBattle)
+                {
+                    systemInjectedEvent += " [HẬU CHIẾN] Người chơi vừa hoàn thành một trận chiến ác liệt. Hãy miêu tả ngắn gọn cảnh họ thở phào hoặc thu thập chiến lợi phẩm trước khi đưa ra các lựa chọn để tiếp tục hành trình.";
+                }
+                else if (session.status == "Active")
+                {
+                    if (intentToFight)
+                    {
+                        systemInjectedEvent += " [LỆNH HỆ THỐNG] Người chơi đã CHỦ ĐỘNG chọn hành động chiến đấu. Bạn BẮT BUỘC phải thiết lập triggerBattle: true và điền bossId tương ứng với kẻ địch mà họ đang đối đầu (nếu có).";
+                    }
+                    else
+                    {
+                        // Cơ chế Ambush (15% tỷ lệ phục kích khi người chơi chọn không chiến đấu)
+                        var rnd = new Random();
+                        if (rnd.Next(100) < 15) // 15% chance
+                        {
+                            var mobId = RollRandomEncounter(session.currentLocation);
+                            if (mobId != null)
+                            {
+                                var mob = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == mobId);
+                                if (mob != null)
+                                {
+                                    systemInjectedEvent += $" [SỰ KIỆN PHỤC KÍCH] Mặc dù người chơi không muốn đánh, nhưng một con {mob.name} quá nhanh và hung hãn đã lao ra chặn đường! " +
+                                        $"BẮT BUỘC miêu tả lý do tại sao người chơi không thể né tránh. " +
+                                        $"ĐỒNG THỜI thiết lập triggerBattle: false, bossId: '{mobId}', và cung cấp các lựa chọn cho người chơi (ví dụ: Chiến đấu, Cố gắng bỏ chạy).";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // If player provided free-form input, run AI-driven orchestration
             if (!string.IsNullOrWhiteSpace(request.playerInput))
             {
-                return await ProcessFreeFormActionAsync(request, character, session);
+                return await ProcessFreeFormActionAsync(request, character, session, systemInjectedEvent);
             }
 
-            return await ProcessChoiceActionAsync(request, character, session);
+            return await ProcessChoiceActionAsync(request, character, session, systemInjectedEvent);
         }
 
         private async Task<StoryActionResponse> ProcessFreeFormActionAsync(
             StoryActionRequest request,
             Character character,
-            StorySession session)
+            StorySession session,
+            string? systemInjectedEvent)
         {
-            var context = await LoadGameContextAsync(request, character, session);
-            var aiResponse = await GenerateStoryAiResponseAsync(context, "player_action");
+            var context = await LoadGameContextAsync(request, character, session, systemInjectedEvent);
+            StoryAiResponse aiResponse;
+            try
+            {
+                aiResponse = await GenerateStoryAiResponseAsync(context, "player_action");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error generating AI response in ProcessFreeFormActionAsync, falling back");
+                aiResponse = CreateFallbackResponse(context, "Bạn tiếp tục cuộc phiêu lưu trong bóng tối...");
+            }
 
             if (string.IsNullOrWhiteSpace(aiResponse.NarrativeText))
             {
                 aiResponse = CreateFallbackResponse(context, "Bạn tiếp tục cuộc phiêu lưu trong bóng tối...");
             }
 
-            aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
-
-            await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
-
-            await SaveStoryTurnAsync(context, aiResponse);
+            try
+            {
+                aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
+                await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
+                await SaveStoryTurnAsync(context, aiResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error validating/applying story state update, continuing with generated narrative");
+            }
 
             return BuildResponse(context, aiResponse.NarrativeText, aiResponse);
         }
@@ -251,21 +515,36 @@ namespace GameBackend.Core.Services
         private async Task<StoryActionResponse> ProcessChoiceActionAsync(
             StoryActionRequest request,
             Character character,
-            StorySession session)
+            StorySession session,
+            string? systemInjectedEvent)
         {
-            var context = await LoadGameContextAsync(request, character, session);
-            var aiResponse = await GenerateStoryAiResponseAsync(context, "choice");
+            var context = await LoadGameContextAsync(request, character, session, systemInjectedEvent);
+            StoryAiResponse aiResponse;
+            try
+            {
+                aiResponse = await GenerateStoryAiResponseAsync(context, "choice");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error generating AI response in ProcessChoiceActionAsync, falling back");
+                aiResponse = CreateFallbackResponseFromChoice(request.choiceIndex, context);
+            }
 
             if (string.IsNullOrWhiteSpace(aiResponse.NarrativeText))
             {
                 aiResponse = CreateFallbackResponseFromChoice(request.choiceIndex, context);
             }
 
-            aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
-
-            await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
-
-            await SaveStoryTurnAsync(context, aiResponse, "choice");
+            try
+            {
+                aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
+                await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
+                await SaveStoryTurnAsync(context, aiResponse, "choice");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error validating/applying story state update, continuing with generated narrative");
+            }
 
             return BuildResponse(context, aiResponse.NarrativeText, aiResponse);
         }
@@ -273,15 +552,21 @@ namespace GameBackend.Core.Services
         private async Task<StoryActionProcessingContext> LoadGameContextAsync(
             StoryActionRequest request,
             Character character,
-            StorySession session)
+            StorySession session,
+            string? systemInjectedEvent = null)
         {
             var inventoryResponse = await _inventoryService.GetInventoryAsync(character.characterId);
             var inventoryItems = (inventoryResponse?.slots ?? new List<GameShared.DTOs.Inventory.InventorySlot>())
-                .Select(slot => new Item
+                .Select(slot =>
                 {
-                    itemId = slot.itemId,
-                    name = slot.itemId,
-                    rarity = "Common"
+                    var catalogItem = GameShared.Config.GameConstants.GetItemById(slot.itemId);
+                    return catalogItem ?? new Item
+                    {
+                        itemId = slot.itemId,
+                        name = slot.itemId,
+                        rarity = "Common",
+                        itemType = "General"
+                    };
                 })
                 .ToList();
 
@@ -292,12 +577,63 @@ namespace GameBackend.Core.Services
                 .OrderBy(action => action.createdAt)
                 .ToList();
 
+            // GENERIC CHOICE PROGRESSION: Tự động trích xuất nextNodeId từ lựa chọn của lượt trước
+            if (request.choiceIndex >= 0 && recentActions.Count > 0)
+            {
+                var lastAction = recentActions.LastOrDefault();
+                if (lastAction != null && !string.IsNullOrWhiteSpace(lastAction.metadataJson))
+                {
+                    try
+                    {
+                        var lastAiResponse = StoryAiResponseParser.Parse(lastAction.metadataJson, session, "choice");
+                        if (lastAiResponse?.Choices != null && request.choiceIndex < lastAiResponse.Choices.Count)
+                        {
+                            var chosenOption = lastAiResponse.Choices[request.choiceIndex];
+                            if (!string.IsNullOrWhiteSpace(chosenOption?.nextNodeId))
+                            {
+                                var targetNode = chosenOption.nextNodeId.Trim();
+                                if (await _contentService.LocationExistsAsync(targetNode))
+                                {
+                                    session.currentLocation = targetNode;
+                                    session.currentNodeId = targetNode;
+                                    character.currentLocationId = targetNode;
+                                    _logger.LogInformation("Generic Choice Progression: Moved player location to '{Location}' based on choice index {Index}", targetNode, request.choiceIndex);
+                                }
+                                else
+                                {
+                                    session.currentNodeId = targetNode;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Could not parse choices from last action metadata for choice progression");
+                    }
+                }
+            }
+
+            // Tự động kiểm tra nếu playerInput chứa locationId hợp lệ
+            if (!string.IsNullOrWhiteSpace(request.playerInput))
+            {
+                var cleanInput = request.playerInput.Trim().ToLowerInvariant().Replace(" ", "_");
+                if (await _contentService.LocationExistsAsync(cleanInput))
+                {
+                    session.currentLocation = cleanInput;
+                    session.currentNodeId = cleanInput;
+                    character.currentLocationId = cleanInput;
+                }
+            }
+
+            // (Removed buggy Key Item auto-progression that conflicted with AI story constraints)
+
             var promptContext = await _gamePromptContextBuilder.BuildAsync(
                 character,
                 inventoryItems,
                 recentActions,
                 session,
-                request.playerInput);
+                request.playerInput,
+                systemInjectedEvent);
 
             return new StoryActionProcessingContext
             {
@@ -311,8 +647,9 @@ namespace GameBackend.Core.Services
 
         private async Task<StoryAiResponse> GenerateStoryAiResponseAsync(StoryActionProcessingContext context, string defaultActionType)
         {
-            var prompt = _promptBuilder.Build(context.PromptContext);
-            prompt += "\n\nReturn ONLY a valid JSON object matching the following schema. Do NOT wrap in markdown code blocks like ```json, and do NOT include any extra text:\n" +
+            var (systemPrompt, userPrompt) = _promptBuilder.Build(context.PromptContext);
+
+            userPrompt += "\n\nBẮT BUỘC trả về một khối markdown JSON (```json ... ```) chứa DUY NHẤT một đối tượng JSON hợp lệ theo schema sau. BẮT BUỘC TRẢ VỀ 3 LỰA CHỌN TRONG MẢNG choices (nếu triggerBattle=false):\n" +
                       "{\n" +
                       "  \"narrativeText\": \"Vietnamese story response description text here\",\n" +
                       "  \"currentNodeId\": \"current node ID\",\n" +
@@ -320,10 +657,10 @@ namespace GameBackend.Core.Services
                       "  \"currentChapterId\": \"current chapter ID\",\n" +
                       "  \"storySummary\": \"brief updated summary of the story so far\",\n" +
                       "  \"actionType\": \"player_action\",\n" +
-                      "  \"triggerBattle\": false,\n" +
-                      "  \"bossId\": \"\",\n" +
-                      "  \"bossName\": \"\",\n" +
-                      "  \"bossLevel\": null,\n" +
+                      "  \"triggerBattle\": false (CHỈ ĐẶT LÀ true NẾU NGƯỜI CHƠI VỪA CHỌN TẤN CÔNG),\n" +
+                      "  \"bossId\": \"boss_id_if_battle_triggered_else_null\",\n" +
+                      "  \"bossName\": \"boss_name_if_battle_triggered_else_null\",\n" +
+                      "  \"bossLevel\": null_or_integer,\n" +
                       "  \"characterDelta\": {\n" +
                       "    \"hpDelta\": 0,\n" +
                       "    \"goldDelta\": 0,\n" +
@@ -332,10 +669,21 @@ namespace GameBackend.Core.Services
                       "    \"status\": \"Alive\",\n" +
                       "    \"currentLocationId\": \"location ID\"\n" +
                       "  },\n" +
-                      "  \"inventoryChanges\": []\n" +
+                      "  \"inventoryChanges\": [],\n" +
+                      "  \"choices\": [\n" +
+                      "    { \"label\": \"Choice Label\", \"description\": \"Choice Description\", \"nextNodeId\": \"next_node_id\" }\n" +
+                      "  ]\n" +
                       "}";
 
-            var rawResponse = await GenerateRawAiResponseAsync(DefaultSystemPrompt, prompt, context.Session.storySummary ?? string.Empty);
+            context.BuiltPrompt = $"[SYSTEM PROMPT]\n{systemPrompt}\n\n[USER PROMPT]\n{userPrompt}";
+
+            _logger.LogInformation("==================== [FULL AI PROMPT] ====================\nSYSTEM:\n{SystemPrompt}\n\nUSER:\n{UserPrompt}\n============================================================", systemPrompt, userPrompt);
+
+            var rawResponse = await GenerateRawAiResponseAsync(systemPrompt, userPrompt, context.Session.storySummary ?? string.Empty);
+            
+            context.BuiltPrompt += $"\n\n[RAW AI RESPONSE]\n{rawResponse}";
+
+            _logger.LogInformation("==================== [RAW AI RESPONSE] ====================\n{RawResponse}\n============================================================", rawResponse);
             return StoryAiResponseParser.Parse(rawResponse, context.Session, defaultActionType, _logger);
         }
 
@@ -373,9 +721,10 @@ namespace GameBackend.Core.Services
 
         private static StoryActionResponse BuildResponse(StoryActionProcessingContext context, string narrativeText, StoryAiResponse aiResponse)
         {
-            var response = BuildResponse(context.Session, context.Character, narrativeText);
+            var response = BuildResponse(context.Session, context.Character, narrativeText, aiResponse.Choices);
             response.triggerBattle = aiResponse.TriggerBattle;
             response.bossId = aiResponse.BossId;
+            response.debugPrompt = context.BuiltPrompt;
             return response;
         }
 
@@ -460,7 +809,7 @@ namespace GameBackend.Core.Services
             };
         }
 
-        private static StoryActionResponse BuildResponse(StorySession session, Character character, string narrativeText)
+        private static StoryActionResponse BuildResponse(StorySession session, Character character, string narrativeText, List<StoryChoiceOption>? aiChoices = null)
         {
             return new StoryActionResponse
             {
@@ -473,18 +822,78 @@ namespace GameBackend.Core.Services
                     characterId = character.characterId,
                     name = character.name,
                     level = character.level,
+                    experience = character.experience,
                     hp = character.hp,
                     maxHp = character.maxHp,
-                    gold = character.gold
+                    attack = character.attack,
+                    defense = character.defense,
+                    criticalRate = character.criticalRate,
+                    luckyRate = character.luckyRate,
+                    gold = character.gold,
+                    className = character.className,
+                    status = character.status,
+                    currentLocationId = character.currentLocationId
                 },
-                choices = new List<StoryChoiceOption>
-                {
-                    new() { label = "Tấn công", description = "Chiến đấu với Boss quái vật", nextNodeId = "battle_path" },
-                    new() { label = "Điều tra", description = "Tìm kiếm lối đi bí ẩn", nextNodeId = "investigate_path" },
-                    new() { label = "Nghỉ ngơi", description = "Hồi phục sức khỏe", nextNodeId = "rest_path" }
-                },
+                choices = (aiChoices != null && aiChoices.Count > 0)
+                    ? aiChoices
+                    : new List<StoryChoiceOption>
+                    {
+                        new() { label = "Tấn công", description = "Chiến đấu với Boss quái vật", nextNodeId = "battle_path" },
+                        new() { label = "Điều tra", description = "Tìm kiếm lối đi bí ẩn", nextNodeId = "investigate_path" },
+                        new() { label = "Nghỉ ngơi", description = "Hồi phục sức khỏe", nextNodeId = "rest_path" }
+                    },
                 triggerBattle = false
             };
+        }
+
+        private string BuildQuestItemDirective(IEnumerable<Item>? inventoryItems, string currentLocation)
+        {
+            if (currentLocation.Equals("goblin_hideout", StringComparison.OrdinalIgnoreCase))
+            {
+                 return $"[TIẾN VÀO SÀO HUYỆT GOBLIN] Người chơi hiện đang ở sào huyệt của kẻ địch. " +
+                        $"BẮT BUỘC phải cung cấp 1 Lựa chọn (Choice) có nextNodeId='boss_room' để tiến vào Phòng Ngai Vàng khi người chơi đã sẵn sàng. " +
+                        $"Các lựa chọn khác có thể là thám hiểm hoặc đối phó với quái vật xung quanh.";
+            }
+
+            var questItems = inventoryItems?
+                .Where(i => i != null && string.Equals(i.itemType, "Quest", StringComparison.OrdinalIgnoreCase))
+                .ToList() ?? new List<Item>();
+
+            if (questItems.Count > 0)
+            {
+                var questNames = string.Join(", ", questItems.Select(i => $"'{i.name}' ({i.itemId})"));
+                return $"[NHẬN DIỆN VẬT PHẨM NHIỆM VỤ THỰC TẾ TRONG TÚI ĐỒ] Người chơi ĐÃ SỞ HỮU các Vật Phẩm Nhiệm Vụ: {questNames}. " +
+                       $"Bạn BẮT BUỘC phải đối chiếu với Quy tắc Tiến trình Chương trong system_prompt để kiểm tra xem các vật phẩm này có mở khóa địa điểm/lối đi tiếp theo từ vị trí hiện tại ({currentLocation}) hay không. " +
+                       $"NẾU vật phẩm nhiệm vụ cho phép di chuyển sang địa điểm mới, bạn BẮT BUỘC phải mô tả lối đi mở ra và cung cấp Lựa chọn (Choice) tương ứng trong danh sách choices để người chơi tiến sang địa điểm tiếp theo.";
+            }
+
+            string targetMonster = "một con quái vật mạnh mẽ";
+            string targetItem = "Vật Phẩm Nhiệm Vụ";
+            string nextLocation = "địa điểm tiếp theo";
+            
+            if (currentLocation.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Nhện Hang Động (Cave Spider)";
+                targetItem = "Chìa Khóa Cổ Xưa";
+                nextLocation = "forgotten_temple";
+            }
+            else if (currentLocation.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Golem Đền Thờ (Temple Golem) hoặc Oan Hồn Bóng Tối (Shadow Spirit)";
+                targetItem = "Lõi Nguyên Tố";
+                nextLocation = "goblin_hideout";
+            }
+            else if (currentLocation.Equals("sunken_shipwreck", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Oan Hồn Biển Sâu (Abyssal Spirit)";
+                targetItem = "Mảnh Ghép Đại Dương";
+                nextLocation = "abyssal_trench";
+            }
+
+            return $"[NHIỆM VỤ CỐT TRUYỆN: TÌM {targetItem.ToUpperInvariant()}] Người chơi CHƯA SỞ HỮU {targetItem}. " +
+                   $"Bạn TUYỆT ĐỐI KHÔNG ĐƯỢC tạo lựa chọn cho phép sang khu vực mới ({nextLocation})! " +
+                   $"THAY VÀO ĐÓ, BẠN BẮT BUỘC PHẢI DẪN TRUYỆN BẰNG CÁCH: Tiết lộ hoặc ám chỉ rằng {targetMonster} đang cất giữ {targetItem}. " +
+                   $"Sau đó, cung cấp các Lựa chọn (choices) xoay quanh việc lần theo dấu vết hoặc trực tiếp khiêu chiến {targetMonster} để giành lấy {targetItem}.";
         }
 
         private sealed class StoryActionProcessingContext
@@ -498,6 +907,8 @@ namespace GameBackend.Core.Services
             public List<StoryAction> RecentActions { get; init; } = new();
 
             public required GamePromptContext PromptContext { get; init; }
+
+            public string? BuiltPrompt { get; set; }
         }
     }
 }

@@ -19,11 +19,14 @@ public class StoryView : MonoBehaviour
     [SerializeField] private GameObject iconNextIndicator;
 
     [Header("Bottom")]
+    [SerializeField] private GameObject panelActiveOption;
+    [SerializeField] private Button btnSwitchToInput;
     [SerializeField] private Button[] choiceButtons = new Button[3];
     [SerializeField] private TextMeshProUGUI[] choiceTexts = new TextMeshProUGUI[3];
 
     [Header("Custom Text Input")]
     [SerializeField] private GameObject panelTextInput;
+    [SerializeField] private Button btnSwitchToOptions;
     [SerializeField] private TMP_InputField inputStoryAction;
     [SerializeField] private Button btnSubmitAction;
 
@@ -45,7 +48,7 @@ public class StoryView : MonoBehaviour
     private void Awake()
     {
         SetNextIndicatorVisible(false);
-        SetChoiceButtonsVisible(false);
+        SetActiveOptionsPanelVisible(false);
         SetInputPanelVisible(false);
         HideBossEncounterPopup();
     }
@@ -70,6 +73,21 @@ public class StoryView : MonoBehaviour
         btnBack.onClick.RemoveAllListeners();
         if (onBack != null)
             btnBack.onClick.AddListener(() => onBack());
+    }
+
+    public void BindSwitchModes(Action onSwitchToInput, Action onSwitchToOptions)
+    {
+        if (btnSwitchToInput != null)
+        {
+            btnSwitchToInput.onClick.RemoveAllListeners();
+            if (onSwitchToInput != null) btnSwitchToInput.onClick.AddListener(() => onSwitchToInput());
+        }
+
+        if (btnSwitchToOptions != null)
+        {
+            btnSwitchToOptions.onClick.RemoveAllListeners();
+            if (onSwitchToOptions != null) btnSwitchToOptions.onClick.AddListener(() => onSwitchToOptions());
+        }
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -178,7 +196,15 @@ public class StoryView : MonoBehaviour
         if (txtStoryLog != null)
         {
             txtStoryLog.text = text;
-            Canvas.ForceUpdateCanvases();
+            try
+            {
+                Canvas.ForceUpdateCanvases();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning("[StoryView] Canvas.ForceUpdateCanvases warning: " + ex.Message);
+            }
+
             if (storyScrollRect != null)
             {
                 storyScrollRect.verticalNormalizedPosition = 0f;
@@ -194,7 +220,15 @@ public class StoryView : MonoBehaviour
         }
 
         txtStoryLog.text += text;
-        Canvas.ForceUpdateCanvases();
+        try
+        {
+            Canvas.ForceUpdateCanvases();
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("[StoryView] Canvas.ForceUpdateCanvases warning: " + ex.Message);
+        }
+
         if (storyScrollRect != null)
         {
             storyScrollRect.verticalNormalizedPosition = 0f;
@@ -206,6 +240,18 @@ public class StoryView : MonoBehaviour
         if (iconNextIndicator != null)
         {
             iconNextIndicator.SetActive(visible);
+        }
+    }
+
+    public void SetActiveOptionsPanelVisible(bool visible)
+    {
+        if (panelActiveOption != null)
+        {
+            panelActiveOption.SetActive(visible);
+        }
+        else
+        {
+            SetChoiceButtonsVisible(visible);
         }
     }
 
@@ -227,7 +273,6 @@ public class StoryView : MonoBehaviour
 
     public void SetChoices(StoryChoiceData[] choices, Action<int> onChoiceSelected)
     {
-        SetChoiceButtonsVisible(true);
 
         for (int index = 0; index < choiceButtons.Length; index++)
         {

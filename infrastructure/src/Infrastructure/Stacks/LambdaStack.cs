@@ -39,6 +39,7 @@ namespace Infrastructure.Stacks
                     { "INVENTORY_TABLE", dbStack.InventoryTable.TableName },
                     { "BOSSES_TABLE", dbStack.BossesTable.TableName },       // Bắt buộc: BossRepository.Table.LoadTable()
                     { "LOOT_DROPS_TABLE", dbStack.LootDropsTable.TableName }, // Bắt buộc: BattleRepository.Table.LoadTable()
+                    { "DEFEATED_BOSSES_TABLE", dbStack.DefeatedBossesTable.TableName },
                     { "COGNITO_USER_POOL_ID", cognitoStack.UserPool.UserPoolId },
                     { "COGNITO_CLIENT_ID", cognitoStack.UserPoolClient.UserPoolClientId }
                 }
@@ -110,69 +111,51 @@ namespace Infrastructure.Stacks
                 "GameBackend.Handlers::GameBackend.Handlers.Inventory.UnequipItemHandler::Handler",
                 commonProps);
 
-            // Grant DynamoDB Permissions
-            // Auth
-            dbStack.UsersTable.GrantReadWriteData(LoginFunction);
-            dbStack.UsersTable.GrantReadWriteData(RegisterFunction);
-            dbStack.UsersTable.GrantReadWriteData(ConfirmSignUpFunction);
-            dbStack.UsersTable.GrantReadWriteData(RefreshTokenFunction);
+            // Grant DynamoDB Permissions to all functions for all tables
+            var allTables = new[]
+            {
+                dbStack.UsersTable,
+                dbStack.CharactersTable,
+                dbStack.BossesTable,
+                dbStack.BossEncountersTable,
+                dbStack.BattlesTable,
+                dbStack.StorySessionsTable,
+                dbStack.StoryActionsTable,
+                dbStack.InventoryTable,
+                dbStack.LootDropsTable,
+                dbStack.DefeatedBossesTable
+            };
 
-            // Character
-            dbStack.CharactersTable.GrantReadData(GetCharacterFunction);
-            dbStack.UsersTable.GrantReadData(GetCharacterFunction);
-            dbStack.InventoryTable.GrantReadData(GetCharacterFunction);
+            var allFunctions = new[]
+            {
+                LoginFunction,
+                RegisterFunction,
+                ConfirmSignUpFunction,
+                RefreshTokenFunction,
+                GetCharacterFunction,
+                CreateCharacterFunction,
+                StartStoryFunction,
+                StoryActionFunction,
+                SpawnBossFunction,
+                ResolveBattleFunction,
+                GetInventoryFunction,
+                EquipItemFunction,
+                UnequipItemFunction
+            };
 
-            dbStack.CharactersTable.GrantReadWriteData(CreateCharacterFunction);
-            dbStack.UsersTable.GrantReadWriteData(CreateCharacterFunction);
-            dbStack.InventoryTable.GrantReadWriteData(CreateCharacterFunction);
+            foreach (var fn in allFunctions)
+            {
+                foreach (var table in allTables)
+                {
+                    table.GrantReadWriteData(fn);
+                }
+            }
 
-            // Story
-            dbStack.StorySessionsTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.StoryActionsTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.CharactersTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.InventoryTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.BossesTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.BossEncountersTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.BattlesTable.GrantReadWriteData(StartStoryFunction);
-            dbStack.LootDropsTable.GrantReadWriteData(StartStoryFunction);
-
-            dbStack.StorySessionsTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.StoryActionsTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.CharactersTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.InventoryTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.BossesTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.BossEncountersTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.BattlesTable.GrantReadWriteData(StoryActionFunction);
-            dbStack.LootDropsTable.GrantReadWriteData(StoryActionFunction);
-
-            // Battle
-            dbStack.BossEncountersTable.GrantReadWriteData(SpawnBossFunction);
-            dbStack.CharactersTable.GrantReadData(SpawnBossFunction);
-            dbStack.BossesTable.GrantReadData(SpawnBossFunction);
-            dbStack.BattlesTable.GrantReadData(SpawnBossFunction);
-            dbStack.LootDropsTable.GrantReadData(SpawnBossFunction);
-            dbStack.InventoryTable.GrantReadData(SpawnBossFunction);
-
-            dbStack.BossEncountersTable.GrantReadWriteData(ResolveBattleFunction);
-            dbStack.BattlesTable.GrantReadWriteData(ResolveBattleFunction);
-            dbStack.CharactersTable.GrantReadWriteData(ResolveBattleFunction);
-            dbStack.InventoryTable.GrantReadWriteData(ResolveBattleFunction);
-            dbStack.LootDropsTable.GrantReadWriteData(ResolveBattleFunction);
-            dbStack.BossesTable.GrantReadData(ResolveBattleFunction);
-
-            // Inventory
-            dbStack.InventoryTable.GrantReadData(GetInventoryFunction);
-            dbStack.CharactersTable.GrantReadData(GetInventoryFunction);
-
-            dbStack.InventoryTable.GrantReadWriteData(EquipItemFunction);
-            dbStack.CharactersTable.GrantReadWriteData(EquipItemFunction);
-
-            dbStack.InventoryTable.GrantReadWriteData(UnequipItemFunction);
-            dbStack.CharactersTable.GrantReadWriteData(UnequipItemFunction);
 
             // Grant Cognito Permissions
             cognitoStack.UserPool.Grant(LoginFunction, "cognito-idp:InitiateAuth");
             cognitoStack.UserPool.Grant(RegisterFunction, "cognito-idp:SignUp");
+            cognitoStack.UserPool.Grant(RegisterFunction, "cognito-idp:ListUsers"); // check email duplicate
             cognitoStack.UserPool.Grant(ConfirmSignUpFunction, "cognito-idp:ConfirmSignUp");
             cognitoStack.UserPool.Grant(RefreshTokenFunction, "cognito-idp:InitiateAuth");
 

@@ -1,28 +1,34 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 using GameShared.Models;
 using GameBackend.Core.AIStory.Formatters.Interfaces;
 
-namespace GameBackend.Core.AIStory.Formatters;
-
-public class RecentTurnsFormatter
-    : IRecentTurnsFormatter
+namespace GameBackend.Core.AIStory.Formatters
 {
-    public string Format(
-        IEnumerable<StoryAction> actions)
+    public class RecentTurnsFormatter : IRecentTurnsFormatter
     {
-        var sb = new StringBuilder();
-
-        foreach (var action in actions)
+        public string Format(IEnumerable<StoryAction> actions)
         {
-            sb.AppendLine(
-                $"User: {action.playerInput}");
+            var sb = new StringBuilder();
 
-            sb.AppendLine(
-                $"AI: {action.aiResponse}");
+            foreach (var action in actions)
+            {
+                if (string.Equals(action.actionType, "battle_result", StringComparison.OrdinalIgnoreCase))
+                {
+                    sb.AppendLine($"[TRẬN ĐÁNH VỪA KẾT THÚC] Hành động: {action.playerInput}");
+                    sb.AppendLine($"[KẾT QUẢ VÀ BÀN GIAO] AI: {action.aiResponse}");
+                }
+                else
+                {
+                    sb.AppendLine($"User: {action.playerInput}");
+                    sb.AppendLine($"AI: {action.aiResponse}");
+                }
 
-            sb.AppendLine();
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
-
-        return sb.ToString();
     }
 }

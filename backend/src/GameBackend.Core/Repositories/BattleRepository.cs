@@ -10,22 +10,25 @@ namespace GameBackend.Core.Repositories
 {
     public class BattleRepository : IBattleRepository
     {
-        private readonly Table _encounterTable;
-        private readonly Table _battleTable;
-        private readonly Table _lootTable;
+        private readonly IAmazonDynamoDB _dynamoDbClient;
+        private Table? _encounterTable;
+        private Table? _battleTable;
+        private Table? _lootTable;
 
         public BattleRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _encounterTable = Table.LoadTable(dynamoDbClient, AppSettings.EncountersTableName);
-            _battleTable = Table.LoadTable(dynamoDbClient, AppSettings.BattlesTableName);
-            _lootTable = Table.LoadTable(dynamoDbClient, AppSettings.LootDropsTableName);
+            _dynamoDbClient = dynamoDbClient;
         }
+
+        private Table EncounterTable => _encounterTable ??= Table.LoadTable(_dynamoDbClient, AppSettings.EncountersTableName);
+        private Table BattleTable => _battleTable ??= Table.LoadTable(_dynamoDbClient, AppSettings.BattlesTableName);
+        private Table LootTable => _lootTable ??= Table.LoadTable(_dynamoDbClient, AppSettings.LootDropsTableName);
 
         public async Task<BossEncounter?> GetEncounterByIdAsync(string encounterId)
         {
             if (string.IsNullOrWhiteSpace(encounterId)) return null;
 
-            var doc = await _encounterTable.GetItemAsync(encounterId);
+            var doc = await EncounterTable.GetItemAsync(encounterId);
             return doc != null ? JsonUtils.Deserialize<BossEncounter>(doc.ToJson()) : null;
         }
 
@@ -34,14 +37,14 @@ namespace GameBackend.Core.Repositories
             if (encounter == null || string.IsNullOrWhiteSpace(encounter.encounterId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(encounter));
-            await _encounterTable.PutItemAsync(doc);
+            await EncounterTable.PutItemAsync(doc);
         }
 
         public async Task<Battle?> GetBattleByIdAsync(string battleId)
         {
             if (string.IsNullOrWhiteSpace(battleId)) return null;
 
-            var doc = await _battleTable.GetItemAsync(battleId);
+            var doc = await BattleTable.GetItemAsync(battleId);
             return doc != null ? JsonUtils.Deserialize<Battle>(doc.ToJson()) : null;
         }
 
@@ -50,7 +53,7 @@ namespace GameBackend.Core.Repositories
             if (battle == null || string.IsNullOrWhiteSpace(battle.battleId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(battle));
-            await _battleTable.PutItemAsync(doc);
+            await BattleTable.PutItemAsync(doc);
         }
 
         public async Task SaveLootDropAsync(LootDrop lootDrop)
@@ -58,7 +61,7 @@ namespace GameBackend.Core.Repositories
             if (lootDrop == null || string.IsNullOrWhiteSpace(lootDrop.lootId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(lootDrop));
-            await _lootTable.PutItemAsync(doc);
+            await LootTable.PutItemAsync(doc);
         }
     }
 }

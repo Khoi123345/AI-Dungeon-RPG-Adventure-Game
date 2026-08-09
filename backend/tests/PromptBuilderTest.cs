@@ -2,6 +2,8 @@ using System;
 using Xunit;
 using System.IO;
 using Xunit.Abstractions;
+using GameBackend.Core.AIStory;
+using GameBackend.Core.AIStory.DTOs;
 
 public class PromptBuilderTests
 {
@@ -29,50 +31,48 @@ public class PromptBuilderTests
             UserAction = "Talk to dragon"
         };
 
-        var prompt = builder.Build(context);
+        var (systemPrompt, userPrompt) = builder.Build(context);
 
         // Display the final prompt for format verification
-        Console.WriteLine("\n========== FINAL PROMPT ==========");
-        Console.WriteLine(prompt);
+        Console.WriteLine("\n========== SYSTEM PROMPT ==========");
+        Console.WriteLine(systemPrompt);
+        Console.WriteLine("\n========== USER PROMPT ==========");
+        Console.WriteLine(userPrompt);
         Console.WriteLine("==================================\n");
 
-        // Also write to file for easy viewing
-        var outputFile = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "prompt_output.txt");
-        File.WriteAllText(outputFile, prompt);
-        Console.WriteLine($"Full prompt written to: {Path.GetFullPath(outputFile)}");
+        Assert.NotNull(systemPrompt);
+        Assert.NotNull(userPrompt);
 
-        Assert.NotNull(prompt);
-
-        // system prompt
+        // system prompt should contain Game Master instructions
         Assert.Contains(
-            "You are an RPG narrator",
-            prompt);
+            "Game Master",
+            systemPrompt);
 
-        // replaced values
+        // user prompt replaced values
         Assert.Contains(
             "Dragon World",
-            prompt);
+            userPrompt);
 
         Assert.Contains(
             "Level: 12",
-            prompt);
+            userPrompt);
 
         Assert.Contains(
             "Dragon Sword",
-            prompt);
+            userPrompt);
 
         Assert.Contains(
             "Talk to dragon",
-            prompt);
+            userPrompt);
 
         // no unresolved placeholders
         Assert.DoesNotContain(
             "{{",
-            prompt);
+            userPrompt);
 
         Assert.DoesNotContain(
             "}}",
-            prompt);
+            userPrompt);
     }
 
     private PromptBuilder CreatePromptBuilder()
@@ -98,15 +98,14 @@ public class PromptBuilderTests
             Path.Combine(Directory.GetCurrentDirectory(), "..", "src", "GameBackend.Core", "AIStory"),
             Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "src", "GameBackend.Core", "AIStory"),
             Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "src", "GameBackend.Core", "AIStory"),
-            Path.Combine("backend", "src", "GameBackend.Core", "AIStory")
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "GameBackend.Core", "AIStory")
         };
 
-        foreach (var c in candidates)
+        foreach (var candidate in candidates)
         {
-            var full = Path.GetFullPath(c);
-            if (Directory.Exists(full))
+            if (Directory.Exists(candidate))
             {
-                return new PromptBuilder(full);
+                return new PromptBuilder(candidate);
             }
         }
 

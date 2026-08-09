@@ -2,6 +2,9 @@ using GameBackend.Core.Config;
 using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Services.Interfaces;
 using GameShared.DTOs.Battle;
+using GameShared.DTOs.Story;
+using GameBackend.Core.Services.Parsing;
+using GameShared.DTOs.Inventory;
 using GameShared.Models;
 using Microsoft.Extensions.Logging;
 
@@ -15,6 +18,8 @@ namespace GameBackend.Core.Services
         private readonly ICharacterService _characterService;
         private readonly IInventoryService _inventoryService;
         private readonly IInventoryRepository _inventoryRepository;
+        private readonly IDefeatedBossRepository _defeatedBossRepository;
+        private readonly IStoryRepository _storyRepository;
         private readonly ILogger<BattleService> _logger;
         private readonly Random _random = new();
 
@@ -25,6 +30,8 @@ namespace GameBackend.Core.Services
             ICharacterService characterService,
             IInventoryService inventoryService,
             IInventoryRepository inventoryRepository,
+            IDefeatedBossRepository defeatedBossRepository,
+            IStoryRepository storyRepository,
             ILogger<BattleService> logger)
         {
             _bossRepository = bossRepository;
@@ -33,6 +40,8 @@ namespace GameBackend.Core.Services
             _characterService = characterService;
             _inventoryService = inventoryService;
             _inventoryRepository = inventoryRepository;
+            _defeatedBossRepository = defeatedBossRepository;
+            _storyRepository = storyRepository;
             _logger = logger;
         }
 
@@ -95,7 +104,7 @@ namespace GameBackend.Core.Services
                 bossLevel      = bossLevel,
                 bossRarity     = rarity,
                 playerHpBefore = character.hp,
-                bossHpBefore   = ScaleStat(template.baseHp, bossLevel),
+                bossHpBefore   = GameConstants.ScaleStat(template.baseHp, bossLevel),
                 status         = "Active",
                 encounterTime  = DateTime.UtcNow
             };
@@ -115,9 +124,9 @@ namespace GameBackend.Core.Services
                 bossName      = template.name,
                 bossRarity    = rarity,
                 bossLevel     = bossLevel,
-                bossHp        = ScaleStat(template.baseHp, bossLevel),
-                bossAttack    = ScaleStat(template.baseAttack, bossLevel),
-                bossDefense   = ScaleStat(template.baseDefense, bossLevel),
+                bossHp        = GameConstants.ScaleStat(template.baseHp, bossLevel),
+                bossAttack    = GameConstants.ScaleStat(template.baseAttack, bossLevel),
+                bossDefense   = GameConstants.ScaleStat(template.baseDefense, bossLevel),
                 bossSpeed     = template.speed,
                 bossCriticalRate = template.criticalRate,
                 bossImageUrl  = template.imageUrl ?? ""
@@ -258,14 +267,74 @@ namespace GameBackend.Core.Services
 
             if (isVictory)
             {
+                // Record the defeated boss — chỉ lưu chapter boss, không lưu mob (mob_* prefix)
+                bool isMob = encounter.bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase);
+                var isCatalogBoss = !isMob && GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(encounter.bossId, StringComparison.OrdinalIgnoreCase));
+                if (isCatalogBoss)
+                {
+                    try
+                    {
+                        var defeated = new DefeatedBoss
+                        {
+                            characterId = character.characterId,
+                            bossId = encounter.bossId,
+                            bossName = bossTemplate.name,
+                            bossLevel = encounter.bossLevel,
+                            encounterId = encounter.encounterId,
+                            defeatedAt = DateTime.UtcNow
+                        };
+                        await _defeatedBossRepository.SaveDefeatedBossAsync(defeated);
+                        _logger.LogInformation("Saved defeated boss {BossId} for character {CharacterId}", encounter.bossId, character.characterId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to save defeated boss {BossId} for character {CharacterId}", encounter.bossId, character.characterId);
+                    }
+                }
+
                 // Mục 5: Loot System
                 int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, encounter.bossRarity);
-                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity);
+                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity, character.level);
                 character.gold += goldReward;
                 await _characterService.ApplyExperienceAndLevelUp(character, expReward);
 
                 var lootDTOs = await _inventoryService.GrantLootDropAsync(
                     character.characterId, encounter.bossRarity, battleId);
+
+                // Khi người chơi hạ gục quái (mob_*) -> Tự động rớt Key Item của khu vực nếu chưa sở hữu
+                string? keyItemToGrant = null;
+                try
+                {
+                    var session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
+                    string currentLoc = session?.currentLocation ?? character.currentLocationId ?? "ancient_cave";
+
+                    if (currentLoc.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_ancient_key";
+                    }
+                    else if (currentLoc.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_elemental_core";
+                    }
+
+                    if (!string.IsNullOrEmpty(keyItemToGrant))
+                    {
+                        var existingKeyItem = await _inventoryRepository.FindByCharacterAndItemAsync(character.characterId, keyItemToGrant);
+                        if (existingKeyItem == null || existingKeyItem.quantity <= 0)
+                        {
+                            await _inventoryService.AddItemToInventoryAsync(character.characterId, keyItemToGrant, 1);
+                            if (!lootDTOs.Any(l => l.itemId == keyItemToGrant))
+                            {
+                                lootDTOs.Add(new LootItemDTO { itemId = keyItemToGrant, quantity = 1 });
+                            }
+                            _logger.LogInformation("Tự động rớt Key Item '{KeyItemId}' cho nhân vật {CharacterId} sau khi hạ gục quái tại {Location}", keyItemToGrant, character.characterId, currentLoc);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not grant key item {KeyItem} to character {CharacterId}", keyItemToGrant, character.characterId);
+                }
 
                 rewards = new BattleRewardData
                 {
@@ -281,6 +350,9 @@ namespace GameBackend.Core.Services
 
                 // Lưu character (gold đã cộng, XP đã xử lý trong ApplyExperienceAndLevelUp)
                 await _characterRepository.SaveAsync(character);
+
+                // Tự động chuyển Chương trong Story Session khi đánh bại Boss
+                await AdvanceStoryChapterOnBossDefeatAsync(character.characterId, encounter.bossId);
             }
             else
             {
@@ -292,6 +364,71 @@ namespace GameBackend.Core.Services
 
                 _logger.LogInformation("Character {CharacterId} died. Revive at {ReviveTime}",
                     character.characterId, character.reviveTime);
+            }
+
+            // 9. Ghi nhận kết quả trận đấu vào mạch truyện (Story Session Actions)
+            try
+            {
+                var session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
+                if (session != null && session.status == "Active")
+                {
+                    var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+                    var turnNumber = allRecentActions.Count + 1;
+
+                    var goldReward = rewards?.goldEarned ?? 0;
+                    var expReward = rewards?.expEarned ?? 0;
+                    var lootItemsDesc = (rewards?.lootItems != null && rewards.lootItems.Count > 0)
+                        ? string.Join(", ", rewards.lootItems.Select(i => $"{i.itemName} (x{i.quantity})"))
+                        : "Không có";
+
+                    var outcomeText = isVictory ? "Chiến thắng" : "Thất bại";
+                    var bossName = bossTemplate.name;
+
+                    var narrativeText = $"[TRẬN ĐÁNH VỪA KẾT THÚC]\n" +
+                                        $"Kết quả: {outcomeText}.\n" +
+                                        $"Đối thủ: {bossName} (Cấp độ {encounter.bossLevel}).\n" +
+                                        $"Phần thưởng: {goldReward} Vàng, {expReward} EXP.\n" +
+                                        $"Vật phẩm nhận được: {lootItemsDesc}.";
+
+                    var aiResponse = new StoryAiResponse
+                    {
+                        NarrativeText = narrativeText,
+                        CurrentNodeId = session.currentNodeId,
+                        CurrentLocation = session.currentLocation,
+                        CurrentChapterId = session.currentChapterId,
+                        StorySummary = session.storySummary,
+                        ActionType = "battle_result",
+                        TriggerBattle = false,
+                        Choices = new List<StoryChoiceOption>
+                        {
+                            new StoryChoiceOption
+                            {
+                                label = "Tiếp tục",
+                                description = "Sau cuộc chiến, bạn dọn dẹp chiến trường và tiếp tục cuộc hành trình.",
+                                nextNodeId = session.currentNodeId
+                            }
+                        }
+                    };
+
+                    var action = new StoryAction
+                    {
+                        actionId = Guid.NewGuid().ToString("N"),
+                        sessionId = session.sessionId,
+                        playerInput = $"[TRẬN ĐÁNH] Đối mặt và quyết chiến với {bossName}",
+                        aiResponse = narrativeText,
+                        turnNumber = turnNumber,
+                        actionType = "battle_result",
+                        metadataJson = StoryAiResponseParser.Serialize(aiResponse),
+                        createdAt = DateTime.UtcNow
+                    };
+
+                    await _storyRepository.SaveActionAsync(action);
+                    _logger.LogInformation("Saved battle result StoryAction for session {SessionId}", session.sessionId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to save battle result StoryAction for character {CharacterId}", character.characterId);
             }
 
             return new BattleResolveResponse
@@ -327,11 +464,7 @@ namespace GameBackend.Core.Services
         // PRIVATE HELPERS
         // =====================================================================
 
-        /// <summary>Scale stat theo level: baseStat × (1 + 0.08 × level)</summary>
-        private static int ScaleStat(int baseStat, int level)
-        {
-            return Math.Max(1, (int)Math.Round(baseStat * (1.0 + 0.08 * level)));
-        }
+        // Removed ScaleStat
 
         /// <summary>Build lookup dictionary từ equipped items cho CalculateEffectiveStats.</summary>
         private static Dictionary<string, Item> BuildItemLookup(IEnumerable<Inventory> equippedItems)
@@ -474,6 +607,81 @@ namespace GameBackend.Core.Services
             }
 
             return turns;
+        }
+
+        private async Task AdvanceStoryChapterOnBossDefeatAsync(string characterId, string bossId)
+        {
+            if (_storyRepository == null || string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(bossId)) return;
+
+            try
+            {
+                var session = await _storyRepository.GetSessionByCharacterIdAsync(characterId);
+                if (session == null || session.status != "Active") return;
+
+                string normalizedBossId = bossId.Trim().ToLowerInvariant().Replace("boss_", "");
+
+                string targetChapterId = "";
+                string targetLocation = "";
+                string chapterTitle = "";
+
+                if (normalizedBossId == "goblin_king")
+                {
+                    targetChapterId = "chapter_2";
+                    targetLocation = "sunken_shipwreck";
+                    chapterTitle = "Chương 2: Vương Quốc Chìm Đắm (Xác Tàu Đắm)";
+                }
+                else if (normalizedBossId == "shadow_demon")
+                {
+                    targetChapterId = "chapter_3";
+                    targetLocation = "dragon_nest";
+                    chapterTitle = "Chương 3: Hoang Mạc Thiêu Rụi (Tổ Rồng)";
+                }
+                else if (normalizedBossId == "dragon_king")
+                {
+                    targetChapterId = "chapter_4";
+                    targetLocation = "start"; // Update with real chapter 4 location later
+                    chapterTitle = "Chương 4: Đỉnh Núi Băng Giá";
+                }
+
+                if (!string.IsNullOrEmpty(targetChapterId))
+                {
+                    session.currentChapterId = targetChapterId;
+                    session.currentLocation = targetLocation;
+                    session.updatedAt = DateTime.UtcNow;
+
+                    string summaryNote = $" [ĐÃ HẠ GỤC BOSS {bossId.ToUpperInvariant()} - TIẾN SANG {chapterTitle.ToUpperInvariant()}]";
+                    if (string.IsNullOrWhiteSpace(session.storySummary))
+                    {
+                        session.storySummary = summaryNote.Trim();
+                    }
+                    else if (!session.storySummary.Contains(targetChapterId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        session.storySummary += summaryNote;
+                    }
+
+                    await _storyRepository.SaveSessionAsync(session);
+
+                    var transitionAction = new StoryAction
+                    {
+                        actionId = Guid.NewGuid().ToString("N"),
+                        sessionId = session.sessionId,
+                        playerInput = $"[SỰ KIỆN CHIẾN THẮNG]: Đã tiêu diệt thành công Boss {bossId}!",
+                        aiResponse = $"Vua Goblin ngã xuống! Mảnh Vỡ Lõi Nguyên Tố tỏa sáng rực rỡ giải trừ phong ấn. Bạn chính thức hoàn thành Chương 1 và bước sang {chapterTitle}!",
+                        turnNumber = 999,
+                        actionType = "chapter_transition",
+                        metadataJson = $"{{\"currentChapterId\":\"{targetChapterId}\",\"currentLocation\":\"{targetLocation}\",\"defeatedBoss\":\"{bossId}\"}}",
+                        createdAt = DateTime.UtcNow
+                    };
+
+                    await _storyRepository.SaveActionAsync(transitionAction);
+                    _logger.LogInformation("Advanced session {SessionId} for character {CharacterId} to chapter {ChapterId} ({Location}) after defeating boss {BossId}",
+                        session.sessionId, characterId, targetChapterId, targetLocation, bossId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to auto-advance story chapter after boss defeat for character {CharacterId}", characterId);
+            }
         }
     }
 }

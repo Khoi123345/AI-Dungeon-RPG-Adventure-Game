@@ -12,6 +12,7 @@ namespace GameBackend.Core.AIStory.Builder
             IEnumerable<Item> inventoryItems,
             IEnumerable<StoryAction> recentActions,
             StorySession session,
-            string userAction);
+            string userAction,
+            string? systemInjectedEvent = null);
     }
 }

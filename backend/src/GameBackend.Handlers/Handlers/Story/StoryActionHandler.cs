@@ -12,12 +12,14 @@ namespace GameBackend.Handlers.Story
 {
     public class StoryActionHandler
     {
-        private readonly IStoryService _storyService;
+        private IStoryService? _storyService;
 
-        public StoryActionHandler()
+        private IStoryService GetStoryService()
         {
+            if (_storyService != null) return _storyService;
             var sp = ServiceProviderBuilder.Build();
             _storyService = sp.GetRequiredService<IStoryService>();
+            return _storyService;
         }
 
         public async Task<APIGatewayProxyResponse> Handler(APIGatewayProxyRequest request, ILambdaContext context)
@@ -27,11 +29,12 @@ namespace GameBackend.Handlers.Story
 
             try
             {
+                var storyService = GetStoryService();
                 var actionRequest = JsonUtils.Deserialize<StoryActionRequest>(request.Body);
                 if (actionRequest == null || string.IsNullOrWhiteSpace(actionRequest.sessionId))
                     return ResponseBuilder.Error(400, "Invalid request payload", "INVALID_REQUEST");
 
-                var result = await _storyService.ProcessActionAsync(actionRequest);
+                var result = await storyService.ProcessActionAsync(actionRequest);
                 return ResponseBuilder.Success(result);
             }
             catch (GameNotFoundException ex)
