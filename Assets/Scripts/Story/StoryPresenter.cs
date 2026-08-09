@@ -33,6 +33,7 @@ public class StoryPresenter : MonoBehaviour
     private bool waitingForAdvance;
     private bool awaitingChoice;
     private bool isBossPopupShowing;  // chặn advance khi popup boss đang hiện
+    private bool isInputMode = false;
 
     private readonly Queue<StoryLineData> pendingLines = new Queue<StoryLineData>();
 
@@ -48,6 +49,7 @@ public class StoryPresenter : MonoBehaviour
             view.BindAdvance(HandleAdvancePressed);
             view.BindSubmitAction(HandleUserActionSubmitted);
             view.BindBack(OnBackClicked);
+            view.BindSwitchModes(HandleSwitchToInput, HandleSwitchToOptions);
         }
 
         GameProgressService.EnsureInstance();
@@ -70,7 +72,7 @@ public class StoryPresenter : MonoBehaviour
         {
             view.SetStoryText("<i><color=#AAAAAA>Đang kết nối AI Bedrock và khởi tạo hầm ngục...</color></i>");
             view.SetNextIndicatorVisible(false);
-            view.SetChoiceButtonsVisible(false);
+            view.SetActiveOptionsPanelVisible(false);
             view.SetInputPanelVisible(false);
 
             if (GameProgressService.Instance?.CurrentCharacter != null)
@@ -146,7 +148,7 @@ public class StoryPresenter : MonoBehaviour
         StopCurrentPlayback();
         view.SetStoryText(string.Empty);
         view.SetNextIndicatorVisible(false);
-        view.SetChoiceButtonsVisible(false);
+        view.SetActiveOptionsPanelVisible(false);
         view.SetChoiceInteractable(false);
         view.SetInputPanelVisible(false);
         view.ClearInputField();
@@ -190,13 +192,42 @@ public class StoryPresenter : MonoBehaviour
         }
 
         view.SetNextIndicatorVisible(false);
-        if (currentData != null && currentData.node != null && currentData.node.choices != null && currentData.node.choices.Count > 0)
+        bool hasChoices = currentData != null && currentData.node != null && currentData.node.choices != null && currentData.node.choices.Count > 0;
+        
+        if (hasChoices)
         {
             view.SetChoices(currentData.node.choices.ToArray(), OnChoiceSelected);
         }
-        view.SetInputPanelVisible(true);
+
+        if (hasChoices && !isInputMode)
+        {
+            view.SetActiveOptionsPanelVisible(true);
+            view.SetInputPanelVisible(false);
+        }
+        else
+        {
+            isInputMode = true;
+            view.SetActiveOptionsPanelVisible(false);
+            view.SetInputPanelVisible(true);
+        }
+
+        view.SetChoiceInteractable(true);
         view.SetInputInteractable(true);
         awaitingChoice = true;
+    }
+
+    private void HandleSwitchToInput()
+    {
+        isInputMode = true;
+        view.SetActiveOptionsPanelVisible(false);
+        view.SetInputPanelVisible(true);
+    }
+
+    private void HandleSwitchToOptions()
+    {
+        isInputMode = false;
+        view.SetInputPanelVisible(false);
+        view.SetActiveOptionsPanelVisible(true);
     }
 
     private IEnumerator TypeLineRoutine(string text)
@@ -299,7 +330,7 @@ public class StoryPresenter : MonoBehaviour
         }
 
         awaitingChoice = false;
-        view.SetChoiceButtonsVisible(false);
+        view.SetActiveOptionsPanelVisible(false);
         view.SetInputInteractable(false);
         view.SetInputPanelVisible(false);
 
@@ -379,7 +410,7 @@ public class StoryPresenter : MonoBehaviour
         }
 
         awaitingChoice = false;
-        view.SetChoiceButtonsVisible(false);
+        view.SetActiveOptionsPanelVisible(false);
         view.SetInputInteractable(false);
         view.SetInputPanelVisible(false);
         view.ClearInputField();
