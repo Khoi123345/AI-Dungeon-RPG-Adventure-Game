@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa78b926fc16b546b111995b44d8ee2, type: 3}
+  m_Name: MainItemDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDatabaseSO
+  items:
+  - itemName: Rusty Sword
+    itemIcon: {fileID: -1751666057462236490, guid: 80dc14ad1c56cee4587fba3f2171fcda, type: 3}
+    itemType: 0
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Leather Vest
+    itemIcon: {fileID: 477670517281064794, guid: 9a6af915c9572a24e90ae74581f9b067, type: 3}
+    itemType: 1
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Wooden Ring
+    itemIcon: {fileID: -6527581836544413310, guid: 938efacb60808834a84b6fd3674e7555, type: 3}
+    itemType: 2
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Small Health Potion
+    itemIcon: {fileID: -3138755175628646075, guid: 925423f1fe3df9c43ad73d1ce919ca30, type: 3}
+    itemType: 3
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Steel Dagger
+    itemIcon: {fileID: -5381484653364802162, guid: 719c9514591248f41959b9f7c7d10cf2, type: 3}
+    itemType: 0
+    itemRarity: 1
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Steel Blade
+    itemIcon: {fileID: 7835467539701571412, guid: 719c9514591248f41959b9f7c7d10cf2, type: 3}
+    itemType: 0
+    itemRarity: 1
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Iron Shield
+    itemIcon: {fileID: -285600187165097761, guid: 9a6af915c9572a24e90ae74581f9b067, type: 3}
+    itemType: 1
+    itemRarity: 1
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Silver Amulet
+    itemIcon: {fileID: -149199884664268498, guid: b2aca246a257e5447a583eb3f6293d4f, type: 3}
+    itemType: 2
+    itemRarity: 1
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Medium Health Potion
+    itemIcon: {fileID: 9061389864779957914, guid: 925423f1fe3df9c43ad73d1ce919ca30, type: 3}
+    itemType: 3
+    itemRarity: 1
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Shadow Blade
+    itemIcon: {fileID: -6800933126232825344, guid: 80dc14ad1c56cee4587fba3f2171fcda, type: 3}
+    itemType: 0
+    itemRarity: 2
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Dragon Scale Plate
+    itemIcon: {fileID: 4946070080816921243, guid: a653ed866b157e94a847fb354d6cc6a2, type: 3}
+    itemType: 1
+    itemRarity: 2
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Void Ring
+    itemIcon: {fileID: -6527581836544413310, guid: 938efacb60808834a84b6fd3674e7555, type: 3}
+    itemType: 2
+    itemRarity: 2
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Battle Elixir
+    itemIcon: {fileID: 947255674826845877, guid: 925423f1fe3df9c43ad73d1ce919ca30, type: 3}
+    itemType: 3
+    itemRarity: 2
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Excalibur
+    itemIcon: {fileID: 3492761690622121635, guid: 80dc14ad1c56cee4587fba3f2171fcda, type: 3}
+    itemType: 0
+    itemRarity: 3
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Aegis of the Ancients
+    itemIcon: {fileID: 5346660433569948777, guid: a653ed866b157e94a847fb354d6cc6a2, type: 3}
+    itemType: 1
+    itemRarity: 3
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Ring of the Gods
+    itemIcon: {fileID: 6035522225323658155, guid: 938efacb60808834a84b6fd3674e7555, type: 3}
+    itemType: 2
+    itemRarity: 3
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemName: Divine Elixir
+    itemIcon: {fileID: 3109236911076525734, guid: 925423f1fe3df9c43ad73d1ce919ca30, type: 3}
+    itemType: 3
+    itemRarity: 3
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0

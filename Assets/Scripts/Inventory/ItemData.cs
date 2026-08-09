@@ -14,7 +14,8 @@ public enum ItemRarity
 {
     Common,      // Thường (Màu xám)
     Rare,        // Hiếm (Màu xanh dương)
-    Epic         // Sử thi (Màu tím)
+    Epic,        // Sử thi (Màu tím)
+    Legendary    // Huyền thoại (Màu vàng/cam)
 }
 
 // Đổi thành [System.Serializable] để có thể dùng "new ItemData()" trong code

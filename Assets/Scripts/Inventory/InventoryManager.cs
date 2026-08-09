@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
     public Button btnLast;
 
     [Header("--- Templates & Database ---")]
-    [SerializeField] private List<ItemData> itemDatabase = new List<ItemData>();
+    [SerializeField] private ItemDatabaseSO itemDatabaseSO;
 
     [Header("--- Inventory Data ---")]
     public List<ItemData> allItems = new List<ItemData>(); // Danh sách toàn bộ item đang có
@@ -245,9 +245,9 @@ public class InventoryManager : MonoBehaviour
             var template = GameShared.Config.GameConstants.GetItemById(inv.itemId);
 
             ItemData dbMatch = null;
-            if (itemDatabase != null && itemDatabase.Count > 0)
+            if (itemDatabaseSO != null && itemDatabaseSO.items.Count > 0)
             {
-                dbMatch = itemDatabase.Find(x => x != null && 
+                dbMatch = itemDatabaseSO.items.Find(x => x != null && 
                     !string.IsNullOrEmpty(x.itemName) &&
                     (x.itemName.Equals(inv.itemId, System.StringComparison.OrdinalIgnoreCase) ||
                      (template != null && x.itemName.Equals(template.name, System.StringComparison.OrdinalIgnoreCase))));
