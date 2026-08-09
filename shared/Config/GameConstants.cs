@@ -157,24 +157,35 @@ namespace GameShared.Config
             return BossRarityLevelModifier.TryGetValue(rarity, out int mod) ? mod : 0;
         }
 
-        public static int CalculateBossLevel(int playerLevel, string rarity)
+        public static int CalculateBossLevel(int playerLevel, string rarity, string? bossId = null)
         {
-            if (playerLevel <= 1) return 1;
+            var cleanId = (bossId ?? "").ToLowerInvariant();
 
-            if (playerLevel <= 3) 
+            // 1. Chapter Bosses: Luôn tạo chênh lệch cấp độ đáng kể (Level Gap)
+            if (cleanId.Contains("goblin_king") || cleanId.Contains("boss_goblin"))
             {
-                return Math.Max(1, playerLevel + _random.Next(-1, 2)); // -1, 0, 1
+                int gap = Math.Max(2, playerLevel / 3 + 2);
+                return Math.Max(5, playerLevel + _random.Next(gap, gap + 4));
             }
-            
-            if (rarity == "Common")
+            if (cleanId.Contains("shadow_demon") || cleanId.Contains("boss_shadow"))
             {
-                int penalty = playerLevel / 5;
-                return Math.Max(1, playerLevel - penalty + _random.Next(0, 2)); // 0 or +1
+                int gap = Math.Max(3, playerLevel / 3 + 3);
+                return Math.Max(12, playerLevel + _random.Next(gap, gap + 4));
+            }
+            if (cleanId.Contains("dragon_king") || cleanId.Contains("boss_dragon"))
+            {
+                int gap = Math.Max(5, playerLevel / 3 + 5);
+                return Math.Max(25, playerLevel + _random.Next(gap, gap + 5));
             }
 
-            int rarityMod = GetBossRarityLevelModifier(rarity);
-            int randomMod = _random.Next(-1, 2);
-            return Math.Max(1, playerLevel + rarityMod + randomMod);
+            // 2. Dynamic Player Level Scaling cho Mobs:
+            // Từ Level 3 trở lên, quái xuất hiện luôn có cấp độ chênh lệch ngẫu nhiên cao hơn (+1 đến +4 level)!
+            int minOffset = playerLevel >= 3 ? 1 : 0;
+            int maxBonus = Math.Max(2, playerLevel / 3 + 2);
+            int randomLevelOffset = _random.Next(minOffset, maxBonus + 1);
+
+            int rarityMod = GetBossRarityLevelModifier(rarity); // Common=0, Rare=2, Epic=4, Legendary=6
+            return Math.Max(1, playerLevel + rarityMod + randomLevelOffset);
         }
 
         public static Boss GetBossTemplateByRarity(string rarity)
@@ -235,6 +246,12 @@ namespace GameShared.Config
             }
 
             return baseExp;
+        }
+
+        /// <summary>Scale stat theo level: baseStat × (1 + 0.08 × level)</summary>
+        public static int ScaleStat(int baseStat, int level)
+        {
+            return Math.Max(1, (int)Math.Round(baseStat * (1.0 + 0.08 * level)));
         }
     }
 }

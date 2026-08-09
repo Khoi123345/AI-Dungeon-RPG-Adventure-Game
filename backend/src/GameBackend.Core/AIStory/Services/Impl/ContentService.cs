@@ -32,7 +32,7 @@ namespace GameBackend.Core.AIStory.Services.Impl
 
         private static string NormalizeChapterId(string chapterId)
         {
-            if (string.IsNullOrWhiteSpace(chapterId) || chapterId.Equals("introduction", System.StringComparison.OrdinalIgnoreCase) || chapterId.Equals("prologue", System.StringComparison.OrdinalIgnoreCase) || chapterId.Equals("1"))
+            if (string.IsNullOrWhiteSpace(chapterId) || chapterId.Equals("introduction", System.StringComparison.OrdinalIgnoreCase) || chapterId.Equals("1"))
             {
                 return "chapter_1";
             }
@@ -43,7 +43,7 @@ namespace GameBackend.Core.AIStory.Services.Impl
 
         private static string NormalizeLocationId(string locationId)
         {
-            if (string.IsNullOrWhiteSpace(locationId) || locationId.Equals("prologue", System.StringComparison.OrdinalIgnoreCase) || locationId.Equals("start", System.StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(locationId) || locationId.Equals("start", System.StringComparison.OrdinalIgnoreCase))
             {
                 return "ancient_cave";
             }

@@ -86,7 +86,7 @@ public class StoryStateUpdaterTests
 
         var storyRepo = new FakeStoryRepository();
         var characterRepo = new FakeCharacterRepository(character);
-        var characterService = new CharacterService(characterRepo, NullLogger<CharacterService>.Instance);
+        var characterService = new CharacterService(characterRepo, inventoryRepo, NullLogger<CharacterService>.Instance);
         var battleRepo = new FakeBattleRepository();
 
         var updater = new StoryStateUpdater(

@@ -474,6 +474,13 @@ public class StoryPresenter : MonoBehaviour
 
     private IEnumerator TriggerBossEncounterFromAi(string bossId)
     {
+        // 1. Chờ cốt truyện hiển thị xong hoàn toàn (chữ gõ xong + người chơi bấm tiếp tục)
+        if (playbackCoroutine != null)
+        {
+            yield return playbackCoroutine;
+        }
+
+        // 2. Tạm dừng một chút để người chơi đọc/thấm không khí trước khi quái xuất hiện
         yield return new WaitForSeconds(1.5f);
 
         if (GameProgressService.Instance == null) yield break;
@@ -499,7 +506,12 @@ public class StoryPresenter : MonoBehaviour
 
     private StoryData MapActionResponseToStoryData(StoryActionResponse response)
     {
-        string charName = response.character != null ? response.character.name : (GameProgressService.Instance?.CurrentCharacter?.name ?? "Player");
+        if (response != null && !string.IsNullOrEmpty(response.debugPrompt))
+        {
+            Debug.Log($"<color=#00FFFF>================ [FULL AI PROMPT SENT TO BEDROCK] ================\n{response.debugPrompt}\n===================================================================</color>");
+        }
+
+        string charName = response?.character != null ? response.character.name : (GameProgressService.Instance?.CurrentCharacter?.name ?? "Player");
         int charGold = GameProgressService.Instance?.CurrentCharacter != null 
             ? GameProgressService.Instance.CurrentCharacter.gold 
             : (response.character != null ? response.character.gold : 0);
@@ -555,8 +567,14 @@ public class StoryPresenter : MonoBehaviour
     /// </summary>
     private IEnumerator TryTriggerBossEncounterDelayed()
     {
+        // 1. Chờ cốt truyện hiển thị xong hoàn toàn
+        if (playbackCoroutine != null)
+        {
+            yield return playbackCoroutine;
+        }
+
         // Đợi người chơi đọc story response
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
 
         float roll = UnityEngine.Random.value;
         if (roll > bossEncounterChance) yield break;

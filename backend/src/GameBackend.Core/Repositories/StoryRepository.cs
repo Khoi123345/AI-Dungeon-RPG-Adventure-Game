@@ -69,8 +69,17 @@ namespace GameBackend.Core.Repositories
             var filter = new ScanFilter();
             filter.AddCondition("sessionId", ScanOperator.Equal, sessionId);
             var search = ActionTable.Scan(filter);
-            var docs = await search.GetNextSetAsync();
-            return docs.Select(d => JsonUtils.Deserialize<StoryAction>(d.ToJson())!).ToList();
+            var results = new List<StoryAction>();
+            do
+            {
+                var docs = await search.GetNextSetAsync();
+                if (docs != null && docs.Count > 0)
+                {
+                    results.AddRange(docs.Select(d => JsonUtils.Deserialize<StoryAction>(d.ToJson())!).Where(a => a != null));
+                }
+            } while (!search.IsDone);
+
+            return results;
         }
     }
 }

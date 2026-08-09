@@ -12,10 +12,11 @@ namespace GameBackend.Core.Services
     public class StorySummaryService : IStorySummaryService
     {
         private const int TurnInterval = 20;
-        private const string SystemPrompt = "Bạn là trợ lý Dungeon Master chuyên tóm tắt cốt truyện game RPG dark fantasy. Nhiệm vụ của bạn là đọc toàn bộ diễn biến cốt truyện hiện tại cùng các hành động gần nhất, sau đó viết lại thành một bản tóm tắt cốt truyện duy nhất bằng Tiếng Việt (khoảng 300 từ). Bản tóm tắt phải cô đọng, giữ lại các sự kiện chính, quyết định quan trọng của người chơi, vị trí hiện tại và mục tiêu tiếp theo. Không thêm lời chào hay giải thích ngoài lề.";
+        private static readonly string DefaultSystemPrompt = "Bạn là trợ lý Dungeon Master chuyên tóm tắt cốt truyện game RPG dark fantasy. Nhiệm vụ của bạn là đọc toàn bộ diễn biến cốt truyện hiện tại cùng các hành động gần nhất, sau đó viết lại thành một bản tóm tắt cốt truyện duy nhất bằng Tiếng Việt (khoảng 150-250 từ). Bản tóm tắt phải cô đọng, giữ lại các sự kiện chính, quyết định quan trọng của người chơi, vị trí hiện tại và mục tiêu tiếp theo. Không thêm lời chào hay giải thích ngoài lề.";
 
         private readonly IBedrockService _bedrockService;
         private readonly ILogger<StorySummaryService> _logger;
+        private readonly string _systemPrompt;
 
         public StorySummaryService(
             IBedrockService bedrockService,
@@ -23,6 +24,22 @@ namespace GameBackend.Core.Services
         {
             _bedrockService = bedrockService;
             _logger = logger;
+
+            string loadedPrompt = string.Empty;
+            try
+            {
+                var summaryPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Prompt", "summary_prompt.md");
+                if (System.IO.File.Exists(summaryPath))
+                {
+                    loadedPrompt = System.IO.File.ReadAllText(summaryPath);
+                }
+            }
+            catch
+            {
+                // Fallback to default
+            }
+
+            _systemPrompt = !string.IsNullOrWhiteSpace(loadedPrompt) ? loadedPrompt : DefaultSystemPrompt;
         }
 
         public async Task<string> CondenseSummaryIfNeededAsync(StorySession session, int currentTurnCount, List<StoryAction> recentActions)
@@ -70,7 +87,7 @@ namespace GameBackend.Core.Services
                 sb.AppendLine("\nYêu cầu: Viết lại bản tóm tắt cốt truyện mới duy nhất (khoảng 300 từ) cô đọng lại toàn bộ hành trình trên.");
 
                 var userPrompt = sb.ToString();
-                var newSummary = await _bedrockService.GenerateNarrativeAsync(SystemPrompt, userPrompt);
+                var newSummary = await _bedrockService.GenerateNarrativeAsync(_systemPrompt, userPrompt);
 
                 if (!string.IsNullOrWhiteSpace(newSummary))
                 {

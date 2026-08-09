@@ -12,14 +12,14 @@ Một khu rừng từng tràn đầy sự sống giờ đây bị bao phủ bở
 Người chơi phải tuân theo và hoàn thành các bước cốt truyện sau để tới phòng Boss:
 
 ### Bước 1: Khởi đầu tại Hang Động Cổ Xưa (Location: ancient_cave, Node: introduction -> cave_exploration)
-- **Nhiệm vụ**: Tìm kiếm chiếc Chìa Khóa Cổ Xưa bị chôn giấu trong hang động. Khi người chơi tìm thấy nó, bạn phải thêm vào túi đồ của họ vật phẩm có ID chính xác là `"item_ancient_key"`.
-- **Tiến trình**: Người chơi cần thực hiện ít nhất 2 hành động khám phá hoặc chiến đấu tại đây. Khi tìm thấy Chìa Khóa Cổ Xưa (ID: `item_ancient_key`), người chơi sẽ mở khóa lựa chọn di chuyển đến "Đền Thờ Bị Lãng Quên".
-- **Lựa chọn để tiến bước**: Lựa chọn tiếp theo phải có `"nextNodeId": "forgotten_temple"`.
+- **Quái vật chạm trán (Encounters)**: Nhện Hang Động (ID: `mob_cave_spider`), Trinh Sát Goblin (ID: `mob_goblin_scout`).
+- **Nhiệm vụ & Rớt Đồ**: Đánh bại quái vật hoặc tìm kiếm để có Chìa Khóa Cổ Xưa (`item_ancient_key`).
+- **QUY TẮC MỞ MÀN (CỰC KỲ QUAN TRỌNG)**: Khi quét thấy vật phẩm `"item_ancient_key"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Tiến vào Đền Thờ Bị Lãng Quên"`, `"nextNodeId": "forgotten_temple"`.
 
 ### Bước 2: Khám phá Đền Thờ Bị Lãng Quên (Location: forgotten_temple, Node: forgotten_temple)
-- **Nhiệm vụ**: Sử dụng Chìa Khóa Cổ Xưa (ID: `item_ancient_key`) trên Bàn Thờ Nguyên Tố để giải mã năng lượng. Bạn phải tiêu hao chiếc chìa khóa bằng cách trừ đi 1 vật phẩm `"item_ancient_key"` khỏi túi đồ của họ. 
-- **Phần thưởng**: Khi kích hoạt thành công Bàn Thờ, người chơi sẽ nhận được Mảnh Vỡ Lõi Nguyên Tố có ID chính xác là `"item_elemental_core"`.
-- **Lựa chọn để tiến bước**: Lựa chọn tiếp theo phải có `"nextNodeId": "goblin_hideout"`.
+- **Quái vật chạm trán (Encounters)**: Oan Hồn Bóng Tối (ID: `mob_shadow_spirit`), Golem Đền Thờ (ID: `mob_temple_golem`), Trinh Sát Goblin (ID: `mob_goblin_scout`), Vệ Binh Goblin (ID: `mob_goblin_guard`), Nhện Hang Động (ID: `mob_cave_spider`).
+- **Nhiệm vụ & Rớt Đồ**: Sử dụng `item_ancient_key` trên Bàn Thờ Nguyên Tố hoặc tiêu diệt quái vật để nhận Mảnh Vỡ Lõi Nguyên Tố (`item_elemental_core`).
+- **QUY TẮC MỞ MÀN (CỰC KỲ QUAN TRỌNG)**: Khi quét thấy vật phẩm `"item_elemental_core"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Đột kích Sào Huyệt Goblin"`, `"nextNodeId": "goblin_hideout"`.
 
 ### Bước 3: Đột kích Sào Huyệt Goblin (Location: goblin_hideout, Node: goblin_hideout -> boss_room)
 - **Nhiệm vụ**: Sử dụng Mảnh Vỡ Lõi Nguyên Tố (ID: `item_elemental_core`) để mở cánh cửa đá chắn đường vào phòng ngai vàng, tiêu hao 1 vật phẩm `"item_elemental_core"` khỏi hành trang.

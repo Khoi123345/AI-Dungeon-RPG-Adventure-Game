@@ -12,12 +12,14 @@ namespace GameBackend.Handlers.Battle
 {
     public class SpawnBossHandler
     {
-        private readonly IBattleService _battleService;
+        private IBattleService? _battleService;
 
-        public SpawnBossHandler()
+        private IBattleService GetBattleService()
         {
+            if (_battleService != null) return _battleService;
             var sp = ServiceProviderBuilder.Build();
             _battleService = sp.GetRequiredService<IBattleService>();
+            return _battleService;
         }
 
         public async Task<APIGatewayProxyResponse> Handler(APIGatewayProxyRequest request, ILambdaContext context)
@@ -27,11 +29,12 @@ namespace GameBackend.Handlers.Battle
 
             try
             {
+                var battleService = GetBattleService();
                 var spawnRequest = JsonUtils.Deserialize<BossSpawnRequest>(request.Body);
                 if (spawnRequest == null || string.IsNullOrWhiteSpace(spawnRequest.characterId))
                     return ResponseBuilder.Error(400, "Invalid request payload", "INVALID_REQUEST");
 
-                var result = await _battleService.SpawnBossAsync(spawnRequest);
+                var result = await battleService.SpawnBossAsync(spawnRequest);
                 return ResponseBuilder.Success(result);
             }
             catch (GameNotFoundException ex)

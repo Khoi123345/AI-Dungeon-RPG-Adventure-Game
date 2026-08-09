@@ -4,6 +4,7 @@ using GameBackend.Core.Services.Interfaces;
 using GameShared.DTOs.Battle;
 using GameShared.DTOs.Story;
 using GameBackend.Core.Services.Parsing;
+using GameShared.DTOs.Inventory;
 using GameShared.Models;
 using Microsoft.Extensions.Logging;
 
@@ -103,7 +104,7 @@ namespace GameBackend.Core.Services
                 bossLevel      = bossLevel,
                 bossRarity     = rarity,
                 playerHpBefore = character.hp,
-                bossHpBefore   = ScaleStat(template.baseHp, bossLevel),
+                bossHpBefore   = GameConstants.ScaleStat(template.baseHp, bossLevel),
                 status         = "Active",
                 encounterTime  = DateTime.UtcNow
             };
@@ -123,9 +124,9 @@ namespace GameBackend.Core.Services
                 bossName      = template.name,
                 bossRarity    = rarity,
                 bossLevel     = bossLevel,
-                bossHp        = ScaleStat(template.baseHp, bossLevel),
-                bossAttack    = ScaleStat(template.baseAttack, bossLevel),
-                bossDefense   = ScaleStat(template.baseDefense, bossLevel),
+                bossHp        = GameConstants.ScaleStat(template.baseHp, bossLevel),
+                bossAttack    = GameConstants.ScaleStat(template.baseAttack, bossLevel),
+                bossDefense   = GameConstants.ScaleStat(template.baseDefense, bossLevel),
                 bossSpeed     = template.speed,
                 bossCriticalRate = template.criticalRate,
                 bossImageUrl  = template.imageUrl ?? ""
@@ -300,6 +301,41 @@ namespace GameBackend.Core.Services
                 var lootDTOs = await _inventoryService.GrantLootDropAsync(
                     character.characterId, encounter.bossRarity, battleId);
 
+                // Khi người chơi hạ gục quái (mob_*) -> Tự động rớt Key Item của khu vực nếu chưa sở hữu
+                string? keyItemToGrant = null;
+                try
+                {
+                    var session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
+                    string currentLoc = session?.currentLocation ?? character.currentLocationId ?? "ancient_cave";
+
+                    if (currentLoc.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_ancient_key";
+                    }
+                    else if (currentLoc.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_elemental_core";
+                    }
+
+                    if (!string.IsNullOrEmpty(keyItemToGrant))
+                    {
+                        var existingKeyItem = await _inventoryRepository.FindByCharacterAndItemAsync(character.characterId, keyItemToGrant);
+                        if (existingKeyItem == null || existingKeyItem.quantity <= 0)
+                        {
+                            await _inventoryService.AddItemToInventoryAsync(character.characterId, keyItemToGrant, 1);
+                            if (!lootDTOs.Any(l => l.itemId == keyItemToGrant))
+                            {
+                                lootDTOs.Add(new LootItemDTO { itemId = keyItemToGrant, quantity = 1 });
+                            }
+                            _logger.LogInformation("Tự động rớt Key Item '{KeyItemId}' cho nhân vật {CharacterId} sau khi hạ gục quái tại {Location}", keyItemToGrant, character.characterId, currentLoc);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not grant key item {KeyItem} to character {CharacterId}", keyItemToGrant, character.characterId);
+                }
+
                 rewards = new BattleRewardData
                 {
                     goldEarned = goldReward,
@@ -428,11 +464,7 @@ namespace GameBackend.Core.Services
         // PRIVATE HELPERS
         // =====================================================================
 
-        /// <summary>Scale stat theo level: baseStat × (1 + 0.08 × level)</summary>
-        private static int ScaleStat(int baseStat, int level)
-        {
-            return Math.Max(1, (int)Math.Round(baseStat * (1.0 + 0.08 * level)));
-        }
+        // Removed ScaleStat
 
         /// <summary>Build lookup dictionary từ equipped items cho CalculateEffectiveStats.</summary>
         private static Dictionary<string, Item> BuildItemLookup(IEnumerable<Inventory> equippedItems)

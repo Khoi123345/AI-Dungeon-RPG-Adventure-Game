@@ -8,6 +8,6 @@ Một hang động đá vôi tự nhiên nằm sâu trong Rừng Thì Thầm. N�
 - Không khí có mùi ẩm mốc và mùi máu tanh nồng.
 
 ## Gameplay Prompts for AI
-- **Encounters:** Nhện độc, Goblin lang thang, bẫy đá sập.
+- **Encounters:** Nhện Hang Động (`mob_cave_spider`), Trinh Sát Goblin (`mob_goblin_scout`), bẫy đá sập.
 - **Rest Zones:** Một đống lửa tàn của nhà thám hiểm trước, có thể hồi phục 20% HP nếu người chơi chọn nghỉ ngơi.
-- **Hidden Secret:** Một bức tường nứt có thể phá hủy bằng vũ khí nặng để tìm rương báu cổ.
+- **Hidden Secret:** Một bức tường nứt có thể phá hủy bằng vũ khí nặng để tìm rương báu cổ và Chìa Khóa Cổ Xưa (`item_ancient_key`).

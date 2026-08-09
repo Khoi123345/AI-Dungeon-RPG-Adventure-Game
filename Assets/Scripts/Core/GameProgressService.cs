@@ -282,9 +282,8 @@ public class GameProgressService : MonoBehaviour
 
         Boss picked = candidates[UnityEngine.Random.Range(0, candidates.Count)];
 
-        // ── Tính Boss Level: Ở level 1-3 thì Boss Level chính xác = Player Level ─────
-        int randomModifier = (playerLevel <= 3) ? 0 : UnityEngine.Random.Range(-1, 2);
-        int bossLevel = (playerLevel <= 3) ? playerLevel : Mathf.Max(1, playerLevel + rarityModifier + randomModifier);
+        // ── Tính Boss Level đồng bộ với Backend ─────
+        int bossLevel = GameShared.Config.GameConstants.CalculateBossLevel(playerLevel, selectedRarity);
 
         CurrentBoss = new Boss
         {
@@ -292,9 +291,9 @@ public class GameProgressService : MonoBehaviour
             name         = picked.name,
             rarity       = picked.rarity,
             level        = bossLevel,
-            baseHp       = picked.baseHp + bossLevel * 5,
-            baseAttack   = picked.baseAttack + bossLevel,
-            baseDefense  = picked.baseDefense,
+            baseHp       = GameShared.Config.GameConstants.ScaleStat(picked.baseHp, bossLevel),
+            baseAttack   = GameShared.Config.GameConstants.ScaleStat(picked.baseAttack, bossLevel),
+            baseDefense  = GameShared.Config.GameConstants.ScaleStat(picked.baseDefense, bossLevel),
             speed        = picked.speed,
             criticalRate = picked.criticalRate,
             expReward    = picked.expReward,
@@ -338,7 +337,7 @@ public class GameProgressService : MonoBehaviour
         }
 
         int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
-        int bossLevel = (playerLevel <= 3) ? playerLevel : Mathf.Max(1, playerLevel);
+        int bossLevel = GameShared.Config.GameConstants.CalculateBossLevel(playerLevel, picked.rarity, picked.bossId);
 
         CurrentBoss = new Boss
         {
@@ -346,9 +345,9 @@ public class GameProgressService : MonoBehaviour
             name         = picked.name,
             rarity       = picked.rarity,
             level        = bossLevel,
-            baseHp       = picked.baseHp + bossLevel * 5,
-            baseAttack   = picked.baseAttack + bossLevel,
-            baseDefense  = picked.baseDefense,
+            baseHp       = GameShared.Config.GameConstants.ScaleStat(picked.baseHp, bossLevel),
+            baseAttack   = GameShared.Config.GameConstants.ScaleStat(picked.baseAttack, bossLevel),
+            baseDefense  = GameShared.Config.GameConstants.ScaleStat(picked.baseDefense, bossLevel),
             speed        = picked.speed,
             criticalRate = picked.criticalRate,
             expReward    = picked.expReward,

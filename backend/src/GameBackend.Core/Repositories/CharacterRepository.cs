@@ -12,18 +12,20 @@ namespace GameBackend.Core.Repositories
 {
     public class CharacterRepository : ICharacterRepository
     {
-        private readonly Table _table;
+        private readonly IAmazonDynamoDB _dynamoDbClient;
+        private Table? _table;
+        private Table Table => _table ??= Table.LoadTable(_dynamoDbClient, AppSettings.CharactersTableName);
 
         public CharacterRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.CharactersTableName);
+            _dynamoDbClient = dynamoDbClient;
         }
 
         public async Task<Character?> GetByIdAsync(string characterId)
         {
             if (string.IsNullOrWhiteSpace(characterId)) return null;
 
-            var doc = await _table.GetItemAsync(characterId);
+            var doc = await Table.GetItemAsync(characterId);
             return doc != null ? JsonUtils.Deserialize<Character>(doc.ToJson()) : null;
         }
 
@@ -33,7 +35,7 @@ namespace GameBackend.Core.Repositories
 
             var filter = new ScanFilter();
             filter.AddCondition("userId", ScanOperator.Equal, userId);
-            var search = _table.Scan(filter);
+            var search = Table.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Select(d => JsonUtils.Deserialize<Character>(d.ToJson())!).ToList();
         }
@@ -43,7 +45,7 @@ namespace GameBackend.Core.Repositories
             if (character == null || string.IsNullOrWhiteSpace(character.characterId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(character));
-            await _table.PutItemAsync(doc);
+            await Table.PutItemAsync(doc);
         }
     }
 }

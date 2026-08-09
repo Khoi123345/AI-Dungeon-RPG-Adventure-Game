@@ -52,6 +52,11 @@ namespace GameBackend.Core.Services
 			if (!string.IsNullOrWhiteSpace(aiResponse.CurrentNodeId))
 			{
 				session.currentNodeId = aiResponse.CurrentNodeId;
+				var cleanNode = aiResponse.CurrentNodeId.Trim().ToLowerInvariant();
+				if (cleanNode is "ancient_cave" or "forgotten_temple" or "goblin_hideout" or "dragon_nest")
+				{
+					session.currentLocation = cleanNode;
+				}
 			}
 
 			if (!string.IsNullOrWhiteSpace(aiResponse.CurrentLocation))
@@ -161,16 +166,20 @@ namespace GameBackend.Core.Services
 				return;
 			}
 
+			var bossLevel = (aiResponse.BossLevel.HasValue && aiResponse.BossLevel.Value > 0 && aiResponse.BossLevel.Value != character.level)
+					? aiResponse.BossLevel.Value
+					: GameShared.Config.GameConstants.CalculateBossLevel(character.level, boss.rarity, boss.bossId);
+
 			var encounter = new BossEncounter
 			{
 				encounterId = Guid.NewGuid().ToString("N"),
 				characterId = character.characterId,
 				bossId = boss.bossId,
-				bossLevel = aiResponse.BossLevel ?? (boss.level > 0 ? boss.level : 1),
+				bossLevel = bossLevel,
 				playerHpBefore = character.hp,
 				playerHpAfter = character.hp,
-				bossHpBefore = Math.Max(1, boss.baseHp),
-				bossHpAfter = Math.Max(1, boss.baseHp),
+				bossHpBefore = GameShared.Config.GameConstants.ScaleStat(boss.baseHp, bossLevel),
+				bossHpAfter = GameShared.Config.GameConstants.ScaleStat(boss.baseHp, bossLevel),
 				status = "Active",
 				encounterTime = DateTime.UtcNow
 			};
