@@ -93,8 +93,9 @@ public class StoryPresenter : MonoBehaviour
         string characterId = GameProgressService.Instance?.CurrentCharacter?.characterId;
         if (string.IsNullOrEmpty(characterId))
         {
-            characterId = "demo_char_id";
+            characterId = PlayerPrefs.GetString("lastCharacterId", "demo_char_id");
         }
+
 
         Debug.Log($"[StoryPresenter] Gửi yêu cầu /story/start với characterId={characterId}");
         var response = await storyApiService.StartStoryAsync(characterId, "prologue");
@@ -369,11 +370,15 @@ public class StoryPresenter : MonoBehaviour
                 if (response.triggerBattle)
                 {
                     Debug.Log($"<color=#FF5500><b>[StoryPresenter] AI CHÍNH THỨC KÍCH HOẠT TRẬN ĐÁNH BOSS!</b> BossId = '{response.bossId}'</color>");
+                    nextStoryData.node?.choices?.Clear();
+                    view?.SetActiveOptionsPanelVisible(false);
                     if (gameObject.activeInHierarchy)
                     {
                         StartCoroutine(TriggerBossEncounterFromAi(response.bossId));
                     }
                 }
+
+
                 else
                 {
                     Debug.Log("<color=#FFFF00>[StoryPresenter] AI Bedrock không kích hoạt trận đánh ở lượt này (triggerBattle = false).</color>");
@@ -559,17 +564,20 @@ public class StoryPresenter : MonoBehaviour
         string charName = response?.character != null ? response.character.name : (GameProgressService.Instance?.CurrentCharacter?.name ?? "Player");
         int charGold = GameProgressService.Instance?.CurrentCharacter != null 
             ? GameProgressService.Instance.CurrentCharacter.gold 
-            : (response.character != null ? response.character.gold : 0);
+            : (response?.character != null ? response.character.gold : 0);
 
-        int charXP = GameProgressService.Instance?.CurrentCharacter != null ? GameProgressService.Instance.CurrentCharacter.experience : 0;
-        int charMaxXP = GameProgressService.Instance?.CurrentCharacter != null ? GameProgressService.Instance.CurrentCharacter.level * 100 : 100;
+        int charLevel = response?.character != null ? response.character.level : (GameProgressService.Instance?.CurrentCharacter?.level ?? 1);
+        int charXP = response?.character != null ? response.character.experience : (GameProgressService.Instance?.CurrentCharacter?.experience ?? 0);
+        int charMaxXP = charLevel * 100;
         
         var characterState = new StoryCharacterState
         {
             characterName = charName,
-            level = response.character != null ? response.character.level : (GameProgressService.Instance?.CurrentCharacter?.level ?? 1),
-            hp = response.character != null ? response.character.hp : (GameProgressService.Instance?.CurrentCharacter?.hp ?? 100),
-            gold = charGold
+            level = charLevel,
+            hp = response?.character != null ? response.character.hp : (GameProgressService.Instance?.CurrentCharacter?.hp ?? 100),
+            gold = charGold,
+            xp = charXP,
+            maxXP = charMaxXP
         };
 
 

@@ -26,14 +26,8 @@ namespace GameBackend.Core.Services.Validation
         {
             var response = context.Response;
             var lowerText = (response.NarrativeText ?? string.Empty).ToLowerInvariant();
-
-            bool isCombatText = BattleKeywords.Any(kw => lowerText.Contains(kw, StringComparison.OrdinalIgnoreCase));
             bool isInBossRoom = string.Equals(context.Session.currentNodeId, "boss_room", StringComparison.OrdinalIgnoreCase);
 
-            if (isInBossRoom || isCombatText)
-            {
-                response.TriggerBattle = true;
-            }
 
             if (!response.TriggerBattle)
             {
@@ -53,6 +47,8 @@ namespace GameBackend.Core.Services.Validation
             // Tự điền hoặc ghi đè bossId nếu trống hoặc không hợp lệ
             if (!isValidBoss)
             {
+
+
                 if (!string.IsNullOrWhiteSpace(response.BossId))
                 {
                     _logger.LogInformation("Invalid bossId '{BossId}' provided by AI. Overwriting with fallback.", response.BossId);
@@ -110,10 +106,32 @@ namespace GameBackend.Core.Services.Validation
                                || (response.BossId ?? "").Contains("shadow_demon", StringComparison.OrdinalIgnoreCase)
                                || (response.BossId ?? "").Contains("dragon_king", StringComparison.OrdinalIgnoreCase);
 
-            // Nếu ở boss_room mà AI không set triggerBattle (hoặc không set bossId) → tự động ép
-            if (isInBossRoom)
+            // RÀNG BUỘC SẮT: Nếu lời văn AI mô tả trận đấu ĐÃ KẾT THÚC hoặc YÊU CẦU NGƯỜI CHƠI ĐƯA RA QUYẾT ĐỊNH LỰA CHỌN TIẾP THEO -> BẮT BUỘC ĐẶT triggerBattle = false
+            string narrativeLower = (response.NarrativeText ?? "").ToLowerInvariant();
+            if (narrativeLower.Contains("sau khi đánh bại") ||
+                narrativeLower.Contains("đã đánh bại") ||
+                narrativeLower.Contains("đã tiêu diệt") ||
+                narrativeLower.Contains("tan biến") ||
+                narrativeLower.Contains("tro bụi") ||
+                narrativeLower.Contains("mở nó ra") ||
+                narrativeLower.Contains("quyết định tiếp theo") ||
+                narrativeLower.Contains("bạn phải quyết định") ||
+                narrativeLower.Contains("bạn muốn làm gì"))
             {
-                response.TriggerBattle = true;
+                if (response.TriggerBattle)
+                {
+                    _logger.LogInformation("Sanitizing TriggerBattle from TRUE -> FALSE because narrative asks player to make a decision or describes combat resolution.");
+                    response.TriggerBattle = false;
+                }
+            }
+
+
+            bool narrativeSaysBossDefeated = narrativeLower.Contains("tan biến") ||
+                                           narrativeLower.Contains("bị đánh bại") ||
+                                           narrativeLower.Contains("tro bụi");
+
+            if (isInBossRoom && !narrativeSaysBossDefeated && response.TriggerBattle)
+            {
                 if (string.IsNullOrWhiteSpace(response.BossId) || !isChapterBoss)
                 {
                     // Gán chapter boss mặc định dựa theo location
@@ -124,9 +142,11 @@ namespace GameBackend.Core.Services.Validation
                         _              => "boss_goblin_king"
                     };
                     response.BossId = chapterBossId;
-                    _logger.LogInformation("boss_room auto-forced triggerBattle=true with bossId={BossId}", chapterBossId);
+                    _logger.LogInformation("boss_room assigned bossId={BossId}", chapterBossId);
                 }
             }
+
+
             else if (isChapterBoss && !isInBossRoom)
             {
                 var loc = NormalizeLocationId(context.Session.currentLocation);

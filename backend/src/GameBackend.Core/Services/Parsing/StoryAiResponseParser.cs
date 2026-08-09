@@ -54,8 +54,46 @@ namespace GameBackend.Core.Services.Parsing
                     var parsed = JsonSerializer.Deserialize<StoryAiResponse>(cleaned, Options);
                     if (parsed != null && !string.IsNullOrWhiteSpace(parsed.NarrativeText))
                     {
+                        // 🛠️ CHỐNG LỖI JSON LỒNG NHAU: Nếu narrativeText chứa JSON đối tượng con (bắt đầu bằng { và chứa "narrativeText")
+                        if (parsed.NarrativeText.Trim().StartsWith("{") && parsed.NarrativeText.Contains("\"narrativeText\""))
+                        {
+                            logger?.LogWarning("Detected nested JSON string inside NarrativeText! Unnesting inner JSON...");
+                            try
+                            {
+                                var innerCleaned = CleanJsonResponse(parsed.NarrativeText);
+                                var innerParsed = JsonSerializer.Deserialize<StoryAiResponse>(innerCleaned, Options);
+                                if (innerParsed != null && !string.IsNullOrWhiteSpace(innerParsed.NarrativeText))
+                                {
+                                    if (innerParsed.Choices == null || innerParsed.Choices.Count == 0)
+                                    {
+                                        innerParsed.Choices = parsed.Choices;
+                                    }
+                                    parsed = innerParsed;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                logger?.LogWarning(ex, "Failed to unnest inner JSON from NarrativeText");
+                            }
+                        }
+
+                        // 🛠️ CHỐNG LỖI THIẾU CHOICES: Nếu Choices bị null hoặc rỗng, ưu tiên lấy bằng Regex hoặc tự tạo Choices linh hoạt theo Location
+                        if (parsed.Choices == null || parsed.Choices.Count == 0)
+                        {
+                            var (_, extractedChoices, _, _, _) = ExtractFallbackFields(rawResponse, session);
+                            if (extractedChoices != null && extractedChoices.Count > 0)
+                            {
+                                parsed.Choices = extractedChoices;
+                            }
+                            else
+                            {
+                                parsed.Choices = ExtractDynamicChoicesFromNarrative(parsed.NarrativeText ?? rawResponse, parsed.CurrentNodeId ?? session.currentNodeId);
+                            }
+                        }
+
                         return ApplyDefaults(parsed, session, rawResponse, defaultActionType);
                     }
+
                 }
                 catch (Exception ex)
                 {
@@ -63,7 +101,7 @@ namespace GameBackend.Core.Services.Parsing
                 }
             }
 
-            var (narrativeText, fallbackChoices, triggerBattle, bossId, bossName) = ExtractFallbackFields(rawResponse);
+            var (narrativeText, fallbackChoices, triggerBattle, bossId, bossName) = ExtractFallbackFields(rawResponse, session);
 
             return new StoryAiResponse
             {
@@ -132,7 +170,7 @@ namespace GameBackend.Core.Services.Parsing
             return trimmed;
         }
 
-        private static (string narrativeText, List<StoryChoiceOption> choices, bool triggerBattle, string bossId, string bossName) ExtractFallbackFields(string rawResponse)
+        private static (string narrativeText, List<StoryChoiceOption> choices, bool triggerBattle, string bossId, string bossName) ExtractFallbackFields(string rawResponse, StorySession? session = null)
         {
             string narrative = "Sương mù che khuất tầm nhìn, bạn cảm thấy có một thực thể bí ẩn đang can thiệp vào dòng thời gian. (Lỗi kết nối hắc ám)";
             var choicesList = new List<StoryChoiceOption>();
@@ -152,6 +190,10 @@ namespace GameBackend.Core.Services.Parsing
                         .Replace("\\\"", "\"")
                         .Replace("\\n", "\n")
                         .Replace("\\r", "");
+                }
+                else if (!string.IsNullOrWhiteSpace(rawResponse))
+                {
+                    narrative = rawResponse.Trim();
                 }
             }
             catch { }
@@ -189,7 +231,46 @@ namespace GameBackend.Core.Services.Parsing
             }
             catch { }
 
+            if (choicesList == null || choicesList.Count == 0)
+            {
+                choicesList = ExtractDynamicChoicesFromNarrative(narrative, session?.currentNodeId);
+            }
+
             return (narrative, choicesList, triggerBattle, bossId, bossName);
+        }
+
+        public static List<StoryChoiceOption> ExtractDynamicChoicesFromNarrative(string narrativeText, string? currentNodeId)
+        {
+            string targetNode = currentNodeId ?? "exploration_node";
+            var choices = new List<StoryChoiceOption>();
+
+            // Trích xuất linh hoạt dựa theo câu văn AI vừa sinh ra
+            var sentences = (narrativeText ?? "").Split(new[] { '.', '!', '?', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            string lastActionHint = sentences.Length > 0 ? sentences[^1].Trim() : "";
+
+            choices.Add(new StoryChoiceOption
+            {
+                label = "Tấn công kẻ thù trước mặt",
+                description = "Rút vũ khí sẵn sàng giao chiến",
+                nextNodeId = targetNode
+            });
+
+            choices.Add(new StoryChoiceOption
+            {
+                label = (!string.IsNullOrWhiteSpace(lastActionHint) && lastActionHint.Length < 40) ? lastActionHint : "Khám phá môi trường xung quanh",
+                description = "Thám hiểm tỉ mỉ bối cảnh vừa được mô tả",
+                nextNodeId = targetNode
+            });
+
+            choices.Add(new StoryChoiceOption
+            {
+                label = "Tiến lên phía trước",
+                description = "Thận trọng tiếp tục hành trình",
+                nextNodeId = targetNode
+            });
+
+            return choices;
         }
     }
 }
+

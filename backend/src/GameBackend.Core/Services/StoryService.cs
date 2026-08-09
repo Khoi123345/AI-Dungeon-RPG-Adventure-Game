@@ -204,11 +204,22 @@ namespace GameBackend.Core.Services
                         .ToList();
 
                     var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+                    var latestAction = allRecentActions?.OrderByDescending(action => action.createdAt).FirstOrDefault();
+
+                    // Nếu lượt vừa tạo gần nhất là Kết quả trận đánh hoặc Chuyển chương -> Hiển thị trực tiếp thẻ kết quả trận đánh
+                    if (latestAction != null && (string.Equals(latestAction.actionType, "battle_result", StringComparison.OrdinalIgnoreCase) || string.Equals(latestAction.actionType, "chapter_transition", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        _logger.LogInformation("Resuming session after battle/transition: Displaying latest {ActionType} action directly", latestAction.actionType);
+                        var parsedAction = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(!string.IsNullOrWhiteSpace(latestAction.metadataJson) ? latestAction.metadataJson : latestAction.aiResponse, session, latestAction.actionType);
+                        return BuildResponse(session, character, latestAction.aiResponse, parsedAction.Choices);
+                    }
+
                     var recentActions = allRecentActions
                         .OrderByDescending(action => action.createdAt)
                         .Take(6)
                         .OrderBy(action => action.createdAt)
                         .ToList();
+
 
                     string resumeSystemEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave");
 
@@ -485,10 +496,23 @@ namespace GameBackend.Core.Services
             {
                 systemInjectedEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave");
 
-                if (recentlyFoughtBattle)
+                bool isChapter2 = (session.currentChapterId ?? "").Equals("2", StringComparison.OrdinalIgnoreCase) || (session.currentChapterId ?? "").Equals("chapter_2", StringComparison.OrdinalIgnoreCase);
+                bool isChapter3 = (session.currentChapterId ?? "").Equals("3", StringComparison.OrdinalIgnoreCase) || (session.currentChapterId ?? "").Equals("chapter_3", StringComparison.OrdinalIgnoreCase);
+
+                if (isChapter2)
+                {
+                    systemInjectedEvent += " [LỆNH CHUYỂN CHƯƠNG 2: TÀU ĐẮM BỊ CHÌM] Người chơi đã chính thức bước sang CHƯƠNG 2 (Vương Quốc Chìm Đắm)! BẮT BUỘC đặt 'currentLocation': 'sunken_shipwreck', 'currentChapterId': '2'. Hãy miêu tả hoành tráng cảnh người chơi rời khỏi Sào Huyệt Goblin, men theo suối ngầm tiến vào bối cảnh biển thẳm u tối với Xác Tàu Đắm cổ kính (sunken_shipwreck). Tạo 3 lựa chọn thám hiểm Xác Tàu Đắm!";
+                }
+                else if (isChapter3)
+                {
+                    systemInjectedEvent += " [LỆNH CHUYỂN CHƯƠNG 3: VÙNG ĐẤT NÚI LỬA] Người chơi đã chính thức bước sang CHƯƠNG 3! BẮT BUỘC đặt 'currentLocation': 'sulfur_mines', 'currentChapterId': '3'. Hãy miêu tả cảnh người chơi tiến vào Mỏ Lưu Huỳnh và vùng núi nham thạch rực lửa (sulfur_mines). Tạo 3 lựa chọn thám hiểm Mỏ Lưu Huỳnh!";
+                }
+                else if (recentlyFoughtBattle)
                 {
                     systemInjectedEvent += " [HẬU CHIẾN] Người chơi vừa hoàn thành một trận chiến ác liệt. Hãy miêu tả ngắn gọn cảnh họ thở phào hoặc thu thập chiến lợi phẩm trước khi đưa ra các lựa chọn để tiếp tục hành trình.";
                 }
+
+
                 else if (session.status == "Active")
                 {
                     if (intentToFight)

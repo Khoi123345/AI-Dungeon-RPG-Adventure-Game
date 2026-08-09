@@ -188,13 +188,24 @@ public class StoryView : MonoBehaviour
 
         if (txtCharacterGold != null)
         {
-            txtCharacterGold.text = "Gold " + state.gold;
+            txtCharacterGold.enableWordWrapping = false;
+            txtCharacterGold.text = "Gold " + FormatNumber(state.gold);
         }
 
         if (txtCharacterXP != null)
         {
+            txtCharacterXP.enableWordWrapping = false;
             txtCharacterXP.text = $"XP {state.xp}/{state.maxXP}";
         }
+    }
+
+    private string FormatNumber(int number)
+    {
+        if (number >= 1_000_000)
+            return (number / 1_000_000f).ToString("0.#") + "M";
+        if (number >= 100_000)
+            return (number / 1_000f).ToString("0.#") + "K";
+        return number.ToString("N0");
     }
 
     public void SetStoryText(string text)

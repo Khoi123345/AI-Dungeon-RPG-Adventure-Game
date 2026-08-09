@@ -71,14 +71,14 @@ namespace GameBackend.Core.Services
                 ? request.bossId
                 : existingEncounter?.bossId ?? string.Empty;
 
+            string cleanTarget = (targetBossId ?? "").Trim().ToLowerInvariant();
+            string strippedTarget = cleanTarget;
+            if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
+            if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
+
             Boss? template = null;
             if (!string.IsNullOrWhiteSpace(targetBossId))
             {
-                string cleanTarget = targetBossId.Trim().ToLowerInvariant();
-                string strippedTarget = cleanTarget;
-                if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
-                if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
-
                 template = GameConstants.BossCatalog.FirstOrDefault(b =>
                     b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
                     b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
@@ -88,11 +88,32 @@ namespace GameBackend.Core.Services
             }
 
 
-            string rarity = template != null ? template.rarity : GameConstants.RollBossRarity();
+            string rarity = template != null ? template.rarity : "Common";
             if (template == null)
             {
-                template = GameConstants.GetBossTemplateByRarity(rarity);
+                // Nếu là mob thường chưa có trong Catalog (ví dụ mob_cave_bat), tự tạo template Mob thường nhẹ nhàng thay vì fallback sang Boss lớn (Shadow Demon)
+                var minorMobs = GameConstants.BossCatalog.Where(b => b.bossId.StartsWith("mob_")).ToList();
+                var fallbackBase = minorMobs.Count > 0
+                    ? minorMobs[_random.Next(minorMobs.Count)]
+                    : new Boss { baseHp = 25, baseAttack = 5, baseDefense = 1, speed = 8, criticalRate = 0.03f, expReward = 10, goldReward = 8 };
+
+                string mobTitleName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(strippedTarget.Replace("_", " "));
+
+                template = new Boss
+                {
+                    bossId = targetBossId,
+                    name = mobTitleName,
+                    rarity = "Common",
+                    baseHp = fallbackBase.baseHp,
+                    baseAttack = fallbackBase.baseAttack,
+                    baseDefense = fallbackBase.baseDefense,
+                    speed = fallbackBase.speed,
+                    criticalRate = fallbackBase.criticalRate,
+                    expReward = fallbackBase.expReward,
+                    goldReward = fallbackBase.goldReward
+                };
             }
+
 
             int bossLevel = request.bossLevel > 0
                 ? request.bossLevel
@@ -674,7 +695,9 @@ namespace GameBackend.Core.Services
                 {
                     session.currentChapterId = targetChapterId;
                     session.currentLocation = targetLocation;
+                    session.currentNodeId = targetLocation; // Reset node khỏi boss_room sau khi thắng Boss
                     session.updatedAt = DateTime.UtcNow;
+
 
                     string summaryNote = $" [ĐÃ HẠ GỤC BOSS {bossId.ToUpperInvariant()} - TIẾN SANG {chapterTitle.ToUpperInvariant()}]";
                     if (string.IsNullOrWhiteSpace(session.storySummary))
