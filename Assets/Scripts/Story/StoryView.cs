@@ -11,6 +11,7 @@ public class StoryView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txtCharacterLevel;
     [SerializeField] private TextMeshProUGUI txtCharacterHP;
     [SerializeField] private TextMeshProUGUI txtCharacterGold;
+    [SerializeField] private TextMeshProUGUI txtCharacterXP;
 
     [Header("Middle")]
     [SerializeField] private ScrollRect storyScrollRect;
@@ -188,6 +189,11 @@ public class StoryView : MonoBehaviour
         if (txtCharacterGold != null)
         {
             txtCharacterGold.text = "Gold " + state.gold;
+        }
+
+        if (txtCharacterXP != null)
+        {
+            txtCharacterXP.text = $"XP {state.xp}/{state.maxXP}";
         }
     }
 

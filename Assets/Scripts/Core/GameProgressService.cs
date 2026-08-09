@@ -369,7 +369,9 @@ public class GameProgressService : MonoBehaviour
             characterName = CurrentCharacter.name,
             level = CurrentCharacter.level,
             hp = CurrentCharacter.hp,
-            gold = CurrentCharacter.gold
+            gold = CurrentCharacter.gold,
+            xp = CurrentCharacter.experience,
+            maxXP = CurrentCharacter.level * 100
         };
 
         string context = CurrentStorySession != null ? CurrentStorySession.storySummary : "";
@@ -448,7 +450,9 @@ public class GameProgressService : MonoBehaviour
             characterName = CurrentCharacter.name,
             level = CurrentCharacter.level,
             hp = CurrentCharacter.hp,
-            gold = CurrentCharacter.gold
+            gold = CurrentCharacter.gold,
+            xp = CurrentCharacter.experience,
+            maxXP = CurrentCharacter.level * 100
         };
 
         string dynamicStoryResponse = GenerateStoryResponseFromInput(playerInput);
