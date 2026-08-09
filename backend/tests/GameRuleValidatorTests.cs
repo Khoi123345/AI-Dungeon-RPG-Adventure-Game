@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameBackend.Core.AIStory.Services;
+using GameBackend.Core.Repositories.Interfaces;
 using GameBackend.Core.Services.Validation;
 using GameShared.DTOs.Story;
 using GameShared.Models;
@@ -84,12 +85,23 @@ public class GameRuleValidatorTests
         {
             new BossValidator(contentService, NullLogger<BossValidator>.Instance),
             new InventoryValidator(contentService, NullLogger<InventoryValidator>.Instance),
-            new LocationValidator(contentService, NullLogger<LocationValidator>.Instance),
+            new LocationValidator(contentService, new FakeInventoryRepository(), NullLogger<LocationValidator>.Instance),
             new CharacterValidator(),
             new StoryValidator()
         };
 
         return new GameRuleValidator(validators, NullLogger<GameRuleValidator>.Instance);
+    }
+
+    private sealed class FakeInventoryRepository : IInventoryRepository
+    {
+        public Task<List<Inventory>> GetByCharacterIdAsync(string characterId) => Task.FromResult(new List<Inventory>());
+        public Task<Inventory?> GetByInventoryIdAsync(string inventoryId) => Task.FromResult<Inventory?>(null);
+        public Task<Inventory?> FindByCharacterAndItemAsync(string characterId, string itemId) => Task.FromResult<Inventory?>(null);
+        public Task<List<Inventory>> GetEquippedItemsAsync(string characterId) => Task.FromResult(new List<Inventory>());
+        public Task<int> CountSlotsAsync(string characterId) => Task.FromResult(0);
+        public Task SaveAsync(Inventory inventory) => Task.CompletedTask;
+        public Task DeleteAsync(string inventoryId) => Task.CompletedTask;
     }
 
     private static StorySession CreateSession(string location)

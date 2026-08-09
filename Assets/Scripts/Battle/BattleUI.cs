@@ -26,6 +26,7 @@ public class BattleView : MonoBehaviour
 
     [Header("Battle Log")]
     public TextMeshProUGUI txtBattleLog;
+    public UnityEngine.UI.ScrollRect logScrollRect;
 
     private void Awake()
     {
@@ -102,7 +103,19 @@ public class BattleView : MonoBehaviour
     // Thêm dòng log mới
     public void AppendLog(string message)
     {
-        if (txtBattleLog != null) txtBattleLog.text += $"- {message}\n";
+        if (txtBattleLog != null) 
+        {
+            txtBattleLog.text += $"- {message}\n";
+            
+            // Ép Unity tính toán lại layout ngay lập tức
+            Canvas.ForceUpdateCanvases();
+            
+            // Tự động kéo thanh cuộn xuống vị trí dưới cùng (0f)
+            if (logScrollRect != null)
+            {
+                logScrollRect.verticalNormalizedPosition = 0f;
+            }
+        }
     }
 
     // Hiển thị kết quả

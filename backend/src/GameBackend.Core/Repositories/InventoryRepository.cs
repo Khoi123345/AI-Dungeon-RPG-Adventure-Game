@@ -12,11 +12,13 @@ namespace GameBackend.Core.Repositories
 {
     public class InventoryRepository : IInventoryRepository
     {
-        private readonly Table _table;
+        private readonly IAmazonDynamoDB _dynamoDbClient;
+        private Table? _table;
+        private Table Table => _table ??= Table.LoadTable(_dynamoDbClient, AppSettings.InventoryTableName);
 
         public InventoryRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.InventoryTableName);
+            _dynamoDbClient = dynamoDbClient;
         }
 
         public async Task<List<Inventory>> GetByCharacterIdAsync(string characterId)
@@ -25,7 +27,7 @@ namespace GameBackend.Core.Repositories
 
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
-            var search = _table.Scan(filter);
+            var search = Table.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Select(d => JsonUtils.Deserialize<Inventory>(d.ToJson())!).ToList();
         }
@@ -34,7 +36,7 @@ namespace GameBackend.Core.Repositories
         {
             if (string.IsNullOrWhiteSpace(inventoryId)) return null;
 
-            var doc = await _table.GetItemAsync(inventoryId);
+            var doc = await Table.GetItemAsync(inventoryId);
             return doc == null ? null : JsonUtils.Deserialize<Inventory>(doc.ToJson());
         }
 
@@ -45,7 +47,7 @@ namespace GameBackend.Core.Repositories
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
             filter.AddCondition("itemId",      ScanOperator.Equal, itemId);
-            var search = _table.Scan(filter);
+            var search = Table.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Count > 0 ? JsonUtils.Deserialize<Inventory>(docs[0].ToJson()) : null;
         }
@@ -57,7 +59,7 @@ namespace GameBackend.Core.Repositories
             var filter = new ScanFilter();
             filter.AddCondition("characterId", ScanOperator.Equal, characterId);
             filter.AddCondition("equipped",    ScanOperator.Equal, true);
-            var search = _table.Scan(filter);
+            var search = Table.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Select(d => JsonUtils.Deserialize<Inventory>(d.ToJson())!).ToList();
         }
@@ -77,7 +79,7 @@ namespace GameBackend.Core.Repositories
                 Select = SelectValues.SpecificAttributes
             };
 
-            var search = _table.Scan(config);
+            var search = Table.Scan(config);
             int count = 0;
             while (!search.IsDone)
             {
@@ -92,14 +94,14 @@ namespace GameBackend.Core.Repositories
             if (inventory == null || string.IsNullOrWhiteSpace(inventory.inventoryId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(inventory));
-            await _table.PutItemAsync(doc);
+            await Table.PutItemAsync(doc);
         }
 
         public async Task DeleteAsync(string inventoryId)
         {
             if (string.IsNullOrWhiteSpace(inventoryId)) return;
 
-            await _table.DeleteItemAsync(inventoryId);
+            await Table.DeleteItemAsync(inventoryId);
         }
     }
 }

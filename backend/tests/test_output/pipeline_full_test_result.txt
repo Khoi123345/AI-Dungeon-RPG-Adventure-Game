@@ -84,15 +84,15 @@ CURRENT ACTION
 Tấn công quái vật canh giữ báu vật
 
 =========== RAW AI ===========
-{"narrativeText":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","storySummary":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[],"choices":[]}
+{"narrativeText":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","storySummary":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[]}
 
 =========== PARSED ===========
 {
-  "NarrativeText": "Bóng tối trong tàn tích cổ khẽ rung lên như đang thở. Mỗi bước chân của bạn vang lại thành một lời cảnh báo.",
+  "NarrativeText": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
   "CurrentNodeId": "intro",
   "CurrentLocation": "Ancient Ruins",
   "CurrentChapterId": "chapter_1",
-  "StorySummary": "Bóng tối trong tàn tích cổ khẽ rung lên như đang thở. Mỗi bước chân của bạn vang lại thành một lời cảnh báo.",
+  "StorySummary": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
   "ActionType": "player_action",
   "MetadataJson": "{}",
   "TriggerBattle": false,
@@ -113,11 +113,11 @@ Tấn công quái vật canh giữ báu vật
 
 =========== VALIDATED ===========
 {
-  "NarrativeText": "Bóng tối trong tàn tích cổ khẽ rung lên như đang thở. Mỗi bước chân của bạn vang lại thành một lời cảnh báo.",
+  "NarrativeText": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
   "CurrentNodeId": "intro",
   "CurrentLocation": "Ancient Ruins",
   "CurrentChapterId": "chapter_1",
-  "StorySummary": "Bóng tối trong tàn tích cổ khẽ rung lên như đang thở. Mỗi bước chân của bạn vang lại thành một lời cảnh báo.",
+  "StorySummary": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
   "ActionType": "player_action",
   "MetadataJson": "{}",
   "TriggerBattle": false,
@@ -144,10 +144,10 @@ Tấn công quái vật canh giữ báu vật
   "currentNodeId": "intro",
   "currentChapterId": "chapter_1",
   "status": "Active",
-  "updatedAt": "2026-08-08T18:04:36.4760897Z",
+  "updatedAt": "2026-08-05T06:22:59.4048133Z",
   "endedAt": null,
   "storyVersion": null,
-  "storySummary": "Anh hùng bắt đầu cuộc hành trình tại tàn tích cổ. Bóng tối trong tàn tích cổ khẽ rung lên như đang thở. Mỗi bước chân của bạn vang lại thành một lời cảnh báo.",
+  "storySummary": "Anh hùng bắt đầu cuộc hành trình tại tàn tích cổ. Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
   "sourceType": null
 }
 

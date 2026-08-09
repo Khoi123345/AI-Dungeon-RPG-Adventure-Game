@@ -33,7 +33,21 @@ namespace GameShared.Config
             new Boss { bossId = "mob_shadow_spirit",   name = "Shadow Spirit",    rarity = "Common",    baseHp = 45,  baseAttack = 7,  baseDefense = 2,  speed = 9,  criticalRate = 0.06f, expReward = 18, goldReward = 15  },
             new Boss { bossId = "mob_temple_golem",    name = "Temple Golem",     rarity = "Common",    baseHp = 60,  baseAttack = 6,  baseDefense = 5,  speed = 4,  criticalRate = 0.02f, expReward = 22, goldReward = 18  },
             new Boss { bossId = "mob_goblin_guard",    name = "Goblin Guard",     rarity = "Common",    baseHp = 50,  baseAttack = 8,  baseDefense = 4,  speed = 6,  criticalRate = 0.05f, expReward = 20, goldReward = 20  },
+            
+            // New Mobs
+            new Boss { bossId = "mob_cave_bat",        name = "Cave Bat",         rarity = "Common",    baseHp = 18,  baseAttack = 6,  baseDefense = 0,  speed = 12, criticalRate = 0.05f, expReward = 10, goldReward = 5   },
+            new Boss { bossId = "mob_rock_slime",      name = "Rock Slime",       rarity = "Common",    baseHp = 55,  baseAttack = 3,  baseDefense = 8,  speed = 3,  criticalRate = 0.01f, expReward = 15, goldReward = 10  },
+            new Boss { bossId = "mob_abyssal_spirit",  name = "Abyssal Spirit",   rarity = "Common",    baseHp = 50,  baseAttack = 9,  baseDefense = 3,  speed = 8,  criticalRate = 0.08f, expReward = 25, goldReward = 22  },
+            new Boss { bossId = "mob_drowned_sailor",  name = "Drowned Sailor",   rarity = "Common",    baseHp = 65,  baseAttack = 7,  baseDefense = 4,  speed = 5,  criticalRate = 0.04f, expReward = 20, goldReward = 18  },
+            new Boss { bossId = "mob_mutated_crab",    name = "Mutated Crab",     rarity = "Common",    baseHp = 40,  baseAttack = 8,  baseDefense = 10, speed = 4,  criticalRate = 0.02f, expReward = 18, goldReward = 15  },
+
+            // --- Chapter 3 Mobs ---
+            new Boss { bossId = "mob_young_dragon",   name = "Young Dragon",     rarity = "Rare",      baseHp = 90,  baseAttack = 14, baseDefense = 6,  speed = 8,  criticalRate = 0.08f, expReward = 45, goldReward = 35  },
+            new Boss { bossId = "mob_fire_lizard",    name = "Fire Lizard",      rarity = "Common",    baseHp = 60,  baseAttack = 10, baseDefense = 4,  speed = 7,  criticalRate = 0.05f, expReward = 30, goldReward = 25  },
+            new Boss { bossId = "mob_fire_raptor",    name = "Fire Raptor",      rarity = "Rare",      baseHp = 100, baseAttack = 16, baseDefense = 5,  speed = 11, criticalRate = 0.10f, expReward = 55, goldReward = 45  },
+            new Boss { bossId = "mob_adult_dragon",   name = "Adult Dragon",     rarity = "Epic",      baseHp = 180, baseAttack = 24, baseDefense = 12, speed = 9,  criticalRate = 0.12f, expReward = 100, goldReward = 90  },
         };
+
 
         // =====================================================================
         // ITEM CATALOG
@@ -44,6 +58,13 @@ namespace GameShared.Config
             // --- Quest Items ---
             new Item { itemId = "item_ancient_key",     name = "Ancient Key",           rarity = "Common",    itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 1,  description = "Chiếc chìa khóa cổ xưa dùng để mở cổng Đền thờ bị lãng quên.", effectJson = "" },
             new Item { itemId = "item_elemental_core",  name = "Elemental Core",        rarity = "Epic",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 1,  description = "Mảnh vỡ Lõi Nguyên Tố đầu tiên chứa đựng sức mạnh kỳ bí.", effectJson = "" },
+            new Item { itemId = "item_sea_compass",     name = "Sea Compass",           rarity = "Rare",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 5,  description = "Hải đồ biển sâu dùng để chỉ đường lặn xuống Rãnh Sâu Vô Tận.", effectJson = "" },
+            new Item { itemId = "item_void_crystal",    name = "Void Crystal",          rarity = "Epic",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 10, description = "Pha lê hư không dùng để giải giải bẫy ma thuật và mở cổng Cung Điện San Hô.", effectJson = "" },
+            new Item { itemId = "item_fire_core",       name = "Fire Core",             rarity = "Epic",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 15, description = "Lõi lửa kháng nhiệt nhận được sau khi tiêu diệt Shadow Demon, mở đường sang Vùng Đất Hoang Tàn.", effectJson = "" },
+            new Item { itemId = "item_obsidian_key",   name = "Obsidian Key",          rarity = "Rare",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 18, description = "Chìa khóa Hắc Diệu Thạch dùng để trèo lên Đỉnh Núi Hắc Diệu Thạch.", effectJson = "" },
+            new Item { itemId = "item_dragon_blood_key",name = "Dragon Blood Key",      rarity = "Legendary", itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 20, description = "Chìa khóa Long Huyết dùng để mở cổng Tổ Rồng.", effectJson = "" },
+
+
 
             // --- Common ---
             new Item { itemId = "item_rusty_sword",      name = "Rusty Sword",           rarity = "Common",    itemType = "Weapon",     slotType = "MainHand", attackBonus = 3,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 10,   buyPrice = 30,   requiredLevel = 1,  description = "Một thanh kiếm gỉ sét, vẫn còn có thể chiến đấu.", effectJson = "" },
@@ -53,6 +74,7 @@ namespace GameShared.Config
 
             // --- Rare ---
             new Item { itemId = "item_steel_dagger",     name = "Steel Dagger",          rarity = "Rare",      itemType = "Weapon",     slotType = "MainHand", attackBonus = 6,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0.02f, stackable = false, sellPrice = 50,   buyPrice = 150,  requiredLevel = 5,  description = "Dao găm thép sắc bén, tốc độ đánh nhanh.", effectJson = "" },
+            new Item { itemId = "item_steel_blade",      name = "Steel Blade",          rarity = "Rare",      itemType = "Weapon",     slotType = "MainHand", attackBonus = 6,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0.02f, stackable = false, sellPrice = 50,   buyPrice = 150,  requiredLevel = 5,  description = "Dao găm thép sắc bén, tốc độ đánh nhanh.", effectJson = "" },
             new Item { itemId = "item_iron_shield",      name = "Iron Shield",           rarity = "Rare",      itemType = "Armor",      slotType = "Chest",    attackBonus = 0,  defenseBonus = 10, hpBonus = 15, criticalBonus = 0f,    stackable = false, sellPrice = 50,   buyPrice = 150,  requiredLevel = 5,  description = "Khiên sắt cứng cáp, chắc chắn.", effectJson = "" },
             new Item { itemId = "item_silver_amulet",    name = "Silver Amulet",         rarity = "Rare",      itemType = "Accessory",  slotType = "Neck",     attackBonus = 3,  defenseBonus = 3,  hpBonus = 20, criticalBonus = 0.01f, stackable = false, sellPrice = 60,   buyPrice = 180,  requiredLevel = 5,  description = "Bùa hộ mệnh bạc mang lại may mắn.", effectJson = "" },
             new Item { itemId = "item_health_potion_m",  name = "Medium Health Potion",  rarity = "Rare",      itemType = "Consumable", slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = true,  sellPrice = 20,   buyPrice = 70,   requiredLevel = 5,  description = "Hồi phục 150 HP ngay lập tức.", effectJson = "{\"hp\": 150}" },
@@ -76,6 +98,7 @@ namespace GameShared.Config
 
         public static readonly Dictionary<string, (int GoldMod, int ExpMod)> RarityMultipliers = new()
         {
+            { "Minor",     (GoldMod: 2,   ExpMod: 10)  },
             { "Common",    (GoldMod: 10,  ExpMod: 15)  },
             { "Rare",      (GoldMod: 20,  ExpMod: 30)  },
             { "Epic",      (GoldMod: 40,  ExpMod: 60)  },
@@ -134,6 +157,10 @@ namespace GameShared.Config
         public const int ReviveWaitMinutes = 5;
         public const double RevivalHpRatio = 0.5;
 
+        // GOLD ECONOMY
+        public const int StoryCostPerTurn = 5;          // Mỗi lượt AI kể chuyện tốn 5 Gold
+        public const int InstantReviveCost = 50;         // Hồi sinh bằng Vàng tốn 50 Gold
+
         private static readonly Random _random = new();
 
         public static string RollBossRarity()
@@ -151,13 +178,34 @@ namespace GameShared.Config
             return BossRarityLevelModifier.TryGetValue(rarity, out int mod) ? mod : 0;
         }
 
-        public static int CalculateBossLevel(int playerLevel, string rarity)
+        public static int CalculateBossLevel(int playerLevel, string rarity, string? bossId = null)
         {
-            if (playerLevel <= 3) return playerLevel;
-            int rarityMod = GetBossRarityLevelModifier(rarity);
-            int randomMod = _random.Next(-1, 2);
-            return Math.Max(1, playerLevel + rarityMod + randomMod);
+            var cleanId = (bossId ?? "").ToLowerInvariant();
+
+            // 1. Chapter Bosses: Luôn tạo chênh lệch cấp độ đáng kể (Level Gap)
+            if (cleanId.Contains("goblin_king") || cleanId.Contains("boss_goblin"))
+            {
+                int gap = Math.Max(2, playerLevel / 3 + 2);
+                return Math.Max(5, playerLevel + _random.Next(gap, gap + 4));
+            }
+            if (cleanId.Contains("shadow_demon") || cleanId.Contains("boss_shadow"))
+            {
+                int gap = Math.Max(3, playerLevel / 3 + 3);
+                return Math.Max(12, playerLevel + _random.Next(gap, gap + 4));
+            }
+            if (cleanId.Contains("dragon_king") || cleanId.Contains("boss_dragon"))
+            {
+                int gap = Math.Max(5, playerLevel / 3 + 5);
+                return Math.Max(25, playerLevel + _random.Next(gap, gap + 5));
+            }
+
+            // 2. Dynamic Player Level Scaling cho Mobs:
+            // Cấp độ quái vật dao động ngẫu nhiên quanh Level người chơi (-1, 0, +1, +2 level) để tạo sự đa dạng
+            int randomLevelOffset = _random.Next(-1, 3); // [-1, 0, 1, 2]
+            int rarityMod = GetBossRarityLevelModifier(rarity); // Common=0, Rare=1, Epic=2
+            return Math.Max(1, playerLevel + rarityMod + randomLevelOffset);
         }
+
 
         public static Boss GetBossTemplateByRarity(string rarity)
         {
@@ -194,14 +242,35 @@ namespace GameShared.Config
         {
             if (!RarityMultipliers.TryGetValue(bossRarity, out var mods))
                 mods = RarityMultipliers["Common"];
+            if (bossRarity.Equals("Minor", StringComparison.OrdinalIgnoreCase))
+            {
+                return Math.Max(5, bossLevel * mods.GoldMod + _random.Next(2, 6));
+            }
             return bossLevel * mods.GoldMod + _random.Next(10, 51);
         }
 
-        public static int CalculateExpReward(int bossLevel, string bossRarity)
+        public static int CalculateExpReward(int bossLevel, string bossRarity, int playerLevel = 1)
         {
             if (!RarityMultipliers.TryGetValue(bossRarity, out var mods))
                 mods = RarityMultipliers["Common"];
-            return bossLevel * mods.ExpMod;
+
+            int baseExp = bossLevel * mods.ExpMod;
+
+            // Higher-Level Boss Victory EXP Bonus Multiplier:
+            if (bossLevel > playerLevel)
+            {
+                int gap = bossLevel - playerLevel;
+                double bonusMultiplier = 1.0 + (gap * 0.5); // e.g. gap=1 -> 1.5x, gap=2 -> 2.0x, gap=4 -> 3.0x
+                baseExp = (int)Math.Round(baseExp * bonusMultiplier);
+            }
+
+            return baseExp;
+        }
+
+        /// <summary>Scale stat theo level: baseStat × (1 + 0.08 × level)</summary>
+        public static int ScaleStat(int baseStat, int level)
+        {
+            return Math.Max(1, (int)Math.Round(baseStat * (1.0 + 0.08 * level)));
         }
     }
 }

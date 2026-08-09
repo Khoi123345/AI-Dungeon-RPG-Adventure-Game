@@ -11,6 +11,7 @@ public class CharacterFormatter : ICharacterFormatter
         var sb = new StringBuilder();
 
         sb.AppendLine($"Name: {character.name}");
+        sb.AppendLine($"Class: {character.className}");
         sb.AppendLine($"Level: {character.level}");
         sb.AppendLine($"HP: {character.hp}");
         sb.AppendLine($"Attack: {character.attack}");

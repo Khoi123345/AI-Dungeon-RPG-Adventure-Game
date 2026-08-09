@@ -8,5 +8,5 @@ Ngôi đền cổ thờ vị thần ánh sáng nay đã sụp đổ. Ma thuật 
 - Bức tượng thần bị vỡ đôi ở sảnh chính.
 
 ## Gameplay Prompts for AI
-- **Encounters:** Gargoyle đá, Bộ xương chiến binh, bẫy mũi tên ma thuật.
-- **Puzzle:** Giải mã ký tự trên bệ thờ (Lửa - Nước - Đất) để mở cửa phòng chứa trang bị hiếm.
+- **Encounters:** Oan Hồn Bóng Tối (`mob_shadow_spirit`), Golem Đền Thờ (`mob_temple_golem`), Trinh Sát Goblin (`mob_goblin_scout`), Vệ Binh Goblin (`mob_goblin_guard`), Nhện Hang Động (`mob_cave_spider`).
+- **Puzzle:** Giải mã ký tự trên bệ thờ (Lửa - Nước - Đất) bằng Chìa Khóa Cổ Xưa (`item_ancient_key`) để nhận Mảnh Vỡ Lõi Nguyên Tố (`item_elemental_core`).

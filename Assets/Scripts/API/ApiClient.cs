@@ -116,15 +116,17 @@ public class ApiClient : MonoBehaviour
 
     public async Task<string> GetRawAsync(string path)
     {
-        string url = baseUrl + path;
+        string cleanedPath = (!string.IsNullOrEmpty(path) && path.StartsWith("/")) ? path.Substring(1) : path;
+        string url = baseUrl + cleanedPath;
         using UnityWebRequest request = UnityWebRequest.Get(url);
         AddHeaders(request);
-        return await SendRequestAsync(request, path);
+        return await SendRequestAsync(request, cleanedPath);
     }
 
     public async Task<string> PostRawAsync(string path, string jsonBody)
     {
-        string url = baseUrl + path;
+        string cleanedPath = (!string.IsNullOrEmpty(path) && path.StartsWith("/")) ? path.Substring(1) : path;
+        string url = baseUrl + cleanedPath;
         byte[] bodyBytes = Encoding.UTF8.GetBytes(jsonBody);
 
         using UnityWebRequest request = new UnityWebRequest(url, "POST")
@@ -135,7 +137,7 @@ public class ApiClient : MonoBehaviour
         request.SetRequestHeader("Content-Type", "application/json");
         AddHeaders(request);
 
-        return await SendRequestAsync(request, path);
+        return await SendRequestAsync(request, cleanedPath);
     }
 
     // ══════════════════════════════════════════════════════

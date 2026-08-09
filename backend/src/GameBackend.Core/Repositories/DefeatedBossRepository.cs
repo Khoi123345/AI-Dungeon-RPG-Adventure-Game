@@ -11,11 +11,13 @@ namespace GameBackend.Core.Repositories
 {
     public class DefeatedBossRepository : IDefeatedBossRepository
     {
-        private readonly Table _defeatedTable;
+        private readonly IAmazonDynamoDB _dynamoDbClient;
+        private Table? _defeatedTable;
+        private Table DefeatedTable => _defeatedTable ??= Table.LoadTable(_dynamoDbClient, AppSettings.DefeatedBossesTableName);
 
         public DefeatedBossRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _defeatedTable = Table.LoadTable(dynamoDbClient, AppSettings.DefeatedBossesTableName);
+            _dynamoDbClient = dynamoDbClient;
         }
 
         public async Task SaveDefeatedBossAsync(DefeatedBoss defeatedBoss)
@@ -23,7 +25,7 @@ namespace GameBackend.Core.Repositories
             if (defeatedBoss == null || string.IsNullOrWhiteSpace(defeatedBoss.characterId) || string.IsNullOrWhiteSpace(defeatedBoss.bossId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(defeatedBoss));
-            await _defeatedTable.PutItemAsync(doc);
+            await DefeatedTable.PutItemAsync(doc);
         }
 
         public async Task<List<DefeatedBoss>> GetDefeatedBossesByCharacterIdAsync(string characterId)
@@ -32,7 +34,7 @@ namespace GameBackend.Core.Repositories
             if (string.IsNullOrWhiteSpace(characterId)) return results;
 
             var queryFilter = new QueryFilter("characterId", QueryOperator.Equal, characterId);
-            var search = _defeatedTable.Query(queryFilter);
+            var search = DefeatedTable.Query(queryFilter);
             
             do
             {
@@ -54,7 +56,7 @@ namespace GameBackend.Core.Repositories
         {
             if (string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(bossId)) return false;
 
-            var doc = await _defeatedTable.GetItemAsync(characterId, bossId);
+            var doc = await DefeatedTable.GetItemAsync(characterId, bossId);
             return doc != null;
         }
     }

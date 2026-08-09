@@ -22,7 +22,8 @@ namespace GameBackend.Core.Config
         public static string RollItemRarity(string bossRarity) => GameShared.Config.GameConstants.RollItemRarity(bossRarity);
         public static Item? RollRandomItemByRarity(string itemRarity) => GameShared.Config.GameConstants.RollRandomItemByRarity(itemRarity);
         public static int CalculateGoldReward(int bossLevel, string bossRarity) => GameShared.Config.GameConstants.CalculateGoldReward(bossLevel, bossRarity);
-        public static int CalculateExpReward(int bossLevel, string bossRarity) => GameShared.Config.GameConstants.CalculateExpReward(bossLevel, bossRarity);
+        public static int CalculateExpReward(int bossLevel, string bossRarity, int playerLevel = 1) => GameShared.Config.GameConstants.CalculateExpReward(bossLevel, bossRarity, playerLevel);
+        public static int ScaleStat(int baseStat, int level) => GameShared.Config.GameConstants.ScaleStat(baseStat, level);
 
         public const int LevelUpHpGrowth = GameShared.Config.GameConstants.LevelUpHpGrowth;
         public const int LevelUpMpGrowth = GameShared.Config.GameConstants.LevelUpMpGrowth;

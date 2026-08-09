@@ -11,18 +11,20 @@ namespace GameBackend.Core.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly Table _table;
+        private readonly IAmazonDynamoDB _dynamoDbClient;
+        private Table? _table;
+        private Table Table => _table ??= Table.LoadTable(_dynamoDbClient, AppSettings.UsersTableName);
 
         public UserRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.UsersTableName);
+            _dynamoDbClient = dynamoDbClient;
         }
 
         public async Task<User?> GetByIdAsync(string userId)
         {
             if (string.IsNullOrWhiteSpace(userId)) return null;
 
-            var doc = await _table.GetItemAsync(userId);
+            var doc = await Table.GetItemAsync(userId);
             return doc != null ? JsonUtils.Deserialize<User>(doc.ToJson()) : null;
         }
 
@@ -32,7 +34,7 @@ namespace GameBackend.Core.Repositories
 
             var filter = new ScanFilter();
             filter.AddCondition("username", ScanOperator.Equal, username);
-            var search = _table.Scan(filter);
+            var search = Table.Scan(filter);
             var docs = await search.GetNextSetAsync();
             return docs.Count > 0 ? JsonUtils.Deserialize<User>(docs[0].ToJson()) : null;
         }
@@ -43,7 +45,7 @@ namespace GameBackend.Core.Repositories
 
             var filter = new ScanFilter();
             filter.AddCondition("email", ScanOperator.Equal, email.ToLowerInvariant());
-            var search = _table.Scan(filter);
+            var search = Table.Scan(filter);
             var docs   = await search.GetNextSetAsync();
             return docs.Count > 0 ? JsonUtils.Deserialize<User>(docs[0].ToJson()) : null;
         }
@@ -54,7 +56,7 @@ namespace GameBackend.Core.Repositories
 
             var filter = new ScanFilter();
             filter.AddCondition("cognitoSub", ScanOperator.Equal, cognitoSub);
-            var search = _table.Scan(filter);
+            var search = Table.Scan(filter);
             var docs   = await search.GetNextSetAsync();
             return docs.Count > 0 ? JsonUtils.Deserialize<User>(docs[0].ToJson()) : null;
         }
@@ -64,7 +66,7 @@ namespace GameBackend.Core.Repositories
             if (user == null || string.IsNullOrWhiteSpace(user.userId)) return;
 
             var doc = Document.FromJson(JsonUtils.Serialize(user));
-            await _table.PutItemAsync(doc);
+            await Table.PutItemAsync(doc);
         }
     }
 }

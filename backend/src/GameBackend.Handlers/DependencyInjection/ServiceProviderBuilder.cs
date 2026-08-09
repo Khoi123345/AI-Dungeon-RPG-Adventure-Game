@@ -72,8 +72,12 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<IDefeatedBossRepository, DefeatedBossRepository>();
                 services.AddSingleton<IContentService>(sp =>
                 {
-                    var contentRoot = Environment.GetEnvironmentVariable("CONTENT_ROOT") ?? Path.Combine(Directory.GetCurrentDirectory(), "Content");
-                    return new ContentService(contentRoot);
+                    var envRoot = Environment.GetEnvironmentVariable("CONTENT_ROOT");
+                    if (!string.IsNullOrEmpty(envRoot) && Directory.Exists(envRoot)) return new ContentService(envRoot);
+
+                    var aiStoryPath = Path.Combine(Directory.GetCurrentDirectory(), "AIStory", "Content");
+                    var rootPath = Directory.Exists(aiStoryPath) ? aiStoryPath : Path.Combine(Directory.GetCurrentDirectory(), "Content");
+                    return new ContentService(rootPath);
                 });
 
                 // Utils
@@ -108,7 +112,12 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<IInventoryFormatter, InventoryFormatter>();
                 services.AddSingleton<IRecentTurnsFormatter, RecentTurnsFormatter>();
                 services.AddSingleton<IGamePromptContextBuilder, GamePromptContextBuilder>();
-                services.AddSingleton<IPromptBuilder>(sp => new PromptBuilder(Directory.GetCurrentDirectory()));
+                services.AddSingleton<IPromptBuilder>(sp =>
+                {
+                    var aiStoryPath = Path.Combine(Directory.GetCurrentDirectory(), "AIStory");
+                    var templatePath = Directory.Exists(aiStoryPath) ? aiStoryPath : Directory.GetCurrentDirectory();
+                    return new PromptBuilder(templatePath);
+                });
 
                 _serviceProvider = services.BuildServiceProvider();
             }

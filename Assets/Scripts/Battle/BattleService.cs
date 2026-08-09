@@ -278,17 +278,30 @@ public class BattlePresenter : MonoBehaviour
     {
         BattleData mock = new BattleData();
         
-        mock.player = new FighterStats { name = "Hiệp sĩ", level = 10, maxHP = 100, currentHP = 100, attack = 15, defense = 8 };
-        mock.boss = new FighterStats { name = "Shadow Demon", level = 45, maxHP = 200, currentHP = 200, attack = 22, defense = 9, criticalRate = 0.15f };
+        string pName = GameProgressService.Instance?.CurrentCharacter?.name;
+        if (string.IsNullOrEmpty(pName))
+        {
+            pName = GameProgressService.Instance?.CurrentUser?.displayName ?? "khoi";
+        }
+
+        string bName = GameProgressService.Instance?.CurrentBoss?.name;
+        if (string.IsNullOrEmpty(bName))
+        {
+            bName = "Vua Goblin";
+        }
+
+        int pLevel = GameProgressService.Instance?.CurrentCharacter?.level ?? 1;
+        int bLevel = GameProgressService.Instance?.CurrentBoss?.level ?? 1;
+
+        mock.player = new FighterStats { name = pName, level = pLevel, maxHP = 100, currentHP = 100, attack = 15, defense = 8 };
+        mock.boss = new FighterStats { name = bName, level = bLevel, maxHP = 100, currentHP = 100, attack = 12, defense = 4, criticalRate = 0.10f };
         mock.isPlayerVictory = true;
 
         mock.turns = new List<BattleTurn>
         {
-            new BattleTurn { logMessage = "Hiệp sĩ chém Demon 50 sát thương!", playerHPRemaining = 100, bossHPRemaining = 150 },
-            new BattleTurn { logMessage = "Demon phun lửa đáp trả (30 DMG)!", playerHPRemaining = 70, bossHPRemaining = 150 },
-            new BattleTurn { logMessage = "Hiệp sĩ dùng kỹ năng chém đôi (100 DMG)!", playerHPRemaining = 70, bossHPRemaining = 50 },
-            new BattleTurn { logMessage = "Demon tung đòn hiểm (60 DMG)!", playerHPRemaining = 10, bossHPRemaining = 50 },
-            new BattleTurn { logMessage = "Hiệp sĩ tung đòn chí mạng kết liễu!", playerHPRemaining = 10, bossHPRemaining = 0 }
+            new BattleTurn { logMessage = $"{pName} vung kiếm tấn công {bName} gây 35 sát thương!", playerHPRemaining = 100, bossHPRemaining = 65 },
+            new BattleTurn { logMessage = $"{bName} giận dữ phản công gây 20 sát thương!", playerHPRemaining = 80, bossHPRemaining = 65 },
+            new BattleTurn { logMessage = $"{pName} tung đòn chí mạng kết liễu {bName}!", playerHPRemaining = 80, bossHPRemaining = 0 }
         };
 
         return mock;

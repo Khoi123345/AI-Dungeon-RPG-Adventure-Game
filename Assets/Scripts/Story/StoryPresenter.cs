@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using GameShared.DTOs.Story;
 
 public class StoryPresenter : MonoBehaviour
 {
     [SerializeField] private StoryView view;
-    [SerializeField] private bool useMockStoryOnStart = true;
+    [SerializeField] private bool useMockStoryOnStart = false;
     [SerializeField] private float characterDelay = 0.03f;
     [SerializeField] private float linePause = 0.6f;
-    [SerializeField] private float chunkSize = 70f;
     [SerializeField] private string richTextOpeningTag = string.Empty;
     [SerializeField] private string richTextClosingTag = string.Empty;
 
@@ -23,6 +24,8 @@ public class StoryPresenter : MonoBehaviour
     [Tooltip("Xác suất gặp boss sau mỗi hành động người chơi (0.0 - 1.0)")]
     [SerializeField] private float bossEncounterChance = 0.35f;
 
+    private readonly StoryApiService storyApiService = new StoryApiService();
+
     private StoryData currentData;
     private Coroutine playbackCoroutine;
     private bool isTyping;
@@ -30,6 +33,7 @@ public class StoryPresenter : MonoBehaviour
     private bool waitingForAdvance;
     private bool awaitingChoice;
     private bool isBossPopupShowing;  // chặn advance khi popup boss đang hiện
+    private bool isInputMode = false;
 
     private readonly Queue<StoryLineData> pendingLines = new Queue<StoryLineData>();
 
@@ -45,12 +49,64 @@ public class StoryPresenter : MonoBehaviour
             view.BindAdvance(HandleAdvancePressed);
             view.BindSubmitAction(HandleUserActionSubmitted);
             view.BindBack(OnBackClicked);
+            view.BindSwitchModes(HandleSwitchToInput, HandleSwitchToOptions);
         }
 
         GameProgressService.EnsureInstance();
 
-        if (useMockStoryOnStart)
+        if (IsMockMode)
         {
+            StartMockStory();
+        }
+        else
+        {
+            StartRealStory();
+        }
+    }
+
+    private bool IsMockMode => GameConfigSO.Instance != null ? GameConfigSO.Instance.useMockMode : useMockStoryOnStart;
+
+    public async void StartRealStory()
+    {
+        if (view != null)
+        {
+            view.SetStoryText("<i><color=#AAAAAA>Đang kết nối AI Bedrock và khởi tạo hầm ngục...</color></i>");
+            view.SetNextIndicatorVisible(false);
+            view.SetActiveOptionsPanelVisible(false);
+            view.SetInputPanelVisible(false);
+
+            if (GameProgressService.Instance?.CurrentCharacter != null)
+            {
+                var curChar = GameProgressService.Instance.CurrentCharacter;
+                view.SetCharacterState(new StoryCharacterState
+                {
+                    characterName = curChar.name,
+                    level = curChar.level,
+                    hp = curChar.hp,
+                    gold = curChar.gold
+                });
+            }
+        }
+
+        string characterId = GameProgressService.Instance?.CurrentCharacter?.characterId;
+        if (string.IsNullOrEmpty(characterId))
+        {
+            characterId = "demo_char_id";
+        }
+
+        Debug.Log($"[StoryPresenter] Gửi yêu cầu /story/start với characterId={characterId}");
+        var response = await storyApiService.StartStoryAsync(characterId, "prologue");
+
+        if (response != null && !string.IsNullOrEmpty(response.narrativeText))
+        {
+            Debug.Log($"[StoryPresenter] Nhận phản hồi mở đầu từ AI Bedrock (sessionId={response.sessionId})");
+            GameProgressService.Instance?.SetCurrentStorySession(response.sessionId, response.currentNodeId, response.currentLocation);
+            StoryData storyData = MapActionResponseToStoryData(response);
+            StartStory(storyData);
+        }
+        else
+        {
+            Debug.LogWarning("[StoryPresenter] Không thể nhận response từ AI Bedrock. Chuyển sang dùng Mock Story...");
             StartMockStory();
         }
     }
@@ -92,7 +148,7 @@ public class StoryPresenter : MonoBehaviour
         StopCurrentPlayback();
         view.SetStoryText(string.Empty);
         view.SetNextIndicatorVisible(false);
-        view.SetChoiceButtonsVisible(false);
+        view.SetActiveOptionsPanelVisible(false);
         view.SetChoiceInteractable(false);
         view.SetInputPanelVisible(false);
         view.ClearInputField();
@@ -136,9 +192,42 @@ public class StoryPresenter : MonoBehaviour
         }
 
         view.SetNextIndicatorVisible(false);
-        view.SetInputPanelVisible(true);
+        bool hasChoices = currentData != null && currentData.node != null && currentData.node.choices != null && currentData.node.choices.Count > 0;
+        
+        if (hasChoices)
+        {
+            view.SetChoices(currentData.node.choices.ToArray(), OnChoiceSelected);
+        }
+
+        if (hasChoices && !isInputMode)
+        {
+            view.SetActiveOptionsPanelVisible(true);
+            view.SetInputPanelVisible(false);
+        }
+        else
+        {
+            isInputMode = true;
+            view.SetActiveOptionsPanelVisible(false);
+            view.SetInputPanelVisible(true);
+        }
+
+        view.SetChoiceInteractable(true);
         view.SetInputInteractable(true);
         awaitingChoice = true;
+    }
+
+    private void HandleSwitchToInput()
+    {
+        isInputMode = true;
+        view.SetActiveOptionsPanelVisible(false);
+        view.SetInputPanelVisible(true);
+    }
+
+    private void HandleSwitchToOptions()
+    {
+        isInputMode = false;
+        view.SetInputPanelVisible(false);
+        view.SetActiveOptionsPanelVisible(true);
     }
 
     private IEnumerator TypeLineRoutine(string text)
@@ -153,38 +242,24 @@ public class StoryPresenter : MonoBehaviour
             yield break;
         }
 
-        string visibleBuffer = string.Empty;
-        string[] chunks = SplitForDisplay(text, Mathf.Max(1, Mathf.RoundToInt(chunkSize)));
+        string renderedText = string.Empty;
+        int characterIndex = 0;
 
-        for (int chunkIndex = 0; chunkIndex < chunks.Length; chunkIndex++)
+        while (characterIndex < text.Length)
         {
-            string chunk = chunks[chunkIndex];
-            string renderedChunk = string.Empty;
-            int characterIndex = 0;
-
-            while (characterIndex < chunk.Length)
+            if (skipTyping)
             {
-                if (skipTyping)
-                {
-                    renderedChunk = chunk;
-                    break;
-                }
-
-                renderedChunk += chunk[characterIndex];
-                view.SetStoryText(visibleBuffer + renderedChunk);
-                characterIndex++;
-                yield return new WaitForSeconds(characterDelay);
+                renderedText = text;
+                break;
             }
 
-            view.SetStoryText(visibleBuffer + renderedChunk);
-            visibleBuffer += renderedChunk;
-
-            if (chunkIndex < chunks.Length - 1)
-            {
-                visibleBuffer += "\n";
-                view.SetStoryText(visibleBuffer);
-            }
+            renderedText += text[characterIndex];
+            view.SetStoryText(renderedText);
+            characterIndex++;
+            yield return new WaitForSeconds(characterDelay);
         }
+
+        view.SetStoryText(renderedText);
 
         isTyping = false;
         waitingForAdvance = true;
@@ -220,7 +295,7 @@ public class StoryPresenter : MonoBehaviour
         }
     }
 
-    private void OnChoiceSelected(int choiceIndex)
+    private async void OnChoiceSelected(int choiceIndex)
     {
         if (currentData == null || currentData.node == null || currentData.node.choices == null)
         {
@@ -233,23 +308,109 @@ public class StoryPresenter : MonoBehaviour
         }
 
         StoryChoiceData choice = currentData.node.choices[choiceIndex];
-        if (GameProgressService.Instance != null)
+
+        int cost = GameShared.Config.GameConstants.StoryCostPerTurn;
+        var character = GameProgressService.Instance?.CurrentCharacter;
+        if (character != null)
         {
-            string aiResponse = $"Bạn đã chọn: {choice.label}. Nhánh mới: {choice.nextNodeId}.";
-            GameProgressService.Instance.RecordStoryAction(choiceIndex, choice.description, aiResponse);
+            if (character.gold < cost)
+            {
+                view.AppendStoryText($"\n\n<b><color=#FF4444>⚠️ Bạn không đủ Vàng! Mỗi lượt AI kể chuyện yêu cầu {cost} Gold. (Hiện có: {character.gold} Gold). Hãy chiến đấu đánh quái/Boss để kiếm thêm Vàng!</color></b>\n\n");
+                return;
+            }
+            character.gold -= cost;
+            view.SetCharacterState(new StoryCharacterState
+            {
+                characterName = character.name,
+                level = character.level,
+                hp = character.hp,
+                gold = character.gold
+            });
+            Debug.Log($"[StoryPresenter] Đã trừ trực tiếp {cost} Gold trên client (Choice). Vàng còn lại: {character.gold}");
         }
 
-        Debug.Log("Story choice selected: " + choice.label + " -> " + choice.nextNodeId);
+        awaitingChoice = false;
+        view.SetActiveOptionsPanelVisible(false);
+        view.SetInputInteractable(false);
+        view.SetInputPanelVisible(false);
+
+        view.AppendStoryText($"\n\n<b>> Lựa chọn:</b> \"{choice.label}\"\n\n");
+
+        if (IsMockMode)
+        {
+            if (GameProgressService.Instance != null)
+            {
+                string aiResponse = $"Bạn đã chọn: {choice.label}. Nhánh mới: {choice.nextNodeId}.";
+                GameProgressService.Instance.RecordStoryAction(choiceIndex, choice.description, aiResponse);
+            }
+            Debug.Log("Story choice selected: " + choice.label + " -> " + choice.nextNodeId);
+        }
+        else
+        {
+            view.AppendStoryText("<i><color=#888888>[AI Bedrock đang suy nghĩ...]</color></i>\n");
+
+            string characterId = GameProgressService.Instance?.CurrentCharacter?.characterId ?? "demo_char_id";
+            string sessionId = GameProgressService.Instance?.CurrentStorySession?.sessionId ?? "";
+
+            var response = await storyApiService.SendActionAsync(characterId, sessionId, choiceIndex, choice.label);
+
+            if (response != null && !string.IsNullOrEmpty(response.narrativeText))
+            {
+                Debug.Log($"<color=#00FF00>[StoryPresenter] Nhận phản hồi từ AI Bedrock (Choice):</color>\n- triggerBattle: <b>{response.triggerBattle}</b>\n- bossId: <b>{response.bossId}</b>\n- location: <b>{response.currentLocation}</b>");
+
+                GameProgressService.Instance?.SetCurrentStorySession(response.sessionId, response.currentNodeId, response.currentLocation);
+                StoryData nextStoryData = MapActionResponseToStoryData(response);
+                PlayNextStoryNode(nextStoryData);
+
+                if (response.triggerBattle)
+                {
+                    Debug.Log($"<color=#FF5500><b>[StoryPresenter] AI CHÍNH THỨC KÍCH HOẠT TRẬN ĐÁNH BOSS!</b> BossId = '{response.bossId}'</color>");
+                    if (gameObject.activeInHierarchy)
+                    {
+                        StartCoroutine(TriggerBossEncounterFromAi(response.bossId));
+                    }
+                }
+                else
+                {
+                    Debug.Log("<color=#FFFF00>[StoryPresenter] AI Bedrock không kích hoạt trận đánh ở lượt này (triggerBattle = false).</color>");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[StoryPresenter] AI Bedrock không phản hồi cho lựa chọn này.");
+            }
+        }
     }
 
-    private void HandleUserActionSubmitted(string userText)
+    private async void HandleUserActionSubmitted(string userText)
     {
         if (string.IsNullOrWhiteSpace(userText) || !awaitingChoice)
         {
             return;
         }
 
+        int cost = GameShared.Config.GameConstants.StoryCostPerTurn;
+        var character = GameProgressService.Instance?.CurrentCharacter;
+        if (character != null)
+        {
+            if (character.gold < cost)
+            {
+                view.AppendStoryText($"\n\n<b><color=#FF4444>⚠️ Bạn không đủ Vàng! Mỗi lượt AI kể chuyện yêu cầu {cost} Gold. (Hiện có: {character.gold} Gold). Hãy chiến đấu đánh quái/Boss để kiếm thêm Vàng!</color></b>\n\n");
+                return;
+            }
+            character.gold -= cost;
+            view.SetCharacterState(new StoryCharacterState
+            {
+                characterName = character.name,
+                level = character.level,
+                hp = character.hp,
+                gold = character.gold
+            });
+            Debug.Log($"[StoryPresenter] Đã trừ trực tiếp {cost} Gold trên client. Vàng còn lại: {character.gold}");
+        }
+
         awaitingChoice = false;
+        view.SetActiveOptionsPanelVisible(false);
         view.SetInputInteractable(false);
         view.SetInputPanelVisible(false);
         view.ClearInputField();
@@ -257,14 +418,84 @@ public class StoryPresenter : MonoBehaviour
         // Ghi nhận hành động vừa gõ của người chơi vào ô log hội thoại
         view.AppendStoryText($"\n\n<b>> Bạn:</b> \"{userText}\"\n\n");
 
-        // Sinh dữ liệu cốt truyện tiếp theo từ văn bản gõ
-        StoryData nextStoryData = GameProgressService.Instance != null
-            ? GameProgressService.Instance.ExecuteCustomStoryAction(userText)
-            : CreateMockCustomResponse(userText);
+        if (IsMockMode)
+        {
+            // Sinh dữ liệu cốt truyện tiếp theo từ văn bản gõ
+            StoryData nextStoryData = GameProgressService.Instance != null
+                ? GameProgressService.Instance.ExecuteCustomStoryAction(userText)
+                : CreateMockCustomResponse(userText);
 
+            PlayNextStoryNode(nextStoryData);
+
+            if (gameObject.activeInHierarchy)
+            {
+                StartCoroutine(TryTriggerBossEncounterDelayed());
+            }
+        }
+        else
+        {
+            view.AppendStoryText("<i><color=#888888>[AI Bedrock đang suy nghĩ...]</color></i>\n");
+
+            string characterId = GameProgressService.Instance?.CurrentCharacter?.characterId ?? "demo_char_id";
+            string sessionId = GameProgressService.Instance?.CurrentStorySession?.sessionId ?? "";
+
+            var response = await storyApiService.SendActionAsync(characterId, sessionId, choiceIndex: -1, playerInput: userText);
+
+            if (response != null && !string.IsNullOrEmpty(response.narrativeText))
+            {
+                Debug.Log($"<color=#00FF00>[StoryPresenter] Nhận phản hồi từ AI Bedrock:</color>\n- triggerBattle: <b>{response.triggerBattle}</b>\n- bossId: <b>{response.bossId}</b>\n- location: <b>{response.currentLocation}</b>");
+
+                if (response.character != null)
+                {
+                    GameProgressService.Instance?.SyncCharacterFromResponse(response.character);
+                }
+
+                GameProgressService.Instance?.SetCurrentStorySession(response.sessionId, response.currentNodeId, response.currentLocation);
+                StoryData nextStoryData = MapActionResponseToStoryData(response);
+                PlayNextStoryNode(nextStoryData);
+
+
+                if (response.triggerBattle)
+                {
+                    Debug.Log($"<color=#FF5500><b>[StoryPresenter] AI CHÍNH THỨC KÍCH HOẠT TRẬN ĐÁNH BOSS!</b> BossId = '{response.bossId}'</color>");
+                    if (gameObject.activeInHierarchy)
+                    {
+                        StartCoroutine(TriggerBossEncounterFromAi(response.bossId, response.bossLevel));
+                    }
+
+                }
+                else
+                {
+                    Debug.Log("<color=#FFFF00>[StoryPresenter] AI Bedrock không kích hoạt trận đánh ở lượt này (triggerBattle = false).</color>");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[StoryPresenter] AI Bedrock không phản hồi, dùng fallback mock action.");
+                StoryData nextStoryData = GameProgressService.Instance != null
+                    ? GameProgressService.Instance.ExecuteCustomStoryAction(userText)
+                    : CreateMockCustomResponse(userText);
+
+                PlayNextStoryNode(nextStoryData);
+
+                if (gameObject.activeInHierarchy)
+                {
+                    StartCoroutine(TryTriggerBossEncounterDelayed());
+                }
+            }
+        }
+    }
+
+    private void PlayNextStoryNode(StoryData nextStoryData)
+    {
         if (nextStoryData != null && nextStoryData.node != null && nextStoryData.node.lines != null)
         {
             currentData = nextStoryData;
+            if (currentData.node.character != null)
+            {
+                view.SetCharacterState(currentData.node.character);
+            }
+
             pendingLines.Clear();
             for (int index = 0; index < currentData.node.lines.Count; index++)
             {
@@ -277,13 +508,98 @@ public class StoryPresenter : MonoBehaviour
             }
             playbackCoroutine = StartCoroutine(PlayStoryRoutine());
         }
+    }
 
-        // ── Random Boss Encounter ─────────────────────────────────
-        // Roll xác suất sau khi đã hiển thị response cốt truyện
-        if (gameObject.activeInHierarchy)
+    private IEnumerator TriggerBossEncounterFromAi(string bossId, int? bossLevel = null)
+    {
+        // 1. Chờ cốt truyện hiển thị xong hoàn toàn (chữ gõ xong + người chơi bấm tiếp tục)
+        if (playbackCoroutine != null)
         {
-            StartCoroutine(TryTriggerBossEncounterDelayed());
+            yield return playbackCoroutine;
         }
+
+        // 2. Tạm dừng một chút để người chơi đọc/thấm không khí trước khi quái xuất hiện
+        yield return new WaitForSeconds(1.5f);
+
+        if (GameProgressService.Instance == null) yield break;
+        GameProgressService.Instance.SpawnBossById(bossId, bossLevel);
+
+        var boss = GameProgressService.Instance.CurrentBoss;
+        if (boss == null) yield break;
+
+        view.AppendStoryText("\n\n<i><color=#FF3333>AI Bedrock: Một quái vật hùng mạnh bất ngờ xuất hiện!</color></i>\n");
+        yield return new WaitForSeconds(1.0f);
+
+        isBossPopupShowing = true;
+        view.ShowBossOverlay();
+        yield return new WaitForSeconds(1.5f);
+
+        view.ShowBossPanel(
+            bossName: boss.name,
+            bossRarity: boss.rarity,
+            bossLevel: boss.level,
+            onFight: OnBossPopupFight,
+            onFlee: OnBossPopupFlee
+        );
+    }
+
+    private StoryData MapActionResponseToStoryData(StoryActionResponse response)
+    {
+        if (response != null && !string.IsNullOrEmpty(response.debugPrompt))
+        {
+            Debug.Log($"<color=#00FFFF>================ [FULL AI PROMPT SENT TO BEDROCK] ================\n{response.debugPrompt}\n===================================================================</color>");
+        }
+
+        string charName = response?.character != null ? response.character.name : (GameProgressService.Instance?.CurrentCharacter?.name ?? "Player");
+        int charGold = GameProgressService.Instance?.CurrentCharacter != null 
+            ? GameProgressService.Instance.CurrentCharacter.gold 
+            : (response.character != null ? response.character.gold : 0);
+
+        var curChar = GameProgressService.Instance?.CurrentCharacter;
+        var characterState = new StoryCharacterState
+        {
+            characterName = curChar?.name ?? charName,
+            level = curChar?.level ?? (response.character != null ? response.character.level : 1),
+            hp = curChar?.hp ?? (response.character != null ? response.character.hp : 100),
+            gold = curChar?.gold ?? charGold
+        };
+
+
+        var lines = new List<StoryLineData>
+        {
+            new StoryLineData
+            {
+                text = response.narrativeText,
+                pauseAfter = 0.2f
+            }
+        };
+
+        var choices = new List<StoryChoiceData>();
+        if (response.choices != null)
+        {
+            foreach (var c in response.choices)
+            {
+                choices.Add(new StoryChoiceData
+                {
+                    label = c.label,
+                    description = c.description,
+                    nextNodeId = c.nextNodeId
+                });
+            }
+        }
+
+        return new StoryData
+        {
+            title = response.currentLocation ?? "AI Story",
+            node = new StoryNodeData
+            {
+                nodeId = response.currentNodeId ?? "ai_node",
+                backgroundKey = string.Empty,
+                character = characterState,
+                lines = lines,
+                choices = choices
+            }
+        };
     }
 
     /// <summary>
@@ -292,8 +608,14 @@ public class StoryPresenter : MonoBehaviour
     /// </summary>
     private IEnumerator TryTriggerBossEncounterDelayed()
     {
+        // 1. Chờ cốt truyện hiển thị xong hoàn toàn
+        if (playbackCoroutine != null)
+        {
+            yield return playbackCoroutine;
+        }
+
         // Đợi người chơi đọc story response
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
 
         float roll = UnityEngine.Random.value;
         if (roll > bossEncounterChance) yield break;
@@ -394,41 +716,6 @@ public class StoryPresenter : MonoBehaviour
         awaitingChoice = false;
     }
 
-    private static string[] SplitForDisplay(string source, int maxChunkSize)
-    {
-        if (string.IsNullOrEmpty(source) || source.Length <= maxChunkSize)
-        {
-            return new[] { source };
-        }
-
-        List<string> chunks = new List<string>();
-        int startIndex = 0;
-
-        while (startIndex < source.Length)
-        {
-            int length = Mathf.Min(maxChunkSize, source.Length - startIndex);
-            int splitIndex = source.LastIndexOf(' ', startIndex + length - 1, length);
-
-            if (splitIndex <= startIndex)
-            {
-                splitIndex = startIndex + length;
-            }
-
-            string chunk = source.Substring(startIndex, splitIndex - startIndex).Trim();
-            if (!string.IsNullOrEmpty(chunk))
-            {
-                chunks.Add(chunk);
-            }
-
-            startIndex = splitIndex;
-            while (startIndex < source.Length && source[startIndex] == ' ')
-            {
-                startIndex++;
-            }
-        }
-
-        return chunks.ToArray();
-    }
 
     private StoryData CreateMockData()
     {

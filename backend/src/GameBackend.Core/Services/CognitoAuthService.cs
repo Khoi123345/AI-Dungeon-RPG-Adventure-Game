@@ -98,6 +98,14 @@ namespace GameBackend.Core.Services
 
         public async Task<LoginResponse> RegisterAsync(string username, string email, string password)
         {
+            var normalizedEmail = email.Trim().ToLowerInvariant();
+
+            // ── Check email đã tồn tại trong Cognito chưa (nguồn truth duy nhất) ──
+            // DynamoDB không dùng được vì email được lưu là string.Empty trong profile.
+            bool emailTaken = await IsEmailAlreadyRegisteredInCognitoAsync(normalizedEmail);
+            if (emailTaken)
+                throw new GameConflictException("Email already registered.");
+
             try
             {
                 var signUpRequest = new SignUpRequest
@@ -107,7 +115,7 @@ namespace GameBackend.Core.Services
                     Password = password,
                     UserAttributes = new List<AttributeType>
                     {
-                        new AttributeType { Name = "email", Value = email.Trim().ToLowerInvariant() }
+                        new AttributeType { Name = "email", Value = normalizedEmail }
                     }
                 };
 
@@ -126,9 +134,40 @@ namespace GameBackend.Core.Services
             {
                 throw new GameConflictException("Username already exists.");
             }
+            catch (AliasExistsException)
+            {
+                // Phòng thủ thêm nếu Cognito User Pool bật email alias unique
+                throw new GameConflictException("Email already registered.");
+            }
             catch (InvalidPasswordException ex)
             {
                 throw new GameValidationException($"Password policy violation: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Hỏi Cognito xem email đã có user nào dùng chưa.
+        /// Dùng ListUsers với filter vì đây là nguồn truth — DynamoDB lưu email = string.Empty.
+        /// </summary>
+        private async Task<bool> IsEmailAlreadyRegisteredInCognitoAsync(string email)
+        {
+            try
+            {
+                var request = new ListUsersRequest
+                {
+                    UserPoolId = _userPoolId,
+                    Filter = $"email = \"{email}\"",
+                    Limit = 1
+                };
+                var response = await _cognitoClient.ListUsersAsync(request);
+                return response.Users != null && response.Users.Count > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("[CognitoAuth] ListUsers failed (email check skipped): {Msg}", ex.Message);
+                // Nếu ListUsers lỗi (permissions, network...) → cho phép qua,
+                // Cognito SignUpAsync sẽ là lớp bảo vệ cuối cùng.
+                return false;
             }
         }
 
@@ -219,11 +258,14 @@ namespace GameBackend.Core.Services
             }
 
             // Tạo mới game profile cho Cognito user
+            // Lấy email từ ID token để lưu vào DynamoDB (tránh lưu string.Empty)
+            string emailFromToken = GetEmailFromIdToken(tokens.IdToken) ?? string.Empty;
+
             var newUser = new User
             {
                 userId      = Guid.NewGuid().ToString("N"),
                 username    = username,
-                email       = string.Empty, // Cognito giữ email
+                email       = emailFromToken,
                 cognitoSub  = cognitoSub ?? string.Empty,
                 displayName = username,
                 status      = "Active",
@@ -232,24 +274,31 @@ namespace GameBackend.Core.Services
             };
 
             await _userRepository.SaveAsync(newUser);
-            _logger.LogInformation("Created new game profile for Cognito user {Username}.", username);
+            _logger.LogInformation("Created new game profile for Cognito user {Username} (email={Email}).", username, emailFromToken);
             return newUser;
         }
 
         private static string? GetSubFromIdToken(string idToken)
+            => GetClaimFromIdToken(idToken, "sub");
+
+        private static string? GetEmailFromIdToken(string idToken)
+            => GetClaimFromIdToken(idToken, "email");
+
+        /// <summary>Giải mã JWT payload và lấy claim theo tên.</summary>
+        private static string? GetClaimFromIdToken(string idToken, string claimName)
         {
             try
             {
                 string[] parts = idToken.Split('.');
                 if (parts.Length != 3) return null;
-                string payload = parts[1];
-                // Pad base64
-                payload = payload.Replace('-', '+').Replace('_', '/');
+                string payload = parts[1]
+                    .Replace('-', '+')
+                    .Replace('_', '/');
                 int padding = (4 - payload.Length % 4) % 4;
                 payload += new string('=', padding);
                 string json = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(payload));
                 using var doc = System.Text.Json.JsonDocument.Parse(json);
-                return doc.RootElement.TryGetProperty("sub", out var sub) ? sub.GetString() : null;
+                return doc.RootElement.TryGetProperty(claimName, out var val) ? val.GetString() : null;
             }
             catch { return null; }
         }

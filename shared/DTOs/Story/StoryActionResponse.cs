@@ -15,7 +15,11 @@ namespace GameShared.DTOs.Story
         public CharacterResponse character;
         public bool triggerBattle;
         public string bossId;
+        public string? bossName;
+        public int? bossLevel;
+        public string? debugPrompt;
     }
+
 
     [Serializable]
     public class StoryChoiceOption

@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.BedrockRuntime;
+using GameBackend.Core.AIStory;
+using GameBackend.Core.AIStory.DTOs;
 using GameBackend.Core.AIStory.Builder.Impl;
 using GameBackend.Core.Config;
 using GameBackend.Core.Services;
@@ -158,8 +160,7 @@ namespace GameBackend.Tests
                 UserAction = "Tấn công quái vật canh giữ báu vật"
             };
 
-            var userPrompt = promptBuilder.Build(promptContext);
-            var systemPrompt = "You are a dungeon master for a dark fantasy RPG game. Return ONLY valid JSON for StoryAiResponse. No markdown, no code fences, no extra commentary. Use camelCase property names.";
+            var (systemPrompt, userPrompt) = promptBuilder.Build(promptContext);
 
             // 2. Bedrock (Claude)
             AmazonBedrockRuntimeClient? client = null;

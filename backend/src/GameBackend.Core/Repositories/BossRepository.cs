@@ -10,27 +10,44 @@ namespace GameBackend.Core.Repositories
 {
     public class BossRepository : IBossRepository
     {
-        private readonly Table _table;
+        private readonly IAmazonDynamoDB _dynamoDbClient;
+        private Table? _table;
+        private Table Table => _table ??= Table.LoadTable(_dynamoDbClient, AppSettings.BossesTableName);
 
         public BossRepository(IAmazonDynamoDB dynamoDbClient)
         {
-            _table = Table.LoadTable(dynamoDbClient, AppSettings.BossesTableName);
+            _dynamoDbClient = dynamoDbClient;
         }
 
         public async Task<Boss?> GetByIdAsync(string bossId)
         {
             if (string.IsNullOrWhiteSpace(bossId)) return null;
 
-            var doc = await _table.GetItemAsync(bossId);
-            return doc != null ? JsonUtils.Deserialize<Boss>(doc.ToJson()) : null;
+            try
+            {
+                var doc = await Table.GetItemAsync(bossId);
+                if (doc != null)
+                {
+                    var boss = JsonUtils.Deserialize<Boss>(doc.ToJson());
+                    if (boss != null) return boss;
+                }
+            }
+            catch { }
+
+            return GameShared.Config.GameConstants.BossCatalog
+                .FirstOrDefault(b => string.Equals(b.bossId, bossId, System.StringComparison.OrdinalIgnoreCase));
         }
 
         public async Task SaveAsync(Boss boss)
         {
             if (boss == null || string.IsNullOrWhiteSpace(boss.bossId)) return;
 
-            var doc = Document.FromJson(JsonUtils.Serialize(boss));
-            await _table.PutItemAsync(doc);
+            try
+            {
+                var doc = Document.FromJson(JsonUtils.Serialize(boss));
+                await Table.PutItemAsync(doc);
+            }
+            catch { }
         }
     }
 }

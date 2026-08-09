@@ -155,6 +155,7 @@ namespace Infrastructure.Stacks
             // Grant Cognito Permissions
             cognitoStack.UserPool.Grant(LoginFunction, "cognito-idp:InitiateAuth");
             cognitoStack.UserPool.Grant(RegisterFunction, "cognito-idp:SignUp");
+            cognitoStack.UserPool.Grant(RegisterFunction, "cognito-idp:ListUsers"); // check email duplicate
             cognitoStack.UserPool.Grant(ConfirmSignUpFunction, "cognito-idp:ConfirmSignUp");
             cognitoStack.UserPool.Grant(RefreshTokenFunction, "cognito-idp:InitiateAuth");
 
@@ -162,7 +163,12 @@ namespace Infrastructure.Stacks
             var bedrockPolicy = new Amazon.CDK.AWS.IAM.PolicyStatement(new Amazon.CDK.AWS.IAM.PolicyStatementProps
             {
                 Effect = Amazon.CDK.AWS.IAM.Effect.ALLOW,
-                Actions = new[] { "bedrock:InvokeModel", "bedrock:InvokeModelWithResponseStream" },
+                Actions = new[] { 
+                    "bedrock:InvokeModel", 
+                    "bedrock:InvokeModelWithResponseStream",
+                    "bedrock:Converse",
+                    "bedrock:ConverseStream"
+                },
                 Resources = new[] { "*" }
             });
             StartStoryFunction.AddToRolePolicy(bedrockPolicy);

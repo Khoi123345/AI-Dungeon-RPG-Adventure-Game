@@ -4,6 +4,7 @@ using GameBackend.Core.Services.Interfaces;
 using GameShared.DTOs.Battle;
 using GameShared.DTOs.Story;
 using GameBackend.Core.Services.Parsing;
+using GameShared.DTOs.Inventory;
 using GameShared.Models;
 using Microsoft.Extensions.Logging;
 
@@ -73,11 +74,19 @@ namespace GameBackend.Core.Services
             Boss? template = null;
             if (!string.IsNullOrWhiteSpace(targetBossId))
             {
+                string cleanTarget = targetBossId.Trim().ToLowerInvariant();
+                string strippedTarget = cleanTarget;
+                if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
+                if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
+
                 template = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    targetBossId.Equals(b.bossId, StringComparison.OrdinalIgnoreCase) ||
-                    targetBossId.StartsWith(b.bossId, StringComparison.OrdinalIgnoreCase) ||
-                    b.bossId.StartsWith(targetBossId, StringComparison.OrdinalIgnoreCase));
+                    b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
+                    b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                    b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase) ||
+                    b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase));
             }
+
 
             string rarity = template != null ? template.rarity : GameConstants.RollBossRarity();
             if (template == null)
@@ -103,15 +112,26 @@ namespace GameBackend.Core.Services
                 bossLevel      = bossLevel,
                 bossRarity     = rarity,
                 playerHpBefore = character.hp,
-                bossHpBefore   = ScaleStat(template.baseHp, bossLevel),
+                bossHpBefore   = GameConstants.ScaleStat(template.baseHp, bossLevel),
                 status         = "Active",
                 encounterTime  = DateTime.UtcNow
             };
 
-            if (existingEncounter == null)
+            if (existingEncounter != null)
+            {
+                existingEncounter.bossId         = actualBossId;
+                existingEncounter.bossLevel      = bossLevel;
+                existingEncounter.bossRarity     = rarity;
+                existingEncounter.bossHpBefore   = GameConstants.ScaleStat(template.baseHp, bossLevel);
+                existingEncounter.playerHpBefore = character.hp;
+                existingEncounter.encounterTime  = DateTime.UtcNow;
+                await _battleRepository.SaveEncounterAsync(existingEncounter);
+            }
+            else
             {
                 await _battleRepository.SaveEncounterAsync(encounter);
             }
+
 
             _logger.LogInformation("Boss spawned: {BossId} ({BossName}, Lv.{Level}, {Rarity}) for character: {CharacterId}",
                 encounter.bossId, template.name, bossLevel, rarity, character.characterId);
@@ -123,9 +143,9 @@ namespace GameBackend.Core.Services
                 bossName      = template.name,
                 bossRarity    = rarity,
                 bossLevel     = bossLevel,
-                bossHp        = ScaleStat(template.baseHp, bossLevel),
-                bossAttack    = ScaleStat(template.baseAttack, bossLevel),
-                bossDefense   = ScaleStat(template.baseDefense, bossLevel),
+                bossHp        = GameConstants.ScaleStat(template.baseHp, bossLevel),
+                bossAttack    = GameConstants.ScaleStat(template.baseAttack, bossLevel),
+                bossDefense   = GameConstants.ScaleStat(template.baseDefense, bossLevel),
                 bossSpeed     = template.speed,
                 bossCriticalRate = template.criticalRate,
                 bossImageUrl  = template.imageUrl ?? ""
@@ -174,11 +194,20 @@ namespace GameBackend.Core.Services
 
             // 3. Tính Boss Power (Mục 4)
             //    Boss Power = Base Attack × (1 + Level × 0.1) + Base Defense + Level Modifier
-            string baseBossId = encounter.bossId.Contains('_')
-                ? string.Join("_", encounter.bossId.Split('_').SkipLast(1))
-                : encounter.bossId;
-            var bossTemplate = GameConstants.BossCatalog.FirstOrDefault(b => encounter.bossId.StartsWith(b.bossId))
+            string targetBossId = encounter.bossId ?? "";
+            string cleanTarget = targetBossId.Trim().ToLowerInvariant();
+            string strippedTarget = cleanTarget;
+            if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
+            if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
+
+            var bossTemplate = GameConstants.BossCatalog.FirstOrDefault(b =>
+                b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase) ||
+                b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase))
                 ?? GameConstants.BossCatalog[0];
+
 
             double bossPower = bossTemplate.baseAttack * (1 + encounter.bossLevel * GameConstants.BossLevelScaleFactor)
                              + bossTemplate.baseDefense
@@ -191,28 +220,27 @@ namespace GameBackend.Core.Services
             double luckyFactor = 0;
             var luckyEffects = new List<string>();
 
-            // 4a. Critical Hit: +Attack(Total) vào điểm
+            // 4a. Critical Hit: +0.3 × Attack(Total) vào điểm
             if (_random.NextDouble() <= effectiveStats.luckyRate)
             {
-                luckyFactor += effectiveStats.attack;
+                luckyFactor += 0.3 * effectiveStats.attack;
                 luckyEffects.Add("Critical Hit");
             }
 
-            // 4b. Dodge: +0.2 × Boss Power vào điểm
+            // 4b. Dodge: +0.1 × Boss Power vào điểm
             if (_random.NextDouble() <= effectiveStats.luckyRate)
             {
-                luckyFactor += GameConstants.DodgeBonusRatio * bossPower;
+                luckyFactor += 0.1 * bossPower;
                 luckyEffects.Add("Dodge");
             }
 
-            // 4c. Damage Bonus: +Random(0.1, 0.3) × Player Power
+            // 4c. Damage Bonus: +0.1 × Player Power
             if (_random.NextDouble() <= effectiveStats.luckyRate)
             {
-                double bonusRatio = GameConstants.DamageBonusMin
-                    + _random.NextDouble() * (GameConstants.DamageBonusMax - GameConstants.DamageBonusMin);
-                luckyFactor += bonusRatio * playerPower;
+                luckyFactor += 0.1 * playerPower;
                 luckyEffects.Add("Damage Bonus");
             }
+
 
             double battleScore = (playerPower - bossPower) + randomFactor + luckyFactor;
             bool isVictory = battleScore >= 0;
@@ -266,8 +294,9 @@ namespace GameBackend.Core.Services
 
             if (isVictory)
             {
-                // Record the defeated boss if it's a valid boss catalog item
-                var isCatalogBoss = GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(encounter.bossId, StringComparison.OrdinalIgnoreCase));
+                // Record the defeated boss — chỉ lưu chapter boss, không lưu mob (mob_* prefix)
+                bool isMob = encounter.bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase);
+                var isCatalogBoss = !isMob && GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(encounter.bossId, StringComparison.OrdinalIgnoreCase));
                 if (isCatalogBoss)
                 {
                     try
@@ -292,12 +321,47 @@ namespace GameBackend.Core.Services
 
                 // Mục 5: Loot System
                 int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, encounter.bossRarity);
-                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity);
+                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity, character.level);
                 character.gold += goldReward;
                 await _characterService.ApplyExperienceAndLevelUp(character, expReward);
 
                 var lootDTOs = await _inventoryService.GrantLootDropAsync(
                     character.characterId, encounter.bossRarity, battleId);
+
+                // Khi người chơi hạ gục quái (mob_*) -> Tự động rớt Key Item của khu vực nếu chưa sở hữu
+                string? keyItemToGrant = null;
+                try
+                {
+                    var session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
+                    string currentLoc = session?.currentLocation ?? character.currentLocationId ?? "ancient_cave";
+
+                    if (currentLoc.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_ancient_key";
+                    }
+                    else if (currentLoc.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_elemental_core";
+                    }
+
+                    if (!string.IsNullOrEmpty(keyItemToGrant))
+                    {
+                        var existingKeyItem = await _inventoryRepository.FindByCharacterAndItemAsync(character.characterId, keyItemToGrant);
+                        if (existingKeyItem == null || existingKeyItem.quantity <= 0)
+                        {
+                            await _inventoryService.AddItemToInventoryAsync(character.characterId, keyItemToGrant, 1);
+                            if (!lootDTOs.Any(l => l.itemId == keyItemToGrant))
+                            {
+                                lootDTOs.Add(new LootItemDTO { itemId = keyItemToGrant, quantity = 1 });
+                            }
+                            _logger.LogInformation("Tự động rớt Key Item '{KeyItemId}' cho nhân vật {CharacterId} sau khi hạ gục quái tại {Location}", keyItemToGrant, character.characterId, currentLoc);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Could not grant key item {KeyItem} to character {CharacterId}", keyItemToGrant, character.characterId);
+                }
 
                 rewards = new BattleRewardData
                 {
@@ -313,6 +377,9 @@ namespace GameBackend.Core.Services
 
                 // Lưu character (gold đã cộng, XP đã xử lý trong ApplyExperienceAndLevelUp)
                 await _characterRepository.SaveAsync(character);
+
+                // Tự động chuyển Chương trong Story Session khi đánh bại Boss
+                await AdvanceStoryChapterOnBossDefeatAsync(character.characterId, encounter.bossId);
             }
             else
             {
@@ -424,11 +491,7 @@ namespace GameBackend.Core.Services
         // PRIVATE HELPERS
         // =====================================================================
 
-        /// <summary>Scale stat theo level: baseStat × (1 + 0.08 × level)</summary>
-        private static int ScaleStat(int baseStat, int level)
-        {
-            return Math.Max(1, (int)Math.Round(baseStat * (1.0 + 0.08 * level)));
-        }
+        // Removed ScaleStat
 
         /// <summary>Build lookup dictionary từ equipped items cho CalculateEffectiveStats.</summary>
         private static Dictionary<string, Item> BuildItemLookup(IEnumerable<Inventory> equippedItems)
@@ -571,6 +634,81 @@ namespace GameBackend.Core.Services
             }
 
             return turns;
+        }
+
+        private async Task AdvanceStoryChapterOnBossDefeatAsync(string characterId, string bossId)
+        {
+            if (_storyRepository == null || string.IsNullOrWhiteSpace(characterId) || string.IsNullOrWhiteSpace(bossId)) return;
+
+            try
+            {
+                var session = await _storyRepository.GetSessionByCharacterIdAsync(characterId);
+                if (session == null || session.status != "Active") return;
+
+                string normalizedBossId = bossId.Trim().ToLowerInvariant().Replace("boss_", "");
+
+                string targetChapterId = "";
+                string targetLocation = "";
+                string chapterTitle = "";
+
+                if (normalizedBossId == "goblin_king")
+                {
+                    targetChapterId = "chapter_2";
+                    targetLocation = "sunken_shipwreck";
+                    chapterTitle = "Chương 2: Vương Quốc Chìm Đắm (Xác Tàu Đắm)";
+                }
+                else if (normalizedBossId == "shadow_demon")
+                {
+                    targetChapterId = "chapter_3";
+                    targetLocation = "dragon_nest";
+                    chapterTitle = "Chương 3: Hoang Mạc Thiêu Rụi (Tổ Rồng)";
+                }
+                else if (normalizedBossId == "dragon_king")
+                {
+                    targetChapterId = "chapter_4";
+                    targetLocation = "start"; // Update with real chapter 4 location later
+                    chapterTitle = "Chương 4: Đỉnh Núi Băng Giá";
+                }
+
+                if (!string.IsNullOrEmpty(targetChapterId))
+                {
+                    session.currentChapterId = targetChapterId;
+                    session.currentLocation = targetLocation;
+                    session.updatedAt = DateTime.UtcNow;
+
+                    string summaryNote = $" [ĐÃ HẠ GỤC BOSS {bossId.ToUpperInvariant()} - TIẾN SANG {chapterTitle.ToUpperInvariant()}]";
+                    if (string.IsNullOrWhiteSpace(session.storySummary))
+                    {
+                        session.storySummary = summaryNote.Trim();
+                    }
+                    else if (!session.storySummary.Contains(targetChapterId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        session.storySummary += summaryNote;
+                    }
+
+                    await _storyRepository.SaveSessionAsync(session);
+
+                    var transitionAction = new StoryAction
+                    {
+                        actionId = Guid.NewGuid().ToString("N"),
+                        sessionId = session.sessionId,
+                        playerInput = $"[SỰ KIỆN CHIẾN THẮNG]: Đã tiêu diệt thành công Boss {bossId}!",
+                        aiResponse = $"Vua Goblin ngã xuống! Mảnh Vỡ Lõi Nguyên Tố tỏa sáng rực rỡ giải trừ phong ấn. Bạn chính thức hoàn thành Chương 1 và bước sang {chapterTitle}!",
+                        turnNumber = 999,
+                        actionType = "chapter_transition",
+                        metadataJson = $"{{\"currentChapterId\":\"{targetChapterId}\",\"currentLocation\":\"{targetLocation}\",\"defeatedBoss\":\"{bossId}\"}}",
+                        createdAt = DateTime.UtcNow
+                    };
+
+                    await _storyRepository.SaveActionAsync(transitionAction);
+                    _logger.LogInformation("Advanced session {SessionId} for character {CharacterId} to chapter {ChapterId} ({Location}) after defeating boss {BossId}",
+                        session.sessionId, characterId, targetChapterId, targetLocation, bossId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to auto-advance story chapter after boss defeat for character {CharacterId}", characterId);
+            }
         }
     }
 }
