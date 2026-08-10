@@ -725,24 +725,7 @@ public class GameProgressService : MonoBehaviour
             acquiredAt  = DateTime.UtcNow
         });
 
-        var seedItems = new[]
-        {
-            ("item_steel_dagger",    1, false),
-            ("item_shadow_blade",    1, false),
-            ("item_excalibur",       1, false),
-            ("item_leather_vest",    1, false),
-            ("item_iron_shield",     1, false),
-            ("item_dragon_scale",    1, false),
-            ("item_aegis",           1, false),
-            ("item_wooden_ring",     1, false),
-            ("item_silver_amulet",   1, false),
-            ("item_void_ring",       1, false),
-            ("item_ring_of_gods",    1, false),
-            ("item_health_potion_s", 5, false),
-            ("item_health_potion_m", 3, false),
-            ("item_elixir",          2, false),
-            ("item_divine_elixir",   1, false),
-        };
+        var seedItems = new (string, int, bool)[0];
 
         int slot = 1;
         foreach (var (itemId, qty, eq) in seedItems)
@@ -978,28 +961,7 @@ public class GameProgressService : MonoBehaviour
         });
 
         // ── Các item CHƯA trang bị (để test lưới inventory bên phải) ──
-        var seedItems = new[]
-        {
-            // Weapon
-            ("item_steel_dagger",    1, false),
-            ("item_shadow_blade",    1, false),
-            ("item_excalibur",       1, false),
-            // Armor
-            ("item_leather_vest",    1, false),
-            ("item_iron_shield",     1, false),
-            ("item_dragon_scale",    1, false),
-            ("item_aegis",           1, false),
-            // Accessory
-            ("item_wooden_ring",     1, false),
-            ("item_silver_amulet",   1, false),
-            ("item_void_ring",       1, false),
-            ("item_ring_of_gods",    1, false),
-            // Consumable (stackable)
-            ("item_health_potion_s", 5, false),
-            ("item_health_potion_m", 3, false),
-            ("item_elixir",          2, false),
-            ("item_divine_elixir",   1, false),
-        };
+        var seedItems = new (string, int, bool)[0];
 
         int slot = 1;
         foreach (var (itemId, qty, eq) in seedItems)

@@ -97,10 +97,7 @@ namespace GameBackend.Core.Services
             {
                 var starterItems = new[]
                 {
-                    ("item_rusty_sword", 1, true, 0),
-                    ("item_leather_vest", 1, true, 1),
-                    ("item_wooden_ring", 1, true, 2),
-                    ("item_health_potion_s", 5, false, 3)
+                    ("item_rusty_sword", 1, true, 0)
                 };
 
                 foreach (var (itemId, qty, eq, slot) in starterItems)
