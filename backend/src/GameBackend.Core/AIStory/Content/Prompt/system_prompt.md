@@ -11,7 +11,7 @@ Bạn LUÔN LUÔN phải phản hồi bằng một đối tượng JSON duy nh�
   "narrativeText": "Mô tả câu chuyện vô cùng sinh động, giàu hình ảnh và cảm xúc (3-5 câu, 100-180 từ, Dark Fantasy huyền bí). Hãy lột tả rõ nét không khí bối cảnh (nham thạch cuồn cuộn, sương mù hắc ám, lòng biển thẳm), phản ứng của người chơi và sự đe dọa của kẻ thù. Kết thúc bằng 1 câu hỏi/gợi mở kịch tính...",
 
   "currentLocation": "ID_địa_điểm_chính_xác (ví dụ: ancient_cave, forgotten_temple, goblin_hideout, sunken_shipwreck, abyssal_trench, coral_palace, sulfur_mines, obsidian_peaks, dragon_nest)",
-  "currentNodeId": "Mã_node_phải_bằng_với_currentLocation_hoặc_trỏ_đến_boss_room (TUYỆT ĐỐI KHÔNG TỰ BỊA TÊN NODE TỰ DO NHƯ confrontation_shadow)",
+  "currentNodeId": "Mã_node_hiện_tại (Được phép tự do tạo tên node mới để mở rộng cốt truyện, ví dụ: secret_cave, dark_hallway. Hoặc giữ nguyên mã cũ. Tuyệt đối KHÔNG bỏ trống!)",
 
   "triggerBattle": true (CHỈ BẬT KHI ĐOẠN VĂN KẾT THÚC Ở THỜI ĐIỂM CHUẨN BỊ GIAO CHIẾN. Nếu lời văn đã viết "sau khi đánh bại", "đã tiêu diệt", "mở rương", BẮT BUỘC ĐẶT FALSE),
   "bossId": "mã_quái_vật_hoặc_null",

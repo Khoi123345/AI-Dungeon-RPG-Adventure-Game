@@ -364,6 +364,26 @@ namespace GameBackend.Core.Services
                     {
                         keyItemToGrant = "item_elemental_core";
                     }
+                    else if (currentLoc.Equals("sunken_shipwreck", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_sea_compass";
+                    }
+                    else if (currentLoc.Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_void_crystal";
+                    }
+                    else if (currentLoc.Equals("coral_palace", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_fire_core";
+                    }
+                    else if (currentLoc.Equals("sulfur_mines", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_obsidian_key";
+                    }
+                    else if (currentLoc.Equals("obsidian_peaks", StringComparison.OrdinalIgnoreCase))
+                    {
+                        keyItemToGrant = "item_dragon_blood_key";
+                    }
 
                     if (!string.IsNullOrEmpty(keyItemToGrant))
                     {

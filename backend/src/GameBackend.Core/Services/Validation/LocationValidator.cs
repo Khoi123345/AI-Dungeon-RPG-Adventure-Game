@@ -54,9 +54,45 @@ namespace GameBackend.Core.Services.Validation
                 _ => Chapter1Locations
             };
 
-            // 1. Kiểm tra currentLocation: Nếu AI trả về địa điểm hợp lệ của Chương hiện tại
+            // 1. Lấy kho đồ nhân vật để kiểm tra Key Item
+            var inventory = await _inventoryRepository.GetByCharacterIdAsync(context.Character.characterId);
+            var itemIds = new HashSet<string>(inventory.Select(i => i.itemId), StringComparer.OrdinalIgnoreCase);
+
+            // 2. Kiểm tra currentLocation: Nếu AI trả về địa điểm hợp lệ của Chương hiện tại
             if (!string.IsNullOrWhiteSpace(requestedLocation) && validLocations.Contains(requestedLocation))
             {
+                // Kiểm tra ràng buộc chìa khóa (Key Items) để chống nhảy cóc Location
+                if (requestedLocation == "forgotten_temple" && !itemIds.Contains("item_ancient_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'forgotten_temple': player lacks item_ancient_key.");
+                    requestedLocation = "ancient_cave";
+                }
+                else if (requestedLocation == "goblin_hideout" && !itemIds.Contains("item_temple_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'goblin_hideout': player lacks item_temple_key.");
+                    requestedLocation = itemIds.Contains("item_ancient_key") ? "forgotten_temple" : "ancient_cave";
+                }
+                else if (requestedLocation == "abyssal_trench" && !itemIds.Contains("item_sea_compass") && !itemIds.Contains("item_shipwreck_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'abyssal_trench': player lacks item_sea_compass.");
+                    requestedLocation = "sunken_shipwreck";
+                }
+                else if (requestedLocation == "coral_palace" && !itemIds.Contains("item_void_crystal") && !itemIds.Contains("item_abyssal_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'coral_palace': player lacks item_void_crystal.");
+                    requestedLocation = itemIds.Contains("item_sea_compass") ? "abyssal_trench" : "sunken_shipwreck";
+                }
+                else if (requestedLocation == "obsidian_peaks" && !itemIds.Contains("item_obsidian_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'obsidian_peaks': player lacks item_obsidian_key.");
+                    requestedLocation = "sulfur_mines";
+                }
+                else if (requestedLocation == "dragon_nest" && !itemIds.Contains("item_dragon_blood_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'dragon_nest': player lacks item_dragon_blood_key.");
+                    requestedLocation = itemIds.Contains("item_obsidian_key") ? "obsidian_peaks" : "sulfur_mines";
+                }
+
                 context.Session.currentLocation = requestedLocation;
                 response.CurrentLocation = requestedLocation;
             }
@@ -68,16 +104,17 @@ namespace GameBackend.Core.Services.Validation
                 context.Session.currentLocation = currentLocation;
             }
 
-            // 2. Kiểm tra currentNodeId: Lọc bỏ hoàn toàn các node tự bịa lạ không thuộc danh sách chính thức
+            // 2. Chấp nhận mọi currentNodeId do AI tạo ra để mở rộng cốt truyện, chỉ cần không rỗng.
             var requestedNode = NormalizeLocationId(response.CurrentNodeId);
-            if (string.IsNullOrWhiteSpace(requestedNode) || (!validLocations.Contains(requestedNode) && !await _contentService.LocationExistsAsync(requestedNode)))
+            if (string.IsNullOrWhiteSpace(requestedNode))
             {
-                _logger.LogInformation("Sanitizing non-canonical currentNodeId '{Node}' to '{Location}'", response.CurrentNodeId, response.CurrentLocation);
+                _logger.LogInformation("currentNodeId is empty. Defaulting to '{Location}'", response.CurrentLocation);
                 response.CurrentNodeId = response.CurrentLocation;
                 context.Session.currentNodeId = response.CurrentLocation;
             }
             else
             {
+                response.CurrentNodeId = requestedNode;
                 context.Session.currentNodeId = requestedNode;
             }
         }

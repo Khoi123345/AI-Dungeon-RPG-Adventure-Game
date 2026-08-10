@@ -1,55 +1,9 @@
 =========== PROMPT ===========
-# system_prompt.md
+# story_prompt.md
 
-Bạn là một Game Master (Người Quản Quản Trò) xuất sắc cho "Aethelgard", một trò chơi Text-based RPG mang phong cách Dark Fantasy. Nhiệm vụ của bạn là phản hồi các hành động của người chơi, dẫn dắt cốt truyện và mô tả thế giới một cách sống động.
+Dưới đây là thông tin bối cảnh hiện tại của trò chơi và hành động mới nhất từ người chơi.
 
-**Quy tắc Cốt lõi (Core Rules):**
-1. **Góc nhìn & Văn phong:** Luôn sử dụng ngôi thứ hai ("Bạn") để kể chuyện. Văn phong tăm tối, bí ẩn, lôi cuốn và đầy rẫy hiểm nguy rình rập. Mô tả chi tiết cảnh quan, âm thanh và mùi vị.
-2. **Không chơi thay người chơi:** Tuyệt đối KHÔNG bao giờ tự quyết định hành động, suy nghĩ hay lời thoại của người chơi. Chỉ phản hồi lại hành động họ vừa thực hiện và dừng lại để chờ họ quyết định bước tiếp theo.
-3. **Phản hồi linh hoạt & Cốt truyện:** Luôn hướng dẫn người chơi đi theo tuyến nhiệm vụ của Chapter. Tuyệt đối tuân thủ tuyến cốt truyện tuyến tính được cung cấp trong tài liệu CHAPTER để dẫn dắt qua từng vị trí (ancient_cave -> forgotten_temple -> goblin_hideout).
-4. **Giới hạn Hệ thống Chiến đấu (RẤT QUAN TRỌNG):** Trò chơi có hệ thống chiến đấu tự động. Khi gặp Boss hoặc Quái vật ngẫu nhiên, bạn chỉ mô tả sự xuất hiện/ambush đầy áp lực của chúng, KHÔNG tự quyết định kết quả thắng/thua. Việc tính toán và phân bổ exp/gold/items sẽ do hệ thống backend xử lý.
-5. **Tạo lựa chọn động (Dynamic Choices - CỰC KỲ QUAN TRỌNG):** 
-   - Trong phản hồi JSON của bạn, bạn bắt buộc phải điền danh sách các lựa chọn khả thi vào trường `"choices"`. Mỗi lựa chọn có cấu trúc: `{"label": "Nhãn lựa chọn", "description": "Mô tả lựa chọn", "nextNodeId": "node_id_tiếp_theo"}`.
-   - Luôn luôn cung cấp đúng 3 lựa chọn phù hợp nhất với hoàn cảnh cốt truyện hiện tại để người chơi lựa chọn hành động tiếp theo.
-   - Các lựa chọn này phải bám sát nội dung cốt truyện thực tế (ví dụ: tìm đường đi tiếp, lục lọi rương, sử dụng phép thuật/vũ khí, di chuyển qua khu vực mới, v.v.).
-   - Khi người chơi đã hoàn thành nhiệm vụ của vị trí hiện tại (ví dụ: tìm thấy Ancient Key trong ancient_cave), một trong các lựa chọn bạn cung cấp bắt buộc phải có `"nextNodeId"` là ID của vị trí tiếp theo (ví dụ: `"forgotten_temple"`) để người chơi có thể bấm di chuyển qua đó.
-   - Ở vị trí cuối cùng (`goblin_hideout`), lựa chọn dẫn đến Phòng Ngai Vàng phải trỏ đến `"nextNodeId": "boss_room"`. Khi người chơi chọn di chuyển vào `"boss_room"`, bạn phải đặt `"triggerBattle": true`, `"bossId": "boss_goblin_king"`, `"bossName": "Goblin King"`, `"bossLevel": 10`.
-6. **Xử lý Sự kiện Hệ thống Gặp Quái vật Ngẫu nhiên:**
-   - Nếu trong thẻ `<system_event>` của prompt đầu vào có thông tin phục kích của quái vật (ví dụ: `[SỰ KIỆN QUÁI VẬT] Một con mob_cave_spider xuất hiện...`), bạn bắt buộc phải mô tả cảnh quái vật này bất ngờ lao ra tấn công người chơi trong `narrativeText`.
-   - Đồng thời, bạn phải thiết lập các trường phản hồi JSON: `"triggerBattle": true`, `"bossId": "[Mã quái vật, ví dụ: mob_cave_spider]"`, `"bossName": "[Tên quái vật]"`, `"bossLevel": [Cấp độ quái vật do system cung cấp]`.
-7. **Độ dài:** Giữ phản hồi ngắn gọn, súc tích (khoảng 3-5 câu hoặc 100-150 từ).
-
- story_prompt.md
-
-Dựa vào ngữ cảnh hiện tại của trò chơi, hãy phản hồi lại hành động mới nhất của người chơi.
-
-<game_context>
-- **Vị trí hiện tại (Location):** Mock Location - Mock Lore
-- **Nhiệm vụ hiện tại (Quest):** Mock Quest
-- **Chỉ số nhân vật (Stats & HP):** HP: 100/100 | Cấp độ: 1
-- **Vật phẩm trong túi (Inventory):** Mock Inventory
-- **Boss đã đánh bại:** None
-</game_context>
-
-<recent_story_history>
-Mock Summary
-</recent_story_history>
-
-<system_event>
-<!-- Hệ thống sẽ tự động điền nếu có sự kiện random như rớt đồ, gặp quái. Nếu trống, bỏ qua -->
- 
-</system_event>
-
-**Hành động của người chơi:** ""
-
-**Yêu cầu:** Hãy viết đoạn văn tiếp theo mô tả kết quả của hành động trên. Nếu <system_event> có chứa thông báo "Gặp Boss Mock Boss", hãy mô tả sự xuất hiện đầy áp đảo của nó. Đừng quên áp dụng các quy tắc trong system_prompt.
-
-SYSTEM PROMPT
--------------
-You are an RPG narrator.
-Never change game state.
-Never create items.
-Never decide battles.
+LƯU Ý QUAN TRỌNG: Hãy luôn đối chiếu kỹ với phần RECENT TURNS (lịch sử các lượt vừa diễn ra) trước khi viết. Tuyệt đối KHÔNG mô tả lại cảnh quan, bối cảnh hay các sự kiện đã diễn ra ở các lượt trước. Nếu lượt trước là một trận chiến vừa kết thúc, hãy tiếp tục câu chuyện SAU trận chiến đó.
 
 WORLD
 ------
@@ -84,7 +38,7 @@ CURRENT ACTION
 Tấn công quái vật canh giữ báu vật
 
 =========== RAW AI ===========
-{"narrativeText":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","storySummary":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[]}
+{"narrativeText":"T\u1EEB s\u00E2u trong b\u00F3ng \u0111\u00EAm, m\u1ED9t ti\u1EBFng g\u1EA7m tr\u1EA7m th\u1EA5p v\u1ECDng \u0111\u1EBFn. Cu\u1ED9c phi\u00EAu l\u01B0u v\u1EEBa ch\u1EA1m v\u00E0o v\u00F9ng \u0111\u1EA5t kh\u00F4ng n\u00EAn th\u1EE9c t\u1EC9nh.","storySummary":"T\u1EEB s\u00E2u trong b\u00F3ng \u0111\u00EAm, m\u1ED9t ti\u1EBFng g\u1EA7m tr\u1EA7m th\u1EA5p v\u1ECDng \u0111\u1EBFn. Cu\u1ED9c phi\u00EAu l\u01B0u v\u1EEBa ch\u1EA1m v\u00E0o v\u00F9ng \u0111\u1EA5t kh\u00F4ng n\u00EAn th\u1EE9c t\u1EC9nh.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[],"choices":[]}
 
 =========== PARSED ===========
 {
@@ -108,7 +62,11 @@ Tấn công quái vật canh giữ báu vật
     "CurrentLocationId": "Ancient Ruins"
   },
   "InventoryChanges": [],
-  "Choices": []
+  "Choices": [
+    {},
+    {},
+    {}
+  ]
 }
 
 =========== VALIDATED ===========
@@ -133,7 +91,11 @@ Tấn công quái vật canh giữ báu vật
     "CurrentLocationId": "Ancient Ruins"
   },
   "InventoryChanges": [],
-  "Choices": []
+  "Choices": [
+    {},
+    {},
+    {}
+  ]
 }
 
 =========== FINAL SESSION ===========
@@ -144,7 +106,7 @@ Tấn công quái vật canh giữ báu vật
   "currentNodeId": "intro",
   "currentChapterId": "chapter_1",
   "status": "Active",
-  "updatedAt": "2026-08-05T06:22:59.4048133Z",
+  "updatedAt": "2026-08-09T15:25:27.6813778Z",
   "endedAt": null,
   "storyVersion": null,
   "storySummary": "Anh hùng bắt đầu cuộc hành trình tại tàn tích cổ. Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",

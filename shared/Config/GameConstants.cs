@@ -232,7 +232,7 @@ namespace GameShared.Config
         public static Item? RollRandomItemByRarity(string itemRarity)
         {
             var candidates = ItemCatalog
-                .Where(i => i.rarity == itemRarity && i.itemType != "Consumable")
+                .Where(i => i.rarity == itemRarity && i.itemType != "Consumable" && i.itemType != "Quest")
                 .ToList();
             if (candidates.Count == 0) return null;
             return candidates[_random.Next(candidates.Count)];

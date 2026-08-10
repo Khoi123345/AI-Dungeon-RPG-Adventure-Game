@@ -26,8 +26,48 @@ namespace GameBackend.Core.Services.Validation
         {
             var response = context.Response;
             var lowerText = (response.NarrativeText ?? string.Empty).ToLowerInvariant();
-            bool isInBossRoom = string.Equals(context.Session.currentNodeId, "boss_room", StringComparison.OrdinalIgnoreCase);
+            string effectiveNode = response.CurrentNodeId ?? context.Session.currentNodeId ?? "";
+            bool isInBossRoom = string.Equals(effectiveNode, "boss_room", StringComparison.OrdinalIgnoreCase);
 
+            var rawLoc = response.CurrentLocation ?? context.Session.currentLocation ?? context.Character.currentLocationId ?? "";
+            var currentLoc = NormalizeLocationId(rawLoc);
+
+            bool isBossLocation = isInBossRoom ||
+                                  currentLoc == "coral_palace" ||
+                                  currentLoc == "goblin_hideout" ||
+                                  currentLoc == "dragon_nest";
+
+            // Phân biệt: "người chơi bị đánh bại" vs "boss/quái bị đánh bại"
+            bool playerWasDefeated = lowerText.Contains("đánh bại bạn") ||
+                                     lowerText.Contains("bạn bị đánh bại") ||
+                                     lowerText.Contains("hạ gục bạn") ||
+                                     lowerText.Contains("đã đánh bại người chơi") ||
+                                     lowerText.Contains("bạn đã ngã xuống") ||
+                                     lowerText.Contains("đánh bại người chơi");
+
+            bool narrativeSaysBossDefeated = !playerWasDefeated && (
+                                            lowerText.Contains("tan biến") ||
+                                            lowerText.Contains("boss đã bị đánh bại") ||
+                                            lowerText.Contains("quái vật bị đánh bại") ||
+                                            lowerText.Contains("kẻ địch bị đánh bại") ||
+                                            lowerText.Contains("tro bụi") ||
+                                            lowerText.Contains("đã tiêu diệt") ||
+                                            lowerText.Contains("sau khi đánh bại") ||
+                                            (lowerText.Contains("đã đánh bại") && !lowerText.Contains("đánh bại bạn")));
+
+            // Kiểm tra người chơi có đang chủ động đối mặt / tái chiến Boss hay không
+            bool isConfrontingBoss = lowerText.Contains("đối mặt với shadow demon") ||
+                                     lowerText.Contains("đối mặt với goblin king") ||
+                                     lowerText.Contains("đối mặt với dragon king") ||
+                                     (lowerText.Contains("shadow demon") && (lowerText.Contains("đối mặt") || lowerText.Contains("chiến đấu") || lowerText.Contains("tấn công") || lowerText.Contains("khiêu chiến"))) ||
+                                     (lowerText.Contains("goblin king") && (lowerText.Contains("đối mặt") || lowerText.Contains("chiến đấu") || lowerText.Contains("tấn công") || lowerText.Contains("khiêu chiến"))) ||
+                                     (lowerText.Contains("dragon king") && (lowerText.Contains("đối mặt") || lowerText.Contains("chiến đấu") || lowerText.Contains("tấn công") || lowerText.Contains("khiêu chiến")));
+
+            if (isConfrontingBoss && !narrativeSaysBossDefeated)
+            {
+                response.TriggerBattle = true;
+                _logger.LogInformation("Forcing TriggerBattle=true because player is confronting boss (isConfrontingBoss={IsConfrontingBoss}).", isConfrontingBoss);
+            }
 
             if (!response.TriggerBattle)
             {
@@ -47,15 +87,10 @@ namespace GameBackend.Core.Services.Validation
             // Tự điền hoặc ghi đè bossId nếu trống hoặc không hợp lệ
             if (!isValidBoss)
             {
-
-
                 if (!string.IsNullOrWhiteSpace(response.BossId))
                 {
                     _logger.LogInformation("Invalid bossId '{BossId}' provided by AI. Overwriting with fallback.", response.BossId);
                 }
-
-                var rawLoc = response.CurrentLocation ?? context.Session.currentLocation ?? context.Character.currentLocationId ?? "";
-                var currentLoc = NormalizeLocationId(rawLoc);
 
                 if (currentLoc == "forgotten_temple")
                 {
@@ -65,8 +100,8 @@ namespace GameBackend.Core.Services.Validation
                 }
                 else if (currentLoc == "goblin_hideout")
                 {
-                    response.BossId = "mob_goblin_guard";
-                    response.BossName = "Goblin Guard";
+                    response.BossId = "boss_goblin_king";
+                    response.BossName = "Goblin King";
                 }
                 else if (currentLoc == "sunken_shipwreck")
                 {
@@ -81,18 +116,23 @@ namespace GameBackend.Core.Services.Validation
                 }
                 else if (currentLoc == "coral_palace")
                 {
-                    response.BossId = "mob_shadow_spirit";
-                    response.BossName = "Shadow Spirit";
+                    response.BossId = "boss_shadow_demon";
+                    response.BossName = "Shadow Demon";
                 }
                 else if (currentLoc == "sulfur_mines")
                 {
                     if (lowerText.Contains("dragon") || lowerText.Contains("rồng")) { response.BossId = "mob_young_dragon"; response.BossName = "Young Dragon"; }
                     else { response.BossId = "mob_fire_lizard"; response.BossName = "Fire Lizard"; }
                 }
-                else if (currentLoc == "obsidian_peaks" || currentLoc == "dragon_nest")
+                else if (currentLoc == "obsidian_peaks")
                 {
                     if (lowerText.Contains("adult") || lowerText.Contains("trưởng thành")) { response.BossId = "mob_adult_dragon"; response.BossName = "Adult Dragon"; }
                     else { response.BossId = "mob_fire_raptor"; response.BossName = "Fire Raptor"; }
+                }
+                else if (currentLoc == "dragon_nest")
+                {
+                    response.BossId = "boss_dragon_king";
+                    response.BossName = "Dragon King";
                 }
                 else
                 {
@@ -101,7 +141,7 @@ namespace GameBackend.Core.Services.Validation
                 }
             }
 
-            // Chapter boss chỉ được phép khi player đang ở boss_room
+            // Chapter boss check
             bool isChapterBoss = (response.BossId ?? "").Contains("goblin_king", StringComparison.OrdinalIgnoreCase)
                                || (response.BossId ?? "").Contains("shadow_demon", StringComparison.OrdinalIgnoreCase)
                                || (response.BossId ?? "").Contains("dragon_king", StringComparison.OrdinalIgnoreCase);
@@ -109,7 +149,7 @@ namespace GameBackend.Core.Services.Validation
             // RÀNG BUỘC SẮT: Nếu lời văn AI mô tả trận đấu ĐÃ KẾT THÚC hoặc YÊU CẦU NGƯỜI CHƠI ĐƯA RA QUYẾT ĐỊNH LỰA CHỌN TIẾP THEO -> BẮT BUỘC ĐẶT triggerBattle = false
             string narrativeLower = (response.NarrativeText ?? "").ToLowerInvariant();
             if (narrativeLower.Contains("sau khi đánh bại") ||
-                narrativeLower.Contains("đã đánh bại") ||
+                (narrativeLower.Contains("đã đánh bại") && !playerWasDefeated) ||
                 narrativeLower.Contains("đã tiêu diệt") ||
                 narrativeLower.Contains("tan biến") ||
                 narrativeLower.Contains("tro bụi") ||
@@ -120,37 +160,49 @@ namespace GameBackend.Core.Services.Validation
             {
                 if (response.TriggerBattle)
                 {
-                    _logger.LogInformation("Sanitizing TriggerBattle from TRUE -> FALSE because narrative asks player to make a decision or describes combat resolution.");
-                    response.TriggerBattle = false;
+                    bool isJustAsking = narrativeLower.Contains("quyết định tiếp theo") || 
+                                        narrativeLower.Contains("bạn phải quyết định") || 
+                                        narrativeLower.Contains("bạn muốn làm gì") ||
+                                        narrativeLower.Contains("mở nó ra");
+                                        
+                    if (!narrativeSaysBossDefeated && (isJustAsking || isConfrontingBoss || isBossLocation))
+                    {
+                        _logger.LogInformation("Skipping TriggerBattle sanitization because player is in boss location or confronting boss.");
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Sanitizing TriggerBattle from TRUE -> FALSE because narrative describes combat resolution.");
+                        ResetBossFields(response);
+                    }
                 }
             }
 
-
-            bool narrativeSaysBossDefeated = narrativeLower.Contains("tan biến") ||
-                                           narrativeLower.Contains("bị đánh bại") ||
-                                           narrativeLower.Contains("tro bụi");
-
-            if (isInBossRoom && !narrativeSaysBossDefeated && response.TriggerBattle)
+            if ((isBossLocation || isConfrontingBoss) && !narrativeSaysBossDefeated && response.TriggerBattle)
             {
-                if (string.IsNullOrWhiteSpace(response.BossId) || !isChapterBoss)
+                if (string.IsNullOrWhiteSpace(response.BossId) || !isChapterBoss || isConfrontingBoss || isBossLocation)
                 {
                     // Gán chapter boss mặc định dựa theo location
-                    var chapterBossId = NormalizeLocationId(context.Session.currentLocation) switch
+                    var chapterBossId = currentLoc switch
                     {
                         "coral_palace" => "boss_shadow_demon",
                         "dragon_nest"  => "boss_dragon_king",
                         _              => "boss_goblin_king"
                     };
+                    var chapterBossName = chapterBossId switch
+                    {
+                        "boss_shadow_demon" => "Shadow Demon",
+                        "boss_dragon_king"  => "Dragon King",
+                        _                   => "Goblin King"
+                    };
                     response.BossId = chapterBossId;
-                    _logger.LogInformation("boss_room assigned bossId={BossId}", chapterBossId);
+                    response.BossName = chapterBossName;
+                    _logger.LogInformation("Assigned chapter bossId={BossId}, bossName={BossName}", chapterBossId, chapterBossName);
                 }
             }
-
-
-            else if (isChapterBoss && !isInBossRoom)
+            else if (isChapterBoss && !isBossLocation && !isConfrontingBoss)
             {
-                var loc = NormalizeLocationId(context.Session.currentLocation);
-                if (loc == "coral_palace" || loc == "abyssal_trench" || loc == "sunken_shipwreck")
+                var loc = currentLoc;
+                if (loc == "abyssal_trench" || loc == "sunken_shipwreck")
                 {
                     response.BossId   = "mob_shadow_spirit";
                     response.BossName = "Shadow Spirit";
@@ -160,7 +212,7 @@ namespace GameBackend.Core.Services.Validation
                     response.BossId   = "mob_young_dragon";
                     response.BossName = "Young Dragon";
                 }
-                else if (loc == "obsidian_peaks" || loc == "dragon_nest")
+                else if (loc == "obsidian_peaks")
                 {
                     response.BossId   = "mob_adult_dragon";
                     response.BossName = "Adult Dragon";

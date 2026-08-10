@@ -14,7 +14,7 @@ namespace GameShared.Models
         /// <summary>Index lựa chọn người chơi đã chọn (dùng bởi Unity GameProgressService).</summary>
         public int choiceIndex { get; set; }
         public string metadataJson { get; set; }
-        public DateTime createdAt { get; set; }
+        public DateTime createdAt { get; set; } 
         
     }
 }
