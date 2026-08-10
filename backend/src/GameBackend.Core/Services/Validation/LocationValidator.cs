@@ -117,6 +117,104 @@ namespace GameBackend.Core.Services.Validation
                 response.CurrentNodeId = requestedNode;
                 context.Session.currentNodeId = requestedNode;
             }
+
+            // 3. Fallback logic: Tự động chèn Lựa chọn chuyển địa điểm nếu người chơi đủ điều kiện (có Key Item) nhưng AI quên sinh lựa chọn
+            EnsureTransitionChoices(response, itemIds);
+        }
+
+        private void EnsureTransitionChoices(StoryAiResponse response, HashSet<string> itemIds)
+        {
+            var currentLocation = response.CurrentLocation ?? string.Empty;
+
+            // Chapter 1: ancient_cave -> forgotten_temple (cần item_ancient_key)
+            if (currentLocation.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_ancient_key"))
+            {
+                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase)))
+                {
+                    _logger.LogInformation("Injecting missing transition choice 'forgotten_temple' (player has item_ancient_key)");
+                    response.Choices.Add(new StoryChoiceOption
+                    {
+                        label = "Tiến vào Đền Thờ Bị Lãng Quên",
+                        description = "Sử dụng Chìa Khóa Cổ Xưa để mở cánh cửa đá khổng lồ dẫn vào đền thờ cổ.",
+                        nextNodeId = "forgotten_temple"
+                    });
+                }
+            }
+
+            // Chapter 1: forgotten_temple -> goblin_hideout (cần item_elemental_core)
+            if (currentLocation.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_elemental_core"))
+            {
+                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("goblin_hideout", StringComparison.OrdinalIgnoreCase)))
+                {
+                    _logger.LogInformation("Injecting missing transition choice 'goblin_hideout' (player has item_elemental_core)");
+                    response.Choices.Add(new StoryChoiceOption
+                    {
+                        label = "Đột kích Sào Huyệt Goblin",
+                        description = "Lõi Nguyên Tố tỏa sáng, chỉ đường dẫn sâu vào sào huyệt của vua Goblin.",
+                        nextNodeId = "goblin_hideout"
+                    });
+                }
+            }
+
+            // Chapter 2: sunken_shipwreck -> abyssal_trench (cần item_sea_compass)
+            if (currentLocation.Equals("sunken_shipwreck", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_sea_compass"))
+            {
+                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase)))
+                {
+                    _logger.LogInformation("Injecting missing transition choice 'abyssal_trench' (player has item_sea_compass)");
+                    response.Choices.Add(new StoryChoiceOption
+                    {
+                        label = "Lặn xuống Rãnh Sâu Vô Tận",
+                        description = "Sử dụng Hải Đồ để tìm lối xuống vùng vực sâu tăm tối dưới đáy đại dương.",
+                        nextNodeId = "abyssal_trench"
+                    });
+                }
+            }
+
+            // Chapter 2: abyssal_trench -> coral_palace (cần item_void_crystal)
+            if (currentLocation.Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_void_crystal"))
+            {
+                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("coral_palace", StringComparison.OrdinalIgnoreCase)))
+                {
+                    _logger.LogInformation("Injecting missing transition choice 'coral_palace' (player has item_void_crystal)");
+                    response.Choices.Add(new StoryChoiceOption
+                    {
+                        label = "Tiến vào Cung Điện San Hô",
+                        description = "Pha Lê Hư Không cộng hưởng, giải trừ phong ấn dẫn lối vào cung điện san hô cổ xưa.",
+                        nextNodeId = "coral_palace"
+                    });
+                }
+            }
+
+            // Chapter 3: sulfur_mines -> obsidian_peaks (cần item_obsidian_key)
+            if (currentLocation.Equals("sulfur_mines", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_obsidian_key"))
+            {
+                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("obsidian_peaks", StringComparison.OrdinalIgnoreCase)))
+                {
+                    _logger.LogInformation("Injecting missing transition choice 'obsidian_peaks' (player has item_obsidian_key)");
+                    response.Choices.Add(new StoryChoiceOption
+                    {
+                        label = "Trèo lên Đỉnh Núi Hắc Diệu Thạch",
+                        description = "Chìa Khóa Hắc Diệu Thạch rung chuyển, kích hoạt thang nâng đá cổ xưa đưa bạn lên đỉnh núi.",
+                        nextNodeId = "obsidian_peaks"
+                    });
+                }
+            }
+
+            // Chapter 3: obsidian_peaks -> dragon_nest (cần item_dragon_blood_key)
+            if (currentLocation.Equals("obsidian_peaks", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_dragon_blood_key"))
+            {
+                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("dragon_nest", StringComparison.OrdinalIgnoreCase)))
+                {
+                    _logger.LogInformation("Injecting missing transition choice 'dragon_nest' (player has item_dragon_blood_key)");
+                    response.Choices.Add(new StoryChoiceOption
+                    {
+                        label = "Tiến vào Tổ Rồng",
+                        description = "Chìa Khóa Long Huyết hấp thụ nhiệt lượng nham thạch, mở lối vào hang ổ của vua Rồng.",
+                        nextNodeId = "dragon_nest"
+                    });
+                }
+            }
         }
 
 

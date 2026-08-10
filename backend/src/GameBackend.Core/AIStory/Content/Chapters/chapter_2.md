@@ -1,5 +1,12 @@
 # CHAPTER 2: THE SUNKEN KINGDOM (VƯƠNG QUỐC CHÌM ĐẮM)
 
+## CRITICAL PROGRESSION RULES (LUẬT TIẾN TRÌNH BẮT BUỘC)
+* **LUẬT CHUYỂN CẢNH CẬP NHẬT ĐỊA ĐIỂM (BẮT BUỘC):**
+  1. Khi quét thấy vật phẩm `"item_sea_compass"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Dùng Hải Đồ lặn xuống Rãnh Sâu Vô Tận"`, `"nextNodeId": "abyssal_trench"`.
+  2. Khi quét thấy vật phẩm `"item_void_crystal"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Tiến vào Cung Điện San Hô"`, `"nextNodeId": "coral_palace"`.
+
+---
+
 ## Description
 Từng là một học viện ma thuật vĩ đại, giờ đây toàn bộ vương quốc đã chìm sâu dưới đáy biển do một cơn đại hồng thủy hắc ám. Ma thuật Void hoành hành biến các sinh vật biển và thủy thủ thành oan hồn dữ tợn.
 
@@ -14,12 +21,12 @@ Người chơi phải tuân theo và hoàn thành các bước cốt truyện sa
 ### Bước 1: Khám phá Xác Tàu Đắm (Location: sunken_shipwreck, Node: sunken_shipwreck)
 - **Quái vật chạm trán**: Thủy Thủ Chết Đuối (`mob_drowned_sailor`), Cua Đột Biến (`mob_mutated_crab`), Tàn Dư Hư Không (`mob_void_remnant`).
 - **Nhiệm vụ & Rớt Đồ**: Đánh bại quái vật hoặc thám hiểm boong tàu để tìm Hải Đồ Biển Sâu (ID: `item_sea_compass`).
-- **QUY TẮC CHUYỂN VỊ TRÍ**: Khi quét thấy vật phẩm `"item_sea_compass"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Dùng Hải Đồ lặn xuống Rãnh Sâu Vô Tận"`, `"nextNodeId": "abyssal_trench"`.
+- **Chú ý**: Tuân thủ luật chuyển tiếp số 1 ở phần LUẬT TIẾN TRÌNH bên trên khi người chơi nhặt được hải đồ.
 
 ### Bước 2: Thám hiểm Rãnh Sâu Vô Tận (Location: abyssal_trench, Node: abyssal_trench)
 - **Quái vật chạm trán**: Oan Hồn Biển Sâu (`mob_abyssal_spirit`), Tàn Dư Hư Không (`mob_void_remnant`).
 - **Nhiệm vụ & Rớt Đồ**: Tiêu diệt Tàn Dư Hư Không hoặc giải bẫy bóng tối để thu thập Pha Lê Hư Không (ID: `item_void_crystal`).
-- **QUY TẮC CHUYỂN VỊ TRÍ**: Khi quét thấy vật phẩm `"item_void_crystal"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Tiến vào Cung Điện San Hô"`, `"nextNodeId": "coral_palace"`.
+- **Chú ý**: Tuân thủ luật chuyển tiếp số 2 ở phần LUẬT TIẾN TRÌNH bên trên khi người chơi thu thập được pha lê.
 
 ### Bước 3: Tiến vào Cung Điện San Hô (Location: coral_palace, Node: coral_palace -> boss_room)
 - **Nhiệm vụ**: Sử dụng Pha Lê Hư Không (ID: `item_void_crystal`) để giải trừ lớp ma thuật Void chắn cổng vào Phòng Ngai Vàng.

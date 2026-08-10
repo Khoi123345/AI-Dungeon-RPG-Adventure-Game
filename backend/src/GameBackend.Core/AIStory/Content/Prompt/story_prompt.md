@@ -18,7 +18,9 @@ INVENTORY
 
 CHAPTER
 ----------
+<chapter_rules>
 {{chapter}}
+</chapter_rules>
 
 CURRENT LOCATION
 ----------------

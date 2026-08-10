@@ -701,7 +701,7 @@ namespace GameBackend.Core.Services
                 else if (normalizedBossId == "shadow_demon")
                 {
                     targetChapterId = "chapter_3";
-                    targetLocation = "dragon_nest";
+                    targetLocation = "sulfur_mines";
                     chapterTitle = "Chương 3: Hoang Mạc Thiêu Rụi (Tổ Rồng)";
                 }
                 else if (normalizedBossId == "dragon_king")

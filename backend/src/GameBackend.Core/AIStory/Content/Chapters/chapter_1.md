@@ -1,5 +1,12 @@
 # CHAPTER 1: THE WHISPERING WOODS (RỪNG THÌ THẦM)
 
+## CRITICAL PROGRESSION RULES (LUẬT TIẾN TRÌNH BẮT BUỘC)
+* **LUẬT CHUYỂN CẢNH CẬP NHẬT ĐỊA ĐIỂM (BẮT BUỘC):**
+  1. Khi quét thấy vật phẩm `"item_ancient_key"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Tiến vào Đền Thờ Bị Lãng Quên"`, `"nextNodeId": "forgotten_temple"`.
+  2. Khi quét thấy vật phẩm `"item_elemental_core"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Đột kích Sào Huyệt Goblin"`, `"nextNodeId": "goblin_hideout"`.
+
+---
+
 ## Description
 Một khu rừng từng tràn đầy sự sống giờ đây bị bao phủ bởi sương mù hắc ám. Cây cối biết thì thầm những lời nguyền rủa, và các sinh vật nhỏ bé đã biến thành quái vật hung tợn.
 
@@ -14,12 +21,12 @@ Người chơi phải tuân theo và hoàn thành các bước cốt truyện sa
 ### Bước 1: Khởi đầu tại Hang Động Cổ Xưa (Location: ancient_cave, Node: introduction -> cave_exploration)
 - **Quái vật chạm trán (Encounters)**: Nhện Hang Động (ID: `mob_cave_spider`), Trinh Sát Goblin (ID: `mob_goblin_scout`).
 - **Nhiệm vụ & Rớt Đồ**: Đánh bại quái vật hoặc tìm kiếm để có Chìa Khóa Cổ Xưa (`item_ancient_key`).
-- **QUY TẮC MỞ MÀN (CỰC KỲ QUAN TRỌNG)**: Khi quét thấy vật phẩm `"item_ancient_key"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Tiến vào Đền Thờ Bị Lãng Quên"`, `"nextNodeId": "forgotten_temple"`.
+- **Chú ý**: Tuân thủ luật chuyển tiếp số 1 ở phần LUẬT TIẾN TRÌNH bên trên khi người chơi nhặt được chìa khóa.
 
 ### Bước 2: Khám phá Đền Thờ Bị Lãng Quên (Location: forgotten_temple, Node: forgotten_temple)
 - **Quái vật chạm trán (Encounters)**: Oan Hồn Bóng Tối (ID: `mob_shadow_spirit`), Golem Đền Thờ (ID: `mob_temple_golem`), Trinh Sát Goblin (ID: `mob_goblin_scout`), Vệ Binh Goblin (ID: `mob_goblin_guard`), Nhện Hang Động (ID: `mob_cave_spider`).
 - **Nhiệm vụ & Rớt Đồ**: Sử dụng `item_ancient_key` trên Bàn Thờ Nguyên Tố hoặc tiêu diệt quái vật để nhận Mảnh Vỡ Lõi Nguyên Tố (`item_elemental_core`).
-- **QUY TẮC MỞ MÀN (CỰC KỲ QUAN TRỌNG)**: Khi quét thấy vật phẩm `"item_elemental_core"` trong danh sách `INVENTORY` của người chơi, AI **BẮT BUỘC** phải cung cấp ít nhất 1 Lựa chọn (Choice) để người chơi tiến sang địa điểm tiếp theo: `"label": "Đột kích Sào Huyệt Goblin"`, `"nextNodeId": "goblin_hideout"`.
+- **Chú ý**: Tuân thủ luật chuyển tiếp số 2 ở phần LUẬT TIẾN TRÌNH bên trên khi người chơi thu thập được lõi nguyên tố.
 
 ### Bước 3: Đột kích Sào Huyệt Goblin (Location: goblin_hideout, Node: goblin_hideout -> boss_room)
 - **Nhiệm vụ**: Sử dụng Mảnh Vỡ Lõi Nguyên Tố (ID: `item_elemental_core`) để mở cánh cửa đá chắn đường vào phòng ngai vàng, tiêu hao 1 vật phẩm `"item_elemental_core"` khỏi hành trang.
