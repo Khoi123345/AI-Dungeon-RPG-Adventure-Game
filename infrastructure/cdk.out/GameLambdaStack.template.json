@@ -709,6 +709,13 @@
        "Resource": {
         "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
        }
+      },
+      {
+       "Action": "cognito-idp:ListUsers",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "GameCognitoStack:ExportsOutputFnGetAttGameUserPoolA8C3B0A9ArnB9168E03"
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -2682,7 +2689,9 @@
       {
        "Action": [
         "bedrock:InvokeModel",
-        "bedrock:InvokeModelWithResponseStream"
+        "bedrock:InvokeModelWithResponseStream",
+        "bedrock:Converse",
+        "bedrock:ConverseStream"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -3081,7 +3090,9 @@
       {
        "Action": [
         "bedrock:InvokeModel",
-        "bedrock:InvokeModelWithResponseStream"
+        "bedrock:InvokeModelWithResponseStream",
+        "bedrock:Converse",
+        "bedrock:ConverseStream"
        ],
        "Effect": "Allow",
        "Resource": "*"
