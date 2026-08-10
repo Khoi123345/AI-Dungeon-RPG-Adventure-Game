@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-=== BEDROCK CALL RESULT (2026-08-05 06:22:59 UTC) ===
-=======
-=== BEDROCK CALL RESULT (2026-08-08 18:04:36 UTC) ===
->>>>>>> 42b61a09f252085d2c0b3d556bdd137cefbe6ccc
+=== BEDROCK CALL RESULT (2026-08-09 15:25:28 UTC) ===
 ModelId: anthropic.claude-sonnet-4-5-20250929-v1:0
 Region: ap-southeast-1
 RAW RESPONSE:
-{"narrativeText":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","storySummary":"B\u00F3ng t\u1ED1i trong t\u00E0n t\u00EDch c\u1ED5 kh\u1EBD rung l\u00EAn nh\u01B0 \u0111ang th\u1EDF. M\u1ED7i b\u01B0\u1EDBc ch\u00E2n c\u1EE7a b\u1EA1n vang l\u1EA1i th\u00E0nh m\u1ED9t l\u1EDDi c\u1EA3nh b\u00E1o.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[]}
+{"narrativeText":"T\u1EEB s\u00E2u trong b\u00F3ng \u0111\u00EAm, m\u1ED9t ti\u1EBFng g\u1EA7m tr\u1EA7m th\u1EA5p v\u1ECDng \u0111\u1EBFn. Cu\u1ED9c phi\u00EAu l\u01B0u v\u1EEBa ch\u1EA1m v\u00E0o v\u00F9ng \u0111\u1EA5t kh\u00F4ng n\u00EAn th\u1EE9c t\u1EC9nh.","storySummary":"T\u1EEB s\u00E2u trong b\u00F3ng \u0111\u00EAm, m\u1ED9t ti\u1EBFng g\u1EA7m tr\u1EA7m th\u1EA5p v\u1ECDng \u0111\u1EBFn. Cu\u1ED9c phi\u00EAu l\u01B0u v\u1EEBa ch\u1EA1m v\u00E0o v\u00F9ng \u0111\u1EA5t kh\u00F4ng n\u00EAn th\u1EE9c t\u1EC9nh.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[],"choices":[]}

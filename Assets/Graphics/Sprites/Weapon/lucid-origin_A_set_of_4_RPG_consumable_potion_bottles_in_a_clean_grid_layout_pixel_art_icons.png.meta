@@ -1,0 +1,221 @@
+fileFormatVersion: 2
+guid: 925423f1fe3df9c43ad73d1ce919ca30
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3138755175628646075
+    second: lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_0
+  - first:
+      213: 9061389864779957914
+    second: lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_1
+  - first:
+      213: 947255674826845877
+    second: lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_2
+  - first:
+      213: 3109236911076525734
+    second: lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_3
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_0
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 194
+        width: 198
+        height: 288
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5495cbf2cc6e074d0800000000000000
+      internalID: -3138755175628646075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_1
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 193
+        width: 209
+        height: 306
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a96c88d921680cd70800000000000000
+      internalID: 9061389864779957914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_2
+      rect:
+        serializedVersion: 2
+        x: 709
+        y: 192
+        width: 238
+        height: 398
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bee6897404552d00800000000000000
+      internalID: 947255674826845877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_3
+      rect:
+        serializedVersion: 2
+        x: 1044
+        y: 192
+        width: 210
+        height: 372
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a6cf374f7a362b20800000000000000
+      internalID: 3109236911076525734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 64add0bcdb61d7749b264f0e23a0ada6
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_0: -3138755175628646075
+      lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_1: 9061389864779957914
+      lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_2: 947255674826845877
+      lucid-origin_A_set_of_4_RPG_consumable_potion_bottles_in_a_clean_grid_layout_pixel_art_icons_3: 3109236911076525734
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

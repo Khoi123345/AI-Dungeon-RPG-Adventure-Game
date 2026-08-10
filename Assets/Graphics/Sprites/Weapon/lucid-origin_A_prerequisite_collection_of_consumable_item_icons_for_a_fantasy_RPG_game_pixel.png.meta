@@ -1,0 +1,1287 @@
+fileFormatVersion: 2
+guid: b2aca246a257e5447a583eb3f6293d4f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3504159341974155914
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_0
+  - first:
+      213: -6514379863420000241
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_1
+  - first:
+      213: -1242189825961877310
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_2
+  - first:
+      213: 9004703423815816476
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_3
+  - first:
+      213: 581379403287796127
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_4
+  - first:
+      213: -210822140769789164
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_5
+  - first:
+      213: -149199884664268498
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_6
+  - first:
+      213: -6848520897974171456
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_7
+  - first:
+      213: 9180408797398233943
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_8
+  - first:
+      213: 9156211512711229394
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_9
+  - first:
+      213: 7179881848067796871
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_10
+  - first:
+      213: 3850643560750109143
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_11
+  - first:
+      213: -858985399350435212
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_12
+  - first:
+      213: -9043942808515027611
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_13
+  - first:
+      213: -7189890300036504439
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_14
+  - first:
+      213: 3054002156408954117
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_15
+  - first:
+      213: 6535495802063772830
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_16
+  - first:
+      213: 3049722904913702363
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_17
+  - first:
+      213: 7093841633819691352
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_18
+  - first:
+      213: -447241854880006452
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_19
+  - first:
+      213: 1050506647097717536
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_20
+  - first:
+      213: -6810305441899273790
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_21
+  - first:
+      213: -6107448356304726457
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_22
+  - first:
+      213: 4734423945134423076
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_23
+  - first:
+      213: 7191398192300939609
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_24
+  - first:
+      213: -244737412065720808
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_25
+  - first:
+      213: -3642887815622708829
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_26
+  - first:
+      213: 7519212569255749025
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_27
+  - first:
+      213: -8916267643748936439
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_28
+  - first:
+      213: 5136961032370869149
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_29
+  - first:
+      213: -1308207612631528441
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_30
+  - first:
+      213: 1521056832327667321
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_31
+  - first:
+      213: -4881126430038781080
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_32
+  - first:
+      213: 3934549398147050380
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_33
+  - first:
+      213: -3493796802005023783
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_34
+  - first:
+      213: -7586238229487469306
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_35
+  - first:
+      213: 8528155605152980771
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_36
+  - first:
+      213: -2729259850889253946
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_37
+  - first:
+      213: 5140730923818946995
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_38
+  - first:
+      213: -7303966098933957827
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_39
+  - first:
+      213: -1065318270605328606
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_40
+  - first:
+      213: 5278609171194985728
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_41
+  - first:
+      213: -3433053771341199842
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_42
+  - first:
+      213: 3440861588677926865
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_43
+  - first:
+      213: -8629678449765666760
+    second: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_44
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_0
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 615
+        width: 79
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67d8341f4a9be5fc0800000000000000
+      internalID: -3504159341974155914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_1
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 616
+        width: 77
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f08a4e467064895a0800000000000000
+      internalID: -6514379863420000241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_2
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 616
+        width: 80
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c020f74fead2cee0800000000000000
+      internalID: -1242189825961877310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_3
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 615
+        width: 78
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1519441e0227fc70800000000000000
+      internalID: 9004703423815816476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_4
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 616
+        width: 79
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9992bcac79711800800000000000000
+      internalID: 581379403287796127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_5
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 616
+        width: 79
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41b11a44162031df0800000000000000
+      internalID: -210822140769789164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_6
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 616
+        width: 78
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e299e02de7fededf0800000000000000
+      internalID: -149199884664268498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_7
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 615
+        width: 78
+        height: 87
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c8096f378a25f0a0800000000000000
+      internalID: -6848520897974171456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_8
+      rect:
+        serializedVersion: 2
+        x: 1213
+        y: 617
+        width: 72
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 753facd492d576f70800000000000000
+      internalID: 9180408797398233943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_9
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 475
+        width: 78
+        height: 81
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dfae7febd5611f70800000000000000
+      internalID: 9156211512711229394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_10
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 479
+        width: 73
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78f2b5b008014a360800000000000000
+      internalID: 7179881848067796871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_11
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 477
+        width: 79
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d1d72bbaeb307530800000000000000
+      internalID: 3850643560750109143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_12
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 476
+        width: 78
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 472687494554414f0800000000000000
+      internalID: -858985399350435212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_13
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 477
+        width: 80
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56d5389bee57d7280800000000000000
+      internalID: -9043942808515027611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_14
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 477
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9842c44add0683c90800000000000000
+      internalID: -7189890300036504439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_15
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 478
+        width: 79
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50d580cc7cef16a20800000000000000
+      internalID: 3054002156408954117
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_16
+      rect:
+        serializedVersion: 2
+        x: 1065
+        y: 479
+        width: 79
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9c51113eceb2ba50800000000000000
+      internalID: 6535495802063772830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_17
+      rect:
+        serializedVersion: 2
+        x: 1212
+        y: 479
+        width: 81
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdde0cae2dac25a20800000000000000
+      internalID: 3049722904913702363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_18
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 341
+        width: 77
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85903b49163627260800000000000000
+      internalID: 7093841633819691352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_19
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 337
+        width: 82
+        height: 81
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cceb03f07e31bc9f0800000000000000
+      internalID: -447241854880006452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_20
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 339
+        width: 80
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 023327eca36249e00800000000000000
+      internalID: 1050506647097717536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_21
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 341
+        width: 78
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c12fab784fec71a0800000000000000
+      internalID: -6810305441899273790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_22
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 337
+        width: 83
+        height: 81
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 746d96e141cfd3ba0800000000000000
+      internalID: -6107448356304726457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_23
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 342
+        width: 79
+        height: 75
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42c37d97e7d04b140800000000000000
+      internalID: 4734423945134423076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_24
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 340
+        width: 79
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 959db72ed8afcc360800000000000000
+      internalID: 7191398192300939609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_25
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 337
+        width: 84
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8160392de948a9cf0800000000000000
+      internalID: -244737412065720808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_26
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 341
+        width: 80
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a1b53125dcd17dc0800000000000000
+      internalID: -3642887815622708829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_27
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 199
+        width: 78
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a524254efb995860800000000000000
+      internalID: 7519212569255749025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_28
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 202
+        width: 80
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 905190481dd034480800000000000000
+      internalID: -8916267643748936439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_29
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 201
+        width: 80
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d935d7797d62a4740800000000000000
+      internalID: 5136961032370869149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_30
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 201
+        width: 80
+        height: 81
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70cc2a48b1058dde0800000000000000
+      internalID: -1308207612631528441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_31
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 201
+        width: 82
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97e421e4121eb1510800000000000000
+      internalID: 1521056832327667321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_32
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 199
+        width: 82
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86394c98f51c24cb0800000000000000
+      internalID: -4881126430038781080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_33
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 201
+        width: 79
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8b28cbd4d35a9630800000000000000
+      internalID: 3934549398147050380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_34
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 200
+        width: 78
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d3481bc15a838fc0800000000000000
+      internalID: -3493796802005023783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_35
+      rect:
+        serializedVersion: 2
+        x: 1212
+        y: 201
+        width: 79
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60d39ed168448b690800000000000000
+      internalID: -7586238229487469306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_36
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 64
+        width: 78
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32f566ab6581a5670800000000000000
+      internalID: 8528155605152980771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_37
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 65
+        width: 78
+        height: 76
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cba20830a8bf1ad0800000000000000
+      internalID: -2729259850889253946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_38
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 64
+        width: 78
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b11818d98b875740800000000000000
+      internalID: 5140730923818946995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_39
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 63
+        width: 79
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3bbb85f78913aa90800000000000000
+      internalID: -7303966098933957827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_40
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 63
+        width: 79
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22ff5db5daa3731f0800000000000000
+      internalID: -1065318270605328606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_41
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 63
+        width: 80
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00d323de213614940800000000000000
+      internalID: 5278609171194985728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_42
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 61
+        width: 80
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e168468b8c75b50d0800000000000000
+      internalID: -3433053771341199842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_43
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 64
+        width: 82
+        height: 81
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1df1f6a626560cf20800000000000000
+      internalID: 3440861588677926865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_44
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 63
+        width: 78
+        height: 78
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 830bfd30c293d3880800000000000000
+      internalID: -8629678449765666760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: a13152ffd7d9b5345986870cdbde40c5
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_0: -3504159341974155914
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_1: -6514379863420000241
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_10: 7179881848067796871
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_11: 3850643560750109143
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_12: -858985399350435212
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_13: -9043942808515027611
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_14: -7189890300036504439
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_15: 3054002156408954117
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_16: 6535495802063772830
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_17: 3049722904913702363
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_18: 7093841633819691352
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_19: -447241854880006452
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_2: -1242189825961877310
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_20: 1050506647097717536
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_21: -6810305441899273790
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_22: -6107448356304726457
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_23: 4734423945134423076
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_24: 7191398192300939609
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_25: -244737412065720808
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_26: -3642887815622708829
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_27: 7519212569255749025
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_28: -8916267643748936439
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_29: 5136961032370869149
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_3: 9004703423815816476
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_30: -1308207612631528441
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_31: 1521056832327667321
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_32: -4881126430038781080
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_33: 3934549398147050380
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_34: -3493796802005023783
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_35: -7586238229487469306
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_36: 8528155605152980771
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_37: -2729259850889253946
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_38: 5140730923818946995
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_39: -7303966098933957827
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_4: 581379403287796127
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_40: -1065318270605328606
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_41: 5278609171194985728
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_42: -3433053771341199842
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_43: 3440861588677926865
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_44: -8629678449765666760
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_5: -210822140769789164
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_6: -149199884664268498
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_7: -6848520897974171456
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_8: 9180408797398233943
+      lucid-origin_A_prerequisite_collection_of_consumable_item_icons_for_a_fantasy_RPG_game_pixel_9: 9156211512711229394
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,1510 @@
+﻿{
+    "events": [
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211623577,
+            "message": "INIT_START Runtime Version: dotnet:8.mainline.v93\tRuntime Version ARN: arn:aws:lambda:ap-southeast-1::runtime:17e484c109246400d1b28ee181ff43dc3aaecda5ffdbf2fe48949a944932317a\n",
+            "ingestionTime": 1786211630012,
+            "eventId": "39833850288044371558555440959741576235939300096339083264"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211623829,
+            "message": "START RequestId: e9f4877f-4c51-4c66-a1c4-fae3a0b3e06b Version: $LATEST\n",
+            "ingestionTime": 1786211630012,
+            "eventId": "39833850293664159348585157991408577240646687195846148097"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211626550,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_cave_spider (Cave Spider, Lv.3, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786211630012,
+            "eventId": "39833850354344487033786983559527266660522878853618860034"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211626627,
+            "message": "END RequestId: e9f4877f-4c51-4c66-a1c4-fae3a0b3e06b\n",
+            "ingestionTime": 1786211630012,
+            "eventId": "39833850356061644414073841541425516967516802689579352067"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211626627,
+            "message": "REPORT RequestId: e9f4877f-4c51-4c66-a1c4-fae3a0b3e06b\tDuration: 2797.25 ms\tBilled Duration: 3046 ms\tMemory Size: 512 MB\tMax Memory Used: 118 MB\tInit Duration: 248.74 ms\t\n",
+            "ingestionTime": 1786211630012,
+            "eventId": "39833850356061644414073841541425516967516802689579352068"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211684537,
+            "message": "START RequestId: b8a20c34-0cac-4039-b1b5-220ff416288e Version: $LATEST\n",
+            "ingestionTime": 1786211693552,
+            "eventId": "39833851647497798860982227744574598013962052804887642112"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211684552,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_goblin_scout (Goblin Scout, Lv.3, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786211693552,
+            "eventId": "39833851647832310038960187091697633788051778227477348353"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211684565,
+            "message": "END RequestId: b8a20c34-0cac-4039-b1b5-220ff416288e\n",
+            "ingestionTime": 1786211693552,
+            "eventId": "39833851648122219726541085192537598125596206927055093762"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211684565,
+            "message": "REPORT RequestId: b8a20c34-0cac-4039-b1b5-220ff416288e\tDuration: 27.25 ms\tBilled Duration: 28 ms\tMemory Size: 512 MB\tMax Memory Used: 119 MB\t\n",
+            "ingestionTime": 1786211693552,
+            "eventId": "39833851648122219726541085192537598125596206927055093763"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211740422,
+            "message": "START RequestId: 46729d2a-5837-4085-a99f-6ae0ed693b6c Version: $LATEST\n",
+            "ingestionTime": 1786211749439,
+            "eventId": "39833852893774944280866102076860971192071837100222316544"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211740433,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_cave_spider (Cave Spider, Lv.2, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786211749439,
+            "eventId": "39833852894020252478049938931417864093070969076788101121"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211740435,
+            "message": "END RequestId: 46729d2a-5837-4085-a99f-6ae0ed693b6c\n",
+            "ingestionTime": 1786211749439,
+            "eventId": "39833852894064853968447000177700935529616265799800061954"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211740435,
+            "message": "REPORT RequestId: 46729d2a-5837-4085-a99f-6ae0ed693b6c\tDuration: 11.76 ms\tBilled Duration: 12 ms\tMemory Size: 512 MB\tMax Memory Used: 119 MB\t\n",
+            "ingestionTime": 1786211749439,
+            "eventId": "39833852894064853968447000177700935529616265799800061955"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211804253,
+            "message": "START RequestId: 92280ace-dd55-4fcd-8958-0161739ab9a0 Version: $LATEST\n",
+            "ingestionTime": 1786211813270,
+            "eventId": "39833854317253811048274307901394442222221830808866914304"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211804330,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_goblin_scout (Goblin Scout, Lv.2, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786211813270,
+            "eventId": "39833854318970968428561165883292692529215754644827406337"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211804332,
+            "message": "END RequestId: 92280ace-dd55-4fcd-8958-0161739ab9a0\n",
+            "ingestionTime": 1786211813270,
+            "eventId": "39833854319015569918958227129575763965761051367839367170"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211804332,
+            "message": "REPORT RequestId: 92280ace-dd55-4fcd-8958-0161739ab9a0\tDuration: 78.48 ms\tBilled Duration: 79 ms\tMemory Size: 512 MB\tMax Memory Used: 120 MB\t\n",
+            "ingestionTime": 1786211813270,
+            "eventId": "39833854319015569918958227129575763965761051367839367171"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211868619,
+            "message": "START RequestId: 643274ca-d45f-47dc-b735-7a6a5c0e78ae Version: $LATEST\n",
+            "ingestionTime": 1786211877633,
+            "eventId": "39833855752663576496896397107292802964774785972347797504"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211868666,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_cave_spider (Cave Spider, Lv.2, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786211877633,
+            "eventId": "39833855753711711521227336394944981723589258963128877057"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211868668,
+            "message": "END RequestId: 643274ca-d45f-47dc-b735-7a6a5c0e78ae\n",
+            "ingestionTime": 1786211877633,
+            "eventId": "39833855753756313011624397641228053160134555686140837890"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211868668,
+            "message": "REPORT RequestId: 643274ca-d45f-47dc-b735-7a6a5c0e78ae\tDuration: 47.98 ms\tBilled Duration: 48 ms\tMemory Size: 512 MB\tMax Memory Used: 120 MB\t\n",
+            "ingestionTime": 1786211877633,
+            "eventId": "39833855753756313011624397641228053160134555686140837891"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211960928,
+            "message": "START RequestId: a2aaf18b-3660-4f4a-8c09-5a927260a5f9 Version: $LATEST\n",
+            "ingestionTime": 1786211969941,
+            "eventId": "39833857811223065028059688790907098754449743845772689408"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211961263,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_goblin_scout (Goblin Scout, Lv.4, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786211969941,
+            "eventId": "39833857818693814669567447543321564375786944950276128769"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211961265,
+            "message": "END RequestId: a2aaf18b-3660-4f4a-8c09-5a927260a5f9\n",
+            "ingestionTime": 1786211969941,
+            "eventId": "39833857818738416159964508789604635812332241673288089602"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786211961265,
+            "message": "REPORT RequestId: a2aaf18b-3660-4f4a-8c09-5a927260a5f9\tDuration: 336.61 ms\tBilled Duration: 337 ms\tMemory Size: 512 MB\tMax Memory Used: 125 MB\t\n",
+            "ingestionTime": 1786211969941,
+            "eventId": "39833857818738416159964508789604635812332241673288089603"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212030574,
+            "message": "START RequestId: 8d402438-f864-4e5b-9d7b-4c62b19e24db Version: $LATEST\n",
+            "ingestionTime": 1786212039587,
+            "eventId": "39833859364380765124923468190500282529850020848329031680"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212030605,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_goblin_scout (Goblin Scout, Lv.6, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786212039587,
+            "eventId": "39833859365072088226077917507887889796302120055014424577"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212030607,
+            "message": "END RequestId: 8d402438-f864-4e5b-9d7b-4c62b19e24db\n",
+            "ingestionTime": 1786212039587,
+            "eventId": "39833859365116689716474978754170961232847416778026385410"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212030607,
+            "message": "REPORT RequestId: 8d402438-f864-4e5b-9d7b-4c62b19e24db\tDuration: 31.59 ms\tBilled Duration: 32 ms\tMemory Size: 512 MB\tMax Memory Used: 125 MB\t\n",
+            "ingestionTime": 1786212039587,
+            "eventId": "39833859365116689716474978754170961232847416778026385411"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212086044,
+            "message": "START RequestId: 39f5ce31-1f7f-459a-9dc1-47b28d5409fc Version: $LATEST\n",
+            "ingestionTime": 1786212095057,
+            "eventId": "39833860601403101287417133918545545602319991356706455552"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212086084,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_goblin_scout (Goblin Scout, Lv.6, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786212095057,
+            "eventId": "39833860602295131095358358844206974333225925816945672193"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212086086,
+            "message": "END RequestId: 39f5ce31-1f7f-459a-9dc1-47b28d5409fc\n",
+            "ingestionTime": 1786212095057,
+            "eventId": "39833860602339732585755420090490045769771222539957633026"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212086086,
+            "message": "REPORT RequestId: 39f5ce31-1f7f-459a-9dc1-47b28d5409fc\tDuration: 41.67 ms\tBilled Duration: 42 ms\tMemory Size: 512 MB\tMax Memory Used: 125 MB\t\n",
+            "ingestionTime": 1786212095057,
+            "eventId": "39833860602339732585755420090490045769771222539957633027"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212130049,
+            "message": "START RequestId: 3168448b-6cae-4778-8db6-ab8d36f20f88 Version: $LATEST\n",
+            "ingestionTime": 1786212139065,
+            "eventId": "39833861582747393748757205315027471815692648332702318592"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212130106,
+            "message": "info: GameBackend.Core.Services.BattleService[0]\n      Boss spawned: mob_goblin_scout (Goblin Scout, Lv.7, Common) for character: 5e139edbaac44072a9912b8b68d04377\n",
+            "ingestionTime": 1786212139065,
+            "eventId": "39833861584018536225073450834095007757233604938543202305"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212130108,
+            "message": "END RequestId: 3168448b-6cae-4778-8db6-ab8d36f20f88\n",
+            "ingestionTime": 1786212139065,
+            "eventId": "39833861584063137715470512080378079193778901661555163138"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]2d94a9a73dbf46e78f2ddc49656d24ff",
+            "timestamp": 1786212130108,
+            "message": "REPORT RequestId: 3168448b-6cae-4778-8db6-ab8d36f20f88\tDuration: 58.35 ms\tBilled Duration: 59 ms\tMemory Size: 512 MB\tMax Memory Used: 125 MB\t\n",
+            "ingestionTime": 1786212139065,
+            "eventId": "39833861584063137715470512080378079193778901661555163139"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213367836,
+            "message": "INIT_START Runtime Version: dotnet:8.mainline.v93\tRuntime Version ARN: arn:aws:lambda:ap-southeast-1::runtime:17e484c109246400d1b28ee181ff43dc3aaecda5ffdbf2fe48949a944932317a\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889186319890802381633293904111572092905089534132224"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368725,
+            "message": "2026-08-08T18:22:48.712Z\t\tfail\tSystem.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.\n ---> Amazon.DynamoDBv2.AmazonDynamoDBException: User: arn:aws:sts::569278273174:assumed-role/GameLambdaStack-SpawnBossFunctionServiceRole749B1EF-s4gy9JbxzhHA/SpawnBossFunction is not authorized to perform: dynamodb:DescribeTable on resource: arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameDefeatedBosses because no identity-based policy allows the dynamodb:DescribeTable action\n ---> Amazon.Runtime.Internal.HttpErrorResponseException: Exception of type 'Amazon.Runtime.Internal.HttpErrorResponseException' was thrown.\n   at Amazon.Runtime.HttpWebRequestMessage.ProcessHttpResponseMessage(HttpResponseMessage responseMessage)\n   at Amazon.Runtime.HttpWebRequestMessage.GetResponse()\n   at Amazon.Runtime.Internal.HttpHandler`1.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.Unmarshaller.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.ErrorHandler.InvokeSync(IExecutionContext executionContext)\n   --- End of inner exception stack trace ---\n   at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleExceptionStream(IRequestContext requestContext, IWebResponseData httpErrorResponse, HttpErrorResponseException exception, Stream responseStream)\n   at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleException(IExecutionContext executionContext, HttpErrorResponseException exception)\n   at Amazon.Runtime.Internal.ExceptionHandler`1.Handle(IExecutionContext executionContext, Exception exception)\n   at Amazon.Runtime.Internal.ErrorHandler.ProcessException(IExecutionContext executionContext, Exception exception)\n   at Amazon.Runtime.Internal.ErrorHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.Signer.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.EndpointDiscoveryHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.ChecksumHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CredentialsRetriever.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.RetryHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CompressionHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.BaseEndpointResolver.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.Marshaller.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.ErrorCallbackHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.MetricsHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.RuntimePipeline.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.AmazonServiceClient.Invoke[TResponse](AmazonWebServiceRequest request, InvokeOptionsBase options)\n   at Amazon.DynamoDBv2.AmazonDynamoDBClient.DescribeTable(DescribeTableRequest request)\n   at Amazon.DynamoDBv2.DocumentModel.Table.DescribeTable(String tableName)\n   at Amazon.Runtime.Internal.Util.Cache`2.GetValueHelper(TKey key, Boolean& isStaleItem, Func`2 creator)\n   at Amazon.Runtime.Internal.Util.Cache`2.GetValue(TKey key, Func`2 creator, Boolean& isStaleItem)\n   at Amazon.DynamoDBv2.DocumentModel.Table.LoadTableInfo(ICache`2 tableDescriptionCache)\n   at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, TableConfig config)\n   at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, String tableName, DynamoDBEntryConversion conversion, Boolean isEmptyStringValueEnabled)\n   at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, String tableName)\n   at GameBackend.Core.Repositories.DefeatedBossRepository..ctor(IAmazonDynamoDB dynamoDbClient) in C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\Repositories\\DefeatedBossRepository.cs:line 18\n   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)\n   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)\n   at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)\n   at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)\n   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)\n   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)\n   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)\n   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)\n   at GameBackend.Handlers.Battle.SpawnBossHandler..ctor() in C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\Handlers\\Battle\\SpawnBossHandler.cs:line 20\n   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)\n   --- End of inner exception stack trace ---\n   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)\n   at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeLoader.Init(Action`1 customerLoggingAction) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeLoader.cs:line 140\n   at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeInitializer.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeInitializer.cs:line 46\n   at Amazon.Lambda.RuntimeSupport.RuntimeSupportInitializer.<>c__DisplayClass6_0.<<RunLambdaBootstrap>b__0>d.MoveNext() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/RuntimeSupportInitializer.cs:line 75\n--- End of stack trace from previous location ---\n   at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 358\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206145253283875357266729365116477298468350722049"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "Unhandled exception. System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017026"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "---> Amazon.DynamoDBv2.AmazonDynamoDBException: User: arn:aws:sts::569278273174:assumed-role/GameLambdaStack-SpawnBossFunctionServiceRole749B1EF-s4gy9JbxzhHA/SpawnBossFunction is not authorized to perform: dynamodb:DescribeTable on resource: arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameDefeatedBosses because no identity-based policy allows the dynamodb:DescribeTable action\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017027"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "---> Amazon.Runtime.Internal.HttpErrorResponseException: Exception of type 'Amazon.Runtime.Internal.HttpErrorResponseException' was thrown.\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017028"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.HttpWebRequestMessage.ProcessHttpResponseMessage(HttpResponseMessage responseMessage)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017029"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.HttpWebRequestMessage.GetResponse()\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017030"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.HttpHandler`1.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017031"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017032"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.Unmarshaller.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017033"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017034"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.ErrorHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017035"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "--- End of inner exception stack trace ---\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017036"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleExceptionStream(IRequestContext requestContext, IWebResponseData httpErrorResponse, HttpErrorResponseException exception, Stream responseStream)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017037"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleException(IExecutionContext executionContext, HttpErrorResponseException exception)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017038"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.ExceptionHandler`1.Handle(IExecutionContext executionContext, Exception exception)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017039"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.ErrorHandler.ProcessException(IExecutionContext executionContext, Exception exception)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017040"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.ErrorHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017041"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017042"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017043"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017044"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.Signer.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017045"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017046"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.EndpointDiscoveryHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017047"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017048"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.ChecksumHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017049"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017050"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.CredentialsRetriever.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017051"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017052"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.RetryHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017053"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017054"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.CompressionHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017055"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017056"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017057"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017058"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.BaseEndpointResolver.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017059"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017060"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.Marshaller.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017061"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017062"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017063"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017064"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.ErrorCallbackHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017065"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017066"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.MetricsHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017067"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.RuntimePipeline.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017068"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.AmazonServiceClient.Invoke[TResponse](AmazonWebServiceRequest request, InvokeOptionsBase options)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017069"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.DynamoDBv2.AmazonDynamoDBClient.DescribeTable(DescribeTableRequest request)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017070"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.DescribeTable(String tableName)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017071"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.Util.Cache`2.GetValueHelper(TKey key, Boolean& isStaleItem, Func`2 creator)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017072"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Runtime.Internal.Util.Cache`2.GetValue(TKey key, Func`2 creator, Boolean& isStaleItem)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017073"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.LoadTableInfo(ICache`2 tableDescriptionCache)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017074"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, TableConfig config)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017075"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, String tableName, DynamoDBEntryConversion conversion, Boolean isEmptyStringValueEnabled)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017076"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, String tableName)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017077"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at GameBackend.Core.Repositories.DefeatedBossRepository..ctor(IAmazonDynamoDB dynamoDbClient) in C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\Repositories\\DefeatedBossRepository.cs:line 18\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017078"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017079"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017080"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017081"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017082"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017083"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017084"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017085"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017086"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017087"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017088"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017089"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017090"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017091"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017092"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017093"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017094"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017095"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017096"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at GameBackend.Handlers.Battle.SpawnBossHandler..ctor() in C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\Handlers\\Battle\\SpawnBossHandler.cs:line 20\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017097"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017098"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "--- End of inner exception stack trace ---\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017099"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017100"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeLoader.Init(Action`1 customerLoggingAction) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeLoader.cs:line 140\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017101"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeInitializer.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeInitializer.cs:line 46\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017102"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.RuntimeSupportInitializer.<>c__DisplayClass6_0.<<RunLambdaBootstrap>b__0>d.MoveNext() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/RuntimeSupportInitializer.cs:line 75\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017103"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "--- End of stack trace from previous location ---\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017104"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 358\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017105"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 370\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017106"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.RunAsync(CancellationToken cancellationToken) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 238\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017107"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.RuntimeSupportInitializer.RunLambdaBootstrap() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/RuntimeSupportInitializer.cs:line 91\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017108"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.Program.Main(String[] args) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Program.cs:line 47\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017109"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368761,
+            "message": "at Amazon.Lambda.RuntimeSupport.Program.<Main>(String[] args)\n",
+            "ingestionTime": 1786213368921,
+            "eventId": "39833889206948080111022459699824650974292639482566017110"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213368872,
+            "message": "INIT_REPORT Init Duration: 1036.03 ms\tPhase: init\tStatus: error\tError Type: Runtime.Unknown\n",
+            "ingestionTime": 1786213368941,
+            "eventId": "39833889209423462828059358868559475414607515453430104064"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369638,
+            "message": "2026-08-08T18:22:49.630Z\t\tfail\tSystem.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.\n ---> Amazon.DynamoDBv2.AmazonDynamoDBException: User: arn:aws:sts::569278273174:assumed-role/GameLambdaStack-SpawnBossFunctionServiceRole749B1EF-s4gy9JbxzhHA/SpawnBossFunction is not authorized to perform: dynamodb:DescribeTable on resource: arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameDefeatedBosses because no identity-based policy allows the dynamodb:DescribeTable action\n ---> Amazon.Runtime.Internal.HttpErrorResponseException: Exception of type 'Amazon.Runtime.Internal.HttpErrorResponseException' was thrown.\n   at Amazon.Runtime.HttpWebRequestMessage.ProcessHttpResponseMessage(HttpResponseMessage responseMessage)\n   at Amazon.Runtime.HttpWebRequestMessage.GetResponse()\n   at Amazon.Runtime.Internal.HttpHandler`1.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.Unmarshaller.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.ErrorHandler.InvokeSync(IExecutionContext executionContext)\n   --- End of inner exception stack trace ---\n   at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleExceptionStream(IRequestContext requestContext, IWebResponseData httpErrorResponse, HttpErrorResponseException exception, Stream responseStream)\n   at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleException(IExecutionContext executionContext, HttpErrorResponseException exception)\n   at Amazon.Runtime.Internal.ExceptionHandler`1.Handle(IExecutionContext executionContext, Exception exception)\n   at Amazon.Runtime.Internal.ErrorHandler.ProcessException(IExecutionContext executionContext, Exception exception)\n   at Amazon.Runtime.Internal.ErrorHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.Signer.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.EndpointDiscoveryHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.ChecksumHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CredentialsRetriever.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.RetryHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CompressionHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.BaseEndpointResolver.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.Marshaller.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.ErrorCallbackHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.MetricsHandler.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.Internal.RuntimePipeline.InvokeSync(IExecutionContext executionContext)\n   at Amazon.Runtime.AmazonServiceClient.Invoke[TResponse](AmazonWebServiceRequest request, InvokeOptionsBase options)\n   at Amazon.DynamoDBv2.AmazonDynamoDBClient.DescribeTable(DescribeTableRequest request)\n   at Amazon.DynamoDBv2.DocumentModel.Table.DescribeTable(String tableName)\n   at Amazon.Runtime.Internal.Util.Cache`2.GetValueHelper(TKey key, Boolean& isStaleItem, Func`2 creator)\n   at Amazon.Runtime.Internal.Util.Cache`2.GetValue(TKey key, Func`2 creator, Boolean& isStaleItem)\n   at Amazon.DynamoDBv2.DocumentModel.Table.LoadTableInfo(ICache`2 tableDescriptionCache)\n   at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, TableConfig config)\n   at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, String tableName, DynamoDBEntryConversion conversion, Boolean isEmptyStringValueEnabled)\n   at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, String tableName)\n   at GameBackend.Core.Repositories.DefeatedBossRepository..ctor(IAmazonDynamoDB dynamoDbClient) in C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\Repositories\\DefeatedBossRepository.cs:line 18\n   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)\n   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)\n   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)\n   at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)\n   at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)\n   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)\n   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)\n   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)\n   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)\n   at GameBackend.Handlers.Battle.SpawnBossHandler..ctor() in C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\Handlers\\Battle\\SpawnBossHandler.cs:line 20\n   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)\n   --- End of inner exception stack trace ---\n   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)\n   at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeLoader.Init(Action`1 customerLoggingAction) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeLoader.cs:line 140\n   at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeInitializer.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeInitializer.cs:line 46\n   at Amazon.Lambda.RuntimeSupport.RuntimeSupportInitializer.<>c__DisplayClass6_0.<<RunLambdaBootstrap>b__0>d.MoveNext() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/RuntimeSupportInitializer.cs:line 75\n--- End of stack trace from previous location ---\n   at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 358\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889226505833650133816195938363573272671689996238848"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "Unhandled exception. System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533825"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "---> Amazon.DynamoDBv2.AmazonDynamoDBException: User: arn:aws:sts::569278273174:assumed-role/GameLambdaStack-SpawnBossFunctionServiceRole749B1EF-s4gy9JbxzhHA/SpawnBossFunction is not authorized to perform: dynamodb:DescribeTable on resource: arn:aws:dynamodb:ap-southeast-1:569278273174:table/GameDefeatedBosses because no identity-based policy allows the dynamodb:DescribeTable action\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533826"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "---> Amazon.Runtime.Internal.HttpErrorResponseException: Exception of type 'Amazon.Runtime.Internal.HttpErrorResponseException' was thrown.\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533827"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.HttpWebRequestMessage.ProcessHttpResponseMessage(HttpResponseMessage responseMessage)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533828"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.HttpWebRequestMessage.GetResponse()\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533829"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.HttpHandler`1.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533830"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533831"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.Unmarshaller.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533832"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533833"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.ErrorHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533834"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "--- End of inner exception stack trace ---\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533835"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleExceptionStream(IRequestContext requestContext, IWebResponseData httpErrorResponse, HttpErrorResponseException exception, Stream responseStream)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533836"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleException(IExecutionContext executionContext, HttpErrorResponseException exception)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533837"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.ExceptionHandler`1.Handle(IExecutionContext executionContext, Exception exception)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533838"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.ErrorHandler.ProcessException(IExecutionContext executionContext, Exception exception)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533839"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.ErrorHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533840"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533841"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533842"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533843"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.Signer.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533844"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533845"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.EndpointDiscoveryHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533846"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533847"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.ChecksumHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533848"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533849"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.CredentialsRetriever.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533850"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533851"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.RetryHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533852"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533853"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.CompressionHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533854"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533855"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533856"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533857"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.BaseEndpointResolver.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533858"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533859"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.Marshaller.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533860"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533861"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.CallbackHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533862"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533863"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.ErrorCallbackHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533864"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.PipelineHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533865"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.MetricsHandler.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533866"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.RuntimePipeline.InvokeSync(IExecutionContext executionContext)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533867"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.AmazonServiceClient.Invoke[TResponse](AmazonWebServiceRequest request, InvokeOptionsBase options)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533868"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.DynamoDBv2.AmazonDynamoDBClient.DescribeTable(DescribeTableRequest request)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533869"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.DescribeTable(String tableName)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533870"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.Util.Cache`2.GetValueHelper(TKey key, Boolean& isStaleItem, Func`2 creator)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533871"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Runtime.Internal.Util.Cache`2.GetValue(TKey key, Func`2 creator, Boolean& isStaleItem)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533872"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.LoadTableInfo(ICache`2 tableDescriptionCache)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533873"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, TableConfig config)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533874"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, String tableName, DynamoDBEntryConversion conversion, Boolean isEmptyStringValueEnabled)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533875"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.DynamoDBv2.DocumentModel.Table.LoadTable(IAmazonDynamoDB ddbClient, String tableName)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533876"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at GameBackend.Core.Repositories.DefeatedBossRepository..ctor(IAmazonDynamoDB dynamoDbClient) in C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Core\\Repositories\\DefeatedBossRepository.cs:line 18\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533877"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533878"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533879"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533880"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533881"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533882"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533883"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533884"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533885"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533886"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitRootCache(ServiceCallSite callSite, RuntimeResolverContext context)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533887"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533888"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533889"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProvider.CreateServiceAccessor(ServiceIdentifier serviceIdentifier)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533890"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at System.Collections.Concurrent.ConcurrentDictionary`2.GetOrAdd(TKey key, Func`2 valueFactory)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533891"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533892"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533893"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533894"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533895"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at GameBackend.Handlers.Battle.SpawnBossHandler..ctor() in C:\\Users\\ACER\\Documents\\aws\\AI-Dungeon-RPG-Adventure-Game\\backend\\src\\GameBackend.Handlers\\Handlers\\Battle\\SpawnBossHandler.cs:line 20\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533896"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533897"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "--- End of inner exception stack trace ---\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533898"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533899"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeLoader.Init(Action`1 customerLoggingAction) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeLoader.cs:line 140\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533900"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.Bootstrap.UserCodeInitializer.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/UserCodeInitializer.cs:line 46\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533901"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.RuntimeSupportInitializer.<>c__DisplayClass6_0.<<RunLambdaBootstrap>b__0>d.MoveNext() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/RuntimeSupportInitializer.cs:line 75\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533902"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "--- End of stack trace from previous location ---\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533903"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 358\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533904"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.InitializeAsync() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 370\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533905"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.LambdaBootstrap.RunAsync(CancellationToken cancellationToken) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Bootstrap/LambdaBootstrap.cs:line 238\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533906"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.RuntimeSupportInitializer.RunLambdaBootstrap() in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/RuntimeSupportInitializer.cs:line 91\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533907"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.Program.Main(String[] args) in /src/Repo/Libraries/src/Amazon.Lambda.RuntimeSupport/Program.cs:line 47\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533908"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369674,
+            "message": "at Amazon.Lambda.RuntimeSupport.Program.<Main>(String[] args)\n",
+            "ingestionTime": 1786213369737,
+            "eventId": "39833889227308660477280918629033649431088012704211533909"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369741,
+            "message": "INIT_REPORT Init Duration: 851.48 ms\tPhase: invoke\tStatus: error\tError Type: Runtime.Unknown\n",
+            "ingestionTime": 1786213369749,
+            "eventId": "39833889228802810405582470379530510315798646443338694656"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369741,
+            "message": "START RequestId: 16424f9d-81d9-4619-875f-653016500221 Version: $LATEST\n",
+            "ingestionTime": 1786213369749,
+            "eventId": "39833889228802810405582470379530510315798646443338694657"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369751,
+            "message": "END RequestId: 16424f9d-81d9-4619-875f-653016500221\n",
+            "ingestionTime": 1786213369760,
+            "eventId": "39833889229025817857567776610959335851689829040939139072"
+        },
+        {
+            "logStreamName": "2026/08/08/[$LATEST]031091389af841e48517085841aa47e2",
+            "timestamp": 1786213369751,
+            "message": "REPORT RequestId: 16424f9d-81d9-4619-875f-653016500221\tDuration: 866.47 ms\tBilled Duration: 867 ms\tMemory Size: 512 MB\tMax Memory Used: 159 MB\tStatus: error\tError Type: Runtime.Unknown\n",
+            "ingestionTime": 1786213369760,
+            "eventId": "39833889229025817857567776610959335851689829040939139073"
+        }
+    ],
+    "searchedLogStreams": []
+}

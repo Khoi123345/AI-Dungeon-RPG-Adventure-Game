@@ -105,10 +105,11 @@ public class GameProgressService : MonoBehaviour
             }
             if (CurrentCharacter == null)
             {
+                string savedCharId = PlayerPrefs.GetString("lastCharacterId", "");
                 CurrentCharacter = new Character
                 {
-                    characterId = "",
-                    name = "",
+                    characterId = !string.IsNullOrEmpty(savedCharId) ? savedCharId : "demo_char_id",
+                    name = "Khoi",
                     level = 1,
                     hp = 100,
                     maxHp = 100,
@@ -119,6 +120,7 @@ public class GameProgressService : MonoBehaviour
                     status = "Alive"
                 };
             }
+
         }
         initialized = true;
     }
@@ -164,10 +166,8 @@ public class GameProgressService : MonoBehaviour
     {
         if (res == null || CurrentCharacter == null) return;
 
-        if (res.level > CurrentCharacter.level)
-        {
-            CurrentCharacter.level = res.level;
-        }
+        CurrentCharacter.level = res.level;
+        CurrentCharacter.experience = res.experience;
         CurrentCharacter.hp = res.hp;
         CurrentCharacter.maxHp = res.maxHp;
         CurrentCharacter.attack = res.attack;
@@ -176,7 +176,7 @@ public class GameProgressService : MonoBehaviour
         {
             CurrentCharacter.gold = res.gold;
         }
-        Debug.Log($"[GameProgressService] Synced Character from backend: {CurrentCharacter.name} (Lv.{CurrentCharacter.level}, HP={CurrentCharacter.hp}/{CurrentCharacter.maxHp}, Gold={CurrentCharacter.gold})");
+        Debug.Log($"[GameProgressService] Synced Character from backend: {CurrentCharacter.name} (Lv.{CurrentCharacter.level}, Exp={CurrentCharacter.experience}, HP={CurrentCharacter.hp}/{CurrentCharacter.maxHp}, Gold={CurrentCharacter.gold})");
     }
 
 
@@ -404,7 +404,9 @@ public class GameProgressService : MonoBehaviour
             characterName = CurrentCharacter.name,
             level = CurrentCharacter.level,
             hp = CurrentCharacter.hp,
-            gold = CurrentCharacter.gold
+            gold = CurrentCharacter.gold,
+            xp = CurrentCharacter.experience,
+            maxXP = CurrentCharacter.level * 100
         };
 
         string context = CurrentStorySession != null ? CurrentStorySession.storySummary : "";
@@ -483,7 +485,9 @@ public class GameProgressService : MonoBehaviour
             characterName = CurrentCharacter.name,
             level = CurrentCharacter.level,
             hp = CurrentCharacter.hp,
-            gold = CurrentCharacter.gold
+            gold = CurrentCharacter.gold,
+            xp = CurrentCharacter.experience,
+            maxXP = CurrentCharacter.level * 100
         };
 
         string dynamicStoryResponse = GenerateStoryResponseFromInput(playerInput);

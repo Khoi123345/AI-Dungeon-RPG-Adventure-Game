@@ -232,7 +232,11 @@ namespace GameBackend.Core.Services
                 await _inventoryRepository.SaveAsync(invRecord);
 
             // 6. Apply effect từ effectJson (mục 2.4 bước 3)
-            ApplyConsumableEffect(item.effectJson, character, quantityToUse);
+            var equipped = await _inventoryRepository.GetEquippedItemsAsync(characterId);
+            int bonusHp = equipped.Sum(e => GameConstants.GetItemById(e.itemId)?.hpBonus ?? 0);
+            int effectiveMaxHp = character.maxHp + bonusHp;
+
+            ApplyConsumableEffect(item.effectJson, character, quantityToUse, effectiveMaxHp);
             await _characterRepository.SaveAsync(character);
 
             _logger.LogInformation("Character {CharId} used {ItemName} x{Qty}. Deleted={Deleted}",
@@ -248,7 +252,7 @@ namespace GameBackend.Core.Services
                 updatedStats      = new UpdatedCharacterStats
                 {
                     hp           = character.hp,
-                    maxHp        = character.maxHp,
+                    maxHp        = effectiveMaxHp,
                     attack       = character.attack,
                     defense      = character.defense,
                     criticalRate = character.criticalRate,
@@ -341,7 +345,7 @@ namespace GameBackend.Core.Services
         /// Áp dụng hiệu ứng từ effectJson lên nhân vật (mục 2.4 bước 3).
         /// Ví dụ effectJson: {"hp": 50} | {"hp_full": true}
         /// </summary>
-        private static void ApplyConsumableEffect(string effectJson, Character character, int timesUsed)
+        private static void ApplyConsumableEffect(string effectJson, Character character, int timesUsed, int effectiveMaxHp)
         {
             if (string.IsNullOrWhiteSpace(effectJson)) return;
 
@@ -353,7 +357,7 @@ namespace GameBackend.Core.Services
                 // Hồi HP đầy
                 if (root.TryGetProperty("hp_full", out var hpFull) && hpFull.GetBoolean())
                 {
-                    character.hp = character.maxHp;
+                    character.hp = effectiveMaxHp;
                     return;
                 }
 
@@ -361,7 +365,7 @@ namespace GameBackend.Core.Services
                 if (root.TryGetProperty("hp", out var hpEl))
                 {
                     int restore = hpEl.GetInt32() * timesUsed;
-                    character.hp = Math.Min(character.hp + restore, character.maxHp);
+                    character.hp = Math.Min(character.hp + restore, effectiveMaxHp);
                 }
 
                 // Tăng Attack tạm thời (ghi thẳng vào base stat — đơn giản hóa cho MVP)

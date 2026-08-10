@@ -167,6 +167,7 @@ public class StoryStateUpdaterTests
             SavedSession = session;
             return Task.CompletedTask;
         }
+        public Task DeleteSessionByCharacterIdAsync(string characterId) => Task.CompletedTask;
         public Task SaveActionAsync(StoryAction action) => Task.CompletedTask;
         public Task<List<StoryAction>> GetActionsBySessionIdAsync(string sessionId) => Task.FromResult(new List<StoryAction>());
     }

@@ -1,21 +1,21 @@
 {
   "version": "36.0.0",
   "files": {
-    "4d630148f9f69e948a9b9a290be0dd5d8ad67408c3b4227bf5e15a514a8ce748": {
+    "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71": {
       "source": {
-        "path": "asset.4d630148f9f69e948a9b9a290be0dd5d8ad67408c3b4227bf5e15a514a8ce748",
+        "path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
         "packaging": "zip"
       },
       "destinations": {
         "current_account-ap-southeast-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1",
-          "objectKey": "4d630148f9f69e948a9b9a290be0dd5d8ad67408c3b4227bf5e15a514a8ce748.zip",
+          "objectKey": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip",
           "region": "ap-southeast-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-1"
         }
       }
     },
-    "3f14fe64d1f8e53b512fd2c5ab2a5daa154afa6584db4879b4b1a8dbe6b865cf": {
+    "c1b83db1cd3c48f62f1451089aa0d2eb02a29f7e6a8cf2d852152ec47b8549fb": {
       "source": {
         "path": "GameLambdaStack.template.json",
         "packaging": "file"
@@ -23,7 +23,7 @@
       "destinations": {
         "current_account-ap-southeast-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1",
-          "objectKey": "3f14fe64d1f8e53b512fd2c5ab2a5daa154afa6584db4879b4b1a8dbe6b865cf.json",
+          "objectKey": "c1b83db1cd3c48f62f1451089aa0d2eb02a29f7e6a8cf2d852152ec47b8549fb.json",
           "region": "ap-southeast-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-1"
         }

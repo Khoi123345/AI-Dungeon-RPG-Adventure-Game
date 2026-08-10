@@ -269,6 +269,7 @@ namespace GameBackend.Tests
             public Task<StorySession?> GetSessionByIdAsync(string sessionId) => Task.FromResult<StorySession?>(null);
             public Task<StorySession?> GetSessionByCharacterIdAsync(string characterId) => Task.FromResult<StorySession?>(null);
             public Task SaveSessionAsync(StorySession session) => Task.CompletedTask;
+            public Task DeleteSessionByCharacterIdAsync(string characterId) => Task.CompletedTask;
             public Task SaveActionAsync(StoryAction action) => Task.CompletedTask;
             public Task<List<StoryAction>> GetActionsBySessionIdAsync(string sessionId) => Task.FromResult(new List<StoryAction>());
         }

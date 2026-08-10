@@ -24,106 +24,101 @@ namespace GameBackend.Core.Services.Validation
             _logger = logger;
         }
 
+        private static readonly HashSet<string> Chapter1Locations = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "ancient_cave", "forgotten_temple", "goblin_hideout", "boss_room"
+        };
+
+        private static readonly HashSet<string> Chapter2Locations = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "sunken_shipwreck", "abyssal_trench", "coral_palace", "boss_room"
+        };
+
+        private static readonly HashSet<string> Chapter3Locations = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "sulfur_mines", "obsidian_peaks", "dragon_nest", "boss_room"
+        };
+
         public async Task ValidateAsync(GameRuleValidationContext context)
         {
             var response = context.Response;
             var rawLocation = response.CurrentLocation?.Trim();
             var requestedLocation = NormalizeLocationId(rawLocation);
             var currentLocation = context.Session.currentLocation ?? context.Character.currentLocationId ?? "ancient_cave";
+            var chapterId = (context.Session.currentChapterId ?? "1").ToLowerInvariant();
 
-            // Cập nhật lại response.CurrentLocation đã chuẩn hóa (bỏ tiền tố location_)
-            if (!string.IsNullOrWhiteSpace(requestedLocation))
+            HashSet<string> validLocations = chapterId switch
             {
+                "2" or "chapter_2" => Chapter2Locations,
+                "3" or "chapter_3" => Chapter3Locations,
+                _ => Chapter1Locations
+            };
+
+            // 1. Lấy kho đồ nhân vật để kiểm tra Key Item
+            var inventory = await _inventoryRepository.GetByCharacterIdAsync(context.Character.characterId);
+            var itemIds = new HashSet<string>(inventory.Select(i => i.itemId), StringComparer.OrdinalIgnoreCase);
+
+            // 2. Kiểm tra currentLocation: Nếu AI trả về địa điểm hợp lệ của Chương hiện tại
+            if (!string.IsNullOrWhiteSpace(requestedLocation) && validLocations.Contains(requestedLocation))
+            {
+                // Kiểm tra ràng buộc chìa khóa (Key Items) để chống nhảy cóc Location
+                if (requestedLocation == "forgotten_temple" && !itemIds.Contains("item_ancient_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'forgotten_temple': player lacks item_ancient_key.");
+                    requestedLocation = "ancient_cave";
+                }
+                else if (requestedLocation == "goblin_hideout" && !itemIds.Contains("item_temple_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'goblin_hideout': player lacks item_temple_key.");
+                    requestedLocation = itemIds.Contains("item_ancient_key") ? "forgotten_temple" : "ancient_cave";
+                }
+                else if (requestedLocation == "abyssal_trench" && !itemIds.Contains("item_sea_compass") && !itemIds.Contains("item_shipwreck_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'abyssal_trench': player lacks item_sea_compass.");
+                    requestedLocation = "sunken_shipwreck";
+                }
+                else if (requestedLocation == "coral_palace" && !itemIds.Contains("item_void_crystal") && !itemIds.Contains("item_abyssal_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'coral_palace': player lacks item_void_crystal.");
+                    requestedLocation = itemIds.Contains("item_sea_compass") ? "abyssal_trench" : "sunken_shipwreck";
+                }
+                else if (requestedLocation == "obsidian_peaks" && !itemIds.Contains("item_obsidian_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'obsidian_peaks': player lacks item_obsidian_key.");
+                    requestedLocation = "sulfur_mines";
+                }
+                else if (requestedLocation == "dragon_nest" && !itemIds.Contains("item_dragon_blood_key"))
+                {
+                    _logger.LogWarning("Blocked AI transition to 'dragon_nest': player lacks item_dragon_blood_key.");
+                    requestedLocation = itemIds.Contains("item_obsidian_key") ? "obsidian_peaks" : "sulfur_mines";
+                }
+
+                context.Session.currentLocation = requestedLocation;
                 response.CurrentLocation = requestedLocation;
             }
-
-            // 1. Kiểm tra xem vị trí do AI trả về có tồn tại trong hệ thống (Content Catalog) hay không
-            if (!string.IsNullOrWhiteSpace(requestedLocation))
-            {
-                if (await _contentService.LocationExistsAsync(requestedLocation))
-                {
-                    // RÀNG BUỘC CỨNG KEY ITEM: Không cho phép nhảy vị trí nếu thiếu Key Item tương ứng
-                    var inventory = await _inventoryRepository.GetByCharacterIdAsync(context.Character.characterId);
-                    bool hasAncientKey = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_ancient_key", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
-                    bool hasElementalCore = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_elemental_core", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
-                    bool hasSeaCompass = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_sea_compass", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
-                    bool hasVoidCrystal = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_void_crystal", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
-                    bool hasFireCore = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_fire_core", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
-                    bool hasObsidianKey = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_obsidian_key", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
-                    bool hasDragonBloodKey = inventory != null && inventory.Any(i => string.Equals(i.itemId, "item_dragon_blood_key", StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
-
-                    bool isAllowed = true;
-                    if (string.Equals(requestedLocation, "forgotten_temple", StringComparison.OrdinalIgnoreCase) && !hasAncientKey)
-                    {
-                        isAllowed = false;
-                        _logger.LogWarning("Chặn AI/Player chuyển sang 'forgotten_temple': Nhân vật {CharacterId} chưa có item_ancient_key trong kho đồ", context.Character.characterId);
-                    }
-                    else if (string.Equals(requestedLocation, "goblin_hideout", StringComparison.OrdinalIgnoreCase) && !hasElementalCore)
-                    {
-                        isAllowed = false;
-                        _logger.LogWarning("Chặn AI/Player chuyển sang 'goblin_hideout': Nhân vật {CharacterId} chưa có item_elemental_core trong kho đồ", context.Character.characterId);
-                    }
-                    else if (string.Equals(requestedLocation, "abyssal_trench", StringComparison.OrdinalIgnoreCase) && !hasSeaCompass)
-                    {
-                        isAllowed = false;
-                        _logger.LogWarning("Chặn AI/Player chuyển sang 'abyssal_trench': Nhân vật {CharacterId} chưa có item_sea_compass trong kho đồ", context.Character.characterId);
-                    }
-                    else if (string.Equals(requestedLocation, "coral_palace", StringComparison.OrdinalIgnoreCase) && !hasVoidCrystal)
-                    {
-                        isAllowed = false;
-                        _logger.LogWarning("Chặn AI/Player chuyển sang 'coral_palace': Nhân vật {CharacterId} chưa có item_void_crystal trong kho đồ", context.Character.characterId);
-                    }
-                    else if (string.Equals(requestedLocation, "sulfur_mines", StringComparison.OrdinalIgnoreCase) && !hasFireCore)
-                    {
-                        isAllowed = false;
-                        _logger.LogWarning("Chặn AI/Player chuyển sang 'sulfur_mines': Nhân vật {CharacterId} chưa có item_fire_core trong kho đồ", context.Character.characterId);
-                    }
-                    else if (string.Equals(requestedLocation, "obsidian_peaks", StringComparison.OrdinalIgnoreCase) && !hasObsidianKey)
-                    {
-                        isAllowed = false;
-                        _logger.LogWarning("Chặn AI/Player chuyển sang 'obsidian_peaks': Nhân vật {CharacterId} chưa có item_obsidian_key trong kho đồ", context.Character.characterId);
-                    }
-                    else if (string.Equals(requestedLocation, "dragon_nest", StringComparison.OrdinalIgnoreCase) && !hasDragonBloodKey)
-                    {
-                        isAllowed = false;
-                        _logger.LogWarning("Chặn AI/Player chuyển sang 'dragon_nest': Nhân vật {CharacterId} chưa có item_dragon_blood_key trong kho đồ", context.Character.characterId);
-                    }
-
-
-                    if (isAllowed)
-                    {
-                        context.Session.currentLocation = requestedLocation;
-                        if (string.IsNullOrWhiteSpace(response.CurrentNodeId))
-                        {
-                            response.CurrentNodeId = requestedLocation;
-                        }
-                    }
-                    else
-                    {
-                        // Giữ nguyên vị trí hiện tại nếu chưa đủ điều kiện
-                        response.CurrentLocation = currentLocation;
-                        response.CurrentNodeId = context.Session.currentNodeId ?? currentLocation;
-                    }
-                }
-                else
-                {
-                    _logger.LogInformation("Vị trí '{Location}' từ AI không tồn tại trong Content Catalog, giữ nguyên vị trí hiện tại của Session.", requestedLocation);
-                    response.CurrentLocation = currentLocation;
-                }
-            }
-
             else
             {
-                // Nếu AI không trả về location -> Giữ vị trí hiện tại
+                // Nếu AI tự bịa địa điểm lạ (như coastline_exploration, beach), ép về vị trí chính thức của Session
+                _logger.LogWarning("AI returned non-canonical location '{Requested}' for Chapter '{Chapter}'. Overriding to '{Current}'.", requestedLocation, chapterId, currentLocation);
                 response.CurrentLocation = currentLocation;
+                context.Session.currentLocation = currentLocation;
             }
 
-            // Đồng bộ currentNodeId nếu AI để trống
-            if (string.IsNullOrWhiteSpace(response.CurrentNodeId))
+            // 2. Chấp nhận mọi currentNodeId do AI tạo ra để mở rộng cốt truyện, chỉ cần không rỗng.
+            var requestedNode = NormalizeLocationId(response.CurrentNodeId);
+            if (string.IsNullOrWhiteSpace(requestedNode))
             {
-                response.CurrentNodeId = context.Session.currentNodeId ?? response.CurrentLocation;
+                _logger.LogInformation("currentNodeId is empty. Defaulting to '{Location}'", response.CurrentLocation);
+                response.CurrentNodeId = response.CurrentLocation;
+                context.Session.currentNodeId = response.CurrentLocation;
+            }
+            else
+            {
+                response.CurrentNodeId = requestedNode;
+                context.Session.currentNodeId = requestedNode;
             }
         }
+
 
         private static string NormalizeLocationId(string? raw)
         {

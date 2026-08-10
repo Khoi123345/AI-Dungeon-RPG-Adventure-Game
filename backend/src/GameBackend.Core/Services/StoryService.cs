@@ -84,13 +84,13 @@ namespace GameBackend.Core.Services
             return (location ?? "").ToLowerInvariant() switch
             {
                 // Chapter 1
-                "forgotten_temple" => "shadow_demon",
-                "goblin_hideout"   => "goblin_king",
+                "forgotten_temple" => "boss_shadow_demon",
+                "goblin_hideout"   => "boss_goblin_king",
                 // Chapter 2
-                "coral_palace"     => "shadow_demon",
+                "coral_palace"     => "boss_shadow_demon",
                 // Chapter 3
-                "dragon_nest"      => "dragon_king",
-                _                  => "goblin_king"  // fallback
+                "dragon_nest"      => "boss_dragon_king",
+                _                  => "boss_goblin_king"  // fallback
             };
         }
 
@@ -204,13 +204,24 @@ namespace GameBackend.Core.Services
                         .ToList();
 
                     var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+                    var latestAction = allRecentActions?.OrderByDescending(action => action.createdAt).FirstOrDefault();
+
+                    // Nếu lượt vừa tạo gần nhất là Kết quả trận đánh hoặc Chuyển chương -> Hiển thị trực tiếp thẻ kết quả trận đánh
+                    if (latestAction != null && (string.Equals(latestAction.actionType, "battle_result", StringComparison.OrdinalIgnoreCase) || string.Equals(latestAction.actionType, "chapter_transition", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        _logger.LogInformation("Resuming session after battle/transition: Displaying latest {ActionType} action directly", latestAction.actionType);
+                        var parsedAction = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(!string.IsNullOrWhiteSpace(latestAction.metadataJson) ? latestAction.metadataJson : latestAction.aiResponse, session, latestAction.actionType);
+                        return BuildResponse(session, character, latestAction.aiResponse, parsedAction.Choices);
+                    }
+
                     var recentActions = allRecentActions
                         .OrderByDescending(action => action.createdAt)
                         .Take(6)
                         .OrderBy(action => action.createdAt)
                         .ToList();
 
-                    string resumeSystemEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave");
+
+                    string resumeSystemEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave", session.currentNodeId ?? "ancient_cave");
 
                     var resumeContext = new StoryActionProcessingContext
                     {
@@ -453,14 +464,21 @@ namespace GameBackend.Core.Services
             if (!string.IsNullOrWhiteSpace(request.playerInput))
             {
                 var lowerInput = request.playerInput.ToLowerInvariant();
-                if (lowerInput.Contains("chiến đấu") || lowerInput.Contains("tấn công") || lowerInput.Contains("đánh") || lowerInput.Contains("tiêu diệt"))
+                if (lowerInput.Contains("chiến đấu") || 
+                    lowerInput.Contains("tấn công") || 
+                    lowerInput.Contains("đánh") || 
+                    lowerInput.Contains("tiêu diệt") ||
+                    lowerInput.Contains("đối mặt") ||
+                    lowerInput.Contains("khiêu chiến") ||
+                    lowerInput.Contains("thách đấu") ||
+                    lowerInput.Contains("giao chiến"))
                 {
                     intentToFight = true;
                 }
             }
 
             // 3. Xử lý các sự kiện (Boss Room, Ambush, v.v.)
-            if (isInBossRoom && !recentlyFoughtBattle)
+            if (isInBossRoom)
             {
                 var chapterBossId = GetChapterBossId(session.currentLocation);
                 var chapterBoss = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == chapterBossId);
@@ -469,9 +487,15 @@ namespace GameBackend.Core.Services
                     int bossLvl = GameShared.Config.GameConstants.CalculateBossLevel(character.level, chapterBoss.rarity, chapterBossId);
                     if (intentToFight)
                     {
-                        systemInjectedEvent = $"[LỆNH HỆ THỐNG] Người chơi đã chọn TẤN CÔNG BOSS! " +
+                        systemInjectedEvent = $"[LỆNH HỆ THỐNG] Người chơi đã chọn TẤN CÔNG BOSS ({chapterBoss.name})! " +
                             $"BẮT BUỘC đặt triggerBattle: true, bossId: '{chapterBossId}', bossName: '{chapterBoss.name}', bossLevel: {bossLvl}. " +
                             $"Chỉ miêu tả cảnh người chơi lao vào chuẩn bị chiến đấu, tuyệt đối không miêu tả diễn biến trận đánh!";
+                    }
+                    else if (recentlyFoughtBattle)
+                    {
+                        systemInjectedEvent = $"[HẬU CHIẾN BOSS] Người chơi vừa trải qua trận chiến với Boss {chapterBoss.name}. " +
+                            $"Nếu người chơi chọn tiếp tục đối đầu hoặc chiến đấu, BẮT BUỘC đặt triggerBattle: true, bossId: '{chapterBossId}', bossName: '{chapterBoss.name}'. " +
+                            $"Nếu người chơi chọn rút lui hoặc nghỉ ngơi, đặt triggerBattle: false.";
                     }
                     else
                     {
@@ -483,34 +507,42 @@ namespace GameBackend.Core.Services
             }
             else
             {
-                systemInjectedEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave");
+                systemInjectedEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave", session.currentNodeId ?? "ancient_cave");
 
-                if (recentlyFoughtBattle)
+                bool isChapter2 = (session.currentChapterId ?? "").Equals("2", StringComparison.OrdinalIgnoreCase) || (session.currentChapterId ?? "").Equals("chapter_2", StringComparison.OrdinalIgnoreCase);
+                bool isChapter3 = (session.currentChapterId ?? "").Equals("3", StringComparison.OrdinalIgnoreCase) || (session.currentChapterId ?? "").Equals("chapter_3", StringComparison.OrdinalIgnoreCase);
+
+                if (intentToFight)
+                {
+                    systemInjectedEvent += " [LỆNH HỆ THỐNG] Người chơi đã CHỦ ĐỘNG chọn hành động chiến đấu. Bạn BẮT BUỘC phải thiết lập triggerBattle: true và điền bossId tương ứng với kẻ địch mà họ đang đối đầu (nếu có).";
+                }
+                else if (isChapter2)
+                {
+                    systemInjectedEvent += " [LỆNH CHUYỂN CHƯƠNG 2: TÀU ĐẮM BỊ CHÌM] Người chơi đã chính thức bước sang CHƯƠNG 2 (Vương Quốc Chìm Đắm)! BẮT BUỘC đặt 'currentLocation': 'sunken_shipwreck', 'currentChapterId': '2'. Hãy miêu tả hoành tráng cảnh người chơi rời khỏi Sào Huyệt Goblin, men theo suối ngầm tiến vào bối cảnh biển thẳm u tối với Xác Tàu Đắm cổ kính (sunken_shipwreck). Tạo 3 lựa chọn thám hiểm Xác Tàu Đắm!";
+                }
+                else if (isChapter3)
+                {
+                    systemInjectedEvent += " [LỆNH CHUYỂN CHƯƠNG 3: VÙNG ĐẤT NÚI LỬA] Người chơi đã chính thức bước sang CHƯƠNG 3! BẮT BUỘC đặt 'currentLocation': 'sulfur_mines', 'currentChapterId': '3'. Hãy miêu tả cảnh người chơi tiến vào Mỏ Lưu Huỳnh và vùng núi nham thạch rực lửa (sulfur_mines). Tạo 3 lựa chọn thám hiểm Mỏ Lưu Huỳnh!";
+                }
+                else if (recentlyFoughtBattle)
                 {
                     systemInjectedEvent += " [HẬU CHIẾN] Người chơi vừa hoàn thành một trận chiến ác liệt. Hãy miêu tả ngắn gọn cảnh họ thở phào hoặc thu thập chiến lợi phẩm trước khi đưa ra các lựa chọn để tiếp tục hành trình.";
                 }
                 else if (session.status == "Active")
                 {
-                    if (intentToFight)
+                    // Cơ chế Ambush (15% tỷ lệ phục kích khi người chơi chọn không chiến đấu)
+                    var rnd = new Random();
+                    if (rnd.Next(100) < 15) // 15% chance
                     {
-                        systemInjectedEvent += " [LỆNH HỆ THỐNG] Người chơi đã CHỦ ĐỘNG chọn hành động chiến đấu. Bạn BẮT BUỘC phải thiết lập triggerBattle: true và điền bossId tương ứng với kẻ địch mà họ đang đối đầu (nếu có).";
-                    }
-                    else
-                    {
-                        // Cơ chế Ambush (15% tỷ lệ phục kích khi người chơi chọn không chiến đấu)
-                        var rnd = new Random();
-                        if (rnd.Next(100) < 15) // 15% chance
+                        var mobId = RollRandomEncounter(session.currentLocation);
+                        if (mobId != null)
                         {
-                            var mobId = RollRandomEncounter(session.currentLocation);
-                            if (mobId != null)
+                            var mob = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == mobId);
+                            if (mob != null)
                             {
-                                var mob = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == mobId);
-                                if (mob != null)
-                                {
-                                    systemInjectedEvent += $" [SỰ KIỆN PHỤC KÍCH] Mặc dù người chơi không muốn đánh, nhưng một con {mob.name} quá nhanh và hung hãn đã lao ra chặn đường! " +
-                                        $"BẮT BUỘC miêu tả lý do tại sao người chơi không thể né tránh. " +
-                                        $"ĐỒNG THỜI thiết lập triggerBattle: false, bossId: '{mobId}', và cung cấp các lựa chọn cho người chơi (ví dụ: Chiến đấu, Cố gắng bỏ chạy).";
-                                }
+                                systemInjectedEvent += $" [SỰ KIỆN PHỤC KÍCH] Mặc dù người chơi không muốn đánh, nhưng một con {mob.name} quá nhanh và hung hãn đã lao ra chặn đường! " +
+                                    $"BẮT BUỘC miêu tả lý do tại sao người chơi không thể né tránh. " +
+                                    $"ĐỒNG THỜI thiết lập triggerBattle: false, bossId: '{mobId}', và cung cấp các lựa chọn cho người chơi (ví dụ: Chiến đấu, Cố gắng bỏ chạy).";
                             }
                         }
                     }
@@ -924,9 +956,15 @@ namespace GameBackend.Core.Services
             };
         }
 
-
-        private string BuildQuestItemDirective(IEnumerable<Item>? inventoryItems, string currentLocation)
+        private string BuildQuestItemDirective(IEnumerable<Item>? inventoryItems, string currentLocation, string currentNodeId)
         {
+            if (currentNodeId.Equals("boss_room", StringComparison.OrdinalIgnoreCase))
+            {
+                 return $"[TIẾN VÀO PHÒNG TRÙM] Người chơi đang ở trong phòng chứa Boss (boss_room). " +
+                        $"BẮT BUỘC cung cấp Lựa chọn (Choice) Tấn công Boss để tiến hành trận đấu Boss cuối cùng của khu vực. " +
+                        $"TUYỆT ĐỐI KHÔNG hướng dẫn người chơi đi tìm Key Item nữa.";
+            }
+
             if (currentLocation.Equals("goblin_hideout", StringComparison.OrdinalIgnoreCase))
             {
                  return $"[TIẾN VÀO SÀO HUYỆT GOBLIN] Người chơi hiện đang ở sào huyệt của kẻ địch. " +
@@ -934,58 +972,92 @@ namespace GameBackend.Core.Services
                         $"Các lựa chọn khác có thể là thám hiểm hoặc đối phó với quái vật xung quanh.";
             }
 
-            var questItems = inventoryItems?
-                .Where(i => i != null && string.Equals(i.itemType, "Quest", StringComparison.OrdinalIgnoreCase))
-                .ToList() ?? new List<Item>();
-
-            if (questItems.Count > 0)
-            {
-                var questNames = string.Join(", ", questItems.Select(i => $"'{i.name}' ({i.itemId})"));
-                return $"[NHẬN DIỆN VẬT PHẨM NHIỆM VỤ THỰC TẾ TRONG TÚI ĐỒ] Người chơi ĐÃ SỞ HỮU các Vật Phẩm Nhiệm Vụ: {questNames}. " +
-                       $"Bạn BẮT BUỘC phải đối chiếu với Quy tắc Tiến trình Chương trong system_prompt để kiểm tra xem các vật phẩm này có mở khóa địa điểm/lối đi tiếp theo từ vị trí hiện tại ({currentLocation}) hay không. " +
-                       $"NẾU vật phẩm nhiệm vụ cho phép di chuyển sang địa điểm mới, bạn BẮT BUỘC phải mô tả lối đi mở ra và cung cấp Lựa chọn (Choice) tương ứng trong danh sách choices để người chơi tiến sang địa điểm tiếp theo.";
-            }
-
             string targetMonster = "một con quái vật mạnh mẽ";
             string targetItem = "Vật Phẩm Nhiệm Vụ";
+            string targetItemId = "item_unknown";
             string nextLocation = "địa điểm tiếp theo";
+            string nextLocationName = "Khu vực tiếp theo";
             
             if (currentLocation.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase))
             {
                 targetMonster = "Nhện Hang Động (Cave Spider)";
-                targetItem = "Chìa Khóa Cổ Xưa (item_ancient_key)";
+                targetItem = "Chìa Khóa Cổ Xưa";
+                targetItemId = "item_ancient_key";
                 nextLocation = "forgotten_temple";
+                nextLocationName = "Đền Thờ Bị Lãng Quên";
             }
             else if (currentLocation.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase))
             {
                 targetMonster = "Golem Đền Thờ (Temple Golem)";
-                targetItem = "Lõi Nguyên Tố (item_elemental_core)";
+                targetItem = "Lõi Nguyên Tố";
+                targetItemId = "item_elemental_core";
                 nextLocation = "goblin_hideout";
+                nextLocationName = "Sào Huyệt Goblin";
             }
             else if (currentLocation.Equals("sunken_shipwreck", StringComparison.OrdinalIgnoreCase))
             {
                 targetMonster = "Thủy Thủ Chết Đuối hoặc Cua Đột Biến";
-                targetItem = "Hải Đồ Biển Sâu (item_sea_compass)";
+                targetItem = "Hải Đồ Biển Sâu";
+                targetItemId = "item_sea_compass";
                 nextLocation = "abyssal_trench";
+                nextLocationName = "Rãnh Sâu Vô Tận";
             }
             else if (currentLocation.Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase))
             {
                 targetMonster = "Tàn Dư Hư Không (Void Remnant)";
-                targetItem = "Pha Lê Hư Không (item_void_crystal)";
+                targetItem = "Pha Lê Hư Không";
+                targetItemId = "item_void_crystal";
                 nextLocation = "coral_palace";
+                nextLocationName = "Cung Điện San Hô";
             }
             else if (currentLocation.Equals("coral_palace", StringComparison.OrdinalIgnoreCase))
             {
                 targetMonster = "Oan Hồn Bóng Tối (Shadow Spirit)";
-                targetItem = "Pha Lê Hư Không (dùng mở cổng ngai vàng)";
+                targetItem = "Pha Lê Hư Không"; // Assuming this is correct from original, although strange that they fight for it again in the palace? Actually wait, it says "dùng mở cổng ngai vàng" in original. Let's keep it.
+                targetItemId = "item_void_crystal";
                 nextLocation = "boss_room";
+                nextLocationName = "Phòng Ngai Vàng";
+            }
+            else if (currentLocation.Equals("sulfur_mines", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Linh Hồn Lửa (Fire Spirit)";
+                targetItem = "Chìa Khóa Hắc Diệu Thạch";
+                targetItemId = "item_obsidian_key";
+                nextLocation = "obsidian_peaks";
+                nextLocationName = "Đỉnh Núi Hắc Diệu Thạch";
+            }
+            else if (currentLocation.Equals("obsidian_peaks", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Vệ Binh Hắc Diệu Thạch (Obsidian Guard)";
+                targetItem = "Chìa Khóa Huyết Long";
+                targetItemId = "item_dragon_blood_key";
+                nextLocation = "dragon_nest";
+                nextLocationName = "Tổ Rồng";
+            }
+            else if (currentLocation.Equals("dragon_nest", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Rồng Hắc Ám (Dark Dragon)";
+                targetItem = "Chìa Khóa Huyết Long";
+                targetItemId = "item_dragon_blood_key";
+                nextLocation = "boss_room";
+                nextLocationName = "Phòng Ngai Vàng Rồng";
             }
 
-            return $"[NHIỆM VỤ CỐT TRUYỆN: TÌM {targetItem.ToUpperInvariant()}] Người chơi CHƯA SỞ HỮU {targetItem}. " +
-                   $"Bạn TUYỆT ĐỐI KHÔNG ĐƯỢC tạo lựa chọn cho phép sang khu vực mới ({nextLocation}) khi chưa thu thập {targetItem}! " +
-                   $"THAY VÀO ĐÓ, BẠN BẮT BUỘC PHẢI DẪN TRUYỆN BẰNG CÁCH: Tiết lộ hoặc ám chỉ rằng {targetMonster} đang cất giữ {targetItem}. " +
-                   $"Sau đó, cung cấp các Lựa chọn (choices) xoay quanh việc thám hiểm hoặc khiêu chiến {targetMonster} để giành lấy {targetItem}. " +
-                   $"KHI TIÊU DIỆT HOẶC TÌM THẤY {targetItem}, HÃY TẠO ITEM NÀY TRONG INVENTORYCHANGES: [{{ \"itemId\": \"item_id_tương_ứng\", \"quantityDelta\": 1 }}].";
+            bool hasRequiredItem = inventoryItems?.Any(i => i != null && string.Equals(i.itemId, targetItemId, StringComparison.OrdinalIgnoreCase)) == true;
+
+            if (hasRequiredItem)
+            {
+                return $"[NHIỆM VỤ HOÀN THÀNH: ĐÃ CÓ {targetItem.ToUpperInvariant()}] Người chơi ĐÃ SỞ HỮU {targetItem} ({targetItemId}) trong hành trang! " +
+                       $"Bạn BẮT BUỘC phải mô tả lối đi mở ra và cung cấp 1 Lựa chọn (Choice) có nextNodeId='{nextLocation}' để người chơi tiến sang {nextLocationName}.";
+            }
+            else
+            {
+                return $"[NHIỆM VỤ CỐT TRUYỆN: TÌM {targetItem.ToUpperInvariant()}] Người chơi CHƯA SỞ HỮU {targetItem} ({targetItemId}). " +
+                       $"Bạn TUYỆT ĐỐI KHÔNG ĐƯỢC tạo lựa chọn cho phép sang khu vực mới ({nextLocation}) khi chưa thu thập {targetItem}! " +
+                       $"THAY VÀO ĐÓ, BẠN BẮT BUỘC PHẢI DẪN TRUYỆN BẰNG CÁCH: Tiết lộ hoặc ám chỉ rằng {targetMonster} đang cất giữ {targetItem}. " +
+                       $"Sau đó, cung cấp các Lựa chọn (choices) xoay quanh việc thám hiểm hoặc khiêu chiến {targetMonster} để giành lấy {targetItem}. " +
+                       $"KHI TIÊU DIỆT HOẶC TÌM THẤY {targetItem}, HÃY TẠO ITEM NÀY TRONG INVENTORYCHANGES: [{{ \"itemId\": \"{targetItemId}\", \"quantityDelta\": 1 }}].";
+            }
 
         }
 
