@@ -69,6 +69,10 @@ public class RegisterPanelController : MonoBehaviour
 
     private void Start()
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmMenu != null)
+        {
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.bgmMenu);
+        }
         SetupButtons();
         SetupInputListeners();
         ClearAllErrors();

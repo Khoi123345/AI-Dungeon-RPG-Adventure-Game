@@ -57,6 +57,10 @@ public class LoginPanelController : MonoBehaviour
 
     private void Start()
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmMenu != null)
+        {
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.bgmMenu);
+        }
         // Nếu đã đăng nhập (auto-login), chuyển thẳng sang MainMenu
         if (AuthManager.Instance.IsLoggedIn)
         {

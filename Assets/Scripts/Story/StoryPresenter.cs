@@ -39,6 +39,11 @@ public class StoryPresenter : MonoBehaviour
 
     private void Start()
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmStoryPlaylist != null)
+        {
+            SoundManager.Instance.PlayMusicPlaylist(SoundManager.Instance.bgmStoryPlaylist);
+        }
+
         if (view == null)
         {
             view = GetComponent<StoryView>();

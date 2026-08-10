@@ -24056,9 +24056,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   musicSource: {fileID: 0}
   sfxSource: {fileID: 0}
-  musicVolume: 0.8
+  musicVolume: 0.3
   sfxVolume: 0.8
   defaultClickSound: {fileID: 8300000, guid: c303337c0c3ff0a40b1afe411a6c2184, type: 3}
+  bgmMenu: {fileID: 8300000, guid: cff03b3ba76068c479174f33f9841169, type: 3}
+  bgmStoryPlaylist:
+  - {fileID: 8300000, guid: 1627b51fe9be6874cb7f419667231ccc, type: 3}
+  - {fileID: 8300000, guid: 959531764713f8845a138f2956234259, type: 3}
+  bgmBattle: {fileID: 8300000, guid: d4aaca2390ae3e1449b24a10b058f703, type: 3}
+  bgmVictory: {fileID: 8300000, guid: ef0697d919feda84287af7107da9d348, type: 3}
+  bgmDefeat: {fileID: 8300000, guid: 4f1263d64b1087a47817ee56d3a6e280, type: 3}
 --- !u!4 &1919204955
 Transform:
   m_ObjectHideFlags: 0

@@ -51,6 +51,11 @@ public class BattleEndUIController : MonoBehaviour
     /// </summary>
     public void TriggerVictory(List<LootDrop> droppedItems, int goldEarned = 0, int expEarned = 0)
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmVictory != null)
+        {
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.bgmVictory);
+        }
+
         isConfirmProcessed = false; // Reset cờ bảo vệ khi màn Victory xuất hiện
 
         // Stop any running animations to avoid conflicts
@@ -88,6 +93,11 @@ public class BattleEndUIController : MonoBehaviour
     /// </summary>
     public void TriggerDefeat()
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmDefeat != null)
+        {
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.bgmDefeat);
+        }
+
         StopAllCoroutines();
 
         // 1. Hiển thị và chạy hiệu ứng làm mờ nền tối
