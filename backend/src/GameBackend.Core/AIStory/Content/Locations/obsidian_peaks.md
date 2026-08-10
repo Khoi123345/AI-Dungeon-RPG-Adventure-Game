@@ -15,3 +15,4 @@ Những đỉnh núi làm từ đá hắc diệu thạch nhọn trắt, vươn c
 - **Narrative Tone:** Tăng tính kịch tính, nhấn mạnh địa hình nguy hiểm trên vách đá cao chót vót và nguy cơ bị tấn công bất ngờ từ không trung.
 - **Quest Item Drop:** Người chơi đánh bại Khủng Long Săn Lửa (`mob_fire_raptor`) sẽ thu thập được Chìa Khóa Long Huyết (ID: `item_dragon_blood_key`). Hãy tạo item này trong `inventoryChanges`: `[{ "itemId": "item_dragon_blood_key", "quantityDelta": 1 }]`.
 - **Navigation:** Khi có `item_dragon_blood_key`, AI **BẮT BUỘC** đưa ra lựa chọn: `"label": "Tiến vào Tổ Rồng"`, `"nextNodeId": "dragon_nest"`.
+- **Return Route:** Người chơi luôn có thể chọn quay lại Mỏ Lưu Huỳnh (`"label": "Quay lại Mỏ Lưu Huỳnh"`, `"nextNodeId": "sulfur_mines"`).

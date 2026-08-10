@@ -674,7 +674,7 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.experience += expEarned;
             HandleLevelUpIfNeeded();
 
-            // Roll ngẫu nhiên vật phẩm từ GameConstants theo rarity của Boss
+            // Roll ngẫu nhiên vật phẩm từ GameConstants theo đúng rarity của Boss
             var droppedItemTemplate = GameShared.Config.GameConstants.RollRandomItemByRarity(CurrentBoss?.rarity ?? "Common")
                                    ?? GameShared.Config.GameConstants.GetItemById("item_rusty_sword");
 
@@ -694,6 +694,41 @@ public class GameProgressService : MonoBehaviour
 
             lootDrops.Add(loot);
             dropped.Add(loot);
+
+            // Tự động rớt Key Item nếu người chơi chưa sở hữu (Parity với Backend)
+            string currentLoc = CurrentStorySession?.currentLocation ?? CurrentCharacter?.currentLocationId ?? "ancient_cave";
+            string keyItemToGrant = currentLoc.ToLowerInvariant() switch
+            {
+                "ancient_cave" => "item_ancient_key",
+                "forgotten_temple" => "item_elemental_core",
+                "sunken_shipwreck" => "item_sea_compass",
+                "abyssal_trench" => "item_void_crystal",
+                "coral_palace" => "item_fire_core",
+                "sulfur_mines" => "item_obsidian_key",
+                "obsidian_peaks" => "item_dragon_blood_key",
+                _ => ""
+            };
+
+            if (!string.IsNullOrEmpty(keyItemToGrant))
+            {
+                bool alreadyHasKey = inventory.Any(i => i.itemId.Equals(keyItemToGrant, StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
+                if (!alreadyHasKey)
+                {
+                    LootDrop keyLoot = new LootDrop
+                    {
+                        lootId = Guid.NewGuid().ToString("N"),
+                        battleId = battle.battleId,
+                        itemId = keyItemToGrant,
+                        quantity = 1,
+                        dropRate = 1f,
+                        sourceType = "KeyItem",
+                        isUnique = true,
+                        createdAt = DateTime.UtcNow
+                    };
+                    lootDrops.Add(keyLoot);
+                    dropped.Add(keyLoot);
+                }
+            }
 
             // GHI CHÚ: Không gọi AddItemToInventory ở đây nữa để tránh bị trùng lặp 2 lần! 
             // Vật phẩm đã chọn sẽ được chính thức thêm vào CSDL khi người chơi nhấn nút Confirm ở màn hình Victory.

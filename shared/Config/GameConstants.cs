@@ -219,21 +219,34 @@ namespace GameShared.Config
 
         public static string RollItemRarity(string bossRarity)
         {
-            if (!LootDropTable.TryGetValue(bossRarity, out var table))
-                table = LootDropTable["Common"];
+            if (string.IsNullOrWhiteSpace(bossRarity)) return "Common";
 
-            int roll = _random.Next(0, 100);
-            if (roll < table.Common)    return "Common";
-            if (roll < table.Common + table.Rare)   return "Rare";
-            if (roll < table.Common + table.Rare + table.Epic) return "Epic";
-            return "Legendary";
+            string normalized = bossRarity.Trim();
+            if (normalized.Equals("Mythic", StringComparison.OrdinalIgnoreCase))
+                return "Legendary";
+
+            if (normalized.Equals("Common", StringComparison.OrdinalIgnoreCase) ||
+                normalized.Equals("Rare", StringComparison.OrdinalIgnoreCase) ||
+                normalized.Equals("Epic", StringComparison.OrdinalIgnoreCase) ||
+                normalized.Equals("Legendary", StringComparison.OrdinalIgnoreCase))
+            {
+                return normalized;
+            }
+
+            return "Common";
         }
 
         public static Item? RollRandomItemByRarity(string itemRarity)
         {
             var candidates = ItemCatalog
-                .Where(i => i.rarity == itemRarity && i.itemType != "Consumable" && i.itemType != "Quest")
+                .Where(i => i.rarity.Equals(itemRarity, StringComparison.OrdinalIgnoreCase) && i.itemType != "Consumable" && i.itemType != "Quest")
                 .ToList();
+            if (candidates.Count == 0)
+            {
+                candidates = ItemCatalog
+                    .Where(i => i.itemType != "Consumable" && i.itemType != "Quest")
+                    .ToList();
+            }
             if (candidates.Count == 0) return null;
             return candidates[_random.Next(candidates.Count)];
         }

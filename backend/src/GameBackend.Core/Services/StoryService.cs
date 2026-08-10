@@ -930,24 +930,94 @@ namespace GameBackend.Core.Services
         private static List<StoryChoiceOption> BuildFallbackChoices(string? location)
         {
             var loc = (location ?? "").ToLowerInvariant();
+
+            // Chapter 1
+            if (loc.Contains("ancient_cave"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá hang động", description = "Tiến sâu vào lòng núi tăm tối", nextNodeId = "explore_path" },
+                    new() { label = "Kiểm tra tàn tích đá", description = "Tìm kiếm dấu vết bí ẩn", nextNodeId = "investigate_path" },
+                    new() { label = "Nghỉ ngơi lấy sức", description = "Tạm dừng hồi phục thể lực", nextNodeId = "rest_path" }
+                };
+            }
+            if (loc.Contains("forgotten_temple"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá đền thờ", description = "Dò tìm tàn tích nguyên tố", nextNodeId = "explore_temple" },
+                    new() { label = "Quay lại Hang Động Cổ Đại", description = "Trở về khu vực đầu tiên", nextNodeId = "ancient_cave" },
+                    new() { label = "Kiểm tra xung quanh", description = "Dò tìm mối nguy hiểm", nextNodeId = "investigate_path" }
+                };
+            }
+            if (loc.Contains("goblin_hideout"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá sào huyệt", description = "Đối phó với tàn dư Goblin", nextNodeId = "explore_hideout" },
+                    new() { label = "Rút lui về Đền Thờ Bị Lãng Quên", description = "Trở về khu vực trước đó", nextNodeId = "forgotten_temple" },
+                    new() { label = "Thám hiểm phòng tối", description = "Dò tìm rương kho báu", nextNodeId = "investigate_path" }
+                };
+            }
+
+            // Chapter 2
             if (loc.Contains("sunken_shipwreck") || loc.Contains("shipwreck"))
             {
                 return new List<StoryChoiceOption>
                 {
                     new() { label = "Khám phá tầng dưới xác tàu", description = "Tiến sâu vào bên trong boong tàu", nextNodeId = "shipwreck_deck" },
-                    new() { label = "Lặn xuống Rãnh Sâu Vô Tận", description = "Rời khỏi tàu đắm và tiến vào Rãnh Sâu", nextNodeId = "abyssal_trench" },
-                    new() { label = "Kiểm tra xung quanh", description = "Tìm kiếm các món đồ hữu ích", nextNodeId = "investigate_path" }
+                    new() { label = "Kiểm tra xung quanh", description = "Tìm kiếm các món đồ hữu ích", nextNodeId = "investigate_path" },
+                    new() { label = "Nghỉ ngơi lấy sức", description = "Tạm dừng hồi phục thể lực", nextNodeId = "rest_path" }
                 };
             }
             if (loc.Contains("abyssal_trench"))
             {
                 return new List<StoryChoiceOption>
                 {
-                    new() { label = "Tiến vào Cung Điện San Hô", description = "Đi về phía ánh sáng tím huyền bí", nextNodeId = "coral_palace" },
+                    new() { label = "Khám phá lòng rãnh sâu", description = "Dò tìm sinh vật biển sâu", nextNodeId = "explore_trench" },
                     new() { label = "Quay lại Xác Tàu Đắm", description = "Trở về khu vực an toàn hơn", nextNodeId = "sunken_shipwreck" },
-                    new() { label = "Cẩn trọng quan sát", description = "Dò tìm sinh vật biển sâu", nextNodeId = "investigate_path" }
+                    new() { label = "Cẩn trọng quan sát", description = "Tìm kiếm dấu vết ma thuật", nextNodeId = "investigate_path" }
                 };
             }
+            if (loc.Contains("coral_palace"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá sảnh điện san hô", description = "Dò tìm các hành lang cổ", nextNodeId = "explore_palace" },
+                    new() { label = "Rút lui về Rãnh Sâu Vô Tận", description = "Trở về khu vực trước đó", nextNodeId = "abyssal_trench" },
+                    new() { label = "Quan sát xung quanh", description = "Dò tìm kẻ địch rình rập", nextNodeId = "investigate_path" }
+                };
+            }
+
+            // Chapter 3
+            if (loc.Contains("sulfur_mines"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá mỏ lưu huỳnh", description = "Dò tìm lối đi giữa các suối nham thạch", nextNodeId = "explore_mines" },
+                    new() { label = "Kiểm tra tàn tích hắc thạch", description = "Tìm kiếm các rương chứa chìa khóa", nextNodeId = "investigate_path" },
+                    new() { label = "Nghỉ ngơi né sức nóng", description = "Tạm dừng hồi phục thể lực", nextNodeId = "rest_path" }
+                };
+            }
+            if (loc.Contains("obsidian_peaks"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá vách đá nham thạch", description = "Dò tìm lối trèo lên cao", nextNodeId = "explore_peaks" },
+                    new() { label = "Quay lại Mỏ Lưu Huỳnh", description = "Trở về khu vực an toàn hơn", nextNodeId = "sulfur_mines" },
+                    new() { label = "Cẩn trọng quan sát rồng rình rập", description = "Tránh bị rồng săn bất ngờ", nextNodeId = "investigate_path" }
+                };
+            }
+            if (loc.Contains("dragon_nest"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá vòm hang tổ rồng", description = "Quan sát long uy và kho báu rồng", nextNodeId = "explore_nest" },
+                    new() { label = "Rút lui về Đỉnh Núi Hắc Diệu Thạch", description = "Trở về khu vực trước đó để luyện cấp", nextNodeId = "obsidian_peaks" },
+                    new() { label = "Kiểm tra các lối ngách", description = "Dò tìm ngách hang trú ẩn", nextNodeId = "investigate_path" }
+                };
+            }
+
             return new List<StoryChoiceOption>
             {
                 new() { label = "Tiến lên phía trước", description = "Tiếp tục khám phá khu vực", nextNodeId = "explore_path" },
@@ -960,16 +1030,9 @@ namespace GameBackend.Core.Services
         {
             if (currentNodeId.Equals("boss_room", StringComparison.OrdinalIgnoreCase))
             {
-                 return $"[TIẾN VÀO PHÒNG TRÙM] Người chơi đang ở trong phòng chứa Boss (boss_room). " +
+                 return $"[TIẾN VÀO PHÒNG TRÙM] Người chơi đang đứng trước cửa phòng chứa Boss (boss_room). " +
                         $"BẮT BUỘC cung cấp Lựa chọn (Choice) Tấn công Boss để tiến hành trận đấu Boss cuối cùng của khu vực. " +
                         $"TUYỆT ĐỐI KHÔNG hướng dẫn người chơi đi tìm Key Item nữa.";
-            }
-
-            if (currentLocation.Equals("goblin_hideout", StringComparison.OrdinalIgnoreCase))
-            {
-                 return $"[TIẾN VÀO SÀO HUYỆT GOBLIN] Người chơi hiện đang ở sào huyệt của kẻ địch. " +
-                        $"BẮT BUỘC phải cung cấp 1 Lựa chọn (Choice) có nextNodeId='boss_room' để tiến vào Phòng Ngai Vàng khi người chơi đã sẵn sàng. " +
-                        $"Các lựa chọn khác có thể là thám hiểm hoặc đối phó với quái vật xung quanh.";
             }
 
             string targetMonster = "một con quái vật mạnh mẽ";

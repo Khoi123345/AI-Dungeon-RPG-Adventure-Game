@@ -76,16 +76,7 @@ namespace GameBackend.Core.Services
             if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
             if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
 
-            Boss? template = null;
-            if (!string.IsNullOrWhiteSpace(targetBossId))
-            {
-                template = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
-                    b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                    b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase) ||
-                    b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase));
-            }
+            Boss? template = FindBossTemplate(targetBossId);
 
 
             string rarity = template != null ? template.rarity : "Common";
@@ -221,13 +212,7 @@ namespace GameBackend.Core.Services
             if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
             if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
 
-            var bossTemplate = GameConstants.BossCatalog.FirstOrDefault(b =>
-                b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
-                b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase) ||
-                b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase))
-                ?? GameConstants.BossCatalog[0];
+            var bossTemplate = FindBossTemplate(targetBossId) ?? GameConstants.BossCatalog[0];
 
 
             double bossPower = bossTemplate.baseAttack * (1 + encounter.bossLevel * GameConstants.BossLevelScaleFactor)
@@ -341,13 +326,17 @@ namespace GameBackend.Core.Services
                 }
 
                 // Mục 5: Loot System
-                int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, encounter.bossRarity);
-                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity, character.level);
+                string effectiveRarity = !string.IsNullOrWhiteSpace(encounter.bossRarity)
+                    ? encounter.bossRarity
+                    : bossTemplate.rarity;
+
+                int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, effectiveRarity);
+                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, effectiveRarity, character.level);
                 character.gold += goldReward;
                 await _characterService.ApplyExperienceAndLevelUp(character, expReward);
 
                 var lootDTOs = await _inventoryService.GrantLootDropAsync(
-                    character.characterId, encounter.bossRarity, battleId);
+                    character.characterId, effectiveRarity, battleId);
 
                 // Khi người chơi hạ gục quái (mob_*) -> Tự động rớt Key Item của khu vực nếu chưa sở hữu
                 string? keyItemToGrant = null;
@@ -440,6 +429,15 @@ namespace GameBackend.Core.Services
                 var session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
                 if (session != null && session.status == "Active")
                 {
+                    // Nếu THẤT BẠI hoặc đang ở node "boss_room", reset currentNodeId về currentLocation chính để thoát khỏi phòng Boss
+                    if (!isVictory || string.Equals(session.currentNodeId, "boss_room", StringComparison.OrdinalIgnoreCase))
+                    {
+                        session.currentNodeId = session.currentLocation;
+                        session.updatedAt = DateTime.UtcNow;
+                        await _storyRepository.SaveSessionAsync(session);
+                        _logger.LogInformation("Reset session currentNodeId to '{Location}' for character {CharacterId} after battle outcome (isVictory={IsVictory})", session.currentLocation, character.characterId, isVictory);
+                    }
+
                     var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
                     var turnNumber = allRecentActions.Count + 1;
 
@@ -472,7 +470,7 @@ namespace GameBackend.Core.Services
                             new StoryChoiceOption
                             {
                                 label = "Tiếp tục",
-                                description = "Sau cuộc chiến, bạn dọn dẹp chiến trường và tiếp tục cuộc hành trình.",
+                                description = "Sau cuộc chiến, bạn quay lại khu vực chính để tiếp tục cuộc hành trình.",
                                 nextNodeId = session.currentNodeId
                             }
                         }
@@ -531,6 +529,56 @@ namespace GameBackend.Core.Services
         // =====================================================================
         // PRIVATE HELPERS
         // =====================================================================
+
+        private static Boss? FindBossTemplate(string? targetBossId)
+        {
+            if (string.IsNullOrWhiteSpace(targetBossId)) return null;
+
+            string cleanTarget = targetBossId.Trim().ToLowerInvariant();
+            bool isMobRequested = cleanTarget.StartsWith("mob_");
+            bool isBossRequested = cleanTarget.StartsWith("boss_");
+
+            string strippedTarget = cleanTarget;
+            if (isMobRequested) strippedTarget = strippedTarget[4..];
+            if (isBossRequested) strippedTarget = strippedTarget[5..];
+
+            // 1. Exact match on bossId
+            var exact = GameConstants.BossCatalog.FirstOrDefault(b =>
+                b.bossId.Equals(cleanTarget, StringComparison.OrdinalIgnoreCase));
+            if (exact != null) return exact;
+
+            // 2. Exact match on name
+            var nameMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
+                b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
+                b.name.Equals(strippedTarget.Replace("_", " "), StringComparison.OrdinalIgnoreCase));
+            if (nameMatch != null) return nameMatch;
+
+            // 3. Exact match with mob_ / boss_ prefix
+            var prefixMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
+                b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
+                b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase));
+            if (prefixMatch != null) return prefixMatch;
+
+            // 4. Substring match respecting request type (mob vs boss)
+            if (isMobRequested)
+            {
+                var mobMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
+                    b.bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase) &&
+                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
+                if (mobMatch != null) return mobMatch;
+            }
+            else if (isBossRequested)
+            {
+                var bossMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
+                    b.bossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase) &&
+                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
+                if (bossMatch != null) return bossMatch;
+            }
+
+            // 5. Fallback substring match
+            return GameConstants.BossCatalog.FirstOrDefault(b =>
+                b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
+        }
 
         // Removed ScaleStat
 
@@ -701,8 +749,8 @@ namespace GameBackend.Core.Services
                 else if (normalizedBossId == "shadow_demon")
                 {
                     targetChapterId = "chapter_3";
-                    targetLocation = "dragon_nest";
-                    chapterTitle = "Chương 3: Hoang Mạc Thiêu Rụi (Tổ Rồng)";
+                    targetLocation = "sulfur_mines";
+                    chapterTitle = "Chương 3: Vùng Đất Hoang Tàn Rực Lửa (Mỏ Lưu Huỳnh)";
                 }
                 else if (normalizedBossId == "dragon_king")
                 {
