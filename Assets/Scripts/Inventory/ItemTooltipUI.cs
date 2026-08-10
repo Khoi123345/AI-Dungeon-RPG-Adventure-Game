@@ -320,6 +320,7 @@ public class ItemTooltipUI : MonoBehaviour
             case ItemRarity.Common: return "Thường";
             case ItemRarity.Rare:   return "Hiếm";
             case ItemRarity.Epic:   return "Sử thi";
+            case ItemRarity.Legendary: return "Huyền thoại";
             default:                return rarity.ToString();
         }
     }
@@ -331,6 +332,7 @@ public class ItemTooltipUI : MonoBehaviour
             case ItemRarity.Common: return new Color(0.85f, 0.85f, 0.85f); // Xám sáng
             case ItemRarity.Rare:   return new Color(0.3f, 0.6f, 1f);      // Xanh dương
             case ItemRarity.Epic:   return new Color(0.7f, 0.3f, 1f);      // Tím
+            case ItemRarity.Legendary: return new Color(1f, 0.6f, 0.1f);   // Vàng/Cam
             default:                return Color.white;
         }
     }
