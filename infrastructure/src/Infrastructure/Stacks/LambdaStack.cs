@@ -20,7 +20,7 @@ namespace Infrastructure.Stacks
         public Function EquipItemFunction { get; }
         public Function UnequipItemFunction { get; }
 
-        public LambdaStack(Construct scope, string id, DatabaseStack dbStack, CognitoStack cognitoStack, IStackProps? props = null) : base(scope, id, props)
+        public LambdaStack(Construct scope, string id, DatabaseStack dbStack, CognitoStack cognitoStack, StorageStack storageStack, IStackProps? props = null) : base(scope, id, props)
         {
             var commonProps = new FunctionProps
             {
@@ -41,7 +41,12 @@ namespace Infrastructure.Stacks
                     { "LOOT_DROPS_TABLE", dbStack.LootDropsTable.TableName }, // Bắt buộc: BattleRepository.Table.LoadTable()
                     { "DEFEATED_BOSSES_TABLE", dbStack.DefeatedBossesTable.TableName },
                     { "COGNITO_USER_POOL_ID", cognitoStack.UserPool.UserPoolId },
-                    { "COGNITO_CLIENT_ID", cognitoStack.UserPoolClient.UserPoolClientId }
+                    { "COGNITO_CLIENT_ID", cognitoStack.UserPoolClient.UserPoolClientId },
+                    // S3 Assets — dùng bởi StoryFunctions để đọc prompt .md từ S3
+                    { "ASSETS_BUCKET_NAME", storageStack.AssetsBucket.BucketName },
+                    { "ASSETS_CDN_URL", storageStack.CloudFrontUrl },
+                    // PROMPT_SOURCE: "s3" → đọc từ S3 với cache; "file" → đọc local (dev)
+                    { "PROMPT_SOURCE", "s3" }
                 }
             };
 
@@ -173,6 +178,11 @@ namespace Infrastructure.Stacks
             });
             StartStoryFunction.AddToRolePolicy(bedrockPolicy);
             StoryActionFunction.AddToRolePolicy(bedrockPolicy);
+
+            // Grant S3 Read Permission cho Story functions để đọc prompt .md
+            // Chỉ Story functions cần đọc prompt, các function khác không cần
+            storageStack.AssetsBucket.GrantRead(StartStoryFunction);
+            storageStack.AssetsBucket.GrantRead(StoryActionFunction);
         }
 
         private Function CreateFunction(string name, string handler, FunctionProps baseProps, bool enableSnapStart = false)
