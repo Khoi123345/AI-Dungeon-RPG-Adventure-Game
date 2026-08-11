@@ -71,6 +71,12 @@ namespace GameBackend.Core.Services
                 ? request.bossId
                 : existingEncounter?.bossId ?? string.Empty;
 
+            if (targetBossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase) &&
+                await _defeatedBossRepository.HasDefeatedBossAsync(character.characterId, targetBossId))
+            {
+                throw new Utils.GameValidationException($"Boss {targetBossId} has already been defeated and cannot be spawned again");
+            }
+
             string cleanTarget = (targetBossId ?? "").Trim().ToLowerInvariant();
             string strippedTarget = cleanTarget;
             if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
@@ -336,7 +342,7 @@ namespace GameBackend.Core.Services
                 await _characterService.ApplyExperienceAndLevelUp(character, expReward);
 
                 var lootDTOs = await _inventoryService.GrantLootDropAsync(
-                    character.characterId, effectiveRarity, battleId);
+                    character.characterId, effectiveRarity, battleId, encounter.bossId);
 
                 // Khi người chơi hạ gục quái (mob_*) -> Tự động rớt Key Item của khu vực nếu chưa sở hữu
                 string? keyItemToGrant = null;
@@ -361,7 +367,8 @@ namespace GameBackend.Core.Services
                     {
                         keyItemToGrant = "item_void_crystal";
                     }
-                    else if (currentLoc.Equals("coral_palace", StringComparison.OrdinalIgnoreCase))
+                    else if (currentLoc.Equals("coral_palace", StringComparison.OrdinalIgnoreCase) &&
+                             string.Equals(encounter.bossId, "boss_shadow_demon", StringComparison.OrdinalIgnoreCase))
                     {
                         keyItemToGrant = "item_fire_core";
                     }
@@ -547,35 +554,41 @@ namespace GameBackend.Core.Services
                 b.bossId.Equals(cleanTarget, StringComparison.OrdinalIgnoreCase));
             if (exact != null) return exact;
 
-            // 2. Exact match on name
+            // 2. Strict prefix match respecting request type (mob vs boss)
+            if (isMobRequested)
+            {
+                var mobExact = GameConstants.BossCatalog.FirstOrDefault(b =>
+                    b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase));
+                if (mobExact != null) return mobExact;
+
+                var mobSub = GameConstants.BossCatalog.FirstOrDefault(b =>
+                    b.bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase) &&
+                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
+                if (mobSub != null) return mobSub;
+
+                // Return null so caller creates dynamic Mob template rather than returning a Boss King
+                return null;
+            }
+
+            if (isBossRequested)
+            {
+                var bossExact = GameConstants.BossCatalog.FirstOrDefault(b =>
+                    b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase));
+                if (bossExact != null) return bossExact;
+
+                var bossSub = GameConstants.BossCatalog.FirstOrDefault(b =>
+                    b.bossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase) &&
+                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
+                if (bossSub != null) return bossSub;
+            }
+
+            // 3. Exact match on name
             var nameMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
                 b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
                 b.name.Equals(strippedTarget.Replace("_", " "), StringComparison.OrdinalIgnoreCase));
             if (nameMatch != null) return nameMatch;
 
-            // 3. Exact match with mob_ / boss_ prefix
-            var prefixMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
-                b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase));
-            if (prefixMatch != null) return prefixMatch;
-
-            // 4. Substring match respecting request type (mob vs boss)
-            if (isMobRequested)
-            {
-                var mobMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    b.bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase) &&
-                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
-                if (mobMatch != null) return mobMatch;
-            }
-            else if (isBossRequested)
-            {
-                var bossMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    b.bossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase) &&
-                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
-                if (bossMatch != null) return bossMatch;
-            }
-
-            // 5. Fallback substring match
+            // 4. Fallback substring match
             return GameConstants.BossCatalog.FirstOrDefault(b =>
                 b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
         }
@@ -754,9 +767,9 @@ namespace GameBackend.Core.Services
                 }
                 else if (normalizedBossId == "dragon_king")
                 {
-                    targetChapterId = "chapter_4";
-                    targetLocation = "start"; // Update with real chapter 4 location later
-                    chapterTitle = "Chương 4: Đỉnh Núi Băng Giá";
+                    targetChapterId = "chapter_3_completed";
+                    targetLocation = "dragon_nest";
+                    chapterTitle = "Hồi Kết: Vua Rồng Đã Bị Khuất Phục";
                 }
 
                 if (!string.IsNullOrEmpty(targetChapterId))
@@ -765,6 +778,11 @@ namespace GameBackend.Core.Services
                     session.currentLocation = targetLocation;
                     session.currentNodeId = targetLocation; // Reset node khỏi boss_room sau khi thắng Boss
                     session.updatedAt = DateTime.UtcNow;
+                    if (normalizedBossId == "dragon_king")
+                    {
+                        session.status = "Completed";
+                        session.endedAt = DateTime.UtcNow;
+                    }
 
 
                     string summaryNote = $" [ĐÃ HẠ GỤC BOSS {bossId.ToUpperInvariant()} - TIẾN SANG {chapterTitle.ToUpperInvariant()}]";
@@ -779,15 +797,34 @@ namespace GameBackend.Core.Services
 
                     await _storyRepository.SaveSessionAsync(session);
 
+                    string transitionNarrative = normalizedBossId switch
+                    {
+                        "shadow_demon" => $"Shadow Demon ngã xuống! Hào quang hắc ám tan biến. Bạn chính thức hoàn thành Chương 2 và tiến sang {chapterTitle}!",
+                        "dragon_king"  => $"Dragon King ngã xuống! Sức mạnh của Rồng đã bị khuất phục. Bạn chính thức hoàn thành Chương 3 và tiến sang {chapterTitle}!",
+                        _              => $"Vua Goblin ngã xuống! Mảnh Vỡ Lõi Nguyên Tố tỏa sáng rực rỡ giải trừ phong ấn. Bạn chính thức hoàn thành Chương 1 và bước sang {chapterTitle}!"
+                    };
+
+                    var transitionResponse = new StoryAiResponse
+                    {
+                        NarrativeText = transitionNarrative,
+                        CurrentChapterId = targetChapterId,
+                        CurrentLocation = targetLocation,
+                        CurrentNodeId = targetLocation,
+                        StorySummary = session.storySummary,
+                        ActionType = "chapter_transition",
+                        TriggerBattle = false,
+                        Choices = new List<StoryChoiceOption>()
+                    };
+
                     var transitionAction = new StoryAction
                     {
                         actionId = Guid.NewGuid().ToString("N"),
                         sessionId = session.sessionId,
                         playerInput = $"[SỰ KIỆN CHIẾN THẮNG]: Đã tiêu diệt thành công Boss {bossId}!",
-                        aiResponse = $"Vua Goblin ngã xuống! Mảnh Vỡ Lõi Nguyên Tố tỏa sáng rực rỡ giải trừ phong ấn. Bạn chính thức hoàn thành Chương 1 và bước sang {chapterTitle}!",
+                        aiResponse = transitionNarrative,
                         turnNumber = 999,
                         actionType = "chapter_transition",
-                        metadataJson = $"{{\"currentChapterId\":\"{targetChapterId}\",\"currentLocation\":\"{targetLocation}\",\"defeatedBoss\":\"{bossId}\"}}",
+                        metadataJson = StoryAiResponseParser.Serialize(transitionResponse),
                         createdAt = DateTime.UtcNow
                     };
 

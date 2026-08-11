@@ -18,6 +18,7 @@ namespace GameShared.DTOs.Story
         public string? bossName;
         public int? bossLevel;
         public string? debugPrompt;
+        public bool storyCompleted;
     }
 
 

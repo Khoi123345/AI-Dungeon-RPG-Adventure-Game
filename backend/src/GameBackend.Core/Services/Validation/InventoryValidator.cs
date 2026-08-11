@@ -36,6 +36,13 @@ namespace GameBackend.Core.Services.Validation
                 }
 
                 var itemId = change.ItemId;
+
+                if (change.QuantityDelta > 0 && itemId.Equals("item_fire_core", StringComparison.OrdinalIgnoreCase))
+                {
+                    _logger.LogWarning("Rejected AI-authored Fire Core reward. Only BattleService may grant it after boss_shadow_demon victory.");
+                    continue;
+                }
+
                 var existsInCatalog = GameShared.Config.GameConstants.ItemCatalog.Any(i => i.itemId.Equals(itemId, StringComparison.OrdinalIgnoreCase));
 
                 if (!existsInCatalog && !await _contentService.ItemExistsAsync(itemId))

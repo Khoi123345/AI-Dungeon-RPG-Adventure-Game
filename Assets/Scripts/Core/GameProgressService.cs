@@ -27,6 +27,16 @@ public class GameProgressService : MonoBehaviour
     public StorySession CurrentStorySession { get; private set; }
     public Boss CurrentBoss { get; private set; }
 
+    public event Action<Character> OnCharacterStatsChanged;
+
+    public void NotifyCharacterStatsChanged()
+    {
+        if (CurrentCharacter != null)
+        {
+            OnCharacterStatsChanged?.Invoke(CurrentCharacter);
+        }
+    }
+
     private readonly List<Item> items = new List<Item>();
     private readonly List<Inventory> inventory = new List<Inventory>();
     private readonly List<StoryAction> storyActions = new List<StoryAction>();
@@ -157,6 +167,7 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.gold = 999999;
         }
         Debug.Log($"[GameProgressService] CurrentCharacter set: {character.name} (id={character.characterId})");
+        NotifyCharacterStatsChanged();
     }
 
     /// <summary>
@@ -177,6 +188,7 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.gold = res.gold;
         }
         Debug.Log($"[GameProgressService] Synced Character from backend: {CurrentCharacter.name} (Lv.{CurrentCharacter.level}, Exp={CurrentCharacter.experience}, HP={CurrentCharacter.hp}/{CurrentCharacter.maxHp}, Gold={CurrentCharacter.gold})");
+        NotifyCharacterStatsChanged();
     }
 
 
@@ -703,7 +715,7 @@ public class GameProgressService : MonoBehaviour
                 "forgotten_temple" => "item_elemental_core",
                 "sunken_shipwreck" => "item_sea_compass",
                 "abyssal_trench" => "item_void_crystal",
-                "coral_palace" => "item_fire_core",
+                "coral_palace" when string.Equals(CurrentBoss?.bossId, "boss_shadow_demon", StringComparison.OrdinalIgnoreCase) => "item_fire_core",
                 "sulfur_mines" => "item_obsidian_key",
                 "obsidian_peaks" => "item_dragon_blood_key",
                 _ => ""

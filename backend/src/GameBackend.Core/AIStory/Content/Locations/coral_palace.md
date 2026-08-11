@@ -13,4 +13,4 @@ Từng là cung điện huy hoàng của Vương Quốc San Hô dưới lòng đ
 - **Quest Item Required:** Người chơi dùng `item_void_crystal` để mở cổng vào Phòng Ngai Vàng. Khi đứng trước cổng, AI **BẮT BUỘC** cung cấp lựa chọn: `"label": "Đối mặt với Shadow Demon"`, `"nextNodeId": "boss_room"`.
 - **Boss Room Trigger:** Khi `currentNodeId` là `boss_room`, AI phải đặt `"triggerBattle": true`, `"bossId": "boss_shadow_demon"`, `"bossName": "Shadow Demon"`, `"bossLevel": 20`.
 - **Return Route:** Người chơi luôn có thể chọn rút lui về Rãnh Sâu Vô Tận (`"label": "Rút lui về Rãnh Sâu Vô Tận"`, `"nextNodeId": "abyssal_trench"`) để luyện cấp khi chưa sẵn sàng đánh Boss.
-- **Victory Reward:** Đánh bại Shadow Demon sẽ nhận Lõi Lửa Kháng Nhiệt (`item_fire_core`) trong `inventoryChanges` để mở đường sang Chương 3 (`sulfur_mines`).
+- **Victory Reward:** Chỉ khi đánh bại chính xác Shadow Demon, hệ thống Battle backend mới cấp Lõi Lửa Kháng Nhiệt (`item_fire_core`) để mở đường sang Chương 3 (`sulfur_mines`). AI tuyệt đối không tự thêm vật phẩm này vào `inventoryChanges`, và quái thường trong Cung Điện không được làm rơi nó.

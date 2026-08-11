@@ -2,26 +2,17 @@ namespace GameBackend.Core.Services.Validation
 {
     public sealed class CharacterValidator : IGameRuleSubValidator
     {
-        private static readonly HashSet<string> AllowedStatuses = new(StringComparer.OrdinalIgnoreCase)
-        {
-            "Alive",
-            "Dead",
-            "Injured"
-        };
-
         public Task ValidateAsync(GameRuleValidationContext context)
         {
             var delta = context.Response.CharacterDelta ??= new GameShared.DTOs.Story.StoryAiCharacterDelta();
 
-            delta.HpDelta = Math.Clamp(delta.HpDelta, -200, 50);
-            delta.MpDelta = Math.Clamp(delta.MpDelta, -100, 40);
-            delta.GoldDelta = Math.Clamp(delta.GoldDelta, -500, 1000);
-            delta.ExpDelta = Math.Clamp(delta.ExpDelta, 0, 500);
-
-            if (!string.IsNullOrWhiteSpace(delta.Status) && !AllowedStatuses.Contains(delta.Status))
-            {
-                delta.Status = context.Character.status;
-            }
+            // Story AI is narrative-only. Gameplay stats are authoritative and may
+            // only be changed by battle, inventory, consumable or revive services.
+            delta.HpDelta = 0;
+            delta.MpDelta = 0;
+            delta.GoldDelta = 0;
+            delta.ExpDelta = 0;
+            delta.Status = context.Character.status;
 
             if (string.IsNullOrWhiteSpace(delta.CurrentLocationId))
             {
