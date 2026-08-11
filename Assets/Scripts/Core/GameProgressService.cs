@@ -744,6 +744,33 @@ public class GameProgressService : MonoBehaviour
         }
     }
 
+    public void SetInventory(List<GameShared.DTOs.Inventory.InventorySlot> slots, string characterId)
+    {
+        inventory.Clear();
+        if (slots != null && slots.Count > 0)
+        {
+            foreach (var slot in slots)
+            {
+                inventory.Add(new Inventory
+                {
+                    inventoryId = slot.inventoryId ?? Guid.NewGuid().ToString("N"),
+                    characterId = characterId,
+                    itemId = slot.itemId,
+                    quantity = slot.quantity,
+                    equipped = slot.equipped,
+                    slotIndex = slot.slotIndex,
+                    locked = slot.locked,
+                    acquiredAt = DateTime.UtcNow
+                });
+            }
+        }
+        else
+        {
+            SeedDefaultInventoryIfNeeded();
+        }
+        RecalculateCharacterStats();
+    }
+
     public IReadOnlyList<Inventory> GetInventory()
     {
         if (inventory.Count == 0)
@@ -1164,14 +1191,13 @@ public class GameProgressService : MonoBehaviour
         // Mặc định đọc từ GameConstants. Nếu không có template, tự động cho phép stack nếu là Consumable
         bool isStackable = template != null ? template.stackable : (ItemData.GetItemTypeFromId(itemId) == ItemType.Consumable);
 
-        // NẾU BẠN MUỐN TẤT CẢ VẬT PHẨM (KỂ CẢ VŨ KHÍ, GIÁP) ĐỀU CỘNG DỒN SỐ LƯỢNG KHI RƠI RA,
-        // HÃY BỎ COMMENT DÒNG BÊN DƯỚI ĐỂ ÉP BUỘC LUÔN STACK:
+        // Theo yêu cầu, cho phép cộng dồn TẤT CẢ vật phẩm trong lưới đồ để tiết kiệm không gian
         isStackable = true; 
 
-        // Chỉ cộng dồn với các vật phẩm có tính chất stackable (như Thuốc hồi máu, hoặc nếu bạn bật true ở trên)
         if (isStackable)
         {
-            Inventory existing = inventory.Find(entry => entry.itemId == itemId && entry.equipped == equipped);
+            // Tách biệt: Chỉ gộp vào món đồ CHƯA ĐƯỢC MẶC (nằm trong lưới)
+            Inventory existing = inventory.Find(entry => entry.itemId == itemId && !entry.equipped);
             if (existing != null)
             {
                 existing.quantity += quantity;

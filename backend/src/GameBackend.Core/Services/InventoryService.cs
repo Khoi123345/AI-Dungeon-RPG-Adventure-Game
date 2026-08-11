@@ -80,11 +80,14 @@ namespace GameBackend.Core.Services
 
         public async Task AddItemToInventoryAsync(string characterId, string itemId, int quantity)
         {
-            var existing = await _inventoryRepository.FindByCharacterAndItemAsync(characterId, itemId);
+            var existingItems = await _inventoryRepository.GetByCharacterIdAsync(characterId);
+            
+            // Tìm món đồ giống vậy nhưng CHƯA ĐƯỢC MẶC (để gộp chung vào lưới đồ)
+            var existing = existingItems.FirstOrDefault(i => i.itemId == itemId && !i.equipped);
 
             if (existing != null)
             {
-                // Item đã có trong kho — cộng dồn số lượng (không tốn thêm ô)
+                // Item đã có trong kho và chưa mặc — cộng dồn số lượng
                 existing.quantity += quantity;
                 await _inventoryRepository.SaveAsync(existing);
                 return;
@@ -162,8 +165,28 @@ namespace GameBackend.Core.Services
                 }
             }
 
-            invRecord.equipped = true;
-            await _inventoryRepository.SaveAsync(invRecord);
+            if (invRecord.quantity > 1)
+            {
+                invRecord.quantity -= 1;
+                await _inventoryRepository.SaveAsync(invRecord);
+
+                var equippedClone = new Inventory
+                {
+                    inventoryId = Guid.NewGuid().ToString("N"),
+                    characterId = characterId,
+                    itemId = invRecord.itemId,
+                    quantity = 1,
+                    equipped = true,
+                    acquiredAt = DateTime.UtcNow
+                };
+                await _inventoryRepository.SaveAsync(equippedClone);
+            }
+            else
+            {
+                invRecord.equipped = true;
+                await _inventoryRepository.SaveAsync(invRecord);
+            }
+
             _logger.LogInformation("Equipped item {ItemId} for character {CharId}", invRecord.itemId, characterId);
 
             return await GetInventoryAsync(characterId);
@@ -183,8 +206,20 @@ namespace GameBackend.Core.Services
             var invRecord = await _inventoryRepository.GetByInventoryIdAsync(inventoryId);
             if (invRecord != null)
             {
-                invRecord.equipped = false;
-                await _inventoryRepository.SaveAsync(invRecord);
+                var existingItems = await _inventoryRepository.GetByCharacterIdAsync(characterId);
+                var gridStack = existingItems.FirstOrDefault(i => i.itemId == invRecord.itemId && !i.equipped && i.inventoryId != invRecord.inventoryId);
+
+                if (gridStack != null)
+                {
+                    gridStack.quantity += invRecord.quantity;
+                    await _inventoryRepository.SaveAsync(gridStack);
+                    await _inventoryRepository.DeleteAsync(invRecord.inventoryId);
+                }
+                else
+                {
+                    invRecord.equipped = false;
+                    await _inventoryRepository.SaveAsync(invRecord);
+                }
                 _logger.LogInformation("Unequipped item {InvId} for character {CharId}", inventoryId, characterId);
             }
 

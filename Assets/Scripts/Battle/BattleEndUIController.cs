@@ -210,30 +210,18 @@ public class BattleEndUIController : MonoBehaviour
 
         Debug.Log("▶️ [CONFIRM CLICKED] Người chơi nhấn nút Confirm (Xác nhận nhận phần thưởng).");
 
-        List<LootDrop> selectedDrops = new List<LootDrop>();
-        for (int i = 0; i < itemSlots.Count; i++)
-        {
-            if (itemSlots[i] != null && itemSlots[i].isSelected && i < currentBattleDrops.Count)
-            {
-                selectedDrops.Add(currentBattleDrops[i]);
-                break; // Chỉ chọn duy nhất 1 món chiến lợi phẩm!
-            }
-        }
+        // Backend AWS tự động lưu TẤT CẢ vật phẩm rơi ra vào Database (không phải chọn 1 món)
+        // Do đó Client cũng phải nhận toàn bộ để đồng bộ dữ liệu!
+        List<LootDrop> selectedDrops = currentBattleDrops ?? new List<LootDrop>();
 
-        // Nếu người chơi chưa bấm chọn ô nào, mặc định chọn món đầu tiên
-        if (selectedDrops.Count == 0 && currentBattleDrops != null && currentBattleDrops.Count > 0)
-        {
-            selectedDrops.Add(currentBattleDrops[0]);
-        }
-
-        Debug.Log($"🎒 [INVENTORY UPDATE] Đã chọn duy nhất {selectedDrops.Count} vật phẩm chiến lợi phẩm để thêm vào CSDL và Túi đồ.");
+        Debug.Log($"🎒 [INVENTORY UPDATE] Đã nhận {selectedDrops.Count} vật phẩm chiến lợi phẩm để thêm vào CSDL và Túi đồ.");
         foreach (var drop in selectedDrops)
         {
             if (GameProgressService.Instance != null)
             {
                 GameProgressService.Instance.AddItemToInventory(drop.itemId, drop.quantity, false);
             }
-            Debug.Log($"✨ [ITEM ADDED TO INVENTORY] +1 Vật phẩm '{drop.itemId}' (Số lượng: {drop.quantity}) đã chọn được lưu chính thức vào Túi đồ!");
+            Debug.Log($"✨ [ITEM ADDED TO INVENTORY] +1 Vật phẩm '{drop.itemId}' (Số lượng: {drop.quantity}) đã được thêm vào Túi đồ!");
         }
 
         Debug.Log($"💰 [REWARD UPDATE] Thêm +{lastGoldEarned} Gold | ⭐ +{lastExpEarned} EXP vào tài khoản Nhân vật.");
@@ -462,18 +450,8 @@ public class BattleEndUIController : MonoBehaviour
             {
                 if (clickedSlot.hasItem && clickedSlot.itemData != null)
                 {
-                    // 1. Tắt Highlight tất cả các ô khác (Single-Choice Mode / Chỉ cho phép chọn 1 món duy nhất)
-                    foreach (var s in itemSlots)
-                    {
-                        if (s != null && s != clickedSlot)
-                        {
-                            s.SetSelected(false);
-                        }
-                    }
-
-                    // 2. Bật Highlight duy nhất cho ô vừa được bấm chọn
-                    clickedSlot.SetSelected(true);
-                    Debug.Log($"🎯 [SINGLE REWARD SELECTED] Người chơi CHỌN DUY NHẤT 1 MÓN CHIẾN LỢI PHẨM: '{clickedSlot.itemData.itemName}' ở Slot {slotNum}!");
+                    // Đã bỏ tính năng chọn 1 món (Bây giờ nhận tất cả)
+                    Debug.Log($"🎯 [REWARD CLICKED] Vật phẩm chiến lợi phẩm: '{clickedSlot.itemData.itemName}' ở Slot {slotNum}!");
                 }
             };
 
