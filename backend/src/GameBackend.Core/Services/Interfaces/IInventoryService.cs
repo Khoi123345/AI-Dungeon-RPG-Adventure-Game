@@ -32,6 +32,6 @@ namespace GameBackend.Core.Services.Interfaces
         /// Cấp phát loot sau khi thắng Battle. Roll item rarity từ bossRarity,
         /// thêm vào kho đồ và ghi lịch sử vào LootDrop table.
         /// </summary>
-        Task<List<LootItemDTO>> GrantLootDropAsync(string characterId, string bossRarity, string battleId);
+        Task<List<LootItemDTO>> GrantLootDropAsync(string characterId, string bossRarity, string battleId, string bossId = "");
     }
 }

@@ -38,15 +38,15 @@ CURRENT ACTION
 Tấn công quái vật canh giữ báu vật
 
 =========== RAW AI ===========
-{"narrativeText":"T\u1EEB s\u00E2u trong b\u00F3ng \u0111\u00EAm, m\u1ED9t ti\u1EBFng g\u1EA7m tr\u1EA7m th\u1EA5p v\u1ECDng \u0111\u1EBFn. Cu\u1ED9c phi\u00EAu l\u01B0u v\u1EEBa ch\u1EA1m v\u00E0o v\u00F9ng \u0111\u1EA5t kh\u00F4ng n\u00EAn th\u1EE9c t\u1EC9nh.","storySummary":"T\u1EEB s\u00E2u trong b\u00F3ng \u0111\u00EAm, m\u1ED9t ti\u1EBFng g\u1EA7m tr\u1EA7m th\u1EA5p v\u1ECDng \u0111\u1EBFn. Cu\u1ED9c phi\u00EAu l\u01B0u v\u1EEBa ch\u1EA1m v\u00E0o v\u00F9ng \u0111\u1EA5t kh\u00F4ng n\u00EAn th\u1EE9c t\u1EC9nh.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[],"choices":[]}
+{"narrativeText":"Nh\u1EEFng k\u00FD hi\u1EC7u rune m\u1EDD nh\u1EA1t b\u1EEBng s\u00E1ng d\u01B0\u1EDBi l\u00F2ng \u0111\u1EA5t. C\u00E1nh c\u1EEDa tr\u01B0\u1EDBc m\u1EB7t b\u1EA1n nh\u01B0 \u0111ang nh\u1EDB ra t\u00EAn ng\u01B0\u1EDDi x\u00E2m nh\u1EADp.","storySummary":"Nh\u1EEFng k\u00FD hi\u1EC7u rune m\u1EDD nh\u1EA1t b\u1EEBng s\u00E1ng d\u01B0\u1EDBi l\u00F2ng \u0111\u1EA5t. C\u00E1nh c\u1EEDa tr\u01B0\u1EDBc m\u1EB7t b\u1EA1n nh\u01B0 \u0111ang nh\u1EDB ra t\u00EAn ng\u01B0\u1EDDi x\u00E2m nh\u1EADp.","actionType":"player_action","metadataJson":"{}","triggerBattle":false,"bossId":"","characterDelta":{"hpDelta":0,"goldDelta":0,"expDelta":0,"mpDelta":0},"inventoryChanges":[],"choices":[]}
 
 =========== PARSED ===========
 {
-  "NarrativeText": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "NarrativeText": "Những ký hiệu rune mờ nhạt bừng sáng dưới lòng đất. Cánh cửa trước mặt bạn như đang nhớ ra tên người xâm nhập.",
   "CurrentNodeId": "intro",
   "CurrentLocation": "Ancient Ruins",
   "CurrentChapterId": "chapter_1",
-  "StorySummary": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "StorySummary": "Những ký hiệu rune mờ nhạt bừng sáng dưới lòng đất. Cánh cửa trước mặt bạn như đang nhớ ra tên người xâm nhập.",
   "ActionType": "player_action",
   "MetadataJson": "{}",
   "TriggerBattle": false,
@@ -71,11 +71,11 @@ Tấn công quái vật canh giữ báu vật
 
 =========== VALIDATED ===========
 {
-  "NarrativeText": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "NarrativeText": "Những ký hiệu rune mờ nhạt bừng sáng dưới lòng đất. Cánh cửa trước mặt bạn như đang nhớ ra tên người xâm nhập.",
   "CurrentNodeId": "intro",
   "CurrentLocation": "Ancient Ruins",
   "CurrentChapterId": "chapter_1",
-  "StorySummary": "Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "StorySummary": "Những ký hiệu rune mờ nhạt bừng sáng dưới lòng đất. Cánh cửa trước mặt bạn như đang nhớ ra tên người xâm nhập.",
   "ActionType": "player_action",
   "MetadataJson": "{}",
   "TriggerBattle": false,
@@ -106,10 +106,10 @@ Tấn công quái vật canh giữ báu vật
   "currentNodeId": "intro",
   "currentChapterId": "chapter_1",
   "status": "Active",
-  "updatedAt": "2026-08-09T15:25:27.6813778Z",
+  "updatedAt": "2026-08-11T08:13:39.1063568Z",
   "endedAt": null,
   "storyVersion": null,
-  "storySummary": "Anh hùng bắt đầu cuộc hành trình tại tàn tích cổ. Từ sâu trong bóng đêm, một tiếng gầm trầm thấp vọng đến. Cuộc phiêu lưu vừa chạm vào vùng đất không nên thức tỉnh.",
+  "storySummary": "Anh hùng bắt đầu cuộc hành trình tại tàn tích cổ. Những ký hiệu rune mờ nhạt bừng sáng dưới lòng đất. Cánh cửa trước mặt bạn như đang nhớ ra tên người xâm nhập.",
   "sourceType": null
 }
 

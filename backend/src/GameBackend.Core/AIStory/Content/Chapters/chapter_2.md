@@ -26,4 +26,4 @@ Người chơi phải tuân theo và hoàn thành các bước cốt truyện sa
 - **Tiến trình**:
   1. Ngoài điện: Người chơi vượt qua lính canh Oan Hồn Bóng Tối.
   2. Lối vào Phòng Ngai Vàng: Người chơi chọn "Đối mặt với Shadow Demon" để kích hoạt trận chiến cuối Chương 2.
-- **Kích hoạt trận chiến**: Khi người chơi chọn đối đầu Boss tại node `boss_room`, bạn phải đặt `"triggerBattle": true`, `"bossId": "boss_shadow_demon"`, `"bossName": "Shadow Demon"`, `"bossLevel": 20`.
+- **Kích hoạt trận chiến**: Khi người chơi chọn đối đầu Boss tại node `boss_room`, bạn phải đặt `"triggerBattle": true`, `"bossId": "boss_shadow_demon"`, `"bossName": "Shadow Demon"`, `"bossLevel": 15`.

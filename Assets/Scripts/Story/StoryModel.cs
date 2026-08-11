@@ -41,5 +41,6 @@ public class StoryNodeData
 public class StoryData
 {
     public string title;
+    public bool isCompleted;
     public StoryNodeData node;
 }
