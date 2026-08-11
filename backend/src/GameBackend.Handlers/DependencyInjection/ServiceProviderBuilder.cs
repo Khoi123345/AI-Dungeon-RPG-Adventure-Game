@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Amazon.DynamoDBv2;
 using Amazon.CognitoIdentityProvider;
+using Amazon.S3;
 using GameBackend.Core.AIStory;
 using GameBackend.Core.AIStory.Builder;
 using GameBackend.Core.AIStory.Builder.Impl;
@@ -60,6 +61,7 @@ namespace GameBackend.Handlers.DependencyInjection
                 // AWS Clients — Singleton để tái sử dụng TCP connection
                 services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
                 services.AddSingleton<IAmazonCognitoIdentityProvider, AmazonCognitoIdentityProviderClient>();
+                services.AddSingleton<IAmazonS3, AmazonS3Client>();
                 services.AddAWSService<IAmazonBedrockRuntime>();
 
                 // Repositories
@@ -112,11 +114,38 @@ namespace GameBackend.Handlers.DependencyInjection
                 services.AddSingleton<IInventoryFormatter, InventoryFormatter>();
                 services.AddSingleton<IRecentTurnsFormatter, RecentTurnsFormatter>();
                 services.AddSingleton<IGamePromptContextBuilder, GamePromptContextBuilder>();
+                // IPromptLoader: chọn implementation theo PROMPT_SOURCE env var
+                // "s3"  → S3PromptLoader (production Lambda)
+                // else  → FileSystemPromptLoader (local dev, fallback)
+                var promptSource = Environment.GetEnvironmentVariable("PROMPT_SOURCE") ?? "file";
+                if (promptSource.Equals("s3", StringComparison.OrdinalIgnoreCase))
+                {
+                    var bucketName = Environment.GetEnvironmentVariable("ASSETS_BUCKET_NAME")
+                        ?? throw new InvalidOperationException(
+                            "PROMPT_SOURCE=s3 nhưng thiếu env var ASSETS_BUCKET_NAME. " +
+                            "Kiểm tra LambdaStack.cs hoặc thêm env var thủ công.");
+
+                    services.AddSingleton<IPromptLoader>(sp =>
+                    {
+                        var s3 = sp.GetRequiredService<IAmazonS3>();
+                        var logger = sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<S3PromptLoader>>();
+                        return new S3PromptLoader(s3, bucketName, logger);
+                    });
+                }
+                else
+                {
+                    services.AddSingleton<IPromptLoader>(sp =>
+                    {
+                        var aiStoryPath = Path.Combine(Directory.GetCurrentDirectory(), "AIStory");
+                        var templatePath = Directory.Exists(aiStoryPath) ? aiStoryPath : Directory.GetCurrentDirectory();
+                        return new FileSystemPromptLoader(templatePath);
+                    });
+                }
+
                 services.AddSingleton<IPromptBuilder>(sp =>
                 {
-                    var aiStoryPath = Path.Combine(Directory.GetCurrentDirectory(), "AIStory");
-                    var templatePath = Directory.Exists(aiStoryPath) ? aiStoryPath : Directory.GetCurrentDirectory();
-                    return new PromptBuilder(templatePath);
+                    var loader = sp.GetRequiredService<IPromptLoader>();
+                    return new PromptBuilder(loader);
                 });
 
                 _serviceProvider = services.BuildServiceProvider();

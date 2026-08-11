@@ -352,14 +352,15 @@ public class GameProgressService : MonoBehaviour
     /// <summary>
     /// Sinh Boss chính xác theo bossId do AI Bedrock chỉ định, cho phép gán Level trực tiếp từ AI.
     /// </summary>
-    public void SpawnBossById(string bossId, int? targetLevel = null)
+    public bool SpawnBossById(string bossId, int? targetLevel = null)
     {
         InitializeIfNeeded();
 
         if (string.IsNullOrWhiteSpace(bossId))
         {
-            SpawnRandomBoss();
-            return;
+            CurrentBoss = null;
+            Debug.LogError("[GameProgressService] Từ chối SpawnBossById vì bossId rỗng.");
+            return false;
         }
 
         var cleanId = bossId.StartsWith("boss_") ? bossId[5..] : bossId;
@@ -375,9 +376,9 @@ public class GameProgressService : MonoBehaviour
 
         if (picked == null)
         {
-            Debug.LogWarning($"[GameProgressService] Không tìm thấy bossId '{bossId}' trong BossCatalog, fallback ngẫu nhiên.");
-            SpawnRandomBoss();
-            return;
+            CurrentBoss = null;
+            Debug.LogError($"[GameProgressService] Không tìm thấy bossId authoritative '{bossId}' trong BossCatalog. Không fallback ngẫu nhiên.");
+            return false;
         }
 
         int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
@@ -403,6 +404,12 @@ public class GameProgressService : MonoBehaviour
         };
 
         Debug.Log($"[GameProgressService] SpawnBossById: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp}, ATK={CurrentBoss.baseAttack}, DEF={CurrentBoss.baseDefense})");
+        return true;
+    }
+
+    public void ClearCurrentBoss()
+    {
+        CurrentBoss = null;
     }
 
 

@@ -71,46 +71,24 @@ namespace GameBackend.Core.Services
                 ? request.bossId
                 : existingEncounter?.bossId ?? string.Empty;
 
+            if (string.IsNullOrWhiteSpace(targetBossId))
+            {
+                throw new Utils.GameValidationException("A non-empty bossId or a valid encounterId is required");
+            }
+
             if (targetBossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase) &&
                 await _defeatedBossRepository.HasDefeatedBossAsync(character.characterId, targetBossId))
             {
                 throw new Utils.GameValidationException($"Boss {targetBossId} has already been defeated and cannot be spawned again");
             }
 
-            string cleanTarget = (targetBossId ?? "").Trim().ToLowerInvariant();
-            string strippedTarget = cleanTarget;
-            if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
-            if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
-
             Boss? template = FindBossTemplate(targetBossId);
-
-
-            string rarity = template != null ? template.rarity : "Common";
             if (template == null)
             {
-                // Nếu là mob thường chưa có trong Catalog (ví dụ mob_cave_bat), tự tạo template Mob thường nhẹ nhàng thay vì fallback sang Boss lớn (Shadow Demon)
-                var minorMobs = GameConstants.BossCatalog.Where(b => b.bossId.StartsWith("mob_")).ToList();
-                var fallbackBase = minorMobs.Count > 0
-                    ? minorMobs[_random.Next(minorMobs.Count)]
-                    : new Boss { baseHp = 25, baseAttack = 5, baseDefense = 1, speed = 8, criticalRate = 0.03f, expReward = 10, goldReward = 8 };
-
-                string mobTitleName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(strippedTarget.Replace("_", " "));
-
-                template = new Boss
-                {
-                    bossId = targetBossId,
-                    name = mobTitleName,
-                    rarity = "Common",
-                    baseHp = fallbackBase.baseHp,
-                    baseAttack = fallbackBase.baseAttack,
-                    baseDefense = fallbackBase.baseDefense,
-                    speed = fallbackBase.speed,
-                    criticalRate = fallbackBase.criticalRate,
-                    expReward = fallbackBase.expReward,
-                    goldReward = fallbackBase.goldReward
-                };
+                throw new Utils.GameValidationException($"Unknown bossId '{targetBossId}'. The encounter must use an exact BossCatalog ID");
             }
 
+            string rarity = template.rarity;
 
             int bossLevel = request.bossLevel > 0
                 ? request.bossLevel
@@ -218,7 +196,8 @@ namespace GameBackend.Core.Services
             if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
             if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
 
-            var bossTemplate = FindBossTemplate(targetBossId) ?? GameConstants.BossCatalog[0];
+            var bossTemplate = FindBossTemplate(targetBossId)
+                ?? throw new Utils.GameValidationException($"Encounter references unknown bossId '{targetBossId}'");
 
 
             double bossPower = bossTemplate.baseAttack * (1 + encounter.bossLevel * GameConstants.BossLevelScaleFactor)
@@ -537,60 +516,11 @@ namespace GameBackend.Core.Services
         // PRIVATE HELPERS
         // =====================================================================
 
-        private static Boss? FindBossTemplate(string? targetBossId)
+        internal static Boss? FindBossTemplate(string? targetBossId)
         {
             if (string.IsNullOrWhiteSpace(targetBossId)) return null;
-
-            string cleanTarget = targetBossId.Trim().ToLowerInvariant();
-            bool isMobRequested = cleanTarget.StartsWith("mob_");
-            bool isBossRequested = cleanTarget.StartsWith("boss_");
-
-            string strippedTarget = cleanTarget;
-            if (isMobRequested) strippedTarget = strippedTarget[4..];
-            if (isBossRequested) strippedTarget = strippedTarget[5..];
-
-            // 1. Exact match on bossId
-            var exact = GameConstants.BossCatalog.FirstOrDefault(b =>
-                b.bossId.Equals(cleanTarget, StringComparison.OrdinalIgnoreCase));
-            if (exact != null) return exact;
-
-            // 2. Strict prefix match respecting request type (mob vs boss)
-            if (isMobRequested)
-            {
-                var mobExact = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase));
-                if (mobExact != null) return mobExact;
-
-                var mobSub = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    b.bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase) &&
-                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
-                if (mobSub != null) return mobSub;
-
-                // Return null so caller creates dynamic Mob template rather than returning a Boss King
-                return null;
-            }
-
-            if (isBossRequested)
-            {
-                var bossExact = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase));
-                if (bossExact != null) return bossExact;
-
-                var bossSub = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    b.bossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase) &&
-                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
-                if (bossSub != null) return bossSub;
-            }
-
-            // 3. Exact match on name
-            var nameMatch = GameConstants.BossCatalog.FirstOrDefault(b =>
-                b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
-                b.name.Equals(strippedTarget.Replace("_", " "), StringComparison.OrdinalIgnoreCase));
-            if (nameMatch != null) return nameMatch;
-
-            // 4. Fallback substring match
             return GameConstants.BossCatalog.FirstOrDefault(b =>
-                b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase));
+                b.bossId.Equals(targetBossId.Trim(), StringComparison.OrdinalIgnoreCase));
         }
 
         // Removed ScaleStat

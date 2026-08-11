@@ -1,0 +1,533 @@
+fileFormatVersion: 2
+guid: b30f1a91130213946be4e1c5df0e14d2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2678307583891838842
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_0
+  - first:
+      213: -4162109973105385134
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_1
+  - first:
+      213: 8395812162034168595
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_2
+  - first:
+      213: -3733629762637485704
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_3
+  - first:
+      213: 5644069635431351056
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_4
+  - first:
+      213: 3605776533843566185
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_5
+  - first:
+      213: 7586350075311339616
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_6
+  - first:
+      213: -5463119055874054153
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_7
+  - first:
+      213: -1817649640263514776
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_8
+  - first:
+      213: -2898060419009076222
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_9
+  - first:
+      213: 8683615566694121860
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_10
+  - first:
+      213: 1729058030889022418
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_11
+  - first:
+      213: -957503289227189264
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_12
+  - first:
+      213: -1752165446241629380
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_13
+  - first:
+      213: -7969727864890989166
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_14
+  - first:
+      213: -3385917732815199975
+    second: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 543
+        width: 226
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a779b19ae824b2520800000000000000
+      internalID: 2678307583891838842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_1
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 542
+        width: 171
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25161f008073d36c0800000000000000
+      internalID: -4162109973105385134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_2
+      rect:
+        serializedVersion: 2
+        x: 597
+        y: 556
+        width: 147
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31373feadaae38470800000000000000
+      internalID: 8395812162034168595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_3
+      rect:
+        serializedVersion: 2
+        x: 861
+        y: 547
+        width: 145
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 879aa23338b7f2cc0800000000000000
+      internalID: -3733629762637485704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_4
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 672
+        width: 27
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 013447b0e63c35e40800000000000000
+      internalID: 5644069635431351056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_5
+      rect:
+        serializedVersion: 2
+        x: 1110
+        y: 550
+        width: 234
+        height: 218
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96e5f2f37aa4a0230800000000000000
+      internalID: 3605776533843566185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_6
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 307
+        width: 166
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 068b0b40331284960800000000000000
+      internalID: 7586350075311339616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_7
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 308
+        width: 171
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f7a5fcd92a1f24b0800000000000000
+      internalID: -5463119055874054153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_8
+      rect:
+        serializedVersion: 2
+        x: 587
+        y: 306
+        width: 164
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8650af1584966c6e0800000000000000
+      internalID: -1817649640263514776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_9
+      rect:
+        serializedVersion: 2
+        x: 855
+        y: 310
+        width: 157
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 204285b476508c7d0800000000000000
+      internalID: -2898060419009076222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_10
+      rect:
+        serializedVersion: 2
+        x: 1117
+        y: 310
+        width: 159
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4810bd2a956628870800000000000000
+      internalID: 8683615566694121860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 221
+        height: 238
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d33d2f3e19def710800000000000000
+      internalID: 1729058030889022418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_12
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 70
+        width: 168
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f3685ed4d346b2f0800000000000000
+      internalID: -957503289227189264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_13
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 63
+        width: 178
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3bcd0d5fce0fa7e0800000000000000
+      internalID: -1752165446241629380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_14
+      rect:
+        serializedVersion: 2
+        x: 849
+        y: 65
+        width: 169
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 295e3a87bb6d56190800000000000000
+      internalID: -7969727864890989166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_15
+      rect:
+        serializedVersion: 2
+        x: 1109
+        y: 0
+        width: 235
+        height: 232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 911aad8e2cdc201d0800000000000000
+      internalID: -3385917732815199975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_0: 2678307583891838842
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_1: -4162109973105385134
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_10: 8683615566694121860
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_11: 1729058030889022418
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_12: -957503289227189264
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_13: -1752165446241629380
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_14: -7969727864890989166
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_15: -3385917732815199975
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_2: 8395812162034168595
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_3: -3733629762637485704
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_4: 5644069635431351056
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_5: 3605776533843566185
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_6: 7586350075311339616
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_7: -5463119055874054153
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_8: -1817649640263514776
+      lucid-origin_A_pixel_art_sprite_sheet_collection_of_12_magical_Elemental_Cores_2D_RPG_9: -2898060419009076222
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

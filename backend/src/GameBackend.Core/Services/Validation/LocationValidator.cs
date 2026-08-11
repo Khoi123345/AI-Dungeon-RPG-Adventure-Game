@@ -39,6 +39,13 @@ namespace GameBackend.Core.Services.Validation
             "sulfur_mines", "obsidian_peaks", "dragon_nest", "boss_room"
         };
 
+        private static readonly HashSet<string> CanonicalLocationNodes = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "ancient_cave", "forgotten_temple", "goblin_hideout",
+            "sunken_shipwreck", "abyssal_trench", "coral_palace",
+            "sulfur_mines", "obsidian_peaks", "dragon_nest"
+        };
+
         public async Task ValidateAsync(GameRuleValidationContext context)
         {
             var response = context.Response;
@@ -60,6 +67,19 @@ namespace GameBackend.Core.Services.Validation
             var itemIds = new HashSet<string>(
                 inventory.Where(i => i != null && i.quantity > 0).Select(i => i.itemId),
                 StringComparer.OrdinalIgnoreCase);
+
+            if (IsSkippedLocationTransition(normalizedCurrentLocation, requestedLocation))
+            {
+                _logger.LogWarning("Blocked skipped location transition from {Current} directly to {Requested}.", normalizedCurrentLocation, requestedLocation);
+                requestedLocation = normalizedCurrentLocation;
+                response.NarrativeText = normalizedCurrentLocation switch
+                {
+                    "sulfur_mines" => "Rời Cung Điện San Hô, bạn đặt chân vào Mỏ Lưu Huỳnh — khu vực đầu tiên của Chương 3. Hơi nóng và khói độc phủ kín các đường hầm; bạn phải khám phá nơi này trước khi có thể tiến lên Đỉnh Núi Hắc Diệu Thạch.",
+                    "sunken_shipwreck" => "Bạn bắt đầu Chương 2 tại Xác Tàu Đắm, nơi những thủy thủ chết đuối và sinh vật biển đang canh giữ con đường xuống vực sâu.",
+                    "ancient_cave" => "Bạn tiếp tục khám phá Hang Động Cổ Xưa và chưa thể bỏ qua Đền Thờ Bị Lãng Quên để tiến thẳng tới Sào Huyệt Goblin.",
+                    _ => response.NarrativeText
+                };
+            }
 
             // 2. Kiểm tra currentLocation: Nếu AI trả về địa điểm hợp lệ của Chương hiện tại
             if (!string.IsNullOrWhiteSpace(requestedLocation) && validLocations.Contains(requestedLocation))
@@ -116,8 +136,13 @@ namespace GameBackend.Core.Services.Validation
             }
             else
             {
-                response.CurrentNodeId = requestedNode;
-                context.Session.currentNodeId = requestedNode;
+                var effectiveLocation = NormalizeLocationId(response.CurrentLocation);
+                var sanitizedNode = CanonicalLocationNodes.Contains(requestedNode) &&
+                                    !requestedNode.Equals(effectiveLocation, StringComparison.OrdinalIgnoreCase)
+                    ? effectiveLocation
+                    : requestedNode;
+                response.CurrentNodeId = sanitizedNode;
+                context.Session.currentNodeId = sanitizedNode;
             }
 
             // 3. Lọc bỏ các choices nhảy cóc hoặc tiến khu vực khi thiếu Key Item
@@ -191,6 +216,17 @@ namespace GameBackend.Core.Services.Validation
                 "obsidian_peaks" => normalized.Contains("obsidian_peaks") || normalized.Contains("đỉnh núi hắc diệu"),
                 "dragon_nest" => normalized.Contains("dragon_nest") || normalized.Contains("tổ rồng"),
                 _ => normalized.Contains(destination)
+            };
+        }
+
+        private static bool IsSkippedLocationTransition(string currentLocation, string requestedLocation)
+        {
+            return (currentLocation, requestedLocation) switch
+            {
+                ("ancient_cave", "goblin_hideout") => true,
+                ("sunken_shipwreck", "coral_palace") => true,
+                ("sulfur_mines", "dragon_nest") => true,
+                _ => false
             };
         }
     }

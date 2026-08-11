@@ -15,7 +15,7 @@ public class ItemDatabaseSO : ScriptableObject
         if (string.IsNullOrEmpty(nameOrId)) return null;
 
         return items.Find(x => x != null && 
-            !string.IsNullOrEmpty(x.itemName) &&
-            x.itemName.Equals(nameOrId, System.StringComparison.OrdinalIgnoreCase));
+            !string.IsNullOrEmpty(x.itemId) &&
+            x.itemId.Equals(nameOrId, System.StringComparison.OrdinalIgnoreCase));
     }
 }

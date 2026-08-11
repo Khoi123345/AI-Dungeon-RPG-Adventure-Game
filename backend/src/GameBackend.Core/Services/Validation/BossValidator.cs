@@ -1,5 +1,7 @@
 using GameBackend.Core.AIStory.Services;
+using GameBackend.Core.Repositories.Interfaces;
 using GameShared.DTOs.Story;
+using GameShared.Models;
 using Microsoft.Extensions.Logging;
 
 namespace GameBackend.Core.Services.Validation
@@ -7,6 +9,7 @@ namespace GameBackend.Core.Services.Validation
     public sealed class BossValidator : IGameRuleSubValidator
     {
         private readonly IContentService _contentService;
+        private readonly IDefeatedBossRepository _defeatedBossRepository;
         private readonly ILogger<BossValidator> _logger;
 
         private static readonly string[] BattleKeywords = new[]
@@ -16,9 +19,13 @@ namespace GameBackend.Core.Services.Validation
             "đánh boss", "đánh quái", "vào trận", "thách đấu", "giương kiếm", "đối mặt", "chém", "tiêu diệt"
         };
 
-        public BossValidator(IContentService contentService, ILogger<BossValidator> logger)
+        public BossValidator(
+            IContentService contentService,
+            IDefeatedBossRepository defeatedBossRepository,
+            ILogger<BossValidator> logger)
         {
             _contentService = contentService;
+            _defeatedBossRepository = defeatedBossRepository;
             _logger = logger;
         }
 
@@ -31,6 +38,9 @@ namespace GameBackend.Core.Services.Validation
 
             var rawLoc = response.CurrentLocation ?? context.Session.currentLocation ?? context.Character.currentLocationId ?? "";
             var currentLoc = NormalizeLocationId(rawLoc);
+
+            var defeatedBosses = await GetDefeatedBossesSafelyAsync(context.Character.characterId);
+            RemoveDefeatedBossChoices(response, defeatedBosses, currentLoc);
 
             bool isBossLocation = isInBossRoom;
 
@@ -245,6 +255,18 @@ namespace GameBackend.Core.Services.Validation
 
 
             var id = response.BossId;
+
+            if (IsDefeatedChapterBoss(id, defeatedBosses))
+            {
+                _logger.LogWarning(
+                    "Rejected battle trigger because boss {BossId} was already defeated by character {CharacterId}",
+                    id,
+                    context.Character.characterId);
+                ResetBossFields(response);
+                EnsureContinueChoice(response);
+                return;
+            }
+
             var existsInCatalog = GameShared.Config.GameConstants.BossCatalog.Any(b => b.bossId.Equals(id, StringComparison.OrdinalIgnoreCase));
 
             if (!existsInCatalog && !await _contentService.BossExistsAsync(id))
@@ -293,6 +315,106 @@ namespace GameBackend.Core.Services.Validation
             response.BossId = null;
             response.BossName = null;
             response.BossLevel = null;
+        }
+
+        private async Task<List<DefeatedBoss>> GetDefeatedBossesSafelyAsync(string? characterId)
+        {
+            if (string.IsNullOrWhiteSpace(characterId)) return new List<DefeatedBoss>();
+
+            try
+            {
+                return await _defeatedBossRepository.GetDefeatedBossesByCharacterIdAsync(characterId)
+                       ?? new List<DefeatedBoss>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Could not load defeated bosses for character {CharacterId}", characterId);
+                return new List<DefeatedBoss>();
+            }
+        }
+
+        private static void RemoveDefeatedBossChoices(
+            StoryAiResponse response,
+            IReadOnlyCollection<DefeatedBoss> defeatedBosses,
+            string currentLocation)
+        {
+            if (response.Choices == null || response.Choices.Count == 0 || defeatedBosses.Count == 0) return;
+
+            var defeatedIds = defeatedBosses
+                .Where(b => !string.IsNullOrWhiteSpace(b.bossId))
+                .Select(b => b.bossId)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var locationBossId = currentLocation switch
+            {
+                "goblin_hideout" => "boss_goblin_king",
+                "coral_palace" => "boss_shadow_demon",
+                "dragon_nest" => "boss_dragon_king",
+                _ => string.Empty
+            };
+
+            response.Choices.RemoveAll(choice =>
+            {
+                var text = $"{choice?.label} {choice?.description} {choice?.nextNodeId}".ToLowerInvariant();
+                if (string.Equals(choice?.nextNodeId, "boss_room", StringComparison.OrdinalIgnoreCase) &&
+                    defeatedIds.Contains(locationBossId))
+                {
+                    return true;
+                }
+
+                foreach (var defeated in defeatedBosses)
+                {
+                    if (string.IsNullOrWhiteSpace(defeated.bossId) ||
+                        !defeated.bossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    if (text.Contains(defeated.bossId.ToLowerInvariant()) ||
+                        (!string.IsNullOrWhiteSpace(defeated.bossName) && text.Contains(defeated.bossName.ToLowerInvariant())) ||
+                        ChoiceMentionsBossAlias(text, defeated.bossId))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+
+            if (response.Choices.Count == 0)
+            {
+                EnsureContinueChoice(response);
+            }
+        }
+
+        private static bool ChoiceMentionsBossAlias(string text, string bossId)
+        {
+            return bossId.ToLowerInvariant() switch
+            {
+                "boss_goblin_king" => text.Contains("goblin king") || text.Contains("vua goblin") || text.Contains("vua yêu tinh"),
+                "boss_shadow_demon" => text.Contains("shadow demon") || text.Contains("ác ma bóng tối") || text.Contains("demon bóng tối"),
+                "boss_dragon_king" => text.Contains("dragon king") || text.Contains("vua rồng"),
+                _ => false
+            };
+        }
+
+        private static bool IsDefeatedChapterBoss(string? bossId, IEnumerable<DefeatedBoss> defeatedBosses)
+        {
+            return !string.IsNullOrWhiteSpace(bossId) &&
+                   bossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase) &&
+                   defeatedBosses.Any(b => string.Equals(b.bossId, bossId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static void EnsureContinueChoice(StoryAiResponse response)
+        {
+            response.Choices ??= new List<StoryChoiceOption>();
+            if (response.Choices.Count > 0) return;
+
+            response.Choices.Add(new StoryChoiceOption
+            {
+                label = "Tiếp tục hành trình",
+                description = "Rời khỏi chiến trường đã yên tĩnh và tiến về phía trước.",
+                nextNodeId = "continue_after_boss"
+            });
         }
 
         private static string NormalizeLocationId(string? raw)

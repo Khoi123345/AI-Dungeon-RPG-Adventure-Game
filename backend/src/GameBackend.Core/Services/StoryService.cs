@@ -29,6 +29,7 @@ namespace GameBackend.Core.Services
         private readonly IPromptBuilder _promptBuilder;
         private readonly IStorySummaryService _storySummaryService;
         private readonly IContentService _contentService;
+        private readonly IDefeatedBossRepository _defeatedBossRepository;
         private readonly ILogger<StoryService> _logger;
 
         public StoryService(
@@ -43,6 +44,7 @@ namespace GameBackend.Core.Services
             IPromptBuilder promptBuilder,
             IStorySummaryService storySummaryService,
             IContentService contentService,
+            IDefeatedBossRepository defeatedBossRepository,
             ILogger<StoryService> logger)
         {
             _storyRepository = storyRepository;
@@ -56,6 +58,7 @@ namespace GameBackend.Core.Services
             _promptBuilder = promptBuilder;
             _storySummaryService = storySummaryService;
             _contentService = contentService;
+            _defeatedBossRepository = defeatedBossRepository;
             _logger = logger;
         }
 
@@ -159,16 +162,28 @@ namespace GameBackend.Core.Services
 
                 // Nếu forceNewSession = true (người chơi chết + bấm Back to Menu):
                 // Xóa session cũ và reset level nhân vật về 1
-                if (request.forceNewSession && session != null)
+                if (request.forceNewSession)
                 {
-                    _logger.LogInformation("forceNewSession=true: Deleting old session {SessionId} for character {CharacterId}", session.sessionId, character.characterId);
+                    _logger.LogInformation("forceNewSession=true: Clearing progression for character {CharacterId}", character.characterId);
+                    if (session != null)
+                    {
+                        try
+                        {
+                            await _storyRepository.DeleteSessionByCharacterIdAsync(character.characterId);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogWarning(ex, "Could not delete old session for character {CharacterId}", character.characterId);
+                        }
+                    }
+
                     try
                     {
-                        await _storyRepository.DeleteSessionByCharacterIdAsync(character.characterId);
+                        await _defeatedBossRepository.DeleteByCharacterIdAsync(character.characterId);
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogWarning(ex, "Could not delete old session for character {CharacterId}", character.characterId);
+                        _logger.LogWarning(ex, "Could not clear defeated bosses for character {CharacterId}", character.characterId);
                     }
 
                     // Reset level về 1 và stats cơ bản trên DB
@@ -243,6 +258,7 @@ namespace GameBackend.Core.Services
 
                     var resumeResponse = await GenerateStoryAiResponseAsync(resumeContext, "resume");
                     resumeResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, resumeResponse);
+                    EnsureLocationCombatChoice(resumeResponse, session.currentLocation);
 
                     try { await _storyStateUpdater.ApplyAsync(session, character, resumeResponse); }
                     catch (Exception ex) { _logger.LogWarning(ex, "Could not persist resume state"); }
@@ -283,6 +299,7 @@ namespace GameBackend.Core.Services
 
                 var openingResponse = await GenerateStoryAiResponseAsync(openingContext, "opening");
                 openingResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, openingResponse);
+                EnsureLocationCombatChoice(openingResponse, session.currentLocation);
 
                 try
                 {
@@ -509,9 +526,7 @@ namespace GameBackend.Core.Services
             if (isInBossRoom)
             {
                 var requestedBossId = ResolveCombatTargetId(request.playerInput, session.currentLocation);
-                var chapterBossId = requestedBossId != null && requestedBossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase)
-                    ? requestedBossId
-                    : GetChapterBossId(session.currentLocation);
+                var chapterBossId = requestedBossId ?? GetChapterBossId(session.currentLocation);
                 var chapterBoss = string.IsNullOrWhiteSpace(chapterBossId)
                     ? null
                     : GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == chapterBossId);
@@ -520,7 +535,7 @@ namespace GameBackend.Core.Services
                     int bossLvl = GameShared.Config.GameConstants.CalculateBossLevel(character.level, chapterBoss.rarity, chapterBossId);
                     if (intentToFight)
                     {
-                        systemInjectedEvent = $"[LỆNH HỆ THỐNG] Người chơi đã chọn TẤN CÔNG BOSS ({chapterBoss.name})! " +
+                        systemInjectedEvent = $"[LỆNH HỆ THỐNG] Người chơi đã chọn TẤN CÔNG KẺ ĐỊCH ({chapterBoss.name})! " +
                             $"BẮT BUỘC đặt triggerBattle: true, bossId: '{chapterBossId}', bossName: '{chapterBoss.name}', bossLevel: {bossLvl}. " +
                             $"Chỉ miêu tả cảnh người chơi lao vào chuẩn bị chiến đấu, tuyệt đối không miêu tả diễn biến trận đánh!";
                     }
@@ -620,6 +635,7 @@ namespace GameBackend.Core.Services
             {
                 aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
                 ApplyBossRetryChoice(aiResponse, context.RecentActions);
+                EnsureLocationCombatChoice(aiResponse, session.currentLocation);
                 await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
                 await SaveStoryTurnAsync(context, aiResponse);
             }
@@ -660,6 +676,7 @@ namespace GameBackend.Core.Services
             {
                 aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
                 ApplyBossRetryChoice(aiResponse, context.RecentActions);
+                EnsureLocationCombatChoice(aiResponse, session.currentLocation);
                 await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
                 await SaveStoryTurnAsync(context, aiResponse, "choice");
             }
@@ -1003,6 +1020,40 @@ namespace GameBackend.Core.Services
             });
         }
 
+        internal static void EnsureLocationCombatChoice(StoryAiResponse response, string? currentLocation)
+        {
+            if (response == null || response.TriggerBattle) return;
+            var location = (response.CurrentLocation ?? currentLocation ?? string.Empty).Trim().ToLowerInvariant();
+            if (location != "coral_palace") return;
+
+            response.Choices ??= new List<StoryChoiceOption>();
+            bool hasMobChoice = response.Choices.Any(choice =>
+            {
+                var text = $"{choice?.label} {choice?.description} {choice?.nextNodeId}".ToLowerInvariant();
+                return text.Contains("shadow spirit") || text.Contains("oan hồn bóng tối") ||
+                       text.Contains("fight_shadow_spirit") || text.Contains("đánh quái");
+            });
+            if (hasMobChoice) return;
+
+            if (response.Choices.Count >= 3)
+            {
+                int replaceIndex = response.Choices.FindLastIndex(choice =>
+                {
+                    var text = $"{choice?.label} {choice?.description} {choice?.nextNodeId}".ToLowerInvariant();
+                    return !text.Contains("boss_room") && !text.Contains("shadow demon") &&
+                           !text.Contains("abyssal_trench") && !text.Contains("rãnh sâu vô tận");
+                });
+                response.Choices.RemoveAt(replaceIndex >= 0 ? replaceIndex : response.Choices.Count - 1);
+            }
+
+            response.Choices.Insert(0, new StoryChoiceOption
+            {
+                label = "Tấn công Oan Hồn Bóng Tối",
+                description = "Đối đầu Shadow Spirit đang tuần tra trong Cung Điện San Hô.",
+                nextNodeId = "fight_shadow_spirit"
+            });
+        }
+
         private sealed record BossRetryState(string BossId, string BossName, int MobWins);
 
         private StoryAiResponse CreateFallbackResponse(StoryActionProcessingContext context, string rawResponse)
@@ -1158,7 +1209,7 @@ namespace GameBackend.Core.Services
                 {
                     new() { label = "Khám phá sảnh điện san hô", description = "Dò tìm các hành lang cổ", nextNodeId = "explore_palace" },
                     new() { label = "Rút lui về Rãnh Sâu Vô Tận", description = "Trở về khu vực trước đó", nextNodeId = "abyssal_trench" },
-                    new() { label = "Quan sát xung quanh", description = "Dò tìm kẻ địch rình rập", nextNodeId = "investigate_path" }
+                    new() { label = "Tấn công Oan Hồn Bóng Tối", description = "Đối đầu Shadow Spirit đang tuần tra", nextNodeId = "fight_shadow_spirit" }
                 };
             }
 
@@ -1203,8 +1254,11 @@ namespace GameBackend.Core.Services
         {
             if (currentNodeId.Equals("boss_room", StringComparison.OrdinalIgnoreCase))
             {
+                 string mobRule = currentLocation.Equals("coral_palace", StringComparison.OrdinalIgnoreCase)
+                     ? " Đồng thời BẮT BUỘC có lựa chọn đánh Oan Hồn Bóng Tối (mob_shadow_spirit) để người chơi có thể luyện cấp thay vì chỉ đánh Boss."
+                     : string.Empty;
                  return $"[TIẾN VÀO PHÒNG TRÙM] Người chơi đang đứng trước cửa phòng chứa Boss (boss_room). " +
-                        $"BẮT BUỘC cung cấp Lựa chọn (Choice) Tấn công Boss để tiến hành trận đấu Boss cuối cùng của khu vực. " +
+                        $"BẮT BUỘC cung cấp Lựa chọn (Choice) Tấn công Boss để tiến hành trận đấu Boss cuối cùng của khu vực.{mobRule} " +
                         $"TUYỆT ĐỐI KHÔNG hướng dẫn người chơi đi tìm Key Item nữa.";
             }
 
