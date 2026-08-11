@@ -315,3 +315,17 @@ D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Exte
 D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
 D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
 D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\prologue.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\abyssal_trench.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\coral_palace.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\goblin_hideout.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\obsidian_peaks.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\sulfur_mines.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\sunken_shipwreck.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\prologue.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\abyssal_trench.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\coral_palace.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\goblin_hideout.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\obsidian_peaks.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\sulfur_mines.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\sunken_shipwreck.md

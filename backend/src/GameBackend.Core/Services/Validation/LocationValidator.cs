@@ -67,9 +67,9 @@ namespace GameBackend.Core.Services.Validation
                     _logger.LogWarning("Blocked AI transition to 'forgotten_temple': player lacks item_ancient_key.");
                     requestedLocation = "ancient_cave";
                 }
-                else if (requestedLocation == "goblin_hideout" && !itemIds.Contains("item_temple_key"))
+                else if (requestedLocation == "goblin_hideout" && !itemIds.Contains("item_elemental_core"))
                 {
-                    _logger.LogWarning("Blocked AI transition to 'goblin_hideout': player lacks item_temple_key.");
+                    _logger.LogWarning("Blocked AI transition to 'goblin_hideout': player lacks item_elemental_core.");
                     requestedLocation = itemIds.Contains("item_ancient_key") ? "forgotten_temple" : "ancient_cave";
                 }
                 else if (requestedLocation == "abyssal_trench" && !itemIds.Contains("item_sea_compass") && !itemIds.Contains("item_shipwreck_key"))

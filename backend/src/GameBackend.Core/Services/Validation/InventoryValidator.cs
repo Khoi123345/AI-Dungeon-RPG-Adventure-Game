@@ -36,11 +36,19 @@ namespace GameBackend.Core.Services.Validation
                 }
 
                 var itemId = change.ItemId;
-                var existsInCatalog = GameShared.Config.GameConstants.ItemCatalog.Any(i => i.itemId.Equals(itemId, StringComparison.OrdinalIgnoreCase));
-
-                if (!existsInCatalog && !await _contentService.ItemExistsAsync(itemId))
+                var catalogItem = GameShared.Config.GameConstants.ItemCatalog.FirstOrDefault(i => i.itemId.Equals(itemId, StringComparison.OrdinalIgnoreCase));
+                if (catalogItem == null && !await _contentService.ItemExistsAsync(itemId))
                 {
                     _logger.LogInformation("Rejected inventory change for unknown item {ItemId}", itemId);
+                    continue;
+                }
+
+                if (catalogItem != null && change.QuantityDelta > 0 &&
+                    (catalogItem.itemType.Equals("Weapon", StringComparison.OrdinalIgnoreCase) ||
+                     catalogItem.itemType.Equals("Armor", StringComparison.OrdinalIgnoreCase) ||
+                     catalogItem.itemType.Equals("Accessory", StringComparison.OrdinalIgnoreCase)))
+                {
+                    _logger.LogWarning("Rejected inventory reward of equipment item {ItemId} from AI response", itemId);
                     continue;
                 }
 
