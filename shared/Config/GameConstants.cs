@@ -217,23 +217,63 @@ namespace GameShared.Config
         public static Item? GetItemById(string itemId)
             => ItemCatalog.FirstOrDefault(i => i.itemId == itemId);
 
-        public static string RollItemRarity(string bossRarity)
+        public static string GetMaxRarityCap(string bossId, string bossRarity)
         {
-            if (!LootDropTable.TryGetValue(bossRarity, out var table))
-                table = LootDropTable["Common"];
+            if (string.IsNullOrWhiteSpace(bossId)) return "Common";
+            if (bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.IsNullOrWhiteSpace(bossRarity) ? "Common" : bossRarity;
+            }
+            return string.IsNullOrWhiteSpace(bossRarity) ? "Common" : bossRarity;
+        }
 
-            int roll = _random.Next(0, 100);
-            if (roll < table.Common)    return "Common";
-            if (roll < table.Common + table.Rare)   return "Rare";
-            if (roll < table.Common + table.Rare + table.Epic) return "Epic";
-            return "Legendary";
+        public static string RollItemRarity(string bossRarity, string maxCap = "Legendary")
+        {
+            if (string.IsNullOrWhiteSpace(bossRarity)) return "Common";
+
+            string normalized = bossRarity.Trim();
+            string rolled = "Common";
+            if (normalized.Equals("Mythic", StringComparison.OrdinalIgnoreCase))
+                rolled = "Legendary";
+            else if (normalized.Equals("Common", StringComparison.OrdinalIgnoreCase) ||
+                     normalized.Equals("Rare", StringComparison.OrdinalIgnoreCase) ||
+                     normalized.Equals("Epic", StringComparison.OrdinalIgnoreCase) ||
+                     normalized.Equals("Legendary", StringComparison.OrdinalIgnoreCase))
+            {
+                rolled = normalized;
+            }
+
+            int rolledWeight = GetRarityWeight(rolled);
+            int maxCapWeight = GetRarityWeight(maxCap);
+
+            return rolledWeight > maxCapWeight ? maxCap : rolled;
+        }
+
+        public static bool IsRarityAtOrBelow(string rarity, string maxRarity)
+            => GetRarityWeight(rarity) <= GetRarityWeight(maxRarity);
+
+        private static int GetRarityWeight(string rarity)
+        {
+            return (rarity ?? "").Trim().ToLowerInvariant() switch
+            {
+                "common" => 1,
+                "rare" => 2,
+                "epic" => 3,
+                "legendary" => 4,
+                "mythic" => 5,
+                _ => 1
+            };
         }
 
         public static Item? RollRandomItemByRarity(string itemRarity)
         {
             var candidates = ItemCatalog
-                .Where(i => i.rarity == itemRarity && i.itemType != "Consumable" && i.itemType != "Quest")
+                .Where(i => i.rarity.Equals(itemRarity, StringComparison.OrdinalIgnoreCase) && i.itemType != "Consumable" && i.itemType != "Quest")
                 .ToList();
+            if (candidates.Count == 0)
+            {
+                return null;
+            }
             if (candidates.Count == 0) return null;
             return candidates[_random.Next(candidates.Count)];
         }

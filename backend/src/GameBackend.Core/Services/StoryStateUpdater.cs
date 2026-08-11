@@ -173,6 +173,7 @@ namespace GameBackend.Core.Services
 				characterId = character.characterId,
 				bossId = boss.bossId,
 				bossLevel = bossLevel,
+				bossRarity = boss.rarity,
 				playerHpBefore = character.hp,
 				playerHpAfter = character.hp,
 				bossHpBefore = GameShared.Config.GameConstants.ScaleStat(boss.baseHp, bossLevel),

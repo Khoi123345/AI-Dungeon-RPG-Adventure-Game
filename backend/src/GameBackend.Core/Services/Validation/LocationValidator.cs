@@ -45,6 +45,7 @@ namespace GameBackend.Core.Services.Validation
             var rawLocation = response.CurrentLocation?.Trim();
             var requestedLocation = NormalizeLocationId(rawLocation);
             var currentLocation = context.Session.currentLocation ?? context.Character.currentLocationId ?? "ancient_cave";
+            var normalizedCurrentLocation = NormalizeLocationId(currentLocation);
             var chapterId = (context.Session.currentChapterId ?? "1").ToLowerInvariant();
 
             HashSet<string> validLocations = chapterId switch
@@ -56,38 +57,40 @@ namespace GameBackend.Core.Services.Validation
 
             // 1. Lấy kho đồ nhân vật để kiểm tra Key Item
             var inventory = await _inventoryRepository.GetByCharacterIdAsync(context.Character.characterId);
-            var itemIds = new HashSet<string>(inventory.Select(i => i.itemId), StringComparer.OrdinalIgnoreCase);
+            var itemIds = new HashSet<string>(
+                inventory.Where(i => i != null && i.quantity > 0).Select(i => i.itemId),
+                StringComparer.OrdinalIgnoreCase);
 
             // 2. Kiểm tra currentLocation: Nếu AI trả về địa điểm hợp lệ của Chương hiện tại
             if (!string.IsNullOrWhiteSpace(requestedLocation) && validLocations.Contains(requestedLocation))
             {
                 // Kiểm tra ràng buộc chìa khóa (Key Items) để chống nhảy cóc Location
-                if (requestedLocation == "forgotten_temple" && !itemIds.Contains("item_ancient_key"))
+                if (requestedLocation != normalizedCurrentLocation && requestedLocation == "forgotten_temple" && !itemIds.Contains("item_ancient_key"))
                 {
                     _logger.LogWarning("Blocked AI transition to 'forgotten_temple': player lacks item_ancient_key.");
                     requestedLocation = "ancient_cave";
                 }
-                else if (requestedLocation == "goblin_hideout" && !itemIds.Contains("item_elemental_core"))
+                else if (requestedLocation != normalizedCurrentLocation && requestedLocation == "goblin_hideout" && !itemIds.Contains("item_elemental_core"))
                 {
                     _logger.LogWarning("Blocked AI transition to 'goblin_hideout': player lacks item_elemental_core.");
                     requestedLocation = itemIds.Contains("item_ancient_key") ? "forgotten_temple" : "ancient_cave";
                 }
-                else if (requestedLocation == "abyssal_trench" && !itemIds.Contains("item_sea_compass") && !itemIds.Contains("item_shipwreck_key"))
+                else if (requestedLocation != normalizedCurrentLocation && requestedLocation == "abyssal_trench" && !itemIds.Contains("item_sea_compass"))
                 {
                     _logger.LogWarning("Blocked AI transition to 'abyssal_trench': player lacks item_sea_compass.");
                     requestedLocation = "sunken_shipwreck";
                 }
-                else if (requestedLocation == "coral_palace" && !itemIds.Contains("item_void_crystal") && !itemIds.Contains("item_abyssal_key"))
+                else if (requestedLocation != normalizedCurrentLocation && requestedLocation == "coral_palace" && !itemIds.Contains("item_void_crystal"))
                 {
                     _logger.LogWarning("Blocked AI transition to 'coral_palace': player lacks item_void_crystal.");
                     requestedLocation = itemIds.Contains("item_sea_compass") ? "abyssal_trench" : "sunken_shipwreck";
                 }
-                else if (requestedLocation == "obsidian_peaks" && !itemIds.Contains("item_obsidian_key"))
+                else if (requestedLocation != normalizedCurrentLocation && requestedLocation == "obsidian_peaks" && !itemIds.Contains("item_obsidian_key"))
                 {
                     _logger.LogWarning("Blocked AI transition to 'obsidian_peaks': player lacks item_obsidian_key.");
                     requestedLocation = "sulfur_mines";
                 }
-                else if (requestedLocation == "dragon_nest" && !itemIds.Contains("item_dragon_blood_key"))
+                else if (requestedLocation != normalizedCurrentLocation && requestedLocation == "dragon_nest" && !itemIds.Contains("item_dragon_blood_key"))
                 {
                     _logger.LogWarning("Blocked AI transition to 'dragon_nest': player lacks item_dragon_blood_key.");
                     requestedLocation = itemIds.Contains("item_obsidian_key") ? "obsidian_peaks" : "sulfur_mines";
@@ -98,13 +101,12 @@ namespace GameBackend.Core.Services.Validation
             }
             else
             {
-                // Nếu AI tự bịa địa điểm lạ (như coastline_exploration, beach), ép về vị trí chính thức của Session
+                // Nếu AI tự bịa địa điểm lạ, ép về vị trí chính thức của Session
                 _logger.LogWarning("AI returned non-canonical location '{Requested}' for Chapter '{Chapter}'. Overriding to '{Current}'.", requestedLocation, chapterId, currentLocation);
                 response.CurrentLocation = currentLocation;
                 context.Session.currentLocation = currentLocation;
             }
 
-            // 2. Chấp nhận mọi currentNodeId do AI tạo ra để mở rộng cốt truyện, chỉ cần không rỗng.
             var requestedNode = NormalizeLocationId(response.CurrentNodeId);
             if (string.IsNullOrWhiteSpace(requestedNode))
             {
@@ -118,105 +120,52 @@ namespace GameBackend.Core.Services.Validation
                 context.Session.currentNodeId = requestedNode;
             }
 
-            // 3. Fallback logic: Tự động chèn Lựa chọn chuyển địa điểm nếu người chơi đủ điều kiện (có Key Item) nhưng AI quên sinh lựa chọn
-            EnsureTransitionChoices(response, itemIds);
+            // 3. Lọc bỏ các choices nhảy cóc hoặc tiến khu vực khi thiếu Key Item
+            SanitizeChoices(response, response.CurrentLocation, itemIds);
         }
 
-        private void EnsureTransitionChoices(StoryAiResponse response, HashSet<string> itemIds)
+        private void SanitizeChoices(StoryAiResponse response, string currentLocation, HashSet<string> itemIds)
         {
-            var currentLocation = response.CurrentLocation ?? string.Empty;
+            if (response.Choices == null) return;
+            var loc = NormalizeLocationId(currentLocation);
 
-            // Chapter 1: ancient_cave -> forgotten_temple (cần item_ancient_key)
-            if (currentLocation.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_ancient_key"))
+            response.Choices.RemoveAll(choice =>
             {
-                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase)))
-                {
-                    _logger.LogInformation("Injecting missing transition choice 'forgotten_temple' (player has item_ancient_key)");
-                    response.Choices.Add(new StoryChoiceOption
-                    {
-                        label = "Tiến vào Đền Thờ Bị Lãng Quên",
-                        description = "Sử dụng Chìa Khóa Cổ Xưa để mở cánh cửa đá khổng lồ dẫn vào đền thờ cổ.",
-                        nextNodeId = "forgotten_temple"
-                    });
-                }
-            }
+                if (choice == null) return false;
+                var target = NormalizeLocationId(choice.nextNodeId);
+                var labelLower = (choice.label ?? "").ToLowerInvariant();
+                var descLower = (choice.description ?? "").ToLowerInvariant();
+                var combinedText = $"{target} {labelLower} {descLower}";
 
-            // Chapter 1: forgotten_temple -> goblin_hideout (cần item_elemental_core)
-            if (currentLocation.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_elemental_core"))
-            {
-                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("goblin_hideout", StringComparison.OrdinalIgnoreCase)))
-                {
-                    _logger.LogInformation("Injecting missing transition choice 'goblin_hideout' (player has item_elemental_core)");
-                    response.Choices.Add(new StoryChoiceOption
-                    {
-                        label = "Đột kích Sào Huyệt Goblin",
-                        description = "Lõi Nguyên Tố tỏa sáng, chỉ đường dẫn sâu vào sào huyệt của vua Goblin.",
-                        nextNodeId = "goblin_hideout"
-                    });
-                }
-            }
+                // Chống nhảy cóc vị trí 1 -> 3
+                if (loc == "ancient_cave" && MentionsDestination(combinedText, "goblin_hideout")) return true;
+                if (loc == "sunken_shipwreck" && (target == "coral_palace" || combinedText.Contains("coral_palace") || combinedText.Contains("cung điện san hô"))) return true;
+                if (loc == "sulfur_mines" && (target == "dragon_nest" || combinedText.Contains("dragon_nest") || combinedText.Contains("tổ rồng"))) return true;
 
-            // Chapter 2: sunken_shipwreck -> abyssal_trench (cần item_sea_compass)
-            if (currentLocation.Equals("sunken_shipwreck", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_sea_compass"))
-            {
-                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase)))
-                {
-                    _logger.LogInformation("Injecting missing transition choice 'abyssal_trench' (player has item_sea_compass)");
-                    response.Choices.Add(new StoryChoiceOption
-                    {
-                        label = "Lặn xuống Rãnh Sâu Vô Tận",
-                        description = "Sử dụng Hải Đồ để tìm lối xuống vùng vực sâu tăm tối dưới đáy đại dương.",
-                        nextNodeId = "abyssal_trench"
-                    });
-                }
-            }
+                // Chống tiến khu vực khi thiếu Key Item (kiểm tra CẢ ID, Label và Description)
+                if (loc != "forgotten_temple" && !itemIds.Contains("item_ancient_key") && MentionsDestination(combinedText, "forgotten_temple")) return true;
 
-            // Chapter 2: abyssal_trench -> coral_palace (cần item_void_crystal)
-            if (currentLocation.Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_void_crystal"))
-            {
-                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("coral_palace", StringComparison.OrdinalIgnoreCase)))
-                {
-                    _logger.LogInformation("Injecting missing transition choice 'coral_palace' (player has item_void_crystal)");
-                    response.Choices.Add(new StoryChoiceOption
-                    {
-                        label = "Tiến vào Cung Điện San Hô",
-                        description = "Pha Lê Hư Không cộng hưởng, giải trừ phong ấn dẫn lối vào cung điện san hô cổ xưa.",
-                        nextNodeId = "coral_palace"
-                    });
-                }
-            }
+                if (loc != "goblin_hideout" && !itemIds.Contains("item_elemental_core") && MentionsDestination(combinedText, "goblin_hideout")) return true;
 
-            // Chapter 3: sulfur_mines -> obsidian_peaks (cần item_obsidian_key)
-            if (currentLocation.Equals("sulfur_mines", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_obsidian_key"))
-            {
-                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("obsidian_peaks", StringComparison.OrdinalIgnoreCase)))
-                {
-                    _logger.LogInformation("Injecting missing transition choice 'obsidian_peaks' (player has item_obsidian_key)");
-                    response.Choices.Add(new StoryChoiceOption
-                    {
-                        label = "Trèo lên Đỉnh Núi Hắc Diệu Thạch",
-                        description = "Chìa Khóa Hắc Diệu Thạch rung chuyển, kích hoạt thang nâng đá cổ xưa đưa bạn lên đỉnh núi.",
-                        nextNodeId = "obsidian_peaks"
-                    });
-                }
-            }
+                if (loc != "abyssal_trench" && !itemIds.Contains("item_sea_compass") && MentionsDestination(combinedText, "abyssal_trench")) return true;
 
-            // Chapter 3: obsidian_peaks -> dragon_nest (cần item_dragon_blood_key)
-            if (currentLocation.Equals("obsidian_peaks", StringComparison.OrdinalIgnoreCase) && itemIds.Contains("item_dragon_blood_key"))
-            {
-                if (!response.Choices.Any(c => (c.nextNodeId ?? "").Equals("dragon_nest", StringComparison.OrdinalIgnoreCase)))
+                if (loc != "coral_palace" && !itemIds.Contains("item_void_crystal") && MentionsDestination(combinedText, "coral_palace")) return true;
+
+                if (loc != "obsidian_peaks" && !itemIds.Contains("item_obsidian_key") && MentionsDestination(combinedText, "obsidian_peaks")) return true;
+
+                if (loc != "dragon_nest" && !itemIds.Contains("item_dragon_blood_key") && MentionsDestination(combinedText, "dragon_nest")) return true;
+
+                // Chống vào boss_room khi thiếu Key Item của khu vực 3
+                if (target == "boss_room" || combinedText.Contains("ngai vàng") || combinedText.Contains("boss_room"))
                 {
-                    _logger.LogInformation("Injecting missing transition choice 'dragon_nest' (player has item_dragon_blood_key)");
-                    response.Choices.Add(new StoryChoiceOption
-                    {
-                        label = "Tiến vào Tổ Rồng",
-                        description = "Chìa Khóa Long Huyết hấp thụ nhiệt lượng nham thạch, mở lối vào hang ổ của vua Rồng.",
-                        nextNodeId = "dragon_nest"
-                    });
+                    if (loc == "goblin_hideout" && !itemIds.Contains("item_elemental_core")) return true;
+                    if (loc == "coral_palace" && !itemIds.Contains("item_void_crystal")) return true;
+                    if (loc == "dragon_nest" && !itemIds.Contains("item_dragon_blood_key")) return true;
                 }
-            }
+
+                return false;
+            });
         }
-
 
         private static string NormalizeLocationId(string? raw)
         {
@@ -225,6 +174,24 @@ namespace GameBackend.Core.Services.Validation
             if (clean.StartsWith("location_")) clean = clean["location_".Length..];
             if (clean.StartsWith("loc_")) clean = clean["loc_".Length..];
             return clean;
+        }
+
+        private static bool MentionsDestination(string text, string destination)
+        {
+            var normalized = (text ?? string.Empty).ToLowerInvariant();
+            return destination switch
+            {
+                "goblin_hideout" => normalized.Contains("goblin_hideout") ||
+                                    normalized.Contains("sào huyệt goblin") ||
+                                    normalized.Contains("sao huyet goblin") ||
+                                    normalized.Contains("vua goblin"),
+                "forgotten_temple" => normalized.Contains("forgotten_temple") || normalized.Contains("đền thờ bị lãng quên"),
+                "abyssal_trench" => normalized.Contains("abyssal_trench") || normalized.Contains("rãnh sâu vô tận"),
+                "coral_palace" => normalized.Contains("coral_palace") || normalized.Contains("cung điện san hô"),
+                "obsidian_peaks" => normalized.Contains("obsidian_peaks") || normalized.Contains("đỉnh núi hắc diệu"),
+                "dragon_nest" => normalized.Contains("dragon_nest") || normalized.Contains("tổ rồng"),
+                _ => normalized.Contains(destination)
+            };
         }
     }
 }

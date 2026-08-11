@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GameBackend.Core.AIStory.Services;
 using GameBackend.Core.Repositories.Interfaces;
@@ -45,7 +46,7 @@ public class GameRuleValidatorTests
     }
 
     [Fact]
-    public async Task ValidateAndSanitizeAsync_Should_Clamp_Character_Abuse_Deltas()
+    public async Task ValidateAndSanitizeAsync_Should_Reject_All_Ai_Character_Deltas()
     {
         var validator = BuildValidator(new FakeContentService(
             validBosses: new[] { "dragon_001" },
@@ -71,21 +72,163 @@ public class GameRuleValidatorTests
 
         var sanitized = await validator.ValidateAndSanitizeAsync(session, character, aiResponse);
 
-        Assert.Equal(50, sanitized.CharacterDelta.HpDelta);
-        Assert.Equal(1000, sanitized.CharacterDelta.GoldDelta);
-        Assert.Equal(500, sanitized.CharacterDelta.ExpDelta);
-        Assert.Equal(40, sanitized.CharacterDelta.MpDelta);
+        Assert.Equal(0, sanitized.CharacterDelta.HpDelta);
+        Assert.Equal(0, sanitized.CharacterDelta.GoldDelta);
+        Assert.Equal(0, sanitized.CharacterDelta.ExpDelta);
+        Assert.Equal(0, sanitized.CharacterDelta.MpDelta);
         Assert.Equal("Alive", sanitized.CharacterDelta.Status);
         Assert.DoesNotContain("Dragon chết", sanitized.NarrativeText, StringComparison.OrdinalIgnoreCase);
     }
 
-    private static GameRuleValidator BuildValidator(IContentService contentService)
+    [Fact]
+    public async Task ValidateAndSanitizeAsync_Should_Block_Goblin_Hideout_Label_When_Elemental_Core_Is_Missing()
+    {
+        var validator = BuildValidator(new FakeContentService(
+            Array.Empty<string>(), Array.Empty<string>(),
+            new[] { "forgotten_temple", "goblin_hideout" }, Array.Empty<string>()));
+        var session = CreateSession("forgotten_temple");
+        var character = CreateCharacter("forgotten_temple");
+        var response = new StoryAiResponse
+        {
+            CurrentLocation = "forgotten_temple",
+            CurrentNodeId = "explore_temple",
+            NarrativeText = "Cánh cổng sào huyệt hiện ra.",
+            Choices = new List<StoryChoiceOption>
+            {
+                new() { label = "Tiến vào Sào Huyệt Goblin", description = "Đi qua cánh cổng", nextNodeId = "next_path" },
+                new() { label = "Khám phá thêm Đền Thờ", description = "Tiếp tục tìm kiếm", nextNodeId = "explore_temple" }
+            }
+        };
+
+        var sanitized = await validator.ValidateAndSanitizeAsync(session, character, response);
+
+        Assert.Single(sanitized.Choices);
+        Assert.Equal("Khám phá thêm Đền Thờ", sanitized.Choices[0].label);
+    }
+
+    [Fact]
+    public async Task ValidateAndSanitizeAsync_Should_Require_Positive_Elemental_Core_Quantity()
+    {
+        var content = new FakeContentService(Array.Empty<string>(), Array.Empty<string>(),
+            new[] { "forgotten_temple", "goblin_hideout" }, Array.Empty<string>());
+        var zeroQuantity = new Inventory { itemId = "item_elemental_core", quantity = 0, characterId = "char-1" };
+        var validator = BuildValidator(content, new[] { zeroQuantity });
+        var response = new StoryAiResponse
+        {
+            CurrentLocation = "forgotten_temple",
+            CurrentNodeId = "explore_temple",
+            Choices = new List<StoryChoiceOption>
+            {
+                new() { label = "Tiến vào Sào Huyệt Goblin", nextNodeId = "next_path" }
+            }
+        };
+
+        var blocked = await validator.ValidateAndSanitizeAsync(
+            CreateSession("forgotten_temple"), CreateCharacter("forgotten_temple"), response);
+        Assert.Empty(blocked.Choices);
+
+        var positiveQuantity = new Inventory { itemId = "item_elemental_core", quantity = 1, characterId = "char-1" };
+        validator = BuildValidator(content, new[] { positiveQuantity });
+        response = new StoryAiResponse
+        {
+            CurrentLocation = "forgotten_temple",
+            CurrentNodeId = "explore_temple",
+            Choices = new List<StoryChoiceOption>
+            {
+                new() { label = "Tiến vào Sào Huyệt Goblin", nextNodeId = "next_path" }
+            }
+        };
+        var allowed = await validator.ValidateAndSanitizeAsync(
+            CreateSession("forgotten_temple"), CreateCharacter("forgotten_temple"), response);
+        Assert.Single(allowed.Choices);
+    }
+
+    [Fact]
+    public async Task ValidateAndSanitizeAsync_Should_Keep_Drowned_Sailor_Battle_When_Only_Environment_Dissolves()
+    {
+        var validator = BuildValidator(new FakeContentService(
+            Array.Empty<string>(), Array.Empty<string>(), new[] { "sunken_shipwreck" }, Array.Empty<string>()));
+        var session = CreateSession("sunken_shipwreck");
+        session.currentChapterId = "chapter_2";
+        var character = CreateCharacter("sunken_shipwreck");
+        var response = new StoryAiResponse
+        {
+            TriggerBattle = true,
+            BossId = "mob_drowned_sailor",
+            BossName = "Drowned Sailor",
+            CurrentLocation = "sunken_shipwreck",
+            CurrentNodeId = "shipwreck_deck",
+            NarrativeText = "Bóng tối trên boong tàu tan biến khi Thủy Thủ Chết Đuối bước ra và lao về phía bạn."
+        };
+
+        var sanitized = await validator.ValidateAndSanitizeAsync(session, character, response);
+
+        Assert.True(sanitized.TriggerBattle);
+        Assert.Equal("mob_drowned_sailor", sanitized.BossId);
+    }
+
+    [Fact]
+    public async Task ValidateAndSanitizeAsync_Should_Reject_Ai_Authored_Fire_Core()
+    {
+        var validator = BuildValidator(new FakeContentService(
+            Array.Empty<string>(), Array.Empty<string>(), new[] { "coral_palace" }, Array.Empty<string>()));
+        var session = CreateSession("coral_palace");
+        session.currentChapterId = "chapter_2";
+        var response = new StoryAiResponse
+        {
+            CurrentLocation = "coral_palace",
+            CurrentNodeId = "coral_palace",
+            InventoryChanges = new List<StoryAiInventoryChange>
+            {
+                new() { ItemId = "item_fire_core", QuantityDelta = 1 }
+            }
+        };
+
+        var sanitized = await validator.ValidateAndSanitizeAsync(session, CreateCharacter("coral_palace"), response);
+
+        Assert.Empty(sanitized.InventoryChanges);
+    }
+
+    [Fact]
+    public void Common_Mob_Loot_Should_Never_Exceed_Common_Rarity()
+    {
+        var cap = GameShared.Config.GameConstants.GetMaxRarityCap("mob_goblin_guard", "Common");
+        Assert.Equal("Common", cap);
+        Assert.True(GameShared.Config.GameConstants.IsRarityAtOrBelow("Common", cap));
+        Assert.False(GameShared.Config.GameConstants.IsRarityAtOrBelow("Rare", cap));
+    }
+
+    [Fact]
+    public void Shadow_Demon_Retry_Should_Unlock_After_Two_Mob_Wins()
+    {
+        var start = DateTime.UtcNow;
+        var actions = new List<StoryAction>
+        {
+            BattleResult(start, "Kết quả: Thất bại. Đối thủ: Shadow Demon (Cấp độ 20)."),
+            BattleResult(start.AddMinutes(1), "Kết quả: Chiến thắng. Đối thủ: Shadow Spirit (Cấp độ 5)."),
+            BattleResult(start.AddMinutes(2), "Kết quả: Chiến thắng. Đối thủ: Abyssal Spirit (Cấp độ 6).")
+        };
+
+        Assert.Equal(2, GameBackend.Core.Services.StoryService.CountBossRetryMobWins(actions));
+        Assert.True(GameBackend.Core.Services.StoryService.IsBossRetryUnlocked(actions));
+    }
+
+    private static StoryAction BattleResult(DateTime createdAt, string text) => new()
+    {
+        actionId = Guid.NewGuid().ToString("N"),
+        sessionId = "session-1",
+        actionType = "battle_result",
+        aiResponse = $"[TRẬN ĐÁNH VỪA KẾT THÚC]\n{text}",
+        createdAt = createdAt
+    };
+
+    private static GameRuleValidator BuildValidator(IContentService contentService, IEnumerable<Inventory>? inventory = null)
     {
         var validators = new IGameRuleSubValidator[]
         {
             new BossValidator(contentService, NullLogger<BossValidator>.Instance),
             new InventoryValidator(contentService, NullLogger<InventoryValidator>.Instance),
-            new LocationValidator(contentService, new FakeInventoryRepository(), NullLogger<LocationValidator>.Instance),
+            new LocationValidator(contentService, new FakeInventoryRepository(inventory), NullLogger<LocationValidator>.Instance),
             new CharacterValidator(),
             new StoryValidator()
         };
@@ -95,7 +238,14 @@ public class GameRuleValidatorTests
 
     private sealed class FakeInventoryRepository : IInventoryRepository
     {
-        public Task<List<Inventory>> GetByCharacterIdAsync(string characterId) => Task.FromResult(new List<Inventory>());
+        private readonly List<Inventory> _items;
+
+        public FakeInventoryRepository(IEnumerable<Inventory>? items = null)
+        {
+            _items = items?.ToList() ?? new List<Inventory>();
+        }
+
+        public Task<List<Inventory>> GetByCharacterIdAsync(string characterId) => Task.FromResult(_items.ToList());
         public Task<Inventory?> GetByInventoryIdAsync(string inventoryId) => Task.FromResult<Inventory?>(null);
         public Task<Inventory?> FindByCharacterAndItemAsync(string characterId, string itemId) => Task.FromResult<Inventory?>(null);
         public Task<List<Inventory>> GetEquippedItemsAsync(string characterId) => Task.FromResult(new List<Inventory>());

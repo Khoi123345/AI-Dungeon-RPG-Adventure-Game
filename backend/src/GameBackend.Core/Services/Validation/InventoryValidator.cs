@@ -36,8 +36,16 @@ namespace GameBackend.Core.Services.Validation
                 }
 
                 var itemId = change.ItemId;
-                var catalogItem = GameShared.Config.GameConstants.ItemCatalog.FirstOrDefault(i => i.itemId.Equals(itemId, StringComparison.OrdinalIgnoreCase));
-                if (catalogItem == null && !await _contentService.ItemExistsAsync(itemId))
+
+                if (change.QuantityDelta > 0 && itemId.Equals("item_fire_core", StringComparison.OrdinalIgnoreCase))
+                {
+                    _logger.LogWarning("Rejected AI-authored Fire Core reward. Only BattleService may grant it after boss_shadow_demon victory.");
+                    continue;
+                }
+
+                var existsInCatalog = GameShared.Config.GameConstants.ItemCatalog.Any(i => i.itemId.Equals(itemId, StringComparison.OrdinalIgnoreCase));
+
+                if (!existsInCatalog && !await _contentService.ItemExistsAsync(itemId))
                 {
                     _logger.LogInformation("Rejected inventory change for unknown item {ItemId}", itemId);
                     continue;

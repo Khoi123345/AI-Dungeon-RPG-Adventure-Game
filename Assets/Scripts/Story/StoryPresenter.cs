@@ -33,6 +33,7 @@ public class StoryPresenter : MonoBehaviour
     private bool waitingForAdvance;
     private bool awaitingChoice;
     private bool isBossPopupShowing;  // chặn advance khi popup boss đang hiện
+    private bool isExternalModalOpen;
     private bool isInputMode = false;
 
     private readonly Queue<StoryLineData> pendingLines = new Queue<StoryLineData>();
@@ -61,6 +62,38 @@ public class StoryPresenter : MonoBehaviour
         else
         {
             StartRealStory();
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (GameProgressService.Instance != null)
+        {
+            GameProgressService.Instance.OnCharacterStatsChanged += OnCharacterStatsUpdated;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameProgressService.Instance != null)
+        {
+            GameProgressService.Instance.OnCharacterStatsChanged -= OnCharacterStatsUpdated;
+        }
+    }
+
+    private void OnCharacterStatsUpdated(GameShared.Models.Character curChar)
+    {
+        if (view != null && curChar != null)
+        {
+            view.SetCharacterState(new StoryCharacterState
+            {
+                characterName = curChar.name,
+                level = curChar.level,
+                hp = curChar.hp,
+                gold = curChar.gold,
+                xp = curChar.experience,
+                maxXP = curChar.level * 100
+            });
         }
     }
 
@@ -196,13 +229,28 @@ public class StoryPresenter : MonoBehaviour
 
         view.SetNextIndicatorVisible(false);
         bool hasChoices = currentData != null && currentData.node != null && currentData.node.choices != null && currentData.node.choices.Count > 0;
+
+        if (currentData != null && currentData.isCompleted)
+        {
+            awaitingChoice = false;
+            view.SetActiveOptionsPanelVisible(false);
+            view.SetInputPanelVisible(false);
+            view.SetChoiceInteractable(false);
+            view.SetInputInteractable(false);
+            yield break;
+        }
         
         if (hasChoices)
         {
             view.SetChoices(currentData.node.choices.ToArray(), OnChoiceSelected);
         }
 
-        if (hasChoices && !isInputMode)
+        if (isExternalModalOpen)
+        {
+            view.SetActiveOptionsPanelVisible(false);
+            view.SetInputPanelVisible(false);
+        }
+        else if (hasChoices && !isInputMode)
         {
             view.SetActiveOptionsPanelVisible(true);
             view.SetInputPanelVisible(false);
@@ -239,41 +287,47 @@ public class StoryPresenter : MonoBehaviour
         skipTyping = false;
         waitingForAdvance = false;
 
-        if (string.IsNullOrEmpty(text))
+        try
         {
-            isTyping = false;
-            yield break;
-        }
-
-        string renderedText = string.Empty;
-        int characterIndex = 0;
-
-        while (characterIndex < text.Length)
-        {
-            if (skipTyping)
+            if (string.IsNullOrEmpty(text))
             {
-                renderedText = text;
-                break;
+                yield break;
             }
 
-            renderedText += text[characterIndex];
-            view.SetStoryText(renderedText);
-            characterIndex++;
-            yield return new WaitForSeconds(characterDelay);
+            string renderedText = string.Empty;
+            int characterIndex = 0;
+
+            while (characterIndex < text.Length)
+            {
+                if (skipTyping)
+                {
+                    renderedText = text;
+                    break;
+                }
+
+                renderedText += text[characterIndex];
+                view?.SetStoryText(renderedText);
+                characterIndex++;
+                yield return new WaitForSeconds(characterDelay);
+            }
+
+            view?.SetStoryText(renderedText);
+
+            isTyping = false;
+            waitingForAdvance = true;
+            view?.SetNextIndicatorVisible(true);
+
+            while (waitingForAdvance)
+            {
+                yield return null;
+            }
         }
-
-        view.SetStoryText(renderedText);
-
-        isTyping = false;
-        waitingForAdvance = true;
-        view.SetNextIndicatorVisible(true);
-
-        while (waitingForAdvance)
+        finally
         {
-            yield return null;
+            isTyping = false;
+            waitingForAdvance = false;
+            view?.SetNextIndicatorVisible(false);
         }
-
-        view.SetNextIndicatorVisible(false);
     }
 
     private void HandleAdvancePressed()
@@ -363,6 +417,11 @@ public class StoryPresenter : MonoBehaviour
             {
                 Debug.Log($"<color=#00FF00>[StoryPresenter] Nhận phản hồi từ AI Bedrock (Choice):</color>\n- triggerBattle: <b>{response.triggerBattle}</b>\n- bossId: <b>{response.bossId}</b>\n- location: <b>{response.currentLocation}</b>");
 
+                if (response.character != null)
+                {
+                    GameProgressService.Instance?.SyncCharacterFromResponse(response.character);
+                }
+
                 GameProgressService.Instance?.SetCurrentStorySession(response.sessionId, response.currentNodeId, response.currentLocation);
                 StoryData nextStoryData = MapActionResponseToStoryData(response);
                 PlayNextStoryNode(nextStoryData);
@@ -370,7 +429,6 @@ public class StoryPresenter : MonoBehaviour
                 if (response.triggerBattle)
                 {
                     Debug.Log($"<color=#FF5500><b>[StoryPresenter] AI CHÍNH THỨC KÍCH HOẠT TRẬN ĐÁNH BOSS!</b> BossId = '{response.bossId}'</color>");
-                    nextStoryData.node?.choices?.Clear();
                     view?.SetActiveOptionsPanelVisible(false);
                     if (gameObject.activeInHierarchy)
                     {
@@ -541,7 +599,7 @@ public class StoryPresenter : MonoBehaviour
         view.AppendStoryText("\n\n<i><color=#FF3333>AI Bedrock: Một quái vật hùng mạnh bất ngờ xuất hiện!</color></i>\n");
         yield return new WaitForSeconds(1.0f);
 
-        isBossPopupShowing = true;
+        EnterEncounterModal();
         view.ShowBossOverlay();
         yield return new WaitForSeconds(1.5f);
 
@@ -607,6 +665,7 @@ public class StoryPresenter : MonoBehaviour
         return new StoryData
         {
             title = response.currentLocation ?? "AI Story",
+            isCompleted = response.storyCompleted,
             node = new StoryNodeData
             {
                 nodeId = response.currentNodeId ?? "ai_node",
@@ -651,7 +710,7 @@ public class StoryPresenter : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
 
         // ── Bước 2: Overlay con mắt xuất hiện TRƯỚC (full opacity) ───
-        isBossPopupShowing = true;
+        EnterEncounterModal();
         view.ShowBossOverlay();
 
         // Đợi người chơi "thấm" hình overlay
@@ -677,19 +736,80 @@ public class StoryPresenter : MonoBehaviour
 
     private void OnBossPopupFlee()
     {
-        isBossPopupShowing = false;
-        view.HideBossEncounterPopup();
+        ExitEncounterModal();
         Debug.Log("[StoryPresenter] Người chơi bỏ chạy! Tiếp tục story...");
 
         // Thông báo nhỏ trong story log
-        view.AppendStoryText(
-            "\n<i><color=#AAAAAA>Bạn đã bỏ chạy thành công... Nhưng boss vẫn đang rình rập đâu đó.</color></i>\n"
+        view?.AppendStoryText(
+            "\n<i><color=#AAAAAA>Bạn đã bỏ chạy thành công... Nhưng quái vật vẫn đang rình rập đâu đó.</color></i>\n"
         );
 
-        // Mở lại ô nhập hành động
+        RestoreInteractionUiAfterModal();
+    }
+
+    private void EnterEncounterModal()
+    {
+        isBossPopupShowing = true;
+        view?.SetActiveOptionsPanelVisible(false);
+        view?.SetInputPanelVisible(false);
+        view?.SetChoiceInteractable(false);
+        view?.SetInputInteractable(false);
+    }
+
+    private void ExitEncounterModal()
+    {
+        isBossPopupShowing = false;
+        view?.HideBossEncounterPopup();
+    }
+
+    public void SetExternalModalOpen(bool open)
+    {
+        isExternalModalOpen = open;
+        if (open)
+        {
+            view?.SetActiveOptionsPanelVisible(false);
+            view?.SetInputPanelVisible(false);
+            view?.SetChoiceInteractable(false);
+            view?.SetInputInteractable(false);
+            return;
+        }
+
+        RestoreInteractionUiAfterModal();
+    }
+
+    public void RestoreInteractionUiAfterModal()
+    {
+        if (view == null || isExternalModalOpen || isBossPopupShowing) return;
+        if (currentData == null || currentData.node == null || currentData.isCompleted)
+        {
+            awaitingChoice = false;
+            view.SetActiveOptionsPanelVisible(false);
+            view.SetInputPanelVisible(false);
+            return;
+        }
+
+        if (isTyping || waitingForAdvance)
+        {
+            view.SetActiveOptionsPanelVisible(false);
+            view.SetInputPanelVisible(false);
+            return;
+        }
+
         awaitingChoice = true;
-        view.SetInputPanelVisible(true);
-        view.SetInputInteractable(true);
+        bool hasChoices = currentData.node.choices != null && currentData.node.choices.Count > 0;
+        if (hasChoices && !isInputMode)
+        {
+            view.SetActiveOptionsPanelVisible(true);
+            view.SetInputPanelVisible(false);
+            view.SetChoiceInteractable(true);
+        }
+        else
+        {
+            isInputMode = true;
+            view.SetActiveOptionsPanelVisible(false);
+            view.SetInputPanelVisible(true);
+            view.SetInputInteractable(true);
+        }
     }
 
     private void OnBackClicked()

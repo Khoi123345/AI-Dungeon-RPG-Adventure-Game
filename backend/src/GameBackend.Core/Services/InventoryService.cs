@@ -40,7 +40,10 @@ namespace GameBackend.Core.Services
             {
                 characterId = characterId,
                 totalSlots = GameConstants.MaxInventorySlots,
-                slots = items.Select(i => BuildInventorySlot(i)).ToList()
+                slots = items
+                    .Where(i => i != null && i.quantity > 0)
+                    .Select(BuildInventorySlot)
+                    .ToList()
             };
         }
 
@@ -265,18 +268,26 @@ namespace GameBackend.Core.Services
         // GRANT LOOT DROP (Mục 5.2 logic doc)
         // =====================================================================
 
-        public async Task<List<LootItemDTO>> GrantLootDropAsync(string characterId, string bossRarity, string battleId)
+        public async Task<List<LootItemDTO>> GrantLootDropAsync(string characterId, string bossRarity, string battleId, string bossId = "")
         {
             var results = new List<LootItemDTO>();
 
-            // 1. Roll item rarity từ boss rarity (weighted random theo bảng loot)
-            string itemRarity = GameConstants.RollItemRarity(bossRarity);
+            // 1. Roll item rarity từ boss rarity có áp trần MaxRarityCap (mobs mob_* max Common)
+            string maxCap = GameConstants.GetMaxRarityCap(bossId, bossRarity);
+            string itemRarity = GameConstants.RollItemRarity(bossRarity, maxCap);
 
             // 2. Roll ngẫu nhiên item trong rarity đó (chỉ Equipment, không Consumable)
             var item = GameConstants.RollRandomItemByRarity(itemRarity);
             if (item == null)
             {
                 _logger.LogWarning("No item found for rarity {Rarity} in catalog.", itemRarity);
+                return results;
+            }
+
+            if (!GameShared.Config.GameConstants.IsRarityAtOrBelow(item.rarity, maxCap))
+            {
+                _logger.LogError("Rejected invalid loot {ItemId} ({ItemRarity}) above enemy cap {MaxRarity} for {BossId}.",
+                    item.itemId, item.rarity, maxCap, bossId);
                 return results;
             }
 
