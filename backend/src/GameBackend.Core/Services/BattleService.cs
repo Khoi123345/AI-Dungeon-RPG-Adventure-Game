@@ -71,49 +71,24 @@ namespace GameBackend.Core.Services
                 ? request.bossId
                 : existingEncounter?.bossId ?? string.Empty;
 
-            string cleanTarget = (targetBossId ?? "").Trim().ToLowerInvariant();
-            string strippedTarget = cleanTarget;
-            if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
-            if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
-
-            Boss? template = null;
-            if (!string.IsNullOrWhiteSpace(targetBossId))
+            if (string.IsNullOrWhiteSpace(targetBossId))
             {
-                template = GameConstants.BossCatalog.FirstOrDefault(b =>
-                    b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
-                    b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                    b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                    b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase) ||
-                    b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase));
+                throw new Utils.GameValidationException("A non-empty bossId or a valid encounterId is required");
             }
 
+            if (targetBossId.StartsWith("boss_", StringComparison.OrdinalIgnoreCase) &&
+                await _defeatedBossRepository.HasDefeatedBossAsync(character.characterId, targetBossId))
+            {
+                throw new Utils.GameValidationException($"Boss {targetBossId} has already been defeated and cannot be spawned again");
+            }
 
-            string rarity = template != null ? template.rarity : "Common";
+            Boss? template = FindBossTemplate(targetBossId);
             if (template == null)
             {
-                // Nếu là mob thường chưa có trong Catalog (ví dụ mob_cave_bat), tự tạo template Mob thường nhẹ nhàng thay vì fallback sang Boss lớn (Shadow Demon)
-                var minorMobs = GameConstants.BossCatalog.Where(b => b.bossId.StartsWith("mob_")).ToList();
-                var fallbackBase = minorMobs.Count > 0
-                    ? minorMobs[_random.Next(minorMobs.Count)]
-                    : new Boss { baseHp = 25, baseAttack = 5, baseDefense = 1, speed = 8, criticalRate = 0.03f, expReward = 10, goldReward = 8 };
-
-                string mobTitleName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(strippedTarget.Replace("_", " "));
-
-                template = new Boss
-                {
-                    bossId = targetBossId,
-                    name = mobTitleName,
-                    rarity = "Common",
-                    baseHp = fallbackBase.baseHp,
-                    baseAttack = fallbackBase.baseAttack,
-                    baseDefense = fallbackBase.baseDefense,
-                    speed = fallbackBase.speed,
-                    criticalRate = fallbackBase.criticalRate,
-                    expReward = fallbackBase.expReward,
-                    goldReward = fallbackBase.goldReward
-                };
+                throw new Utils.GameValidationException($"Unknown bossId '{targetBossId}'. The encounter must use an exact BossCatalog ID");
             }
 
+            string rarity = template.rarity;
 
             int bossLevel = request.bossLevel > 0
                 ? request.bossLevel
@@ -221,13 +196,8 @@ namespace GameBackend.Core.Services
             if (strippedTarget.StartsWith("mob_")) strippedTarget = strippedTarget[4..];
             if (strippedTarget.StartsWith("boss_")) strippedTarget = strippedTarget[5..];
 
-            var bossTemplate = GameConstants.BossCatalog.FirstOrDefault(b =>
-                b.bossId.Equals(targetBossId, StringComparison.OrdinalIgnoreCase) ||
-                b.bossId.Equals($"mob_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                b.bossId.Equals($"boss_{strippedTarget}", StringComparison.OrdinalIgnoreCase) ||
-                b.bossId.Contains(strippedTarget, StringComparison.OrdinalIgnoreCase) ||
-                b.name.Equals(targetBossId, StringComparison.OrdinalIgnoreCase))
-                ?? GameConstants.BossCatalog[0];
+            var bossTemplate = FindBossTemplate(targetBossId)
+                ?? throw new Utils.GameValidationException($"Encounter references unknown bossId '{targetBossId}'");
 
 
             double bossPower = bossTemplate.baseAttack * (1 + encounter.bossLevel * GameConstants.BossLevelScaleFactor)
@@ -341,13 +311,17 @@ namespace GameBackend.Core.Services
                 }
 
                 // Mục 5: Loot System
-                int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, encounter.bossRarity);
-                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, encounter.bossRarity, character.level);
+                string effectiveRarity = !string.IsNullOrWhiteSpace(encounter.bossRarity)
+                    ? encounter.bossRarity
+                    : bossTemplate.rarity;
+
+                int goldReward = GameConstants.CalculateGoldReward(encounter.bossLevel, effectiveRarity);
+                int expReward = GameConstants.CalculateExpReward(encounter.bossLevel, effectiveRarity, character.level);
                 character.gold += goldReward;
                 await _characterService.ApplyExperienceAndLevelUp(character, expReward);
 
                 var lootDTOs = await _inventoryService.GrantLootDropAsync(
-                    character.characterId, encounter.bossRarity, battleId);
+                    character.characterId, effectiveRarity, battleId, encounter.bossId);
 
                 // Khi người chơi hạ gục quái (mob_*) -> Tự động rớt Key Item của khu vực nếu chưa sở hữu
                 string? keyItemToGrant = null;
@@ -372,7 +346,8 @@ namespace GameBackend.Core.Services
                     {
                         keyItemToGrant = "item_void_crystal";
                     }
-                    else if (currentLoc.Equals("coral_palace", StringComparison.OrdinalIgnoreCase))
+                    else if (currentLoc.Equals("coral_palace", StringComparison.OrdinalIgnoreCase) &&
+                             string.Equals(encounter.bossId, "boss_shadow_demon", StringComparison.OrdinalIgnoreCase))
                     {
                         keyItemToGrant = "item_fire_core";
                     }
@@ -440,6 +415,15 @@ namespace GameBackend.Core.Services
                 var session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
                 if (session != null && session.status == "Active")
                 {
+                    // Nếu THẤT BẠI hoặc đang ở node "boss_room", reset currentNodeId về currentLocation chính để thoát khỏi phòng Boss
+                    if (!isVictory || string.Equals(session.currentNodeId, "boss_room", StringComparison.OrdinalIgnoreCase))
+                    {
+                        session.currentNodeId = session.currentLocation;
+                        session.updatedAt = DateTime.UtcNow;
+                        await _storyRepository.SaveSessionAsync(session);
+                        _logger.LogInformation("Reset session currentNodeId to '{Location}' for character {CharacterId} after battle outcome (isVictory={IsVictory})", session.currentLocation, character.characterId, isVictory);
+                    }
+
                     var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
                     var turnNumber = allRecentActions.Count + 1;
 
@@ -472,7 +456,7 @@ namespace GameBackend.Core.Services
                             new StoryChoiceOption
                             {
                                 label = "Tiếp tục",
-                                description = "Sau cuộc chiến, bạn dọn dẹp chiến trường và tiếp tục cuộc hành trình.",
+                                description = "Sau cuộc chiến, bạn quay lại khu vực chính để tiếp tục cuộc hành trình.",
                                 nextNodeId = session.currentNodeId
                             }
                         }
@@ -531,6 +515,13 @@ namespace GameBackend.Core.Services
         // =====================================================================
         // PRIVATE HELPERS
         // =====================================================================
+
+        internal static Boss? FindBossTemplate(string? targetBossId)
+        {
+            if (string.IsNullOrWhiteSpace(targetBossId)) return null;
+            return GameConstants.BossCatalog.FirstOrDefault(b =>
+                b.bossId.Equals(targetBossId.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
 
         // Removed ScaleStat
 
@@ -701,14 +692,14 @@ namespace GameBackend.Core.Services
                 else if (normalizedBossId == "shadow_demon")
                 {
                     targetChapterId = "chapter_3";
-                    targetLocation = "dragon_nest";
-                    chapterTitle = "Chương 3: Hoang Mạc Thiêu Rụi (Tổ Rồng)";
+                    targetLocation = "sulfur_mines";
+                    chapterTitle = "Chương 3: Vùng Đất Hoang Tàn Rực Lửa (Mỏ Lưu Huỳnh)";
                 }
                 else if (normalizedBossId == "dragon_king")
                 {
-                    targetChapterId = "chapter_4";
-                    targetLocation = "start"; // Update with real chapter 4 location later
-                    chapterTitle = "Chương 4: Đỉnh Núi Băng Giá";
+                    targetChapterId = "chapter_3_completed";
+                    targetLocation = "dragon_nest";
+                    chapterTitle = "Hồi Kết: Vua Rồng Đã Bị Khuất Phục";
                 }
 
                 if (!string.IsNullOrEmpty(targetChapterId))
@@ -717,6 +708,11 @@ namespace GameBackend.Core.Services
                     session.currentLocation = targetLocation;
                     session.currentNodeId = targetLocation; // Reset node khỏi boss_room sau khi thắng Boss
                     session.updatedAt = DateTime.UtcNow;
+                    if (normalizedBossId == "dragon_king")
+                    {
+                        session.status = "Completed";
+                        session.endedAt = DateTime.UtcNow;
+                    }
 
 
                     string summaryNote = $" [ĐÃ HẠ GỤC BOSS {bossId.ToUpperInvariant()} - TIẾN SANG {chapterTitle.ToUpperInvariant()}]";
@@ -731,15 +727,34 @@ namespace GameBackend.Core.Services
 
                     await _storyRepository.SaveSessionAsync(session);
 
+                    string transitionNarrative = normalizedBossId switch
+                    {
+                        "shadow_demon" => $"Shadow Demon ngã xuống! Hào quang hắc ám tan biến. Bạn chính thức hoàn thành Chương 2 và tiến sang {chapterTitle}!",
+                        "dragon_king"  => $"Dragon King ngã xuống! Sức mạnh của Rồng đã bị khuất phục. Bạn chính thức hoàn thành Chương 3 và tiến sang {chapterTitle}!",
+                        _              => $"Vua Goblin ngã xuống! Mảnh Vỡ Lõi Nguyên Tố tỏa sáng rực rỡ giải trừ phong ấn. Bạn chính thức hoàn thành Chương 1 và bước sang {chapterTitle}!"
+                    };
+
+                    var transitionResponse = new StoryAiResponse
+                    {
+                        NarrativeText = transitionNarrative,
+                        CurrentChapterId = targetChapterId,
+                        CurrentLocation = targetLocation,
+                        CurrentNodeId = targetLocation,
+                        StorySummary = session.storySummary,
+                        ActionType = "chapter_transition",
+                        TriggerBattle = false,
+                        Choices = new List<StoryChoiceOption>()
+                    };
+
                     var transitionAction = new StoryAction
                     {
                         actionId = Guid.NewGuid().ToString("N"),
                         sessionId = session.sessionId,
                         playerInput = $"[SỰ KIỆN CHIẾN THẮNG]: Đã tiêu diệt thành công Boss {bossId}!",
-                        aiResponse = $"Vua Goblin ngã xuống! Mảnh Vỡ Lõi Nguyên Tố tỏa sáng rực rỡ giải trừ phong ấn. Bạn chính thức hoàn thành Chương 1 và bước sang {chapterTitle}!",
+                        aiResponse = transitionNarrative,
                         turnNumber = 999,
                         actionType = "chapter_transition",
-                        metadataJson = $"{{\"currentChapterId\":\"{targetChapterId}\",\"currentLocation\":\"{targetLocation}\",\"defeatedBoss\":\"{bossId}\"}}",
+                        metadataJson = StoryAiResponseParser.Serialize(transitionResponse),
                         createdAt = DateTime.UtcNow
                     };
 

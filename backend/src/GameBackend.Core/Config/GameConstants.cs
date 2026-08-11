@@ -19,7 +19,8 @@ namespace GameBackend.Core.Config
         public static int CalculateBossLevel(int playerLevel, string rarity) => GameShared.Config.GameConstants.CalculateBossLevel(playerLevel, rarity);
         public static Boss GetBossTemplateByRarity(string rarity) => GameShared.Config.GameConstants.GetBossTemplateByRarity(rarity);
         public static Item? GetItemById(string itemId) => GameShared.Config.GameConstants.GetItemById(itemId);
-        public static string RollItemRarity(string bossRarity) => GameShared.Config.GameConstants.RollItemRarity(bossRarity);
+        public static string GetMaxRarityCap(string bossId, string bossRarity) => GameShared.Config.GameConstants.GetMaxRarityCap(bossId, bossRarity);
+        public static string RollItemRarity(string bossRarity, string maxCap = "Legendary") => GameShared.Config.GameConstants.RollItemRarity(bossRarity, maxCap);
         public static Item? RollRandomItemByRarity(string itemRarity) => GameShared.Config.GameConstants.RollRandomItemByRarity(itemRarity);
         public static int CalculateGoldReward(int bossLevel, string bossRarity) => GameShared.Config.GameConstants.CalculateGoldReward(bossLevel, bossRarity);
         public static int CalculateExpReward(int bossLevel, string bossRarity, int playerLevel = 1) => GameShared.Config.GameConstants.CalculateExpReward(bossLevel, bossRarity, playerLevel);

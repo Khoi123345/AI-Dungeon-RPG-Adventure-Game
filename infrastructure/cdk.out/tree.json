@@ -942,6 +942,581 @@
           "version": "2.150.0"
         }
       },
+      "GameStorageStack": {
+        "id": "GameStorageStack",
+        "path": "GameStorageStack",
+        "children": {
+          "GameAssetsBucket": {
+            "id": "GameAssetsBucket",
+            "path": "GameStorageStack/GameAssetsBucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GameStorageStack/GameAssetsBucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketName": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "game-assets-rpg-",
+                          {
+                            "Ref": "AWS::AccountId"
+                          }
+                        ]
+                      ]
+                    },
+                    "corsConfiguration": {
+                      "corsRules": [
+                        {
+                          "maxAge": 3000,
+                          "allowedHeaders": [
+                            "*"
+                          ],
+                          "allowedMethods": [
+                            "GET",
+                            "HEAD"
+                          ],
+                          "allowedOrigins": [
+                            "*"
+                          ]
+                        }
+                      ]
+                    },
+                    "lifecycleConfiguration": {
+                      "rules": [
+                        {
+                          "id": "graphics-intelligent-tiering",
+                          "prefix": "graphics/",
+                          "status": "Enabled",
+                          "transitions": [
+                            {
+                              "storageClass": "INTELLIGENT_TIERING",
+                              "transitionInDays": 30
+                            }
+                          ]
+                        },
+                        {
+                          "id": "sounds-standard-ia",
+                          "prefix": "sounds/",
+                          "status": "Enabled",
+                          "transitions": [
+                            {
+                              "storageClass": "STANDARD_IA",
+                              "transitionInDays": 60
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "publicAccessBlockConfiguration": {
+                      "blockPublicAcls": true,
+                      "blockPublicPolicy": true,
+                      "ignorePublicAcls": true,
+                      "restrictPublicBuckets": true
+                    },
+                    "versioningConfiguration": {
+                      "status": "Enabled"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.150.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "GameStorageStack/GameAssetsBucket/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "GameStorageStack/GameAssetsBucket/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "bucket": {
+                          "Ref": "GameAssetsBucket67E182C3"
+                        },
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "s3:GetObject",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "CanonicalUser": {
+                                  "Fn::GetAtt": [
+                                    "GameAssetsDistributionOrigin1S3OriginE7E9F62E",
+                                    "S3CanonicalUserId"
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "GameAssetsBucket67E182C3",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "/*"
+                                  ]
+                                ]
+                              }
+                            },
+                            {
+                              "Action": "s3:GetObject",
+                              "Condition": {
+                                "StringEquals": {
+                                  "AWS:SourceArn": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:cloudfront::",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":distribution/",
+                                        {
+                                          "Ref": "GameAssetsDistributionC51AE01D"
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "cloudfront.amazonaws.com"
+                              },
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "GameAssetsBucket67E182C3",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                      "version": "2.150.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.150.0"
+            }
+          },
+          "GameAssetsOAC": {
+            "id": "GameAssetsOAC",
+            "path": "GameStorageStack/GameAssetsOAC",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::CloudFront::OriginAccessControl",
+              "aws:cdk:cloudformation:props": {
+                "originAccessControlConfig": {
+                  "name": "GameAssetsOAC",
+                  "originAccessControlOriginType": "s3",
+                  "signingBehavior": "always",
+                  "signingProtocol": "sigv4"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.CfnOriginAccessControl",
+              "version": "2.150.0"
+            }
+          },
+          "GraphicsCachePolicy": {
+            "id": "GraphicsCachePolicy",
+            "path": "GameStorageStack/GraphicsCachePolicy",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GameStorageStack/GraphicsCachePolicy/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::CachePolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "cachePolicyConfig": {
+                      "name": "GameGraphicsCachePolicy",
+                      "comment": "Cache sprites/art 24 hours",
+                      "minTtl": 0,
+                      "maxTtl": 31536000,
+                      "defaultTtl": 86400,
+                      "parametersInCacheKeyAndForwardedToOrigin": {
+                        "cookiesConfig": {
+                          "cookieBehavior": "none"
+                        },
+                        "headersConfig": {
+                          "headerBehavior": "none"
+                        },
+                        "enableAcceptEncodingGzip": true,
+                        "enableAcceptEncodingBrotli": false,
+                        "queryStringsConfig": {
+                          "queryStringBehavior": "none"
+                        }
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnCachePolicy",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.CachePolicy",
+              "version": "2.150.0"
+            }
+          },
+          "SoundsCachePolicy": {
+            "id": "SoundsCachePolicy",
+            "path": "GameStorageStack/SoundsCachePolicy",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GameStorageStack/SoundsCachePolicy/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::CachePolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "cachePolicyConfig": {
+                      "name": "GameSoundsCachePolicy",
+                      "comment": "Cache BGM/SFX 7 days",
+                      "minTtl": 0,
+                      "maxTtl": 31536000,
+                      "defaultTtl": 604800,
+                      "parametersInCacheKeyAndForwardedToOrigin": {
+                        "cookiesConfig": {
+                          "cookieBehavior": "none"
+                        },
+                        "headersConfig": {
+                          "headerBehavior": "none"
+                        },
+                        "enableAcceptEncodingGzip": false,
+                        "enableAcceptEncodingBrotli": false,
+                        "queryStringsConfig": {
+                          "queryStringBehavior": "none"
+                        }
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnCachePolicy",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.CachePolicy",
+              "version": "2.150.0"
+            }
+          },
+          "PromptsCachePolicy": {
+            "id": "PromptsCachePolicy",
+            "path": "GameStorageStack/PromptsCachePolicy",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GameStorageStack/PromptsCachePolicy/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::CachePolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "cachePolicyConfig": {
+                      "name": "GamePromptsCachePolicy",
+                      "comment": "Cache prompt MD files 5 minutes",
+                      "minTtl": 0,
+                      "maxTtl": 3600,
+                      "defaultTtl": 300,
+                      "parametersInCacheKeyAndForwardedToOrigin": {
+                        "cookiesConfig": {
+                          "cookieBehavior": "none"
+                        },
+                        "headersConfig": {
+                          "headerBehavior": "none"
+                        },
+                        "enableAcceptEncodingGzip": true,
+                        "enableAcceptEncodingBrotli": false,
+                        "queryStringsConfig": {
+                          "queryStringBehavior": "none"
+                        }
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnCachePolicy",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.CachePolicy",
+              "version": "2.150.0"
+            }
+          },
+          "GameAssetsDistribution": {
+            "id": "GameAssetsDistribution",
+            "path": "GameStorageStack/GameAssetsDistribution",
+            "children": {
+              "Origin1": {
+                "id": "Origin1",
+                "path": "GameStorageStack/GameAssetsDistribution/Origin1",
+                "children": {
+                  "S3Origin": {
+                    "id": "S3Origin",
+                    "path": "GameStorageStack/GameAssetsDistribution/Origin1/S3Origin",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "GameStorageStack/GameAssetsDistribution/Origin1/S3Origin/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+                          "aws:cdk:cloudformation:props": {
+                            "cloudFrontOriginAccessIdentityConfig": {
+                              "comment": "Identity for GameStorageStackGameAssetsDistributionOrigin11FC0F4C1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
+                          "version": "2.150.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
+                      "version": "2.150.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.3.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "GameStorageStack/GameAssetsDistribution/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                  "aws:cdk:cloudformation:props": {
+                    "distributionConfig": {
+                      "enabled": true,
+                      "origins": [
+                        {
+                          "domainName": {
+                            "Fn::GetAtt": [
+                              "GameAssetsBucket67E182C3",
+                              "RegionalDomainName"
+                            ]
+                          },
+                          "id": "GameStorageStackGameAssetsDistributionOrigin11FC0F4C1",
+                          "s3OriginConfig": {
+                            "originAccessIdentity": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "origin-access-identity/cloudfront/",
+                                  {
+                                    "Ref": "GameAssetsDistributionOrigin1S3OriginE7E9F62E"
+                                  }
+                                ]
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "defaultCacheBehavior": {
+                        "pathPattern": "*",
+                        "targetOriginId": "GameStorageStackGameAssetsDistributionOrigin11FC0F4C1",
+                        "allowedMethods": [
+                          "GET",
+                          "HEAD"
+                        ],
+                        "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+                        "compress": true,
+                        "viewerProtocolPolicy": "redirect-to-https"
+                      },
+                      "cacheBehaviors": [
+                        {
+                          "pathPattern": "/graphics/*",
+                          "targetOriginId": "GameStorageStackGameAssetsDistributionOrigin11FC0F4C1",
+                          "allowedMethods": [
+                            "GET",
+                            "HEAD"
+                          ],
+                          "cachePolicyId": {
+                            "Ref": "GraphicsCachePolicy3C3A888E"
+                          },
+                          "compress": true,
+                          "viewerProtocolPolicy": "redirect-to-https"
+                        },
+                        {
+                          "pathPattern": "/sounds/*",
+                          "targetOriginId": "GameStorageStackGameAssetsDistributionOrigin11FC0F4C1",
+                          "allowedMethods": [
+                            "GET",
+                            "HEAD"
+                          ],
+                          "cachePolicyId": {
+                            "Ref": "SoundsCachePolicyB0401F21"
+                          },
+                          "compress": false,
+                          "viewerProtocolPolicy": "redirect-to-https"
+                        },
+                        {
+                          "pathPattern": "/prompts/*",
+                          "targetOriginId": "GameStorageStackGameAssetsDistributionOrigin11FC0F4C1",
+                          "allowedMethods": [
+                            "GET",
+                            "HEAD"
+                          ],
+                          "cachePolicyId": {
+                            "Ref": "PromptsCachePolicy9FC972B9"
+                          },
+                          "compress": true,
+                          "viewerProtocolPolicy": "redirect-to-https"
+                        }
+                      ],
+                      "comment": "CDN for AI Dungeon RPG game assets — ap-southeast-1",
+                      "httpVersion": "http2",
+                      "ipv6Enabled": true,
+                      "priceClass": "PriceClass_100"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
+              "version": "2.150.0"
+            }
+          },
+          "AssetsBucketName": {
+            "id": "AssetsBucketName",
+            "path": "GameStorageStack/AssetsBucketName",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.150.0"
+            }
+          },
+          "CloudFrontDomain": {
+            "id": "CloudFrontDomain",
+            "path": "GameStorageStack/CloudFrontDomain",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.150.0"
+            }
+          },
+          "CloudFrontUrl": {
+            "id": "CloudFrontUrl",
+            "path": "GameStorageStack/CloudFrontUrl",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.150.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "GameStorageStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "GameStorageStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "GameStorageStack/Exports",
+            "children": {
+              "Output{\"Ref\":\"GameAssetsBucket67E182C3\"}": {
+                "id": "Output{\"Ref\":\"GameAssetsBucket67E182C3\"}",
+                "path": "GameStorageStack/Exports/Output{\"Ref\":\"GameAssetsBucket67E182C3\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.150.0"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"GameAssetsDistributionC51AE01D\",\"DomainName\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"GameAssetsDistributionC51AE01D\",\"DomainName\"]}",
+                "path": "GameStorageStack/Exports/Output{\"Fn::GetAtt\":[\"GameAssetsDistributionC51AE01D\",\"DomainName\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.150.0"
+                }
+              },
+              "Output{\"Fn::GetAtt\":[\"GameAssetsBucket67E182C3\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"GameAssetsBucket67E182C3\",\"Arn\"]}",
+                "path": "GameStorageStack/Exports/Output{\"Fn::GetAtt\":[\"GameAssetsBucket67E182C3\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "GameStorageStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.150.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "GameStorageStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.150.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.150.0"
+        }
+      },
       "GameLambdaStack": {
         "id": "GameLambdaStack",
         "path": "GameLambdaStack",
@@ -1389,7 +1964,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "LoginFunction",
@@ -1840,7 +2430,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "RegisterFunction",
@@ -2284,7 +2889,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "ConfirmSignUpFunction",
@@ -2728,7 +3348,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "RefreshTokenFunction",
@@ -3165,7 +3800,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "GetCharacterFunction",
@@ -3602,7 +4252,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "CreateCharacterFunction",
@@ -3971,6 +4636,30 @@
                                   ],
                                   "Effect": "Allow",
                                   "Resource": "*"
+                                },
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsBucket67E182C3Arn52FD89BC"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsBucket67E182C3Arn52FD89BC"
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
                                 }
                               ],
                               "Version": "2012-10-17"
@@ -4049,7 +4738,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "StartStoryFunction",
@@ -4418,6 +5122,30 @@
                                   ],
                                   "Effect": "Allow",
                                   "Resource": "*"
+                                },
+                                {
+                                  "Action": [
+                                    "s3:GetObject*",
+                                    "s3:GetBucket*",
+                                    "s3:List*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsBucket67E182C3Arn52FD89BC"
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsBucket67E182C3Arn52FD89BC"
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
                                 }
                               ],
                               "Version": "2012-10-17"
@@ -4496,7 +5224,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "StoryActionFunction",
@@ -4933,7 +5676,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "SpawnBossFunction",
@@ -5370,7 +6128,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "ResolveBattleFunction",
@@ -5807,7 +6580,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "GetInventoryFunction",
@@ -6244,7 +7032,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "EquipItemFunction",
@@ -6681,7 +7484,22 @@
                         },
                         "COGNITO_CLIENT_ID": {
                           "Fn::ImportValue": "GameCognitoStack:ExportsOutputRefGameUserPoolGameMobileClient9B1B90A01B56DE6A"
-                        }
+                        },
+                        "ASSETS_BUCKET_NAME": {
+                          "Fn::ImportValue": "GameStorageStack:ExportsOutputRefGameAssetsBucket67E182C3850A78EB"
+                        },
+                        "ASSETS_CDN_URL": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "https://",
+                              {
+                                "Fn::ImportValue": "GameStorageStack:ExportsOutputFnGetAttGameAssetsDistributionC51AE01DDomainNameE48456A5"
+                              }
+                            ]
+                          ]
+                        },
+                        "PROMPT_SOURCE": "s3"
                       }
                     },
                     "functionName": "UnequipItemFunction",

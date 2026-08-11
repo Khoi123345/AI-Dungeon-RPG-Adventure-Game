@@ -16,4 +16,4 @@ Nằm ở rìa của Vương Quốc Chìm Đắm, hàng loạt những con tàu 
 ## Gameplay Prompts for AI
 - **Quest Item Drop:** Người chơi đánh bại quái vật hoặc tìm kiếm các rương cổ trong tàu sẽ tìm thấy Hải Đồ Biển Sâu (ID: `item_sea_compass`). Hãy tạo item này trong `inventoryChanges`: `[{ "itemId": "item_sea_compass", "quantityDelta": 1 }]`.
 - **Navigation & Progression:** Khi người chơi đã có `item_sea_compass`, AI **BẮT BUỘC** đưa ra lựa chọn lặn xuống Rãnh Sâu: `"label": "Dùng Hải Đồ lặn xuống Rãnh Sâu Vô Tận"`, `"nextNodeId": "abyssal_trench"`.
-- **Secret Rooms:** Nếu người chơi thám hiểm phòng phụ (`secret_room`), sau 1 lượt thám hiểm AI phải cho tùy chọn quay lại boong tàu hoặc tiến sang `abyssal_trench`.
+- **Secret Rooms:** Nếu người chơi thám hiểm phòng phụ (`secret_room`), sau 1 lượt thám hiểm AI phải cho tùy chọn quay lại boong tàu. CHỈ khi đã sở hữu `item_sea_compass` mới được đưa ra tùy chọn tiến sang `abyssal_trench`.

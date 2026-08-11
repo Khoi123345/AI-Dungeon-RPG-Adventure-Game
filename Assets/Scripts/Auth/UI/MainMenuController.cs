@@ -20,6 +20,10 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmMenu != null)
+        {
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.bgmMenu);
+        }
         // 1. Hiển thị tên người chơi từ GameProgressService
         if (txtUsername != null)
         {

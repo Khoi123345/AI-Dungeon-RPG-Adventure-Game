@@ -1,5 +1,6 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.DynamoDBv2.Model;
 using GameBackend.Core.Repositories.Interfaces;
 using GameShared.Models;
 using System.Collections.Generic;
@@ -58,6 +59,27 @@ namespace GameBackend.Core.Repositories
 
             var doc = await DefeatedTable.GetItemAsync(characterId, bossId);
             return doc != null;
+        }
+
+        public async Task DeleteByCharacterIdAsync(string characterId)
+        {
+            if (string.IsNullOrWhiteSpace(characterId)) return;
+
+            var defeatedBosses = await GetDefeatedBossesByCharacterIdAsync(characterId);
+            foreach (var defeatedBoss in defeatedBosses)
+            {
+                if (string.IsNullOrWhiteSpace(defeatedBoss.bossId)) continue;
+
+                await _dynamoDbClient.DeleteItemAsync(new DeleteItemRequest
+                {
+                    TableName = AppSettings.DefeatedBossesTableName,
+                    Key = new Dictionary<string, AttributeValue>
+                    {
+                        ["characterId"] = new AttributeValue { S = characterId },
+                        ["bossId"] = new AttributeValue { S = defeatedBoss.bossId }
+                    }
+                });
+            }
         }
     }
 }

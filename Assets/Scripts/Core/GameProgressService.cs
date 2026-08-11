@@ -27,6 +27,16 @@ public class GameProgressService : MonoBehaviour
     public StorySession CurrentStorySession { get; private set; }
     public Boss CurrentBoss { get; private set; }
 
+    public event Action<Character> OnCharacterStatsChanged;
+
+    public void NotifyCharacterStatsChanged()
+    {
+        if (CurrentCharacter != null)
+        {
+            OnCharacterStatsChanged?.Invoke(CurrentCharacter);
+        }
+    }
+
     private readonly List<Item> items = new List<Item>();
     private readonly List<Inventory> inventory = new List<Inventory>();
     private readonly List<StoryAction> storyActions = new List<StoryAction>();
@@ -157,6 +167,7 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.gold = 999999;
         }
         Debug.Log($"[GameProgressService] CurrentCharacter set: {character.name} (id={character.characterId})");
+        NotifyCharacterStatsChanged();
     }
 
     /// <summary>
@@ -177,6 +188,7 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.gold = res.gold;
         }
         Debug.Log($"[GameProgressService] Synced Character from backend: {CurrentCharacter.name} (Lv.{CurrentCharacter.level}, Exp={CurrentCharacter.experience}, HP={CurrentCharacter.hp}/{CurrentCharacter.maxHp}, Gold={CurrentCharacter.gold})");
+        NotifyCharacterStatsChanged();
     }
 
 
@@ -340,14 +352,15 @@ public class GameProgressService : MonoBehaviour
     /// <summary>
     /// Sinh Boss chính xác theo bossId do AI Bedrock chỉ định, cho phép gán Level trực tiếp từ AI.
     /// </summary>
-    public void SpawnBossById(string bossId, int? targetLevel = null)
+    public bool SpawnBossById(string bossId, int? targetLevel = null)
     {
         InitializeIfNeeded();
 
         if (string.IsNullOrWhiteSpace(bossId))
         {
-            SpawnRandomBoss();
-            return;
+            CurrentBoss = null;
+            Debug.LogError("[GameProgressService] Từ chối SpawnBossById vì bossId rỗng.");
+            return false;
         }
 
         var cleanId = bossId.StartsWith("boss_") ? bossId[5..] : bossId;
@@ -363,9 +376,9 @@ public class GameProgressService : MonoBehaviour
 
         if (picked == null)
         {
-            Debug.LogWarning($"[GameProgressService] Không tìm thấy bossId '{bossId}' trong BossCatalog, fallback ngẫu nhiên.");
-            SpawnRandomBoss();
-            return;
+            CurrentBoss = null;
+            Debug.LogError($"[GameProgressService] Không tìm thấy bossId authoritative '{bossId}' trong BossCatalog. Không fallback ngẫu nhiên.");
+            return false;
         }
 
         int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
@@ -391,6 +404,12 @@ public class GameProgressService : MonoBehaviour
         };
 
         Debug.Log($"[GameProgressService] SpawnBossById: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp}, ATK={CurrentBoss.baseAttack}, DEF={CurrentBoss.baseDefense})");
+        return true;
+    }
+
+    public void ClearCurrentBoss()
+    {
+        CurrentBoss = null;
     }
 
 
@@ -674,7 +693,7 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.experience += expEarned;
             HandleLevelUpIfNeeded();
 
-            // Roll ngẫu nhiên vật phẩm từ GameConstants theo rarity của Boss
+            // Roll ngẫu nhiên vật phẩm từ GameConstants theo đúng rarity của Boss
             var droppedItemTemplate = GameShared.Config.GameConstants.RollRandomItemByRarity(CurrentBoss?.rarity ?? "Common")
                                    ?? GameShared.Config.GameConstants.GetItemById("item_rusty_sword");
 
@@ -694,6 +713,41 @@ public class GameProgressService : MonoBehaviour
 
             lootDrops.Add(loot);
             dropped.Add(loot);
+
+            // Tự động rớt Key Item nếu người chơi chưa sở hữu (Parity với Backend)
+            string currentLoc = CurrentStorySession?.currentLocation ?? CurrentCharacter?.currentLocationId ?? "ancient_cave";
+            string keyItemToGrant = currentLoc.ToLowerInvariant() switch
+            {
+                "ancient_cave" => "item_ancient_key",
+                "forgotten_temple" => "item_elemental_core",
+                "sunken_shipwreck" => "item_sea_compass",
+                "abyssal_trench" => "item_void_crystal",
+                "coral_palace" when string.Equals(CurrentBoss?.bossId, "boss_shadow_demon", StringComparison.OrdinalIgnoreCase) => "item_fire_core",
+                "sulfur_mines" => "item_obsidian_key",
+                "obsidian_peaks" => "item_dragon_blood_key",
+                _ => ""
+            };
+
+            if (!string.IsNullOrEmpty(keyItemToGrant))
+            {
+                bool alreadyHasKey = inventory.Any(i => i.itemId.Equals(keyItemToGrant, StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
+                if (!alreadyHasKey)
+                {
+                    LootDrop keyLoot = new LootDrop
+                    {
+                        lootId = Guid.NewGuid().ToString("N"),
+                        battleId = battle.battleId,
+                        itemId = keyItemToGrant,
+                        quantity = 1,
+                        dropRate = 1f,
+                        sourceType = "KeyItem",
+                        isUnique = true,
+                        createdAt = DateTime.UtcNow
+                    };
+                    lootDrops.Add(keyLoot);
+                    dropped.Add(keyLoot);
+                }
+            }
 
             // GHI CHÚ: Không gọi AddItemToInventory ở đây nữa để tránh bị trùng lặp 2 lần! 
             // Vật phẩm đã chọn sẽ được chính thức thêm vào CSDL khi người chơi nhấn nút Confirm ở màn hình Victory.

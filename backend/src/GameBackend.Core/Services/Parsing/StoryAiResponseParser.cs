@@ -87,7 +87,7 @@ namespace GameBackend.Core.Services.Parsing
                             }
                             else
                             {
-                                parsed.Choices = ExtractDynamicChoicesFromNarrative(parsed.NarrativeText ?? rawResponse, parsed.CurrentNodeId ?? session.currentNodeId);
+                                parsed.Choices = ExtractDynamicChoicesFromNarrative(parsed.NarrativeText ?? rawResponse, parsed.CurrentLocation ?? session.currentLocation, parsed.CurrentNodeId ?? session.currentNodeId);
                             }
                         }
 
@@ -172,7 +172,7 @@ namespace GameBackend.Core.Services.Parsing
 
         private static (string narrativeText, List<StoryChoiceOption> choices, bool triggerBattle, string bossId, string bossName) ExtractFallbackFields(string rawResponse, StorySession? session = null)
         {
-            string narrative = "Sương mù che khuất tầm nhìn, bạn cảm thấy có một thực thể bí ẩn đang can thiệp vào dòng thời gian. (Lỗi kết nối hắc ám)";
+            string narrative = "Sương mù che khuất tầm nhìn, bạn tiếp tục vững bước khám phá thế giới tăm tối...";
             var choicesList = new List<StoryChoiceOption>();
             bool triggerBattle = false;
             string bossId = null;
@@ -183,7 +183,7 @@ namespace GameBackend.Core.Services.Parsing
             // Cố gắng lấy narrativeText
             try
             {
-                var match = Regex.Match(rawResponse, @"\""narrativeText\""\s*:\s*\""(.*?)\""(?=\s*,\s*\""|\s*\})", RegexOptions.Singleline);
+                var match = Regex.Match(rawResponse, @"\""narrativeText\""\s*:\s*\""(.*?)\""(?=\s*,\s*\""[a-zA-Z]+\""|\s*\})", RegexOptions.Singleline);
                 if (match.Success)
                 {
                     narrative = match.Groups[1].Value
@@ -191,9 +191,13 @@ namespace GameBackend.Core.Services.Parsing
                         .Replace("\\n", "\n")
                         .Replace("\\r", "");
                 }
-                else if (!string.IsNullOrWhiteSpace(rawResponse))
+                else
                 {
-                    narrative = rawResponse.Trim();
+                    var cleanStr = CleanJsonResponse(rawResponse);
+                    if (!cleanStr.StartsWith("{") && !cleanStr.EndsWith("}"))
+                    {
+                        narrative = cleanStr.Trim();
+                    }
                 }
             }
             catch { }
@@ -218,7 +222,7 @@ namespace GameBackend.Core.Services.Parsing
             try
             {
                 var battleMatch = Regex.Match(rawResponse, @"\""triggerBattle\""\s*:\s*(true|false)", RegexOptions.IgnoreCase);
-                if (battleMatch.Success && battleMatch.Groups[1].Value.ToLower() == "true")
+                if (battleMatch.Success && battleMatch.Groups[1].Value.Equals("true", StringComparison.OrdinalIgnoreCase))
                 {
                     triggerBattle = true;
                 }
@@ -233,41 +237,103 @@ namespace GameBackend.Core.Services.Parsing
 
             if (choicesList == null || choicesList.Count == 0)
             {
-                choicesList = ExtractDynamicChoicesFromNarrative(narrative, session?.currentNodeId);
+                choicesList = ExtractDynamicChoicesFromNarrative(narrative, session?.currentLocation, session?.currentNodeId);
             }
 
             return (narrative, choicesList, triggerBattle, bossId, bossName);
         }
 
-        public static List<StoryChoiceOption> ExtractDynamicChoicesFromNarrative(string narrativeText, string? currentNodeId)
+        public static List<StoryChoiceOption> ExtractDynamicChoicesFromNarrative(string narrativeText, string? currentLocation, string? currentNodeId)
         {
-            string targetNode = currentNodeId ?? "exploration_node";
+            string loc = (currentLocation ?? "ancient_cave").ToLowerInvariant();
+            string stepSuffix = Guid.NewGuid().ToString("N")[..6];
+            string nextProgressNode = $"{loc}_step_{stepSuffix}";
             var choices = new List<StoryChoiceOption>();
 
-            // Trích xuất linh hoạt dựa theo câu văn AI vừa sinh ra
-            var sentences = (narrativeText ?? "").Split(new[] { '.', '!', '?', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            string lastActionHint = sentences.Length > 0 ? sentences[^1].Trim() : "";
-
-            choices.Add(new StoryChoiceOption
+            if (loc.Contains("shipwreck"))
             {
-                label = "Tấn công kẻ thù trước mặt",
-                description = "Rút vũ khí sẵn sàng giao chiến",
-                nextNodeId = targetNode
-            });
-
-            choices.Add(new StoryChoiceOption
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Tấn công Thủy Thủ Chết Đuối",
+                    description = "Giao chiến với kẻ thù xuất hiện trong tàn tích xác tàu đắm",
+                    nextNodeId = nextProgressNode
+                });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Khám phá ngóc ngách boong tàu",
+                    description = "Thám hiểm kỹ các mảng gỗ mục nát để tìm kiếm manh mối",
+                    nextNodeId = nextProgressNode
+                });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Thận trọng tiến sâu vào hầm tàu",
+                    description = "Dần bước xuống hành lang tăm tối phía trước",
+                    nextNodeId = nextProgressNode
+                });
+            }
+            else if (loc.Contains("trench"))
             {
-                label = (!string.IsNullOrWhiteSpace(lastActionHint) && lastActionHint.Length < 40) ? lastActionHint : "Khám phá môi trường xung quanh",
-                description = "Thám hiểm tỉ mỉ bối cảnh vừa được mô tả",
-                nextNodeId = targetNode
-            });
-
-            choices.Add(new StoryChoiceOption
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Chiến đấu với Tàn Dư Hư Không",
+                    description = "Rút vũ khí tiêu diệt bóng quái vật ngoi lên từ đáy biển",
+                    nextNodeId = nextProgressNode
+                });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Khám phá khe núi thẳm",
+                    description = "Quan sát luồng ánh sáng huỳnh quang bí ẩn",
+                    nextNodeId = nextProgressNode
+                });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Quay lại Xác Tàu Đắm",
+                    description = "Rút lui về khu vực an toàn hơn",
+                    nextNodeId = "sunken_shipwreck"
+                });
+            }
+            else if (loc.Contains("palace"))
             {
-                label = "Tiến lên phía trước",
-                description = "Thận trọng tiếp tục hành trình",
-                nextNodeId = targetNode
-            });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Khám phá Đại Điện San Hô",
+                    description = "Điều tra những hàng cột đá lấp lánh",
+                    nextNodeId = nextProgressNode
+                });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Tiến vào Cánh Cửa Ngai Vàng",
+                    description = "Bước tới đối mặt với Ác Quỷ Bóng Tối",
+                    nextNodeId = "boss_room"
+                });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Rút lui về Rãnh Sâu Vô Tận",
+                    description = "Quay lại khu vực thảm thẳm bên ngoài",
+                    nextNodeId = "abyssal_trench"
+                });
+            }
+            else
+            {
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Tấn công sinh vật nguy hiểm trước mặt",
+                    description = "Giao chiến với kẻ thù bảo vệ khu vực",
+                    nextNodeId = nextProgressNode
+                });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Khám phá bối cảnh xung quanh",
+                    description = "Thám hiểm kỹ các chi tiết vừa được mô tả",
+                    nextNodeId = nextProgressNode
+                });
+                choices.Add(new StoryChoiceOption
+                {
+                    label = "Thận trọng tiến lên phía trước",
+                    description = "Tiếp tục dấn thân sâu hơn vào hầm ngục",
+                    nextNodeId = nextProgressNode
+                });
+            }
 
             return choices;
         }

@@ -28,8 +28,8 @@ public class BattleEndUIController : MonoBehaviour
     [SerializeField] private List<InventorySlotUI> itemSlots = new List<InventorySlotUI>();
 
     [Header("Databases (Cơ sở dữ liệu hỗ trợ)")]
-    [Tooltip("Danh sách chứa tất cả ItemData mẫu để đối chiếu và lấy hình ảnh hiển thị dựa trên itemId")]
-    [SerializeField] private List<ItemData> itemDatabase = new List<ItemData>();
+    [Tooltip("Cơ sở dữ liệu tập trung chứa ItemData mẫu để đối chiếu và lấy hình ảnh hiển thị")]
+    [SerializeField] private ItemDatabaseSO itemDatabaseSO;
 
     private List<LootDrop> currentBattleDrops; // Lưu trữ danh sách vật phẩm rơi để gửi API khi bấm Confirm
     private int lastGoldEarned = 0;
@@ -51,6 +51,11 @@ public class BattleEndUIController : MonoBehaviour
     /// </summary>
     public void TriggerVictory(List<LootDrop> droppedItems, int goldEarned = 0, int expEarned = 0)
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmVictory != null)
+        {
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.bgmVictory);
+        }
+
         isConfirmProcessed = false; // Reset cờ bảo vệ khi màn Victory xuất hiện
 
         // Stop any running animations to avoid conflicts
@@ -88,6 +93,11 @@ public class BattleEndUIController : MonoBehaviour
     /// </summary>
     public void TriggerDefeat()
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmDefeat != null)
+        {
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.bgmDefeat);
+        }
+
         StopAllCoroutines();
 
         // 1. Hiển thị và chạy hiệu ứng làm mờ nền tối
@@ -210,18 +220,17 @@ public class BattleEndUIController : MonoBehaviour
 
         Debug.Log("▶️ [CONFIRM CLICKED] Người chơi nhấn nút Confirm (Xác nhận nhận phần thưởng).");
 
-        // Backend AWS tự động lưu TẤT CẢ vật phẩm rơi ra vào Database (không phải chọn 1 món)
-        // Do đó Client cũng phải nhận toàn bộ để đồng bộ dữ liệu!
-        List<LootDrop> selectedDrops = currentBattleDrops ?? new List<LootDrop>();
+        // Lấy toàn bộ tất cả vật phẩm chiến lợi phẩm thu thập được từ trận đấu (Take All Mode)
+        List<LootDrop> selectedDrops = currentBattleDrops != null ? new List<LootDrop>(currentBattleDrops) : new List<LootDrop>();
 
-        Debug.Log($"🎒 [INVENTORY UPDATE] Đã nhận {selectedDrops.Count} vật phẩm chiến lợi phẩm để thêm vào CSDL và Túi đồ.");
+        Debug.Log($"🎒 [INVENTORY UPDATE] Nhận toàn bộ {selectedDrops.Count} vật phẩm chiến lợi phẩm để thêm vào CSDL và Túi đồ.");
         foreach (var drop in selectedDrops)
         {
             if (GameProgressService.Instance != null)
             {
                 GameProgressService.Instance.AddItemToInventory(drop.itemId, drop.quantity, false);
             }
-            Debug.Log($"✨ [ITEM ADDED TO INVENTORY] +1 Vật phẩm '{drop.itemId}' (Số lượng: {drop.quantity}) đã được thêm vào Túi đồ!");
+            Debug.Log($"✨ [ITEM ADDED TO INVENTORY] +{drop.quantity} Vật phẩm '{drop.itemId}' đã được lưu chính thức vào Túi đồ!");
         }
 
         Debug.Log($"💰 [REWARD UPDATE] Thêm +{lastGoldEarned} Gold | ⭐ +{lastExpEarned} EXP vào tài khoản Nhân vật.");
@@ -450,8 +459,7 @@ public class BattleEndUIController : MonoBehaviour
             {
                 if (clickedSlot.hasItem && clickedSlot.itemData != null)
                 {
-                    // Đã bỏ tính năng chọn 1 món (Bây giờ nhận tất cả)
-                    Debug.Log($"🎯 [REWARD CLICKED] Vật phẩm chiến lợi phẩm: '{clickedSlot.itemData.itemName}' ở Slot {slotNum}!");
+                    Debug.Log($"🎯 [LOOT ITEM CLICKED] Người chơi xem thông tin chiến lợi phẩm: '{clickedSlot.itemData.itemName}' ở Slot {slotNum}!");
                 }
             };
 
@@ -459,11 +467,9 @@ public class BattleEndUIController : MonoBehaviour
             {
                 LootDrop drop = droppedItems[i];
                 ItemData matchData = null;
-                if (itemDatabase != null)
+                if (itemDatabaseSO != null)
                 {
-                    matchData = itemDatabase.Find(x => x != null && 
-                        !string.IsNullOrEmpty(x.itemName) &&
-                        x.itemName.Equals(drop.itemId, StringComparison.OrdinalIgnoreCase));
+                    matchData = itemDatabaseSO.FindItemByNameOrId(drop.itemId);
                 }
 
                 if (matchData != null)
@@ -485,15 +491,8 @@ public class BattleEndUIController : MonoBehaviour
                     Debug.Log($"🎁 [LOOT DROP LOG] Slot {slotNum}: Đã kích hoạt hiển thị tạm '{fallbackData.itemName}' x{drop.quantity}");
                 }
 
-                // Tự động Highlight ô đầu tiên khi mở bảng Victory
-                if (i == 0)
-                {
-                    itemSlots[i].SetSelected(true);
-                }
-                else
-                {
-                    itemSlots[i].SetSelected(false);
-                }
+                // Tự động Highlight tất cả các ô vật phẩm rớt ra (Chế độ Nhận Tất Cả / Take All Mode)
+                itemSlots[i].SetSelected(true);
             }
             else
             {
