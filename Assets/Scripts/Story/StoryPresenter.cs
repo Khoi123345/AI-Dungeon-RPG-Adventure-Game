@@ -35,6 +35,8 @@ public class StoryPresenter : MonoBehaviour
     private bool isBossPopupShowing;  // chặn advance khi popup boss đang hiện
     private bool isExternalModalOpen;
     private bool isInputMode = false;
+    private bool isActionRequestInFlight;
+    private bool isDestroyed;
 
     private readonly Queue<StoryLineData> pendingLines = new Queue<StoryLineData>();
 
@@ -79,6 +81,13 @@ public class StoryPresenter : MonoBehaviour
         {
             GameProgressService.Instance.OnCharacterStatsChanged -= OnCharacterStatsUpdated;
         }
+    }
+
+    private void OnDestroy()
+    {
+        isDestroyed = true;
+        isActionRequestInFlight = false;
+        playbackCoroutine = null;
     }
 
     private void OnCharacterStatsUpdated(GameShared.Models.Character curChar)
@@ -132,6 +141,8 @@ public class StoryPresenter : MonoBehaviour
 
         Debug.Log($"[StoryPresenter] Gửi yêu cầu /story/start với characterId={characterId}");
         var response = await storyApiService.StartStoryAsync(characterId, "prologue");
+
+        if (this == null || isDestroyed) return;
 
         if (response != null && !string.IsNullOrEmpty(response.narrativeText))
         {
@@ -354,6 +365,11 @@ public class StoryPresenter : MonoBehaviour
 
     private async void OnChoiceSelected(int choiceIndex)
     {
+        if (this == null || isDestroyed || isActionRequestInFlight || !awaitingChoice)
+        {
+            return;
+        }
+
         if (currentData == null || currentData.node == null || currentData.node.choices == null)
         {
             return;
@@ -365,6 +381,7 @@ public class StoryPresenter : MonoBehaviour
         }
 
         StoryChoiceData choice = currentData.node.choices[choiceIndex];
+        isActionRequestInFlight = true;
 
         int cost = GameShared.Config.GameConstants.StoryCostPerTurn;
         var character = GameProgressService.Instance?.CurrentCharacter;
@@ -373,6 +390,7 @@ public class StoryPresenter : MonoBehaviour
             if (character.gold < cost)
             {
                 view.AppendStoryText($"\n\n<b><color=#FF4444>⚠️ Bạn không đủ Vàng! Mỗi lượt AI kể chuyện yêu cầu {cost} Gold. (Hiện có: {character.gold} Gold). Hãy chiến đấu đánh quái/Boss để kiếm thêm Vàng!</color></b>\n\n");
+                isActionRequestInFlight = false;
                 return;
             }
             character.gold -= cost;
@@ -413,6 +431,9 @@ public class StoryPresenter : MonoBehaviour
 
             var response = await storyApiService.SendActionAsync(characterId, sessionId, choiceIndex, choice.label);
 
+            if (this == null || isDestroyed) return;
+            isActionRequestInFlight = false;
+
             if (response != null && !string.IsNullOrEmpty(response.narrativeText))
             {
                 Debug.Log($"<color=#00FF00>[StoryPresenter] Nhận phản hồi từ AI Bedrock (Choice):</color>\n- triggerBattle: <b>{response.triggerBattle}</b>\n- bossId: <b>{response.bossId}</b>\n- location: <b>{response.currentLocation}</b>");
@@ -432,7 +453,7 @@ public class StoryPresenter : MonoBehaviour
                     view?.SetActiveOptionsPanelVisible(false);
                     if (gameObject.activeInHierarchy)
                     {
-                        StartCoroutine(TriggerBossEncounterFromAi(response.bossId));
+                        StartCoroutine(TriggerBossEncounterFromAi(response.bossId, response.bossLevel));
                     }
                 }
 
@@ -445,16 +466,21 @@ public class StoryPresenter : MonoBehaviour
             else
             {
                 Debug.LogWarning("[StoryPresenter] AI Bedrock không phản hồi cho lựa chọn này.");
+                RestoreInteractionUiAfterModal();
             }
         }
+
+        isActionRequestInFlight = false;
     }
 
     private async void HandleUserActionSubmitted(string userText)
     {
-        if (string.IsNullOrWhiteSpace(userText) || !awaitingChoice)
+        if (this == null || isDestroyed || isActionRequestInFlight || string.IsNullOrWhiteSpace(userText) || !awaitingChoice)
         {
             return;
         }
+
+        isActionRequestInFlight = true;
 
         int cost = GameShared.Config.GameConstants.StoryCostPerTurn;
         var character = GameProgressService.Instance?.CurrentCharacter;
@@ -463,6 +489,7 @@ public class StoryPresenter : MonoBehaviour
             if (character.gold < cost)
             {
                 view.AppendStoryText($"\n\n<b><color=#FF4444>⚠️ Bạn không đủ Vàng! Mỗi lượt AI kể chuyện yêu cầu {cost} Gold. (Hiện có: {character.gold} Gold). Hãy chiến đấu đánh quái/Boss để kiếm thêm Vàng!</color></b>\n\n");
+                isActionRequestInFlight = false;
                 return;
             }
             character.gold -= cost;
@@ -510,6 +537,9 @@ public class StoryPresenter : MonoBehaviour
 
             var response = await storyApiService.SendActionAsync(characterId, sessionId, choiceIndex: -1, playerInput: userText);
 
+            if (this == null || isDestroyed) return;
+            isActionRequestInFlight = false;
+
             if (response != null && !string.IsNullOrEmpty(response.narrativeText))
             {
                 Debug.Log($"<color=#00FF00>[StoryPresenter] Nhận phản hồi từ AI Bedrock:</color>\n- triggerBattle: <b>{response.triggerBattle}</b>\n- bossId: <b>{response.bossId}</b>\n- location: <b>{response.currentLocation}</b>");
@@ -540,23 +570,19 @@ public class StoryPresenter : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("[StoryPresenter] AI Bedrock không phản hồi, dùng fallback mock action.");
-                StoryData nextStoryData = GameProgressService.Instance != null
-                    ? GameProgressService.Instance.ExecuteCustomStoryAction(userText)
-                    : CreateMockCustomResponse(userText);
-
-                PlayNextStoryNode(nextStoryData);
-
-                if (gameObject.activeInHierarchy)
-                {
-                    StartCoroutine(TryTriggerBossEncounterDelayed());
-                }
+                Debug.LogWarning("[StoryPresenter] Story API không phản hồi. Không tạo encounter mock trong Online Mode.");
+                view?.AppendStoryText("\n<i><color=#FF6666>Không thể tiếp tục hành động lúc này. Vui lòng thử lại.</color></i>\n");
+                RestoreInteractionUiAfterModal();
             }
         }
+
+        isActionRequestInFlight = false;
     }
 
     private void PlayNextStoryNode(StoryData nextStoryData)
     {
+        if (this == null || isDestroyed || !isActiveAndEnabled) return;
+
         if (nextStoryData != null && nextStoryData.node != null && nextStoryData.node.lines != null)
         {
             currentData = nextStoryData;
@@ -591,7 +617,14 @@ public class StoryPresenter : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         if (GameProgressService.Instance == null) yield break;
-        GameProgressService.Instance.SpawnBossById(bossId, bossLevel);
+        if (!GameProgressService.Instance.SpawnBossById(bossId, bossLevel))
+        {
+            Debug.LogError($"[StoryPresenter] Hủy encounter vì bossId '{bossId}' rỗng hoặc không tồn tại trong BossCatalog.");
+            view?.AppendStoryText("\n<i><color=#FF6666>Không thể xác định kẻ địch cho trận đấu này. Hãy chọn một hành động khác.</color></i>\n");
+            ExitEncounterModal();
+            RestoreInteractionUiAfterModal();
+            yield break;
+        }
 
         var boss = GameProgressService.Instance.CurrentBoss;
         if (boss == null) yield break;
@@ -728,9 +761,18 @@ public class StoryPresenter : MonoBehaviour
 
     private void OnBossPopupFight()
     {
+        var boss = GameProgressService.Instance?.CurrentBoss;
+        if (boss == null || string.IsNullOrWhiteSpace(boss.bossId))
+        {
+            Debug.LogError("[StoryPresenter] Không chuyển BattleScene vì CurrentBoss hoặc bossId bị thiếu.");
+            ExitEncounterModal();
+            RestoreInteractionUiAfterModal();
+            return;
+        }
+
         isBossPopupShowing = false;
         view.HideBossEncounterPopup();
-        Debug.Log($"[StoryPresenter] Người chơi chọn Chiến đấu! Boss: {GameProgressService.Instance?.CurrentBoss?.name}");
+        Debug.Log($"[StoryPresenter] Người chơi chọn Chiến đấu! Boss: {boss.name} (bossId={boss.bossId})");
         SceneManager.LoadScene(battleScene);
     }
 

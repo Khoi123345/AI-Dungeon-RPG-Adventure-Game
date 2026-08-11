@@ -213,6 +213,135 @@ public class GameRuleValidatorTests
         Assert.True(GameBackend.Core.Services.StoryService.IsBossRetryUnlocked(actions));
     }
 
+    [Fact]
+    public async Task ValidateAndSanitizeAsync_Should_Block_Already_Defeated_Chapter_Boss_And_Remove_Retry_Choice()
+    {
+        var defeated = new DefeatedBoss
+        {
+            characterId = "char-1",
+            bossId = "boss_shadow_demon",
+            bossName = "Shadow Demon",
+            defeatedAt = DateTime.UtcNow
+        };
+        var validator = BuildValidator(
+            new FakeContentService(Array.Empty<string>(), Array.Empty<string>(), new[] { "coral_palace" }, Array.Empty<string>()),
+            defeatedBosses: new[] { defeated });
+        var response = new StoryAiResponse
+        {
+            TriggerBattle = true,
+            BossId = "boss_shadow_demon",
+            BossName = "Shadow Demon",
+            CurrentLocation = "coral_palace",
+            CurrentNodeId = "boss_room",
+            NarrativeText = "Bạn tái chiến Shadow Demon.",
+            Choices = new List<StoryChoiceOption>
+            {
+                new() { label = "Tái chiến Shadow Demon", nextNodeId = "boss_room" }
+            }
+        };
+
+        var sanitized = await validator.ValidateAndSanitizeAsync(
+            CreateSession("coral_palace"), CreateCharacter("coral_palace"), response);
+
+        Assert.False(sanitized.TriggerBattle);
+        Assert.Null(sanitized.BossId);
+        Assert.DoesNotContain(sanitized.Choices, c => c.label.Contains("Shadow Demon", StringComparison.OrdinalIgnoreCase));
+        Assert.Contains(sanitized.Choices, c => c.nextNodeId == "continue_after_boss");
+    }
+
+    [Fact]
+    public async Task ValidateAndSanitizeAsync_Should_Not_Block_Normal_Mob_When_Chapter_Boss_Was_Defeated()
+    {
+        var defeated = new DefeatedBoss
+        {
+            characterId = "char-1",
+            bossId = "boss_shadow_demon",
+            bossName = "Shadow Demon",
+            defeatedAt = DateTime.UtcNow
+        };
+        var validator = BuildValidator(
+            new FakeContentService(Array.Empty<string>(), Array.Empty<string>(), new[] { "coral_palace" }, Array.Empty<string>()),
+            defeatedBosses: new[] { defeated });
+        var response = new StoryAiResponse
+        {
+            TriggerBattle = true,
+            BossId = "mob_shadow_spirit",
+            BossName = "Shadow Spirit",
+            CurrentLocation = "coral_palace",
+            NarrativeText = "Bạn tấn công Shadow Spirit."
+        };
+
+        var sanitized = await validator.ValidateAndSanitizeAsync(
+            CreateSession("coral_palace"), CreateCharacter("coral_palace"), response);
+
+        Assert.True(sanitized.TriggerBattle);
+        Assert.Equal("mob_shadow_spirit", sanitized.BossId);
+    }
+
+    [Fact]
+    public void BattleService_Should_Require_Exact_Catalog_BossId()
+    {
+        Assert.Null(GameBackend.Core.Services.BattleService.FindBossTemplate(null));
+        Assert.Null(GameBackend.Core.Services.BattleService.FindBossTemplate(""));
+        Assert.Null(GameBackend.Core.Services.BattleService.FindBossTemplate("shadow_demon"));
+        Assert.Null(GameBackend.Core.Services.BattleService.FindBossTemplate("Shadow Demon"));
+        Assert.Equal("boss_shadow_demon",
+            GameBackend.Core.Services.BattleService.FindBossTemplate("boss_shadow_demon")?.bossId);
+        Assert.Equal("mob_drowned_sailor",
+            GameBackend.Core.Services.BattleService.FindBossTemplate("mob_drowned_sailor")?.bossId);
+    }
+
+    [Fact]
+    public async Task LocationValidator_Should_Block_Chapter3_Location1_To_Location3_And_Align_Node()
+    {
+        var inventory = new[]
+        {
+            new Inventory { characterId = "char-1", itemId = "item_obsidian_key", quantity = 1 },
+            new Inventory { characterId = "char-1", itemId = "item_dragon_blood_key", quantity = 1 }
+        };
+        var validator = BuildValidator(
+            new FakeContentService(Array.Empty<string>(), Array.Empty<string>(),
+                new[] { "sulfur_mines", "obsidian_peaks", "dragon_nest" }, Array.Empty<string>()),
+            inventory);
+        var session = CreateSession("sulfur_mines");
+        session.currentChapterId = "chapter_3";
+        session.currentNodeId = "sulfur_mines";
+        var response = new StoryAiResponse
+        {
+            CurrentLocation = "dragon_nest",
+            CurrentNodeId = "dragon_nest",
+            Choices = new List<StoryChoiceOption>()
+        };
+
+        var sanitized = await validator.ValidateAndSanitizeAsync(session, CreateCharacter("sulfur_mines"), response);
+
+        Assert.Equal("sulfur_mines", sanitized.CurrentLocation);
+        Assert.Equal("sulfur_mines", sanitized.CurrentNodeId);
+        Assert.Contains("Mỏ Lưu Huỳnh", sanitized.NarrativeText);
+        Assert.DoesNotContain("Tổ Rồng", sanitized.NarrativeText);
+    }
+
+    [Fact]
+    public void CoralPalace_Should_Always_Offer_Normal_Mob_Choice()
+    {
+        var response = new StoryAiResponse
+        {
+            CurrentLocation = "coral_palace",
+            Choices = new List<StoryChoiceOption>
+            {
+                new() { label = "Đối mặt Shadow Demon", nextNodeId = "boss_room" },
+                new() { label = "Rút lui", nextNodeId = "abyssal_trench" },
+                new() { label = "Khám phá", nextNodeId = "explore_palace" }
+            }
+        };
+
+        GameBackend.Core.Services.StoryService.EnsureLocationCombatChoice(response, "coral_palace");
+
+        Assert.Equal(3, response.Choices.Count);
+        Assert.Contains(response.Choices, c => c.nextNodeId == "fight_shadow_spirit");
+        Assert.Contains(response.Choices, c => c.nextNodeId == "boss_room");
+    }
+
     private static StoryAction BattleResult(DateTime createdAt, string text) => new()
     {
         actionId = Guid.NewGuid().ToString("N"),
@@ -222,11 +351,15 @@ public class GameRuleValidatorTests
         createdAt = createdAt
     };
 
-    private static GameRuleValidator BuildValidator(IContentService contentService, IEnumerable<Inventory>? inventory = null)
+    private static GameRuleValidator BuildValidator(
+        IContentService contentService,
+        IEnumerable<Inventory>? inventory = null,
+        IEnumerable<DefeatedBoss>? defeatedBosses = null)
     {
+        var defeatedBossRepository = new FakeDefeatedBossRepository(defeatedBosses);
         var validators = new IGameRuleSubValidator[]
         {
-            new BossValidator(contentService, NullLogger<BossValidator>.Instance),
+            new BossValidator(contentService, defeatedBossRepository, NullLogger<BossValidator>.Instance),
             new InventoryValidator(contentService, NullLogger<InventoryValidator>.Instance),
             new LocationValidator(contentService, new FakeInventoryRepository(inventory), NullLogger<LocationValidator>.Instance),
             new CharacterValidator(),
@@ -234,6 +367,35 @@ public class GameRuleValidatorTests
         };
 
         return new GameRuleValidator(validators, NullLogger<GameRuleValidator>.Instance);
+    }
+
+    private sealed class FakeDefeatedBossRepository : IDefeatedBossRepository
+    {
+        private readonly List<DefeatedBoss> _bosses;
+
+        public FakeDefeatedBossRepository(IEnumerable<DefeatedBoss>? bosses = null)
+        {
+            _bosses = bosses?.ToList() ?? new List<DefeatedBoss>();
+        }
+
+        public Task SaveDefeatedBossAsync(DefeatedBoss defeatedBoss)
+        {
+            _bosses.Add(defeatedBoss);
+            return Task.CompletedTask;
+        }
+
+        public Task<List<DefeatedBoss>> GetDefeatedBossesByCharacterIdAsync(string characterId) =>
+            Task.FromResult(_bosses.Where(b => b.characterId == characterId).ToList());
+
+        public Task<bool> HasDefeatedBossAsync(string characterId, string bossId) =>
+            Task.FromResult(_bosses.Any(b => b.characterId == characterId &&
+                                             string.Equals(b.bossId, bossId, StringComparison.OrdinalIgnoreCase)));
+
+        public Task DeleteByCharacterIdAsync(string characterId)
+        {
+            _bosses.RemoveAll(b => b.characterId == characterId);
+            return Task.CompletedTask;
+        }
     }
 
     private sealed class FakeInventoryRepository : IInventoryRepository

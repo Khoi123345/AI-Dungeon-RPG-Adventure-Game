@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using GameShared.Models; // Sử dụng LootDrop từ Models
 
 public class BattlePresenter : MonoBehaviour
 {
     public BattleView view;
+
+    [Header("Navigation")]
+    [SerializeField] private string storyScene = "StoryScene";
     
     [Header("UI kết thúc trận đấu")]
     [SerializeField] private BattleEndUIController endUIController; // Kéo thả BattleEndUIController từ Scene
@@ -42,10 +46,7 @@ public class BattlePresenter : MonoBehaviour
                 bool restored = await new RealAuthService().TryRestoreSessionAsync();
                 if (!restored)
                 {
-                    Debug.LogWarning("[BattleService] Không khôi phục được session. Chuyển về Mock Mode.");
-                    StartPlayback(GameProgressService.Instance != null
-                        ? GameProgressService.Instance.CreateBattleDemoData()
-                        : CreateMockData());
+                    ReturnToStoryAfterOnlineFailure("Không thể khôi phục phiên đăng nhập.");
                     return;
                 }
                 Debug.Log("[BattleService] Token đã được nạp vào ApiClient thành công.");
@@ -102,6 +103,20 @@ public class BattlePresenter : MonoBehaviour
         }
 
         var currentBoss = GameProgressService.Instance?.CurrentBoss;
+        if (currentBoss == null || string.IsNullOrWhiteSpace(currentBoss.bossId))
+        {
+            ReturnToStoryAfterOnlineFailure("CurrentBoss hoặc bossId bị thiếu trước khi gọi SpawnBoss.");
+            return;
+        }
+
+        var catalogBoss = GameShared.Config.GameConstants.BossCatalog.Find(b =>
+            b != null && string.Equals(b.bossId, currentBoss.bossId, System.StringComparison.OrdinalIgnoreCase));
+        if (catalogBoss == null)
+        {
+            ReturnToStoryAfterOnlineFailure($"bossId '{currentBoss.bossId}' không tồn tại trong BossCatalog.");
+            return;
+        }
+
         var spawnReq = new GameShared.DTOs.Battle.BossSpawnRequest
         {
             characterId = charId,
@@ -109,12 +124,17 @@ public class BattlePresenter : MonoBehaviour
             bossId      = currentBoss?.bossId ?? string.Empty,   // Truyền bossId từ cốt truyện lên
             bossLevel   = currentBoss?.level ?? 0                 // Truyền bossLevel từ cốt truyện lên
         };
-        var spawnRes = await ApiClient.Instance.PostAsync<GameShared.DTOs.Battle.BossSpawnResponse>("battle/spawn-boss", spawnReq);
+        string spawnJson = await ApiClient.Instance.PostRawAsync("battle/spawn-boss", JsonUtility.ToJson(spawnReq));
+        var spawnEnvelope = !string.IsNullOrWhiteSpace(spawnJson)
+            ? JsonUtility.FromJson<BattleResponseContainer<GameShared.DTOs.Battle.BossSpawnResponse>>(spawnJson)
+            : null;
+        var spawnRes = spawnEnvelope != null && spawnEnvelope.success ? spawnEnvelope.data : null;
 
         if (spawnRes == null || string.IsNullOrEmpty(spawnRes.encounterId))
         {
-            Debug.LogError("[BattleService] Lỗi API Spawn Boss (Không tìm thấy Boss/Character hoặc payload lỗi). Tự động chuyển về Mock Mode.");
-            StartPlayback(CreateMockData());
+            string errorCode = spawnEnvelope?.errorCode ?? "NO_RESPONSE";
+            string message = spawnEnvelope?.message ?? "SpawnBoss không trả về encounter hợp lệ.";
+            ReturnToStoryAfterOnlineFailure($"SpawnBoss thất bại [{errorCode}]: {message}");
             return;
         }
 
@@ -132,8 +152,7 @@ public class BattlePresenter : MonoBehaviour
 
         if (resolveRes == null)
         {
-            Debug.LogError("[BattleService] Lỗi API Resolve Battle. Tự động chuyển về Mock Mode.");
-            StartPlayback(CreateMockData());
+            ReturnToStoryAfterOnlineFailure("ResolveBattle không trả về dữ liệu hợp lệ.");
             return;
         }
 
@@ -199,6 +218,16 @@ public class BattlePresenter : MonoBehaviour
         }
 
         StartPlayback(realData);
+    }
+
+    private void ReturnToStoryAfterOnlineFailure(string reason)
+    {
+        Debug.LogError($"[BattleService] {reason} Không chạy Mock Mode; quay lại StoryScene an toàn.");
+        GameProgressService.Instance?.ClearCurrentBoss();
+        if (!string.IsNullOrWhiteSpace(storyScene))
+        {
+            SceneManager.LoadScene(storyScene);
+        }
     }
 
     private int lastGoldEarned = 0;

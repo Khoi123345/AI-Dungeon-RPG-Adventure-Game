@@ -96,9 +96,11 @@ class Program {
 
         // 5. Delete GameBossEncounters for character 'khoi'
         int deletedEnc = 0;
+        var encounterIds = new HashSet<string>();
         var encScan = client.ScanAsync(new ScanRequest { TableName = "GameBossEncounters" }).Result;
         foreach (var encDoc in encScan.Items) {
             if (encDoc.ContainsKey("characterId") && charIds.Contains(encDoc["characterId"].S)) {
+                encounterIds.Add(encDoc["encounterId"].S);
                 client.DeleteItemAsync(new DeleteItemRequest {
                     TableName = "GameBossEncounters",
                     Key = new Dictionary<string, AttributeValue> { { "encounterId", encDoc["encounterId"] } }
@@ -107,6 +109,55 @@ class Program {
             }
         }
         Console.WriteLine($"Deleted {deletedEnc} BossEncounters.");
+
+        // 6. Delete persisted chapter-boss victories. Without this step, a freshly
+        // reset character is still rejected by SpawnBoss as "already defeated".
+        int deletedDefeatedBosses = 0;
+        var defeatedScan = client.ScanAsync(new ScanRequest { TableName = "GameDefeatedBosses" }).Result;
+        foreach (var defeatedDoc in defeatedScan.Items) {
+            if (defeatedDoc.ContainsKey("characterId") &&
+                defeatedDoc.ContainsKey("bossId") &&
+                charIds.Contains(defeatedDoc["characterId"].S)) {
+                client.DeleteItemAsync(new DeleteItemRequest {
+                    TableName = "GameDefeatedBosses",
+                    Key = new Dictionary<string, AttributeValue> {
+                        { "characterId", defeatedDoc["characterId"] },
+                        { "bossId", defeatedDoc["bossId"] }
+                    }
+                }).Wait();
+                deletedDefeatedBosses++;
+            }
+        }
+        Console.WriteLine($"Deleted {deletedDefeatedBosses} DefeatedBoss records.");
+
+        // 7. Delete battle and loot history linked to the encounters being reset.
+        var battleIds = new HashSet<string>();
+        int deletedBattles = 0;
+        var battleScan = client.ScanAsync(new ScanRequest { TableName = "GameBattles" }).Result;
+        foreach (var battleDoc in battleScan.Items) {
+            if (battleDoc.ContainsKey("encounterId") && encounterIds.Contains(battleDoc["encounterId"].S)) {
+                battleIds.Add(battleDoc["battleId"].S);
+                client.DeleteItemAsync(new DeleteItemRequest {
+                    TableName = "GameBattles",
+                    Key = new Dictionary<string, AttributeValue> { { "battleId", battleDoc["battleId"] } }
+                }).Wait();
+                deletedBattles++;
+            }
+        }
+        Console.WriteLine($"Deleted {deletedBattles} Battles.");
+
+        int deletedLootDrops = 0;
+        var lootScan = client.ScanAsync(new ScanRequest { TableName = "GameLootDrops" }).Result;
+        foreach (var lootDoc in lootScan.Items) {
+            if (lootDoc.ContainsKey("battleId") && battleIds.Contains(lootDoc["battleId"].S)) {
+                client.DeleteItemAsync(new DeleteItemRequest {
+                    TableName = "GameLootDrops",
+                    Key = new Dictionary<string, AttributeValue> { { "lootId", lootDoc["lootId"] } }
+                }).Wait();
+                deletedLootDrops++;
+            }
+        }
+        Console.WriteLine($"Deleted {deletedLootDrops} LootDrops.");
 
         Console.WriteLine("\n🎉 RESET SUCCESSFUL! Character 'khoi' is completely reset to Level 1 fresh start.");
     }

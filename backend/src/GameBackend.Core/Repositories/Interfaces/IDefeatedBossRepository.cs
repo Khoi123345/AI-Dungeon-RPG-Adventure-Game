@@ -9,5 +9,6 @@ namespace GameBackend.Core.Repositories.Interfaces
         Task SaveDefeatedBossAsync(DefeatedBoss defeatedBoss);
         Task<List<DefeatedBoss>> GetDefeatedBossesByCharacterIdAsync(string characterId);
         Task<bool> HasDefeatedBossAsync(string characterId, string bossId);
+        Task DeleteByCharacterIdAsync(string characterId);
     }
 }
