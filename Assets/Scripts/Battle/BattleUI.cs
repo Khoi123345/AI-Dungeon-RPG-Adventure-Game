@@ -61,6 +61,11 @@ public class BattleView : MonoBehaviour
     // Khởi tạo thông tin ban đầu
     public void SetupFighters(FighterStats player, FighterStats boss)
     {
+        if (SoundManager.Instance != null && SoundManager.Instance.bgmBattle != null)
+        {
+            SoundManager.Instance.PlayMusic(SoundManager.Instance.bgmBattle);
+        }
+
         AutoFindStatsIfNeeded();
 
         if (txtPlayerName != null) txtPlayerName.text = $"Lvl {player.level} {player.name}";

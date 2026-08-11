@@ -6,7 +6,8 @@ public enum ItemType
     Weapon,      // Vũ khí
     Armor,       // Giáp
     Accessory,   // Phụ kiện
-    Consumable   // Vật phẩm tiêu hao
+    Consumable,  // Vật phẩm tiêu hao
+    Quest        // Vật phẩm nhiệm vụ
 }
 
 // Định nghĩa độ hiếm của vật phẩm
@@ -23,6 +24,7 @@ public enum ItemRarity
 [System.Serializable]
 public class ItemData
 {
+    public string itemId; // Mã định danh gốc (vd: item_rusty_sword)
     public string itemName;
     public Sprite itemIcon;
     public ItemType itemType;
@@ -39,6 +41,10 @@ public class ItemData
     {
         if (string.IsNullOrEmpty(itemId)) return ItemType.Weapon;
         string lower = itemId.ToLower();
+        
+        if (lower.Contains("key") || lower.Contains("core") || lower.Contains("quest"))
+            return ItemType.Quest;
+            
         if (lower.Contains("ring") || lower.Contains("amulet") || lower.Contains("necklace") || lower.Contains("accessory") || lower.Contains("void"))
             return ItemType.Accessory;
         if (lower.Contains("armor") || lower.Contains("vest") || lower.Contains("shield") || lower.Contains("plate") || lower.Contains("helmet") || lower.Contains("boots"))
