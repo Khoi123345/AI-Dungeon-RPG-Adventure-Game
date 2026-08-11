@@ -28,8 +28,8 @@ public class BattleEndUIController : MonoBehaviour
     [SerializeField] private List<InventorySlotUI> itemSlots = new List<InventorySlotUI>();
 
     [Header("Databases (Cơ sở dữ liệu hỗ trợ)")]
-    [Tooltip("Danh sách chứa tất cả ItemData mẫu để đối chiếu và lấy hình ảnh hiển thị dựa trên itemId")]
-    [SerializeField] private List<ItemData> itemDatabase = new List<ItemData>();
+    [Tooltip("Cơ sở dữ liệu tập trung chứa ItemData mẫu để đối chiếu và lấy hình ảnh hiển thị")]
+    [SerializeField] private ItemDatabaseSO itemDatabaseSO;
 
     private List<LootDrop> currentBattleDrops; // Lưu trữ danh sách vật phẩm rơi để gửi API khi bấm Confirm
     private int lastGoldEarned = 0;
@@ -481,11 +481,9 @@ public class BattleEndUIController : MonoBehaviour
             {
                 LootDrop drop = droppedItems[i];
                 ItemData matchData = null;
-                if (itemDatabase != null)
+                if (itemDatabaseSO != null)
                 {
-                    matchData = itemDatabase.Find(x => x != null && 
-                        !string.IsNullOrEmpty(x.itemName) &&
-                        x.itemName.Equals(drop.itemId, StringComparison.OrdinalIgnoreCase));
+                    matchData = itemDatabaseSO.FindItemByNameOrId(drop.itemId);
                 }
 
                 if (matchData != null)

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: MainItemDatabase
   m_EditorClassIdentifier: Assembly-CSharp::ItemDatabaseSO
   items:
-  - itemName: Rusty Sword
+  - itemId: item_rusty_sword
+    itemName: Rusty Sword
     itemIcon: {fileID: -1751666057462236490, guid: 80dc14ad1c56cee4587fba3f2171fcda, type: 3}
     itemType: 0
     itemRarity: 0
@@ -22,7 +23,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Leather Vest
+  - itemId: item_leather_vest
+    itemName: Leather Vest
     itemIcon: {fileID: 477670517281064794, guid: 9a6af915c9572a24e90ae74581f9b067, type: 3}
     itemType: 1
     itemRarity: 0
@@ -31,7 +33,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Wooden Ring
+  - itemId: item_wooden_ring
+    itemName: Wooden Ring
     itemIcon: {fileID: -6527581836544413310, guid: 938efacb60808834a84b6fd3674e7555, type: 3}
     itemType: 2
     itemRarity: 0
@@ -40,7 +43,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Small Health Potion
+  - itemId: item_health_potion_s
+    itemName: Small Health Potion
     itemIcon: {fileID: -3138755175628646075, guid: 925423f1fe3df9c43ad73d1ce919ca30, type: 3}
     itemType: 3
     itemRarity: 0
@@ -49,7 +53,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Steel Dagger
+  - itemId: item_steel_dagger
+    itemName: Steel Dagger
     itemIcon: {fileID: -5381484653364802162, guid: 719c9514591248f41959b9f7c7d10cf2, type: 3}
     itemType: 0
     itemRarity: 1
@@ -58,7 +63,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Steel Blade
+  - itemId: item_steel_blade
+    itemName: Steel Blade
     itemIcon: {fileID: 7835467539701571412, guid: 719c9514591248f41959b9f7c7d10cf2, type: 3}
     itemType: 0
     itemRarity: 1
@@ -67,7 +73,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Iron Shield
+  - itemId: item_iron_shield
+    itemName: Iron Shield
     itemIcon: {fileID: -285600187165097761, guid: 9a6af915c9572a24e90ae74581f9b067, type: 3}
     itemType: 1
     itemRarity: 1
@@ -76,7 +83,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Silver Amulet
+  - itemId: item_silver_amulet
+    itemName: Silver Amulet
     itemIcon: {fileID: -149199884664268498, guid: b2aca246a257e5447a583eb3f6293d4f, type: 3}
     itemType: 2
     itemRarity: 1
@@ -85,7 +93,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Medium Health Potion
+  - itemId: item_health_potion_m
+    itemName: Medium Health Potion
     itemIcon: {fileID: 9061389864779957914, guid: 925423f1fe3df9c43ad73d1ce919ca30, type: 3}
     itemType: 3
     itemRarity: 1
@@ -94,7 +103,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Shadow Blade
+  - itemId: item_shadow_blade
+    itemName: Shadow Blade
     itemIcon: {fileID: -6800933126232825344, guid: 80dc14ad1c56cee4587fba3f2171fcda, type: 3}
     itemType: 0
     itemRarity: 2
@@ -103,7 +113,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Dragon Scale Plate
+  - itemId: item_dragon_scale
+    itemName: Dragon Scale Plate
     itemIcon: {fileID: 4946070080816921243, guid: a653ed866b157e94a847fb354d6cc6a2, type: 3}
     itemType: 1
     itemRarity: 2
@@ -112,7 +123,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Void Ring
+  - itemId: item_void_ring
+    itemName: Void Ring
     itemIcon: {fileID: -6527581836544413310, guid: 938efacb60808834a84b6fd3674e7555, type: 3}
     itemType: 2
     itemRarity: 2
@@ -121,7 +133,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Battle Elixir
+  - itemId: item_elixir
+    itemName: Battle Elixir
     itemIcon: {fileID: 947255674826845877, guid: 925423f1fe3df9c43ad73d1ce919ca30, type: 3}
     itemType: 3
     itemRarity: 2
@@ -130,7 +143,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Excalibur
+  - itemId: item_excalibur
+    itemName: Excalibur
     itemIcon: {fileID: 3492761690622121635, guid: 80dc14ad1c56cee4587fba3f2171fcda, type: 3}
     itemType: 0
     itemRarity: 3
@@ -139,7 +153,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Aegis of the Ancients
+  - itemId: item_aegis
+    itemName: Aegis of the Ancients
     itemIcon: {fileID: 5346660433569948777, guid: a653ed866b157e94a847fb354d6cc6a2, type: 3}
     itemType: 1
     itemRarity: 3
@@ -148,7 +163,8 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Ring of the Gods
+  - itemId: item_ring_of_gods
+    itemName: Ring of the Gods
     itemIcon: {fileID: 6035522225323658155, guid: 938efacb60808834a84b6fd3674e7555, type: 3}
     itemType: 2
     itemRarity: 3
@@ -157,10 +173,31 @@ MonoBehaviour:
     quantity: 0
     inventoryId: 
     isEquipped: 0
-  - itemName: Divine Elixir
+  - itemId: item_divine_elixir
+    itemName: Divine Elixir
     itemIcon: {fileID: 3109236911076525734, guid: 925423f1fe3df9c43ad73d1ce919ca30, type: 3}
     itemType: 3
     itemRarity: 3
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemId: item_ancient_key
+    itemName: Ancient Key
+    itemIcon: {fileID: 1348061230168449080, guid: 0fd9b31d4b252ec4f8932eb0f7695ca0, type: 3}
+    itemType: 4
+    itemRarity: 0
+    atkBonus: 0
+    defBonus: 0
+    quantity: 0
+    inventoryId: 
+    isEquipped: 0
+  - itemId: item_elemental_core
+    itemName: Elemental Core
+    itemIcon: {fileID: 8395812162034168595, guid: b30f1a91130213946be4e1c5df0e14d2, type: 3}
+    itemType: 4
+    itemRarity: 2
     atkBonus: 0
     defBonus: 0
     quantity: 0
