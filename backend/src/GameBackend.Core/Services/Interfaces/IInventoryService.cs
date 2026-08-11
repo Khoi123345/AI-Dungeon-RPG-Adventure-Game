@@ -10,6 +10,9 @@ namespace GameBackend.Core.Services.Interfaces
         /// <summary>Thêm item vào kho đồ, kiểm tra capacity và cộng dồn nếu đã có.</summary>
         Task AddItemToInventoryAsync(string characterId, string itemId, int quantity);
 
+        /// <summary>Xóa toàn bộ kho đồ khi nhân vật bắt đầu lại game từ đầu.</summary>
+        Task ClearInventoryAsync(string characterId);
+
         /// <summary>Lấy thông tin chi tiết và stats của một item từ Item Catalog.</summary>
         Task<ItemDetailResponse?> GetItemDetailAsync(string itemId);
 

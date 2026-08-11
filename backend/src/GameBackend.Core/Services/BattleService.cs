@@ -330,35 +330,7 @@ namespace GameBackend.Core.Services
                     var session = await _storyRepository.GetSessionByCharacterIdAsync(character.characterId);
                     string currentLoc = session?.currentLocation ?? character.currentLocationId ?? "ancient_cave";
 
-                    if (currentLoc.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase))
-                    {
-                        keyItemToGrant = "item_ancient_key";
-                    }
-                    else if (currentLoc.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase))
-                    {
-                        keyItemToGrant = "item_elemental_core";
-                    }
-                    else if (currentLoc.Equals("sunken_shipwreck", StringComparison.OrdinalIgnoreCase))
-                    {
-                        keyItemToGrant = "item_sea_compass";
-                    }
-                    else if (currentLoc.Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase))
-                    {
-                        keyItemToGrant = "item_void_crystal";
-                    }
-                    else if (currentLoc.Equals("coral_palace", StringComparison.OrdinalIgnoreCase) &&
-                             string.Equals(encounter.bossId, "boss_shadow_demon", StringComparison.OrdinalIgnoreCase))
-                    {
-                        keyItemToGrant = "item_fire_core";
-                    }
-                    else if (currentLoc.Equals("sulfur_mines", StringComparison.OrdinalIgnoreCase))
-                    {
-                        keyItemToGrant = "item_obsidian_key";
-                    }
-                    else if (currentLoc.Equals("obsidian_peaks", StringComparison.OrdinalIgnoreCase))
-                    {
-                        keyItemToGrant = "item_dragon_blood_key";
-                    }
+                    keyItemToGrant = GetKeyItemReward(currentLoc, encounter.bossId);
 
                     if (!string.IsNullOrEmpty(keyItemToGrant))
                     {
@@ -370,7 +342,7 @@ namespace GameBackend.Core.Services
                             {
                                 lootDTOs.Add(new LootItemDTO { itemId = keyItemToGrant, quantity = 1 });
                             }
-                            _logger.LogInformation("Tự động rớt Key Item '{KeyItemId}' cho nhân vật {CharacterId} sau khi hạ gục quái tại {Location}", keyItemToGrant, character.characterId, currentLoc);
+                            _logger.LogInformation("Tự động rớt Key Item '{KeyItemId}' cho nhân vật {CharacterId} sau khi hạ gục kẻ địch {EnemyId} tại {Location}", keyItemToGrant, character.characterId, encounter.bossId, currentLoc);
                         }
                     }
                 }
@@ -521,6 +493,30 @@ namespace GameBackend.Core.Services
             if (string.IsNullOrWhiteSpace(targetBossId)) return null;
             return GameConstants.BossCatalog.FirstOrDefault(b =>
                 b.bossId.Equals(targetBossId.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        internal static string? GetKeyItemReward(string? currentLocation, string? enemyId)
+        {
+            var location = (currentLocation ?? string.Empty).Trim().ToLowerInvariant();
+            var targetId = (enemyId ?? string.Empty).Trim().ToLowerInvariant();
+
+            return location switch
+            {
+                "ancient_cave" when targetId is "mob_cave_spider" or "mob_goblin_scout" or "mob_cave_bat" or "mob_rock_slime"
+                    => "item_ancient_key",
+                "forgotten_temple" when targetId is "mob_shadow_spirit" or "mob_temple_golem" or "mob_goblin_scout" or "mob_goblin_guard" or "mob_cave_spider"
+                    => "item_elemental_core",
+                "sunken_shipwreck" when targetId is "mob_void_remnant" or "mob_shadow_spirit" or "mob_abyssal_spirit" or "mob_drowned_sailor" or "mob_mutated_crab"
+                    => "item_sea_compass",
+                "abyssal_trench" when targetId == "mob_void_remnant"
+                    => "item_void_crystal",
+                "coral_palace" when targetId == "boss_shadow_demon" => "item_fire_core",
+                "sulfur_mines" when targetId is "mob_fire_lizard" or "mob_young_dragon"
+                    => "item_obsidian_key",
+                "obsidian_peaks" when targetId == "mob_fire_raptor"
+                    => "item_dragon_blood_key",
+                _ => null
+            };
         }
 
         // Removed ScaleStat

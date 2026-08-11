@@ -257,11 +257,11 @@ namespace GameBackend.Tests
                 var aiStoryPath = Path.Combine(current.FullName, "backend", "src", "GameBackend.Core", "AIStory");
                 if (Directory.Exists(aiStoryPath))
                 {
-                    return new PromptBuilder(aiStoryPath);
+                    return new PromptBuilder(new FileSystemPromptLoader(aiStoryPath));
                 }
                 current = current.Parent;
             }
-            return new PromptBuilder(Directory.GetCurrentDirectory());
+            return new PromptBuilder(new FileSystemPromptLoader(Directory.GetCurrentDirectory()));
         }
 
         private sealed class FakeStoryRepository : GameBackend.Core.Repositories.Interfaces.IStoryRepository
