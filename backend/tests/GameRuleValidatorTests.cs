@@ -198,6 +198,52 @@ public class GameRuleValidatorTests
         Assert.False(GameShared.Config.GameConstants.IsRarityAtOrBelow("Rare", cap));
     }
 
+    [Theory]
+    [InlineData("mob_shadow_spirit")]
+    [InlineData("mob_void_remnant")]
+    [InlineData("boss_goblin_king")]
+    [InlineData("")]
+    public void CoralPalace_NonShadowDemon_Should_Never_Grant_FireCore(string enemyId)
+    {
+        Assert.Null(GameBackend.Core.Services.BattleService.GetKeyItemReward("coral_palace", enemyId));
+    }
+
+    [Fact]
+    public void CoralPalace_ShadowDemon_Should_Grant_FireCore()
+    {
+        Assert.Equal(
+            "item_fire_core",
+            GameBackend.Core.Services.BattleService.GetKeyItemReward("coral_palace", "boss_shadow_demon"));
+    }
+
+    [Theory]
+    [InlineData("ancient_cave", "mob_cave_spider", "item_ancient_key")]
+    [InlineData("forgotten_temple", "mob_temple_golem", "item_elemental_core")]
+    [InlineData("sunken_shipwreck", "mob_drowned_sailor", "item_sea_compass")]
+    [InlineData("abyssal_trench", "mob_void_remnant", "item_void_crystal")]
+    [InlineData("coral_palace", "boss_shadow_demon", "item_fire_core")]
+    [InlineData("sulfur_mines", "mob_fire_lizard", "item_obsidian_key")]
+    [InlineData("obsidian_peaks", "mob_fire_raptor", "item_dragon_blood_key")]
+    public void KeyItems_Should_Only_Drop_From_Configured_Enemies(
+        string location, string enemyId, string expectedItemId)
+    {
+        Assert.Equal(expectedItemId, GameBackend.Core.Services.BattleService.GetKeyItemReward(location, enemyId));
+    }
+
+    [Theory]
+    [InlineData("ancient_cave", "boss_goblin_king")]
+    [InlineData("forgotten_temple", "boss_shadow_demon")]
+    [InlineData("sunken_shipwreck", "boss_shadow_demon")]
+    [InlineData("abyssal_trench", "mob_abyssal_spirit")]
+    [InlineData("coral_palace", "mob_shadow_spirit")]
+    [InlineData("sulfur_mines", "mob_fire_raptor")]
+    [InlineData("obsidian_peaks", "mob_adult_dragon")]
+    [InlineData("dragon_nest", "boss_dragon_king")]
+    public void KeyItems_Should_Not_Drop_From_Wrong_Enemy(string location, string enemyId)
+    {
+        Assert.Null(GameBackend.Core.Services.BattleService.GetKeyItemReward(location, enemyId));
+    }
+
     [Fact]
     public void Shadow_Demon_Retry_Should_Unlock_After_Two_Mob_Wins()
     {
@@ -340,6 +386,61 @@ public class GameRuleValidatorTests
         Assert.Equal(3, response.Choices.Count);
         Assert.Contains(response.Choices, c => c.nextNodeId == "fight_shadow_spirit");
         Assert.Contains(response.Choices, c => c.nextNodeId == "boss_room");
+    }
+
+    [Theory]
+    [InlineData("goblin_hideout", "đánh lính gác goblin", "mob_goblin_guard")]
+    [InlineData("goblin_hideout", "chiến đấu với trinh sát goblin", "mob_goblin_scout")]
+    [InlineData("sunken_shipwreck", "tấn công thủy thủ chết đuối", "mob_drowned_sailor")]
+    [InlineData("abyssal_trench", "đánh oan hồn biển sâu", "mob_abyssal_spirit")]
+    [InlineData("coral_palace", "đánh oan hồn bóng tối", "mob_shadow_spirit")]
+    [InlineData("sulfur_mines", "tấn công khủng long lửa", "mob_fire_lizard")]
+    [InlineData("obsidian_peaks", "đánh khủng long săn lửa", "mob_fire_raptor")]
+    [InlineData("dragon_nest", "chiến đấu với rồng trưởng thành", "mob_adult_dragon")]
+    [InlineData("goblin_hideout", "đối mặt Goblin King", "boss_goblin_king")]
+    [InlineData("coral_palace", "tái chiến Shadow Demon", "boss_shadow_demon")]
+    [InlineData("dragon_nest", "đối mặt Vua Rồng", "boss_dragon_king")]
+    public void ResolveCombatTargetId_Should_Map_Exact_Target_For_All_Chapters(
+        string location, string input, string expectedId)
+    {
+        Assert.Equal(expectedId, GameBackend.Core.Services.StoryService.ResolveCombatTargetId(input, location));
+    }
+
+    [Theory]
+    [InlineData("goblin_hideout", "chapter_1", "mob_goblin_guard")]
+    [InlineData("coral_palace", "chapter_2", "mob_shadow_spirit")]
+    [InlineData("dragon_nest", "chapter_3", "mob_adult_dragon")]
+    public async Task BossRoom_Missing_Target_Should_Fall_Back_To_Mob_Not_Chapter_Boss(
+        string location, string chapterId, string expectedMobId)
+    {
+        var validator = BuildValidator(new FakeContentService(
+            Array.Empty<string>(), Array.Empty<string>(), new[] { location }, Array.Empty<string>()));
+        var session = CreateSession(location);
+        session.currentChapterId = chapterId;
+        session.currentNodeId = "boss_room";
+        var response = new StoryAiResponse
+        {
+            TriggerBattle = true,
+            BossId = null,
+            CurrentLocation = location,
+            CurrentNodeId = "boss_room",
+            NarrativeText = "Vị vua của khu vực gầm lên trong bóng tối, nhưng bạn tấn công lính canh trước mặt."
+        };
+
+        var sanitized = await validator.ValidateAndSanitizeAsync(session, CreateCharacter(location), response);
+
+        Assert.True(sanitized.TriggerBattle);
+        Assert.Equal(expectedMobId, sanitized.BossId);
+        Assert.StartsWith("mob_", sanitized.BossId, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Theory]
+    [InlineData("forgotten_temple", "đánh Shadow Demon")]
+    [InlineData("goblin_hideout", "đánh Vua Rồng")]
+    [InlineData("sulfur_mines", "đánh Thủy Thủ Chết Đuối")]
+    public void ResolveCombatTargetId_Should_Reject_Target_From_Wrong_Location(string location, string input)
+    {
+        Assert.Null(GameBackend.Core.Services.StoryService.ResolveCombatTargetId(input, location));
     }
 
     private static StoryAction BattleResult(DateTime createdAt, string text) => new()

@@ -65,7 +65,7 @@ namespace GameBackend.Core.Services
         private static readonly Dictionary<string, List<string>> LocationMobs = new()
         {
             // Chapter 1
-            { "ancient_cave",      new() { "mob_cave_spider", "mob_goblin_scout" } },
+            { "ancient_cave",      new() { "mob_cave_spider", "mob_goblin_scout", "mob_cave_bat", "mob_rock_slime" } },
             { "forgotten_temple",  new() { "mob_shadow_spirit", "mob_temple_golem", "mob_goblin_scout", "mob_goblin_guard", "mob_cave_spider" } },
             { "goblin_hideout",    new() { "mob_goblin_guard", "mob_goblin_scout" } },
             // Chapter 2
@@ -73,7 +73,7 @@ namespace GameBackend.Core.Services
             { "abyssal_trench",   new() { "mob_void_remnant", "mob_abyssal_spirit", "mob_drowned_sailor" } },
             { "coral_palace",     new() { "mob_shadow_spirit", "mob_void_remnant" } },
             // Chapter 3
-            { "sulfur_mines",     new() { "mob_young_dragon", "mob_fire_lizard", "mob_fire_raptor" } },
+            { "sulfur_mines",     new() { "mob_young_dragon", "mob_fire_lizard" } },
             { "obsidian_peaks",   new() { "mob_adult_dragon", "mob_young_dragon", "mob_fire_raptor" } },
             { "dragon_nest",      new() { "mob_adult_dragon", "mob_young_dragon" } },
         };
@@ -88,7 +88,6 @@ namespace GameBackend.Core.Services
             return (location ?? "").ToLowerInvariant() switch
             {
                 // Chapter 1
-                "forgotten_temple" => "boss_shadow_demon",
                 "goblin_hideout"   => "boss_goblin_king",
                 // Chapter 2
                 "coral_palace"     => "boss_shadow_demon",
@@ -161,7 +160,7 @@ namespace GameBackend.Core.Services
                 }
 
                 // Nếu forceNewSession = true (người chơi chết + bấm Back to Menu):
-                // Xóa session cũ và reset level nhân vật về 1
+                // Xóa toàn bộ tiến trình cũ, bao gồm inventory, và reset nhân vật về level 1.
                 if (request.forceNewSession)
                 {
                     _logger.LogInformation("forceNewSession=true: Clearing progression for character {CharacterId}", character.characterId);
@@ -184,6 +183,15 @@ namespace GameBackend.Core.Services
                     catch (Exception ex)
                     {
                         _logger.LogWarning(ex, "Could not clear defeated bosses for character {CharacterId}", character.characterId);
+                    }
+
+                    try
+                    {
+                        await _inventoryService.ClearInventoryAsync(character.characterId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Could not clear inventory for character {CharacterId}", character.characterId);
                     }
 
                     // Reset level về 1 và stats cơ bản trên DB
@@ -918,25 +926,46 @@ namespace GameBackend.Core.Services
                    text.Contains("thách đấu") || text.Contains("giao chiến") || text.Contains("tái chiến");
         }
 
-        private static string? ResolveCombatTargetId(string? input, string? currentLocation)
+        internal static string? ResolveCombatTargetId(string? input, string? currentLocation)
         {
             var text = (input ?? string.Empty).ToLowerInvariant();
-
-            if (text.Contains("shadow demon") || text.Contains("ác quỷ bóng tối")) return "boss_shadow_demon";
-            if (text.Contains("dragon king") || text.Contains("vua rồng")) return "boss_dragon_king";
-            if (text.Contains("goblin king") || text.Contains("vua goblin")) return "boss_goblin_king";
-            if (text.Contains("thủy thủ chết đuối") || text.Contains("drowned sailor")) return "mob_drowned_sailor";
-            if (text.Contains("cua đột biến") || text.Contains("mutated crab")) return "mob_mutated_crab";
-            if (text.Contains("tàn dư hư không") || text.Contains("void remnant")) return "mob_void_remnant";
-            if (text.Contains("oan hồn biển sâu") || text.Contains("abyssal spirit")) return "mob_abyssal_spirit";
-            if (text.Contains("oan hồn bóng tối") || text.Contains("shadow spirit")) return "mob_shadow_spirit";
-            if (text.Contains("goblin guard") || text.Contains("lính gác goblin") || text.Contains("vệ binh goblin")) return "mob_goblin_guard";
-            if (text.Contains("temple golem") || text.Contains("golem đền thờ")) return "mob_temple_golem";
-            if (text.Contains("rồng trẻ") || text.Contains("young dragon")) return "mob_young_dragon";
-            if (text.Contains("rồng trưởng thành") || text.Contains("adult dragon")) return "mob_adult_dragon";
-            if (text.Contains("thằn lằn lửa") || text.Contains("fire lizard")) return "mob_fire_lizard";
-
             var location = (currentLocation ?? string.Empty).Trim().ToLowerInvariant();
+
+            string? explicitTarget = null;
+            if (text.Contains("shadow demon") || text.Contains("ác quỷ bóng tối")) explicitTarget = "boss_shadow_demon";
+            else if (text.Contains("dragon king") || text.Contains("vua rồng")) explicitTarget = "boss_dragon_king";
+            else if (text.Contains("goblin king") || text.Contains("vua goblin") || text.Contains("vua yêu tinh")) explicitTarget = "boss_goblin_king";
+            else if (text.Contains("thủy thủ chết đuối") || text.Contains("drowned sailor")) explicitTarget = "mob_drowned_sailor";
+            else if (text.Contains("cua đột biến") || text.Contains("mutated crab")) explicitTarget = "mob_mutated_crab";
+            else if (text.Contains("tàn dư hư không") || text.Contains("void remnant")) explicitTarget = "mob_void_remnant";
+            else if (text.Contains("oan hồn biển sâu") || text.Contains("abyssal spirit")) explicitTarget = "mob_abyssal_spirit";
+            else if (text.Contains("oan hồn bóng tối") || text.Contains("shadow spirit")) explicitTarget = "mob_shadow_spirit";
+            else if (text.Contains("goblin guard") || text.Contains("lính gác goblin") || text.Contains("vệ binh goblin")) explicitTarget = "mob_goblin_guard";
+            else if (text.Contains("trinh sát goblin") || text.Contains("goblin scout")) explicitTarget = "mob_goblin_scout";
+            else if (text.Contains("temple golem") || text.Contains("golem đền thờ")) explicitTarget = "mob_temple_golem";
+            else if (text.Contains("nhện hang động") || text.Contains("cave spider")) explicitTarget = "mob_cave_spider";
+            else if (text.Contains("dơi hang động") || text.Contains("cave bat")) explicitTarget = "mob_cave_bat";
+            else if (text.Contains("slime đá") || text.Contains("rock slime")) explicitTarget = "mob_rock_slime";
+            else if (text.Contains("rồng trẻ") || text.Contains("young dragon")) explicitTarget = "mob_young_dragon";
+            else if (text.Contains("rồng trưởng thành") || text.Contains("adult dragon")) explicitTarget = "mob_adult_dragon";
+            else if (text.Contains("khủng long săn lửa") || text.Contains("fire raptor")) explicitTarget = "mob_fire_raptor";
+            else if (text.Contains("thằn lằn lửa") || text.Contains("khủng long lửa") || text.Contains("fire lizard")) explicitTarget = "mob_fire_lizard";
+
+            if (!string.IsNullOrWhiteSpace(explicitTarget))
+            {
+                if (explicitTarget.StartsWith("boss_", StringComparison.OrdinalIgnoreCase))
+                {
+                    return string.Equals(GetChapterBossId(location), explicitTarget, StringComparison.OrdinalIgnoreCase)
+                        ? explicitTarget
+                        : null;
+                }
+
+                return LocationMobs.TryGetValue(location, out var allowedMobs) &&
+                       allowedMobs.Contains(explicitTarget, StringComparer.OrdinalIgnoreCase)
+                    ? explicitTarget
+                    : null;
+            }
+
             return LocationMobs.TryGetValue(location, out var mobs) && mobs.Count > 0 ? mobs[0] : null;
         }
 

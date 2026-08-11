@@ -47,6 +47,23 @@ namespace GameBackend.Core.Services
             };
         }
 
+        public async Task ClearInventoryAsync(string characterId)
+        {
+            if (string.IsNullOrWhiteSpace(characterId)) return;
+
+            var items = await _inventoryRepository.GetByCharacterIdAsync(characterId);
+            foreach (var item in items)
+            {
+                if (item == null || string.IsNullOrWhiteSpace(item.inventoryId)) continue;
+                await _inventoryRepository.DeleteAsync(item.inventoryId);
+            }
+
+            _logger.LogInformation(
+                "Cleared {ItemCount} inventory records for character {CharacterId}.",
+                items.Count,
+                characterId);
+        }
+
         // =====================================================================
         // GET ITEM DETAIL
         // =====================================================================

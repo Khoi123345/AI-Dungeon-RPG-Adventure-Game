@@ -122,14 +122,13 @@ namespace GameBackend.Core.Services.Validation
                 }
                 else if (currentLoc == "goblin_hideout")
                 {
-                    if (isInBossRoom) { response.BossId = "boss_goblin_king"; response.BossName = "Goblin King"; }
-                    else { response.BossId = "mob_goblin_guard"; response.BossName = "Goblin Guard"; }
+                    response.BossId = "mob_goblin_guard"; response.BossName = "Goblin Guard";
                 }
                 else if (currentLoc == "sunken_shipwreck")
                 {
                     if (lowerText.Contains("crab") || lowerText.Contains("cua")) { response.BossId = "mob_mutated_crab"; response.BossName = "Mutated Crab"; }
                     else if (lowerText.Contains("sailor") || lowerText.Contains("thủy thủ")) { response.BossId = "mob_drowned_sailor"; response.BossName = "Drowned Sailor"; }
-                    else { response.BossId = "mob_abyssal_spirit"; response.BossName = "Abyssal Spirit"; }
+                    else { response.BossId = "mob_void_remnant"; response.BossName = "Void Remnant"; }
                 }
                 else if (currentLoc == "abyssal_trench")
                 {
@@ -138,8 +137,7 @@ namespace GameBackend.Core.Services.Validation
                 }
                 else if (currentLoc == "coral_palace")
                 {
-                    if (isInBossRoom) { response.BossId = "boss_shadow_demon"; response.BossName = "Shadow Demon"; }
-                    else { response.BossId = "mob_abyssal_spirit"; response.BossName = "Abyssal Spirit"; }
+                    response.BossId = "mob_shadow_spirit"; response.BossName = "Shadow Spirit";
                 }
                 else if (currentLoc == "sulfur_mines")
                 {
@@ -153,8 +151,7 @@ namespace GameBackend.Core.Services.Validation
                 }
                 else if (currentLoc == "dragon_nest")
                 {
-                    if (isInBossRoom) { response.BossId = "boss_dragon_king"; response.BossName = "Dragon King"; }
-                    else { response.BossId = "mob_adult_dragon"; response.BossName = "Adult Dragon"; }
+                    response.BossId = "mob_adult_dragon"; response.BossName = "Adult Dragon";
                 }
                 else
                 {
@@ -162,6 +159,10 @@ namespace GameBackend.Core.Services.Validation
                     else { response.BossId = "mob_goblin_scout"; response.BossName = "Goblin Scout"; }
                 }
             }
+
+            // Recompute after a missing bossId was resolved to a safe location mob.
+            // Keeping the old value here could promote that mob to the chapter boss below.
+            isMobRequested = (response.BossId ?? "").StartsWith("mob_", StringComparison.OrdinalIgnoreCase);
 
             // Chapter boss check
             bool isChapterBoss = (response.BossId ?? "").Contains("goblin_king", StringComparison.OrdinalIgnoreCase)
@@ -198,36 +199,9 @@ namespace GameBackend.Core.Services.Validation
                 }
             }
 
-            if (!isMobRequested && (isInBossRoom || isConfrontingBoss) && !narrativeSaysBossDefeated && response.TriggerBattle)
-            {
-                if (string.IsNullOrWhiteSpace(response.BossId) || !isChapterBoss)
-                {
-                    // Gán chapter boss mặc định dựa theo location khi ở trong boss_room
-                    var chapterBossId = currentLoc switch
-                    {
-                        "coral_palace" => "boss_shadow_demon",
-                        "dragon_nest"  => "boss_dragon_king",
-                        "goblin_hideout" => "boss_goblin_king",
-                        _ => null
-                    };
-                    if (chapterBossId == null)
-                    {
-                        _logger.LogWarning("Rejected chapter boss fallback outside a canonical boss location: {Location}", currentLoc);
-                        ResetBossFields(response);
-                        return;
-                    }
-                    var chapterBossName = chapterBossId switch
-                    {
-                        "boss_shadow_demon" => "Shadow Demon",
-                        "boss_dragon_king"  => "Dragon King",
-                        _                   => "Goblin King"
-                    };
-                    response.BossId = chapterBossId;
-                    response.BossName = chapterBossName;
-                    _logger.LogInformation("Assigned chapter bossId={BossId}, bossName={BossName}", chapterBossId, chapterBossName);
-                }
-            }
-            else if (isChapterBoss && !isInBossRoom && !isConfrontingBoss)
+            // Never manufacture a chapter boss from AI narrative or boss_room alone.
+            // StoryService must have resolved an explicit player choice to the exact boss_* ID.
+            if (isChapterBoss && !isInBossRoom && !isConfrontingBoss)
             {
                 var loc = currentLoc;
                 if (loc == "abyssal_trench" || loc == "sunken_shipwreck")
