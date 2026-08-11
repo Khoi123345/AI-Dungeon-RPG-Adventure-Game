@@ -2619,7 +2619,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOQU/DMAyFf8vuqdsOkLhwKN2OjKkDrihLvS4sjaPEoRpV/zsqLajIB3/PT/bzGvK7DLKV7EKi6kti9BH6A0t1EbIL7710upGMnbxCX2HgwmlRnuwCC6UoWhYbdIauLVoepwt1YNngOJugwkDRK3yUAcUT8pnq0Zzp151DZqbGaqbXgH5PZEIR+Uxef6H/eeBPDULLFvqKzLRPBgdhZHusJZQnu0ff6hA02eFfznNkF3mZOIgN8Q45vYcM1rcp7LYvJXksnEve0I8nHj5vIE9zyMZafQStEx8t6xahmvo3RDYuvFsBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WOQU/DMAyFf8vuqdsOIe3CoXQ7MqYOuKKs9bqwJI4Sh2pU/e+otKAiH/w9P9nPa8jvM8hWsgtJ3VwTrU7QH1nWVyG78N5Lp1rJ2Mkb9BUGLpwS5dkusKhripbFFp2mm0HL43ShjixbHGcTVBgo+hofZUDxhHyhZjRn+nXnkJmptYrpNaA/EOlQRL6QV1/ofx74U4NQ0kBfkZ72SeMgtDSnRkJ5tgf0RoWgyA7/cp4ju8jLxEFsiffI6QYyWG9S2O9eSvJYOJe8oR9PPHzeQZ7mkI21+ghKJT5aVgahmvo3xWRM/1sBAAA="
    },
    "Metadata": {
     "aws:cdk:path": "GameApiStack/CDKMetadata/Default"

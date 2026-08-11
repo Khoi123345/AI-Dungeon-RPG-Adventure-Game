@@ -333,7 +333,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -393,7 +393,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/LoginFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -738,7 +738,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -798,7 +798,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/RegisterFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -1136,7 +1136,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -1196,7 +1196,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/ConfirmSignUpFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -1534,7 +1534,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -1594,7 +1594,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/RefreshTokenFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -1925,7 +1925,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -1985,7 +1985,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/GetCharacterFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -2316,7 +2316,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -2376,7 +2376,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/CreateCharacterFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -2717,7 +2717,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -2777,7 +2777,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/StartStoryFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -3118,7 +3118,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -3178,7 +3178,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/StoryActionFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -3509,7 +3509,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -3569,7 +3569,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/SpawnBossFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -3900,7 +3900,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -3960,7 +3960,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/ResolveBattleFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -4291,7 +4291,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -4351,7 +4351,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/GetInventoryFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -4682,7 +4682,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -4742,7 +4742,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/EquipItemFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -5073,7 +5073,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1"
      },
-     "S3Key": "51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71.zip"
+     "S3Key": "46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30.zip"
     },
     "Environment": {
      "Variables": {
@@ -5133,7 +5133,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/UnequipItemFunction/Resource",
-    "aws:asset:path": "asset.51180025c6318603d7bd1944e2385febfe1a0033915aa95017b570441b95eb71",
+    "aws:asset:path": "asset.46b9289b986de4efdeee161c449b13ca396484738ee6ff58fdda2cae150f1b30",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -5141,7 +5141,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWMTwuCQBDFP0v3ddQs6NLBrI4SFl1lWqeY1F1x1iLE7x5q8Q6/9wfeEsJ1AMEC3+LpovQqvkF/dqhLhW/J+wrrW4HQHzujHVujkrv5+0Ex1tBntqKxnniyFevPGGc3KIlyFCEnEI9QEsGu0yW5HQoNKiOxXatJTevZ4YPNY7r7DYPaW5eS8zcQwHLlQ3q4JLaluGm8K7XC1mxfEYR+CMGoxVOYvbYzjmuCbOYXf0vchecAAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWMSwuCQBSFf0v78TomgZsWPZcSGm3lNt3ips6Id0xC/O+hFWfxnQecJUQrDXqBvQTmVgYVX2HIPZpSYS/FUGF9vSEMx84az86q3d3+/agYaxgyV9FUzzy5is17il83KokLFCEvsJmgJIZtZ0ryWxQaVUbiutaQmtfc44PtY777DaPaO5+SDxPQsExCSA/nnWtp0zTBhVphZ9evGKIwAj1p8RTmoO2s55og+/ID/hm+xucAAAA="
    },
    "Metadata": {
     "aws:cdk:path": "GameLambdaStack/CDKMetadata/Default"
