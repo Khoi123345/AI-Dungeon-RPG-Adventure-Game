@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: b077ffa6d44ed904a9da9772b00233b5
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4169447228915367933
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_0
+  - first:
+      213: -5988720211655384499
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_1
+  - first:
+      213: 9075563078528078127
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_2
+  - first:
+      213: 6536104935382838911
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_3
+  - first:
+      213: -3689497323759504983
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_4
+  - first:
+      213: 8114731975720306748
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_5
+  - first:
+      213: 6493582960838682518
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_6
+  - first:
+      213: -4842184573104789146
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_7
+  - first:
+      213: 271726372472696567
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_8
+  - first:
+      213: 373626019833276460
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_9
+  - first:
+      213: 3055432634414579548
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_10
+  - first:
+      213: 8293939544008277823
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_11
+  - first:
+      213: 4069166887360256583
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: mob_cave_spider
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 506
+        width: 207
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dffbc3df92adcd930800000000000000
+      internalID: 4169447228915367933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_1
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 506
+        width: 208
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d42241572bac3eca0800000000000000
+      internalID: -5988720211655384499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_goblin_scout
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 506
+        width: 208
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2111581980e2fd70800000000000000
+      internalID: 9075563078528078127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_3
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 506
+        width: 208
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7eeb281fc8e4ba50800000000000000
+      internalID: 6536104935382838911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_shadow_spirit
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 506
+        width: 208
+        height: 205
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a17f895bb54cccc0800000000000000
+      internalID: -3689497323759504983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_5
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 283
+        width: 207
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c38005cfcb15d9070800000000000000
+      internalID: 8114731975720306748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_cave_bat
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 283
+        width: 208
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 697a1546c47dd1a50800000000000000
+      internalID: 6493582960838682518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_goblin_guard
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 283
+        width: 208
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 669663729ca1dccb0800000000000000
+      internalID: -4842184573104789146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_8
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 283
+        width: 208
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fe275332bd55c300800000000000000
+      internalID: 271726372472696567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_abyssal_spirit
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 283
+        width: 208
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c28610fa2e26f2500800000000000000
+      internalID: 373626019833276460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_drowned_sailor
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 61
+        width: 207
+        height: 203
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5fba69eac3176a20800000000000000
+      internalID: 3055432634414579548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_11
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 61
+        width: 208
+        height: 203
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3fbd25721ef91370800000000000000
+      internalID: 8293939544008277823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_mutated_crab
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 61
+        width: 208
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74ad3e489b5987830800000000000000
+      internalID: 4069166887360256583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3777477148fbf144eaf148e85e11d043
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_1: -5988720211655384499
+      lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_11: 8293939544008277823
+      lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_3: 6536104935382838911
+      lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_5: 8114731975720306748
+      lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0-2_8: 271726372472696567
+      mob_abyssal_spirit: 373626019833276460
+      mob_cave_bat: 6493582960838682518
+      mob_cave_spider: 4169447228915367933
+      mob_drowned_sailor: 3055432634414579548
+      mob_goblin_guard: -4842184573104789146
+      mob_goblin_scout: 9075563078528078127
+      mob_mutated_crab: 4069166887360256583
+      mob_shadow_spirit: -3689497323759504983
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

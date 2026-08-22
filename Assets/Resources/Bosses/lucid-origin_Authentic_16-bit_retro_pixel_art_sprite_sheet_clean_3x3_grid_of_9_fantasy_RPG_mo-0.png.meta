@@ -1,0 +1,351 @@
+fileFormatVersion: 2
+guid: ed107f2e1c4562e468837d8606f77507
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1435812253797044019
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_0
+  - first:
+      213: -5674821285499824061
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_1
+  - first:
+      213: 1408465934788722146
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_2
+  - first:
+      213: 5603502750977327409
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_3
+  - first:
+      213: 3981074377276673610
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_4
+  - first:
+      213: -2868733874072001682
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_5
+  - first:
+      213: 8954359841363588175
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_6
+  - first:
+      213: 4325160930922517930
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_7
+  - first:
+      213: -5174746280400378331
+    second: lucid-origin_Authentic_16-bit_retro_pixel_art_sprite_sheet_clean_3x3_grid_of_9_fantasy_RPG_mo-0_8
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: boss_goblin_king
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 509
+        width: 177
+        height: 179
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc03648cc58f21ce0800000000000000
+      internalID: -1435812253797044019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_skeleton_knight
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 509
+        width: 178
+        height: 179
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34815f97b1cfe31b0800000000000000
+      internalID: -5674821285499824061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_orc_warlord
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 509
+        width: 176
+        height: 176
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2edf1592e40eb8310800000000000000
+      internalID: 1408465934788722146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_shadow_demon
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 298
+        width: 177
+        height: 179
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1318de93014a3cd40800000000000000
+      internalID: 5603502750977327409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_vampire_lord
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 297
+        width: 178
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4e4cf1bd0e9f3730800000000000000
+      internalID: 3981074377276673610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_dragon_king
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 298
+        width: 177
+        height: 179
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e63eec0adb53038d0800000000000000
+      internalID: -2868733874072001682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boss_chaos_titan
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 86
+        width: 177
+        height: 179
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f44ff7f55d6444c70800000000000000
+      internalID: 8954359841363588175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_void_remnant
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 85
+        width: 178
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa5d80473fe060c30800000000000000
+      internalID: 4325160930922517930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mob_temple_golem
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 85
+        width: 177
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52626f9ccab9f28b0800000000000000
+      internalID: -5174746280400378331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: cc00c746e69849141a710b72794a110f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      boss_chaos_titan: 8954359841363588175
+      boss_dragon_king: -2868733874072001682
+      boss_goblin_king: -1435812253797044019
+      boss_orc_warlord: 1408465934788722146
+      boss_shadow_demon: 5603502750977327409
+      boss_skeleton_knight: -5674821285499824061
+      boss_vampire_lord: 3981074377276673610
+      mob_temple_golem: -5174746280400378331
+      mob_void_remnant: 4325160930922517930
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

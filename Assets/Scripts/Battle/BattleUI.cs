@@ -8,6 +8,7 @@ public class BattleView : MonoBehaviour
     public TextMeshProUGUI txtPlayerName;
     public TextMeshProUGUI txtPlayerHP;
     public Image imgPlayerHPFill; // Thanh máu (Image Type: Filled)
+    public Image imgPlayerPortrait;
 
     [Header("Player Stats Details")]
     public TextMeshProUGUI txtPlayerAttack;
@@ -18,6 +19,7 @@ public class BattleView : MonoBehaviour
     public TextMeshProUGUI txtBossName;
     public TextMeshProUGUI txtBossHP;
     public Image imgBossHPFill;
+    public Image imgBossPortrait;
 
     [Header("Boss Stats Details")]
     public TextMeshProUGUI txtBossAttack;
@@ -102,6 +104,34 @@ public class BattleView : MonoBehaviour
         {
             if (txtBossHP != null) txtBossHP.text = hpText;
             if (imgBossHPFill != null) imgBossHPFill.fillAmount = fillAmount;
+        }
+    }
+
+    public void SetBossPortrait(string bossId)
+    {
+        if (imgBossPortrait != null && !string.IsNullOrEmpty(bossId))
+        {
+            // Tải toàn bộ sprites (bao gồm cả các slice trong sprite sheet) từ thư mục Resources/Bosses
+            Sprite[] allBossSprites = Resources.LoadAll<Sprite>("Bosses");
+            Sprite bossSprite = null;
+            
+            foreach (var s in allBossSprites)
+            {
+                if (s.name == bossId)
+                {
+                    bossSprite = s;
+                    break;
+                }
+            }
+
+            if (bossSprite != null)
+            {
+                imgBossPortrait.sprite = bossSprite;
+            }
+            else
+            {
+                Debug.LogWarning($"[BattleView] Không tìm thấy ảnh slice nào tên là '{bossId}' trong thư mục Resources/Bosses");
+            }
         }
     }
 

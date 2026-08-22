@@ -209,6 +209,12 @@ public class BattlePresenter : MonoBehaviour
     {
         // 1. Khởi tạo giao diện ban đầu
         view.SetupFighters(data.player, data.boss);
+        
+        // 1.5 Cập nhật hình ảnh Boss
+        if (GameProgressService.Instance != null && GameProgressService.Instance.CurrentBoss != null)
+        {
+            view.SetBossPortrait(GameProgressService.Instance.CurrentBoss.bossId);
+        }
 
         // 2. Chạy Coroutine để từ từ đọc các lượt đánh
         StartCoroutine(PlaybackRoutine(data));

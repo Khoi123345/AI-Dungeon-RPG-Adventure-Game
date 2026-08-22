@@ -240,12 +240,14 @@ MonoBehaviour:
   txtPlayerName: {fileID: 1962201610}
   txtPlayerHP: {fileID: 775620968}
   imgPlayerHPFill: {fileID: 189605887}
+  imgPlayerPortrait: {fileID: 0}
   txtPlayerAttack: {fileID: 873632008}
   txtPlayerDefense: {fileID: 958056397}
   txtPlayerLucky: {fileID: 1912078564}
   txtBossName: {fileID: 871319858}
   txtBossHP: {fileID: 938789845}
   imgBossHPFill: {fileID: 214282919}
+  imgBossPortrait: {fileID: 1864877351}
   txtBossAttack: {fileID: 817360932}
   txtBossDefense: {fileID: 134560244}
   txtBossLucky: {fileID: 824412969}
@@ -957,6 +959,7 @@ MonoBehaviour:
   hasItem: 0
   itemQuantity: 0
   itemData:
+    itemId: 
     itemName: 
     itemIcon: {fileID: 0}
     itemType: 0
@@ -2771,6 +2774,7 @@ MonoBehaviour:
   hasItem: 0
   itemQuantity: 2
   itemData:
+    itemId: 
     itemName: 
     itemIcon: {fileID: 0}
     itemType: 0
@@ -4464,6 +4468,7 @@ MonoBehaviour:
   hasItem: 0
   itemQuantity: 0
   itemData:
+    itemId: 
     itemName: 
     itemIcon: {fileID: 0}
     itemType: 0
