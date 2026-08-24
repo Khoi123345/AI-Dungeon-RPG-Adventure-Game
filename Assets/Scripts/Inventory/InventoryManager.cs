@@ -83,7 +83,14 @@ public class InventoryManager : MonoBehaviour
 
     public void CloseInventoryPanel()
     {
-        // 🛡️ CHỐNG TẮT GAMEMANAGER: Chỉ tắt duy nhất Panel_Inventory!
+        var uiCtrl = FindObjectOfType<UIController>();
+        if (uiCtrl != null)
+        {
+            uiCtrl.CloseInventory();
+            return;
+        }
+
+        // 🛡️ Fallback nếu không tìm thấy UIController: Chỉ tắt duy nhất Panel_Inventory!
         GameObject panelObj = null;
 
         if (this.gameObject.name != "GameManager" && this.gameObject.name.Contains("Inventory"))
@@ -109,6 +116,7 @@ public class InventoryManager : MonoBehaviour
             Debug.LogWarning("[InventoryManager] Không thể tắt Panel_Inventory vì tránh làm ngắt kết nối GameManager.");
         }
     }
+
 
     private void AutoFindEquipmentSlots()
     {

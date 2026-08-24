@@ -10,7 +10,13 @@ public class StoryApiService
 {
     public async Task<StoryActionResponse> StartStoryAsync(string characterId, string storyFileId = "prologue")
     {
-        var body = new StoryStartBody { characterId = characterId, storyFileId = storyFileId };
+        bool forceNew = GameProgressService.Instance != null && GameProgressService.Instance.ShouldForceNewSession;
+        if (forceNew && GameProgressService.Instance != null)
+        {
+            GameProgressService.Instance.ShouldForceNewSession = false; // Reset flag sau khi dùng
+        }
+
+        var body = new StoryStartBody { characterId = characterId, storyFileId = storyFileId, forceNewSession = forceNew };
         return await ApiClient.Instance.PostAsync<StoryActionResponse>("story/start", body);
     }
 
@@ -27,7 +33,7 @@ public class StoryApiService
     }
 
     [System.Serializable]
-    private class StoryStartBody { public string characterId; public string storyFileId; }
+    private class StoryStartBody { public string characterId; public string storyFileId; public bool forceNewSession; }
 
     [System.Serializable]
     private class StoryActionBody { public string characterId; public string sessionId; public int choiceIndex; public string playerInput; }

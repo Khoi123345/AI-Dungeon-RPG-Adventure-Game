@@ -1,0 +1,20 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "08e41949dc163b60adfbb3d2cfaf379624d7505152a55d542ac65250685b7c05": {
+      "source": {
+        "path": "GameApiStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-ap-southeast-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-ap-southeast-1",
+          "objectKey": "08e41949dc163b60adfbb3d2cfaf379624d7505152a55d542ac65250685b7c05.json",
+          "region": "ap-southeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-ap-southeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

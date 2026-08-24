@@ -29,6 +29,7 @@ public class UIController : MonoBehaviour
 
             if (isActive)
             {
+                FindObjectOfType<StoryPresenter>()?.SetExternalModalOpen(true);
                 // Mở inventory -> Lưu trạng thái và tắt các panel khác
                 if (panelsToHide != null && panelsToHide.Length > 0)
                 {
@@ -53,31 +54,34 @@ public class UIController : MonoBehaviour
             {
                 // Đóng inventory -> Khôi phục trạng thái
                 RestorePanelStates();
+                FindObjectOfType<StoryPresenter>()?.SetExternalModalOpen(false);
             }
         }
     }
 
-    // Hàm đóng Inventory (dùng riêng cho nút X / nút Đóng bên trong Panel_Inventory)
     public void CloseInventory()
     {
-        if (panelInventory != null && panelInventory.activeSelf)
+        if (panelInventory != null)
         {
             panelInventory.SetActive(false);
-            RestorePanelStates();
         }
+        RestorePanelStates();
+        FindObjectOfType<StoryPresenter>()?.SetExternalModalOpen(false);
     }
 
     private void RestorePanelStates()
     {
-        if (panelsToHide != null && savedStates != null && panelsToHide.Length == savedStates.Length)
+        if (panelsToHide != null)
         {
             for (int i = 0; i < panelsToHide.Length; i++)
             {
                 if (panelsToHide[i] != null)
                 {
-                    panelsToHide[i].SetActive(savedStates[i]);
+                    bool shouldBeActive = (savedStates != null && i < savedStates.Length) ? savedStates[i] : true;
+                    panelsToHide[i].SetActive(shouldBeActive);
                 }
             }
         }
     }
+
 }

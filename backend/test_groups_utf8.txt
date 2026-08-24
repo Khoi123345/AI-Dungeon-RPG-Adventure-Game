@@ -1,0 +1,14 @@
+﻿[
+    "/aws/apigateway/welcome",
+    "/aws/lambda/ConfirmSignUpFunction",
+    "/aws/lambda/CreateCharacterFunction",
+    "/aws/lambda/EquipItemFunction",
+    "/aws/lambda/LoginFunction",
+    "/aws/lambda/RefreshTokenFunction",
+    "/aws/lambda/RegisterFunction",
+    "/aws/lambda/ResolveBattleFunction",
+    "/aws/lambda/SpawnBossFunction",
+    "/aws/lambda/StartStoryFunction",
+    "/aws/lambda/StoryActionFunction",
+    "/aws/lambda/UnequipItemFunction"
+]

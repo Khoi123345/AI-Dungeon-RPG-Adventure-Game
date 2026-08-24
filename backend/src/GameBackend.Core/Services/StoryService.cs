@@ -16,6 +16,7 @@ namespace GameBackend.Core.Services
     {
         private const string DefaultLocation = "ancient_cave";
         private const string DefaultChapterId = "chapter_1";
+        private const int BossRetryMobWinsRequired = 2;
 
         private readonly IStoryRepository _storyRepository;
         private readonly ICharacterRepository _characterRepository;
@@ -28,6 +29,7 @@ namespace GameBackend.Core.Services
         private readonly IPromptBuilder _promptBuilder;
         private readonly IStorySummaryService _storySummaryService;
         private readonly IContentService _contentService;
+        private readonly IDefeatedBossRepository _defeatedBossRepository;
         private readonly ILogger<StoryService> _logger;
 
         public StoryService(
@@ -42,6 +44,7 @@ namespace GameBackend.Core.Services
             IPromptBuilder promptBuilder,
             IStorySummaryService storySummaryService,
             IContentService contentService,
+            IDefeatedBossRepository defeatedBossRepository,
             ILogger<StoryService> logger)
         {
             _storyRepository = storyRepository;
@@ -55,14 +58,24 @@ namespace GameBackend.Core.Services
             _promptBuilder = promptBuilder;
             _storySummaryService = storySummaryService;
             _contentService = contentService;
+            _defeatedBossRepository = defeatedBossRepository;
             _logger = logger;
         }
 
         private static readonly Dictionary<string, List<string>> LocationMobs = new()
         {
-            { "ancient_cave", new() { "mob_cave_spider", "mob_goblin_scout" } },
-            { "forgotten_temple", new() { "mob_shadow_spirit", "mob_temple_golem", "mob_goblin_scout", "mob_goblin_guard", "mob_cave_spider" } },
-            { "goblin_hideout", new() { "mob_goblin_guard", "mob_goblin_scout" } }
+            // Chapter 1
+            { "ancient_cave",      new() { "mob_cave_spider", "mob_goblin_scout", "mob_cave_bat", "mob_rock_slime" } },
+            { "forgotten_temple",  new() { "mob_shadow_spirit", "mob_temple_golem", "mob_goblin_scout", "mob_goblin_guard", "mob_cave_spider" } },
+            { "goblin_hideout",    new() { "mob_goblin_guard", "mob_goblin_scout" } },
+            // Chapter 2
+            { "sunken_shipwreck", new() { "mob_void_remnant", "mob_drowned_sailor", "mob_mutated_crab", "mob_shadow_spirit" } },
+            { "abyssal_trench",   new() { "mob_void_remnant", "mob_abyssal_spirit", "mob_drowned_sailor" } },
+            { "coral_palace",     new() { "mob_shadow_spirit", "mob_void_remnant" } },
+            // Chapter 3
+            { "sulfur_mines",     new() { "mob_young_dragon", "mob_fire_lizard" } },
+            { "obsidian_peaks",   new() { "mob_adult_dragon", "mob_young_dragon", "mob_fire_raptor" } },
+            { "dragon_nest",      new() { "mob_adult_dragon", "mob_young_dragon" } },
         };
 
         private readonly Random _randomEncounterGenerator = new();
@@ -70,13 +83,17 @@ namespace GameBackend.Core.Services
         /// <summary>
         /// Trả về bossId của chapter boss tương ứng với location hiện tại.
         /// </summary>
-        private static string GetChapterBossId(string location)
+        private static string? GetChapterBossId(string location)
         {
             return (location ?? "").ToLowerInvariant() switch
             {
-                "forgotten_temple" => "shadow_demon",
-                "dragon_nest"      => "dragon_king",
-                _                  => "goblin_king"  // ancient_cave (default Chapter 1)
+                // Chapter 1
+                "goblin_hideout"   => "boss_goblin_king",
+                // Chapter 2
+                "coral_palace"     => "boss_shadow_demon",
+                // Chapter 3
+                "dragon_nest"      => "boss_dragon_king",
+                _ => null
             };
         }
 
@@ -142,24 +159,101 @@ namespace GameBackend.Core.Services
                     _logger.LogWarning(ex, "Could not fetch session for character {CharacterId}", character.characterId);
                 }
 
+                // Nếu forceNewSession = true (người chơi chết + bấm Back to Menu):
+                // Xóa toàn bộ tiến trình cũ, bao gồm inventory, và reset nhân vật về level 1.
+                if (request.forceNewSession)
+                {
+                    _logger.LogInformation("forceNewSession=true: Clearing progression for character {CharacterId}", character.characterId);
+                    if (session != null)
+                    {
+                        try
+                        {
+                            await _storyRepository.DeleteSessionByCharacterIdAsync(character.characterId);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogWarning(ex, "Could not delete old session for character {CharacterId}", character.characterId);
+                        }
+                    }
+
+                    try
+                    {
+                        await _defeatedBossRepository.DeleteByCharacterIdAsync(character.characterId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Could not clear defeated bosses for character {CharacterId}", character.characterId);
+                    }
+
+                    try
+                    {
+                        await _inventoryService.ClearInventoryAsync(character.characterId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Could not clear inventory for character {CharacterId}", character.characterId);
+                    }
+
+                    // Reset level về 1 và stats cơ bản trên DB
+                    character.level = 1;
+                    character.experience = 0;
+                    character.hp = 100;
+                    character.maxHp = 100;
+                    character.attack = 15;
+                    character.defense = 5;
+                    character.status = "Alive";
+                    character.currentLocationId = DefaultLocation;
+                    try
+                    {
+                        await _characterRepository.SaveAsync(character);
+                        _logger.LogInformation("Reset character {CharacterId} to Level 1 after death.", character.characterId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex, "Could not reset character stats for {CharacterId}", character.characterId);
+                    }
+
+                    session = null; // Bắt buộc tạo session mới bên dưới
+                }
+
+                if (session != null && string.Equals(session.status, "Completed", StringComparison.OrdinalIgnoreCase))
+                {
+                    return BuildResponse(session, character,
+                        session.storySummary ?? "Dragon King đã bị khuất phục. Hành trình hiện tại của bạn đã hoàn thành.",
+                        new List<StoryChoiceOption>());
+                }
+
                 if (session != null && session.status == "Active" && !string.IsNullOrWhiteSpace(session.currentNodeId))
+
                 {
                     // Resume: gọi AI để tạo đoạn tiếp theo phù hợp (không lặp lại storySummary)
                     _logger.LogInformation("Resuming existing session {SessionId} at node {NodeId}", session.sessionId, session.currentNodeId);
 
                     var inventoryResponse = await _inventoryService.GetInventoryAsync(character.characterId);
                     var inventoryItems = (inventoryResponse?.slots ?? new List<GameShared.DTOs.Inventory.InventorySlot>())
+                        .Where(slot => slot != null && slot.quantity > 0)
                         .Select(slot => GameShared.Config.GameConstants.GetItemById(slot.itemId) ?? new Item { itemId = slot.itemId, name = slot.itemId, rarity = "Common", itemType = "General" })
                         .ToList();
 
                     var allRecentActions = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+                    var latestAction = allRecentActions?.OrderByDescending(action => action.createdAt).FirstOrDefault();
+
+                    // Nếu lượt vừa tạo gần nhất là Kết quả trận đánh hoặc Chuyển chương -> Hiển thị trực tiếp thẻ kết quả trận đánh
+                    if (latestAction != null && (string.Equals(latestAction.actionType, "battle_result", StringComparison.OrdinalIgnoreCase) || string.Equals(latestAction.actionType, "chapter_transition", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        _logger.LogInformation("Resuming session after battle/transition: Displaying latest {ActionType} action directly", latestAction.actionType);
+                        var parsedAction = GameBackend.Core.Services.Parsing.StoryAiResponseParser.Parse(!string.IsNullOrWhiteSpace(latestAction.metadataJson) ? latestAction.metadataJson : latestAction.aiResponse, session, latestAction.actionType);
+                        return BuildResponse(session, character, latestAction.aiResponse, parsedAction.Choices);
+                    }
+
                     var recentActions = allRecentActions
                         .OrderByDescending(action => action.createdAt)
                         .Take(6)
                         .OrderBy(action => action.createdAt)
                         .ToList();
 
-                    string resumeSystemEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave");
+
+                    string resumeSystemEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave", session.currentNodeId ?? "ancient_cave");
 
                     var resumeContext = new StoryActionProcessingContext
                     {
@@ -172,6 +266,7 @@ namespace GameBackend.Core.Services
 
                     var resumeResponse = await GenerateStoryAiResponseAsync(resumeContext, "resume");
                     resumeResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, resumeResponse);
+                    EnsureLocationCombatChoice(resumeResponse, session.currentLocation);
 
                     try { await _storyStateUpdater.ApplyAsync(session, character, resumeResponse); }
                     catch (Exception ex) { _logger.LogWarning(ex, "Could not persist resume state"); }
@@ -212,6 +307,7 @@ namespace GameBackend.Core.Services
 
                 var openingResponse = await GenerateStoryAiResponseAsync(openingContext, "opening");
                 openingResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, openingResponse);
+                EnsureLocationCombatChoice(openingResponse, session.currentLocation);
 
                 try
                 {
@@ -333,6 +429,13 @@ namespace GameBackend.Core.Services
                 };
             }
 
+            if (string.Equals(session.status, "Completed", StringComparison.OrdinalIgnoreCase))
+            {
+                return BuildResponse(session, character,
+                    session.storySummary ?? "Dragon King đã bị khuất phục. Hành trình hiện tại của bạn đã hoàn thành.",
+                    new List<StoryChoiceOption>());
+            }
+
             // Trừ 5 Gold mỗi lượt AI kể chuyện (StoryCostPerTurn)
             if (character.gold >= GameShared.Config.GameConstants.StoryCostPerTurn)
             {
@@ -352,7 +455,9 @@ namespace GameBackend.Core.Services
             }
 
             var inventoryResponse = await _inventoryService.GetInventoryAsync(character.characterId);
-            var inventorySlots = inventoryResponse?.slots ?? new List<GameShared.DTOs.Inventory.InventorySlot>();
+            var inventorySlots = (inventoryResponse?.slots ?? new List<GameShared.DTOs.Inventory.InventorySlot>())
+                .Where(slot => slot != null && slot.quantity > 0)
+                .ToList();
             var inventoryItems = inventorySlots
                 .Select(slot => GameShared.Config.GameConstants.GetItemById(slot.itemId) ?? new Item { itemId = slot.itemId, name = slot.itemId, rarity = "Common", itemType = "General" })
                 .ToList();
@@ -361,13 +466,16 @@ namespace GameBackend.Core.Services
             bool isInBossRoom = (session.currentNodeId ?? "").Equals("boss_room", StringComparison.OrdinalIgnoreCase);
 
             var recentActionsList = await _storyRepository.GetActionsBySessionIdAsync(session.sessionId);
+            var latestStoryAction = recentActionsList?.OrderByDescending(a => a.createdAt).FirstOrDefault();
             var last2Actions = recentActionsList?.OrderByDescending(a => a.createdAt).Take(2).ToList();
             bool recentlyFoughtBattle = last2Actions != null && last2Actions.Any(a => string.Equals(a.actionType, "battle_result", StringComparison.OrdinalIgnoreCase));
+            bool justTransitionedChapter = string.Equals(latestStoryAction?.actionType, "chapter_transition", StringComparison.OrdinalIgnoreCase);
+            var bossRetryState = GetBossRetryState(recentActionsList);
 
             // 1. Dịch choiceIndex ra playerInput nếu playerInput bị trống
             if (string.IsNullOrWhiteSpace(request.playerInput))
             {
-                var latestAction = recentActionsList?.OrderByDescending(a => a.createdAt).FirstOrDefault();
+                    var latestAction = latestStoryAction;
                 if (latestAction != null)
                 {
                     try
@@ -397,30 +505,53 @@ namespace GameBackend.Core.Services
                 }
             }
 
+            if (bossRetryState != null)
+            {
+                systemInjectedEvent += bossRetryState.MobWins >= BossRetryMobWinsRequired
+                    ? $" [MỞ KHÓA TÁI CHIẾN] Người chơi đã thắng {bossRetryState.MobWins} trận luyện tập sau khi thua {bossRetryState.BossName}. BẮT BUỘC cung cấp lựa chọn 'Tái chiến {bossRetryState.BossName}'."
+                    : $" [HỒI PHỤC SAU THẤT BẠI] Người chơi đã thua {bossRetryState.BossName} và mới thắng {bossRetryState.MobWins}/{BossRetryMobWinsRequired} trận luyện tập. Chưa được cho tái chiến Boss; hãy cho phép đánh quái thường trong chapter để hồi phục sức mạnh.";
+            }
+
             // 2. Kiểm tra ý định chiến đấu
             bool intentToFight = false;
             if (!string.IsNullOrWhiteSpace(request.playerInput))
             {
                 var lowerInput = request.playerInput.ToLowerInvariant();
-                if (lowerInput.Contains("chiến đấu") || lowerInput.Contains("tấn công") || lowerInput.Contains("đánh") || lowerInput.Contains("tiêu diệt"))
+                if (lowerInput.Contains("chiến đấu") || 
+                    lowerInput.Contains("tấn công") || 
+                    lowerInput.Contains("đánh") || 
+                    lowerInput.Contains("tiêu diệt") ||
+                    lowerInput.Contains("đối mặt") ||
+                    lowerInput.Contains("khiêu chiến") ||
+                    lowerInput.Contains("thách đấu") ||
+                    lowerInput.Contains("giao chiến"))
                 {
                     intentToFight = true;
                 }
             }
 
             // 3. Xử lý các sự kiện (Boss Room, Ambush, v.v.)
-            if (isInBossRoom && !recentlyFoughtBattle)
+            if (isInBossRoom)
             {
-                var chapterBossId = GetChapterBossId(session.currentLocation);
-                var chapterBoss = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == chapterBossId);
+                var requestedBossId = ResolveCombatTargetId(request.playerInput, session.currentLocation);
+                var chapterBossId = requestedBossId ?? GetChapterBossId(session.currentLocation);
+                var chapterBoss = string.IsNullOrWhiteSpace(chapterBossId)
+                    ? null
+                    : GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == chapterBossId);
                 if (chapterBoss != null)
                 {
                     int bossLvl = GameShared.Config.GameConstants.CalculateBossLevel(character.level, chapterBoss.rarity, chapterBossId);
                     if (intentToFight)
                     {
-                        systemInjectedEvent = $"[LỆNH HỆ THỐNG] Người chơi đã chọn TẤN CÔNG BOSS! " +
+                        systemInjectedEvent = $"[LỆNH HỆ THỐNG] Người chơi đã chọn TẤN CÔNG KẺ ĐỊCH ({chapterBoss.name})! " +
                             $"BẮT BUỘC đặt triggerBattle: true, bossId: '{chapterBossId}', bossName: '{chapterBoss.name}', bossLevel: {bossLvl}. " +
                             $"Chỉ miêu tả cảnh người chơi lao vào chuẩn bị chiến đấu, tuyệt đối không miêu tả diễn biến trận đánh!";
+                    }
+                    else if (recentlyFoughtBattle)
+                    {
+                        systemInjectedEvent = $"[HẬU CHIẾN BOSS] Người chơi vừa trải qua trận chiến với Boss {chapterBoss.name}. " +
+                            $"Nếu người chơi chọn tiếp tục đối đầu hoặc chiến đấu, BẮT BUỘC đặt triggerBattle: true, bossId: '{chapterBossId}', bossName: '{chapterBoss.name}'. " +
+                            $"Nếu người chơi chọn rút lui hoặc nghỉ ngơi, đặt triggerBattle: false.";
                     }
                     else
                     {
@@ -432,34 +563,42 @@ namespace GameBackend.Core.Services
             }
             else
             {
-                systemInjectedEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave");
+                systemInjectedEvent = BuildQuestItemDirective(inventoryItems, session.currentLocation ?? "ancient_cave", session.currentNodeId ?? "ancient_cave");
 
-                if (recentlyFoughtBattle)
+                bool isChapter2 = (session.currentChapterId ?? "").Equals("2", StringComparison.OrdinalIgnoreCase) || (session.currentChapterId ?? "").Equals("chapter_2", StringComparison.OrdinalIgnoreCase);
+                bool isChapter3 = (session.currentChapterId ?? "").Equals("3", StringComparison.OrdinalIgnoreCase) || (session.currentChapterId ?? "").Equals("chapter_3", StringComparison.OrdinalIgnoreCase);
+
+                if (intentToFight)
+                {
+                    systemInjectedEvent += " [LỆNH HỆ THỐNG] Người chơi đã CHỦ ĐỘNG chọn hành động chiến đấu. Bạn BẮT BUỘC phải thiết lập triggerBattle: true và điền bossId tương ứng với kẻ địch mà họ đang đối đầu (nếu có).";
+                }
+                else if (isChapter2 && justTransitionedChapter)
+                {
+                    systemInjectedEvent += " [LỆNH CHUYỂN CHƯƠNG 2: TÀU ĐẮM BỊ CHÌM] Người chơi đã chính thức bước sang CHƯƠNG 2 (Vương Quốc Chìm Đắm)! BẮT BUỘC đặt 'currentLocation': 'sunken_shipwreck', 'currentChapterId': '2'. Hãy miêu tả hoành tráng cảnh người chơi rời khỏi Sào Huyệt Goblin, men theo suối ngầm tiến vào bối cảnh biển thẳm u tối với Xác Tàu Đắm cổ kính (sunken_shipwreck). Tạo 3 lựa chọn thám hiểm Xác Tàu Đắm!";
+                }
+                else if (isChapter3 && justTransitionedChapter)
+                {
+                    systemInjectedEvent += " [LỆNH CHUYỂN CHƯƠNG 3: VÙNG ĐẤT NÚI LỬA] Người chơi đã chính thức bước sang CHƯƠNG 3! BẮT BUỘC đặt 'currentLocation': 'sulfur_mines', 'currentChapterId': '3'. Hãy miêu tả cảnh người chơi tiến vào Mỏ Lưu Huỳnh và vùng núi nham thạch rực lửa (sulfur_mines). Tạo 3 lựa chọn thám hiểm Mỏ Lưu Huỳnh!";
+                }
+                else if (recentlyFoughtBattle)
                 {
                     systemInjectedEvent += " [HẬU CHIẾN] Người chơi vừa hoàn thành một trận chiến ác liệt. Hãy miêu tả ngắn gọn cảnh họ thở phào hoặc thu thập chiến lợi phẩm trước khi đưa ra các lựa chọn để tiếp tục hành trình.";
                 }
                 else if (session.status == "Active")
                 {
-                    if (intentToFight)
+                    // Cơ chế Ambush (15% tỷ lệ phục kích khi người chơi chọn không chiến đấu)
+                    var rnd = new Random();
+                    if (rnd.Next(100) < 15) // 15% chance
                     {
-                        systemInjectedEvent += " [LỆNH HỆ THỐNG] Người chơi đã CHỦ ĐỘNG chọn hành động chiến đấu. Bạn BẮT BUỘC phải thiết lập triggerBattle: true và điền bossId tương ứng với kẻ địch mà họ đang đối đầu (nếu có).";
-                    }
-                    else
-                    {
-                        // Cơ chế Ambush (15% tỷ lệ phục kích khi người chơi chọn không chiến đấu)
-                        var rnd = new Random();
-                        if (rnd.Next(100) < 15) // 15% chance
+                        var mobId = RollRandomEncounter(session.currentLocation);
+                        if (mobId != null)
                         {
-                            var mobId = RollRandomEncounter(session.currentLocation);
-                            if (mobId != null)
+                            var mob = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == mobId);
+                            if (mob != null)
                             {
-                                var mob = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b => b.bossId == mobId);
-                                if (mob != null)
-                                {
-                                    systemInjectedEvent += $" [SỰ KIỆN PHỤC KÍCH] Mặc dù người chơi không muốn đánh, nhưng một con {mob.name} quá nhanh và hung hãn đã lao ra chặn đường! " +
-                                        $"BẮT BUỘC miêu tả lý do tại sao người chơi không thể né tránh. " +
-                                        $"ĐỒNG THỜI thiết lập triggerBattle: false, bossId: '{mobId}', và cung cấp các lựa chọn cho người chơi (ví dụ: Chiến đấu, Cố gắng bỏ chạy).";
-                                }
+                                systemInjectedEvent += $" [SỰ KIỆN PHỤC KÍCH] Mặc dù người chơi không muốn đánh, nhưng một con {mob.name} quá nhanh và hung hãn đã lao ra chặn đường! " +
+                                    $"BẮT BUỘC miêu tả lý do tại sao người chơi không thể né tránh. " +
+                                    $"ĐỒNG THỜI thiết lập triggerBattle: false, bossId: '{mobId}', và cung cấp các lựa chọn cho người chơi (ví dụ: Chiến đấu, Cố gắng bỏ chạy).";
                             }
                         }
                     }
@@ -498,9 +637,13 @@ namespace GameBackend.Core.Services
                 aiResponse = CreateFallbackResponse(context, "Bạn tiếp tục cuộc phiêu lưu trong bóng tối...");
             }
 
+            ApplyAuthoritativeCombatIntent(aiResponse, request.playerInput, session.currentLocation);
+
             try
             {
                 aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
+                ApplyBossRetryChoice(aiResponse, context.RecentActions);
+                EnsureLocationCombatChoice(aiResponse, session.currentLocation);
                 await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
                 await SaveStoryTurnAsync(context, aiResponse);
             }
@@ -535,9 +678,13 @@ namespace GameBackend.Core.Services
                 aiResponse = CreateFallbackResponseFromChoice(request.choiceIndex, context);
             }
 
+            ApplyAuthoritativeCombatIntent(aiResponse, request.playerInput, session.currentLocation);
+
             try
             {
                 aiResponse = await _gameRuleValidator.ValidateAndSanitizeAsync(session, character, aiResponse);
+                ApplyBossRetryChoice(aiResponse, context.RecentActions);
+                EnsureLocationCombatChoice(aiResponse, session.currentLocation);
                 await _storyStateUpdater.ApplyAsync(session, character, aiResponse);
                 await SaveStoryTurnAsync(context, aiResponse, "choice");
             }
@@ -557,6 +704,7 @@ namespace GameBackend.Core.Services
         {
             var inventoryResponse = await _inventoryService.GetInventoryAsync(character.characterId);
             var inventoryItems = (inventoryResponse?.slots ?? new List<GameShared.DTOs.Inventory.InventorySlot>())
+                .Where(slot => slot != null && slot.quantity > 0)
                 .Select(slot =>
                 {
                     var catalogItem = GameShared.Config.GameConstants.GetItemById(slot.itemId);
@@ -724,9 +872,13 @@ namespace GameBackend.Core.Services
             var response = BuildResponse(context.Session, context.Character, narrativeText, aiResponse.Choices);
             response.triggerBattle = aiResponse.TriggerBattle;
             response.bossId = aiResponse.BossId;
+            response.bossName = aiResponse.BossName;
+            response.bossLevel = aiResponse.BossLevel;
             response.debugPrompt = context.BuiltPrompt;
+            response.storyCompleted = string.Equals(context.Session.status, "Completed", StringComparison.OrdinalIgnoreCase);
             return response;
         }
+
 
         private async Task<string> GenerateRawAiResponseAsync(string systemPrompt, string userPrompt, string fallbackNarrative)
         {
@@ -748,6 +900,190 @@ namespace GameBackend.Core.Services
 
             return fallbackNarrative;
         }
+
+        private static void ApplyAuthoritativeCombatIntent(StoryAiResponse response, string? playerInput, string? currentLocation)
+        {
+            if (response == null || !IsCombatIntent(playerInput)) return;
+
+            var targetId = ResolveCombatTargetId(playerInput, currentLocation);
+            if (string.IsNullOrWhiteSpace(targetId)) return;
+
+            var target = GameShared.Config.GameConstants.BossCatalog.FirstOrDefault(b =>
+                b.bossId.Equals(targetId, StringComparison.OrdinalIgnoreCase));
+            if (target == null) return;
+
+            response.TriggerBattle = true;
+            response.BossId = target.bossId;
+            response.BossName = target.name;
+            response.BossLevel = null;
+        }
+
+        private static bool IsCombatIntent(string? input)
+        {
+            var text = (input ?? string.Empty).ToLowerInvariant();
+            return text.Contains("tấn công") || text.Contains("chiến đấu") || text.Contains("đánh") ||
+                   text.Contains("tiêu diệt") || text.Contains("đối mặt") || text.Contains("khiêu chiến") ||
+                   text.Contains("thách đấu") || text.Contains("giao chiến") || text.Contains("tái chiến");
+        }
+
+        internal static string? ResolveCombatTargetId(string? input, string? currentLocation)
+        {
+            var text = (input ?? string.Empty).ToLowerInvariant();
+            var location = (currentLocation ?? string.Empty).Trim().ToLowerInvariant();
+
+            string? explicitTarget = null;
+            if (text.Contains("shadow demon") || text.Contains("ác quỷ bóng tối")) explicitTarget = "boss_shadow_demon";
+            else if (text.Contains("dragon king") || text.Contains("vua rồng")) explicitTarget = "boss_dragon_king";
+            else if (text.Contains("goblin king") || text.Contains("vua goblin") || text.Contains("vua yêu tinh")) explicitTarget = "boss_goblin_king";
+            else if (text.Contains("thủy thủ chết đuối") || text.Contains("drowned sailor")) explicitTarget = "mob_drowned_sailor";
+            else if (text.Contains("cua đột biến") || text.Contains("mutated crab")) explicitTarget = "mob_mutated_crab";
+            else if (text.Contains("tàn dư hư không") || text.Contains("void remnant")) explicitTarget = "mob_void_remnant";
+            else if (text.Contains("oan hồn biển sâu") || text.Contains("abyssal spirit")) explicitTarget = "mob_abyssal_spirit";
+            else if (text.Contains("oan hồn bóng tối") || text.Contains("shadow spirit")) explicitTarget = "mob_shadow_spirit";
+            else if (text.Contains("goblin guard") || text.Contains("lính gác goblin") || text.Contains("vệ binh goblin")) explicitTarget = "mob_goblin_guard";
+            else if (text.Contains("trinh sát goblin") || text.Contains("goblin scout")) explicitTarget = "mob_goblin_scout";
+            else if (text.Contains("temple golem") || text.Contains("golem đền thờ")) explicitTarget = "mob_temple_golem";
+            else if (text.Contains("nhện hang động") || text.Contains("cave spider")) explicitTarget = "mob_cave_spider";
+            else if (text.Contains("dơi hang động") || text.Contains("cave bat")) explicitTarget = "mob_cave_bat";
+            else if (text.Contains("slime đá") || text.Contains("rock slime")) explicitTarget = "mob_rock_slime";
+            else if (text.Contains("rồng trẻ") || text.Contains("young dragon")) explicitTarget = "mob_young_dragon";
+            else if (text.Contains("rồng trưởng thành") || text.Contains("adult dragon")) explicitTarget = "mob_adult_dragon";
+            else if (text.Contains("khủng long săn lửa") || text.Contains("fire raptor")) explicitTarget = "mob_fire_raptor";
+            else if (text.Contains("thằn lằn lửa") || text.Contains("khủng long lửa") || text.Contains("fire lizard")) explicitTarget = "mob_fire_lizard";
+
+            if (!string.IsNullOrWhiteSpace(explicitTarget))
+            {
+                if (explicitTarget.StartsWith("boss_", StringComparison.OrdinalIgnoreCase))
+                {
+                    return string.Equals(GetChapterBossId(location), explicitTarget, StringComparison.OrdinalIgnoreCase)
+                        ? explicitTarget
+                        : null;
+                }
+
+                return LocationMobs.TryGetValue(location, out var allowedMobs) &&
+                       allowedMobs.Contains(explicitTarget, StringComparer.OrdinalIgnoreCase)
+                    ? explicitTarget
+                    : null;
+            }
+
+            return LocationMobs.TryGetValue(location, out var mobs) && mobs.Count > 0 ? mobs[0] : null;
+        }
+
+        private static BossRetryState? GetBossRetryState(IEnumerable<StoryAction>? actions)
+        {
+            var ordered = (actions ?? Enumerable.Empty<StoryAction>())
+                .Where(a => a != null)
+                .OrderBy(a => a.createdAt)
+                .ToList();
+
+            for (var index = ordered.Count - 1; index >= 0; index--)
+            {
+                var action = ordered[index];
+                if (!string.Equals(action.actionType, "battle_result", StringComparison.OrdinalIgnoreCase)) continue;
+
+                var text = action.aiResponse ?? string.Empty;
+                if (!text.Contains("Kết quả: Thất bại", StringComparison.OrdinalIgnoreCase)) continue;
+
+                var boss = ResolveDefeatedAttemptBoss(text);
+                if (boss == null) continue;
+
+                var laterBattles = ordered.Skip(index + 1)
+                    .Where(a => string.Equals(a.actionType, "battle_result", StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (laterBattles.Any(a =>
+                        (a.aiResponse ?? string.Empty).Contains("Kết quả: Chiến thắng", StringComparison.OrdinalIgnoreCase) &&
+                        (a.aiResponse ?? string.Empty).Contains(boss.Value.BossName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return null;
+                }
+
+                var mobWins = laterBattles.Count(a =>
+                    (a.aiResponse ?? string.Empty).Contains("Kết quả: Chiến thắng", StringComparison.OrdinalIgnoreCase) &&
+                    !(a.aiResponse ?? string.Empty).Contains("Goblin King", StringComparison.OrdinalIgnoreCase) &&
+                    !(a.aiResponse ?? string.Empty).Contains("Shadow Demon", StringComparison.OrdinalIgnoreCase) &&
+                    !(a.aiResponse ?? string.Empty).Contains("Dragon King", StringComparison.OrdinalIgnoreCase));
+
+                return new BossRetryState(boss.Value.BossId, boss.Value.BossName, mobWins);
+            }
+
+            return null;
+        }
+
+        internal static int CountBossRetryMobWins(IEnumerable<StoryAction>? actions)
+            => GetBossRetryState(actions)?.MobWins ?? -1;
+
+        internal static bool IsBossRetryUnlocked(IEnumerable<StoryAction>? actions)
+            => CountBossRetryMobWins(actions) >= BossRetryMobWinsRequired;
+
+        private static (string BossId, string BossName)? ResolveDefeatedAttemptBoss(string text)
+        {
+            if (text.Contains("Shadow Demon", StringComparison.OrdinalIgnoreCase)) return ("boss_shadow_demon", "Shadow Demon");
+            if (text.Contains("Goblin King", StringComparison.OrdinalIgnoreCase)) return ("boss_goblin_king", "Goblin King");
+            if (text.Contains("Dragon King", StringComparison.OrdinalIgnoreCase)) return ("boss_dragon_king", "Dragon King");
+            return null;
+        }
+
+        private static void ApplyBossRetryChoice(StoryAiResponse response, IEnumerable<StoryAction>? actions)
+        {
+            if (response == null || response.TriggerBattle) return;
+            response.Choices ??= new List<StoryChoiceOption>();
+
+            var retry = GetBossRetryState(actions);
+            if (retry == null) return;
+
+            response.Choices.RemoveAll(choice =>
+            {
+                var text = $"{choice?.label} {choice?.description}";
+                return text.Contains(retry.BossName, StringComparison.OrdinalIgnoreCase) ||
+                       text.Contains("tái chiến", StringComparison.OrdinalIgnoreCase);
+            });
+
+            if (retry.MobWins < BossRetryMobWinsRequired) return;
+
+            response.Choices.Insert(0, new StoryChoiceOption
+            {
+                label = $"Tái chiến {retry.BossName}",
+                description = $"Quay lại phòng Boss và thách đấu {retry.BossName} một lần nữa.",
+                nextNodeId = "boss_room"
+            });
+        }
+
+        internal static void EnsureLocationCombatChoice(StoryAiResponse response, string? currentLocation)
+        {
+            if (response == null || response.TriggerBattle) return;
+            var location = (response.CurrentLocation ?? currentLocation ?? string.Empty).Trim().ToLowerInvariant();
+            if (location != "coral_palace") return;
+
+            response.Choices ??= new List<StoryChoiceOption>();
+            bool hasMobChoice = response.Choices.Any(choice =>
+            {
+                var text = $"{choice?.label} {choice?.description} {choice?.nextNodeId}".ToLowerInvariant();
+                return text.Contains("shadow spirit") || text.Contains("oan hồn bóng tối") ||
+                       text.Contains("fight_shadow_spirit") || text.Contains("đánh quái");
+            });
+            if (hasMobChoice) return;
+
+            if (response.Choices.Count >= 3)
+            {
+                int replaceIndex = response.Choices.FindLastIndex(choice =>
+                {
+                    var text = $"{choice?.label} {choice?.description} {choice?.nextNodeId}".ToLowerInvariant();
+                    return !text.Contains("boss_room") && !text.Contains("shadow demon") &&
+                           !text.Contains("abyssal_trench") && !text.Contains("rãnh sâu vô tận");
+                });
+                response.Choices.RemoveAt(replaceIndex >= 0 ? replaceIndex : response.Choices.Count - 1);
+            }
+
+            response.Choices.Insert(0, new StoryChoiceOption
+            {
+                label = "Tấn công Oan Hồn Bóng Tối",
+                description = "Đối đầu Shadow Spirit đang tuần tra trong Cung Điện San Hô.",
+                nextNodeId = "fight_shadow_spirit"
+            });
+        }
+
+        private sealed record BossRetryState(string BossId, string BossName, int MobWins);
 
         private StoryAiResponse CreateFallbackResponse(StoryActionProcessingContext context, string rawResponse)
         {
@@ -834,66 +1170,214 @@ namespace GameBackend.Core.Services
                     status = character.status,
                     currentLocationId = character.currentLocationId
                 },
-                choices = (aiChoices != null && aiChoices.Count > 0)
-                    ? aiChoices
-                    : new List<StoryChoiceOption>
-                    {
-                        new() { label = "Tấn công", description = "Chiến đấu với Boss quái vật", nextNodeId = "battle_path" },
-                        new() { label = "Điều tra", description = "Tìm kiếm lối đi bí ẩn", nextNodeId = "investigate_path" },
-                        new() { label = "Nghỉ ngơi", description = "Hồi phục sức khỏe", nextNodeId = "rest_path" }
-                    },
+                choices = string.Equals(session.status, "Completed", StringComparison.OrdinalIgnoreCase)
+                    ? new List<StoryChoiceOption>()
+                    : (aiChoices != null && aiChoices.Count > 0)
+                        ? aiChoices
+                        : BuildFallbackChoices(session.currentLocation),
+                storyCompleted = string.Equals(session.status, "Completed", StringComparison.OrdinalIgnoreCase),
                 triggerBattle = false
             };
         }
 
-        private string BuildQuestItemDirective(IEnumerable<Item>? inventoryItems, string currentLocation)
+        private static List<StoryChoiceOption> BuildFallbackChoices(string? location)
         {
-            if (currentLocation.Equals("goblin_hideout", StringComparison.OrdinalIgnoreCase))
+            var loc = (location ?? "").ToLowerInvariant();
+
+            // Chapter 1
+            if (loc.Contains("ancient_cave"))
             {
-                 return $"[TIẾN VÀO SÀO HUYỆT GOBLIN] Người chơi hiện đang ở sào huyệt của kẻ địch. " +
-                        $"BẮT BUỘC phải cung cấp 1 Lựa chọn (Choice) có nextNodeId='boss_room' để tiến vào Phòng Ngai Vàng khi người chơi đã sẵn sàng. " +
-                        $"Các lựa chọn khác có thể là thám hiểm hoặc đối phó với quái vật xung quanh.";
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá hang động", description = "Tiến sâu vào lòng núi tăm tối", nextNodeId = "explore_path" },
+                    new() { label = "Kiểm tra tàn tích đá", description = "Tìm kiếm dấu vết bí ẩn", nextNodeId = "investigate_path" },
+                    new() { label = "Nghỉ ngơi lấy sức", description = "Tạm dừng hồi phục thể lực", nextNodeId = "rest_path" }
+                };
+            }
+            if (loc.Contains("forgotten_temple"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá đền thờ", description = "Dò tìm tàn tích nguyên tố", nextNodeId = "explore_temple" },
+                    new() { label = "Quay lại Hang Động Cổ Đại", description = "Trở về khu vực đầu tiên", nextNodeId = "ancient_cave" },
+                    new() { label = "Kiểm tra xung quanh", description = "Dò tìm mối nguy hiểm", nextNodeId = "investigate_path" }
+                };
+            }
+            if (loc.Contains("goblin_hideout"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá sào huyệt", description = "Đối phó với tàn dư Goblin", nextNodeId = "explore_hideout" },
+                    new() { label = "Rút lui về Đền Thờ Bị Lãng Quên", description = "Trở về khu vực trước đó", nextNodeId = "forgotten_temple" },
+                    new() { label = "Thám hiểm phòng tối", description = "Dò tìm rương kho báu", nextNodeId = "investigate_path" }
+                };
             }
 
-            var questItems = inventoryItems?
-                .Where(i => i != null && string.Equals(i.itemType, "Quest", StringComparison.OrdinalIgnoreCase))
-                .ToList() ?? new List<Item>();
-
-            if (questItems.Count > 0)
+            // Chapter 2
+            if (loc.Contains("sunken_shipwreck") || loc.Contains("shipwreck"))
             {
-                var questNames = string.Join(", ", questItems.Select(i => $"'{i.name}' ({i.itemId})"));
-                return $"[NHẬN DIỆN VẬT PHẨM NHIỆM VỤ THỰC TẾ TRONG TÚI ĐỒ] Người chơi ĐÃ SỞ HỮU các Vật Phẩm Nhiệm Vụ: {questNames}. " +
-                       $"Bạn BẮT BUỘC phải đối chiếu với Quy tắc Tiến trình Chương trong system_prompt để kiểm tra xem các vật phẩm này có mở khóa địa điểm/lối đi tiếp theo từ vị trí hiện tại ({currentLocation}) hay không. " +
-                       $"NẾU vật phẩm nhiệm vụ cho phép di chuyển sang địa điểm mới, bạn BẮT BUỘC phải mô tả lối đi mở ra và cung cấp Lựa chọn (Choice) tương ứng trong danh sách choices để người chơi tiến sang địa điểm tiếp theo.";
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá tầng dưới xác tàu", description = "Tiến sâu vào bên trong boong tàu", nextNodeId = "shipwreck_deck" },
+                    new() { label = "Kiểm tra xung quanh", description = "Tìm kiếm các món đồ hữu ích", nextNodeId = "investigate_path" },
+                    new() { label = "Nghỉ ngơi lấy sức", description = "Tạm dừng hồi phục thể lực", nextNodeId = "rest_path" }
+                };
+            }
+            if (loc.Contains("abyssal_trench"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá lòng rãnh sâu", description = "Dò tìm sinh vật biển sâu", nextNodeId = "explore_trench" },
+                    new() { label = "Quay lại Xác Tàu Đắm", description = "Trở về khu vực an toàn hơn", nextNodeId = "sunken_shipwreck" },
+                    new() { label = "Cẩn trọng quan sát", description = "Tìm kiếm dấu vết ma thuật", nextNodeId = "investigate_path" }
+                };
+            }
+            if (loc.Contains("coral_palace"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá sảnh điện san hô", description = "Dò tìm các hành lang cổ", nextNodeId = "explore_palace" },
+                    new() { label = "Rút lui về Rãnh Sâu Vô Tận", description = "Trở về khu vực trước đó", nextNodeId = "abyssal_trench" },
+                    new() { label = "Tấn công Oan Hồn Bóng Tối", description = "Đối đầu Shadow Spirit đang tuần tra", nextNodeId = "fight_shadow_spirit" }
+                };
+            }
+
+            // Chapter 3
+            if (loc.Contains("sulfur_mines"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá mỏ lưu huỳnh", description = "Dò tìm lối đi giữa các suối nham thạch", nextNodeId = "explore_mines" },
+                    new() { label = "Kiểm tra tàn tích hắc thạch", description = "Tìm kiếm các rương chứa chìa khóa", nextNodeId = "investigate_path" },
+                    new() { label = "Nghỉ ngơi né sức nóng", description = "Tạm dừng hồi phục thể lực", nextNodeId = "rest_path" }
+                };
+            }
+            if (loc.Contains("obsidian_peaks"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá vách đá nham thạch", description = "Dò tìm lối trèo lên cao", nextNodeId = "explore_peaks" },
+                    new() { label = "Quay lại Mỏ Lưu Huỳnh", description = "Trở về khu vực an toàn hơn", nextNodeId = "sulfur_mines" },
+                    new() { label = "Cẩn trọng quan sát rồng rình rập", description = "Tránh bị rồng săn bất ngờ", nextNodeId = "investigate_path" }
+                };
+            }
+            if (loc.Contains("dragon_nest"))
+            {
+                return new List<StoryChoiceOption>
+                {
+                    new() { label = "Khám phá vòm hang tổ rồng", description = "Quan sát long uy và kho báu rồng", nextNodeId = "explore_nest" },
+                    new() { label = "Rút lui về Đỉnh Núi Hắc Diệu Thạch", description = "Trở về khu vực trước đó để luyện cấp", nextNodeId = "obsidian_peaks" },
+                    new() { label = "Kiểm tra các lối ngách", description = "Dò tìm ngách hang trú ẩn", nextNodeId = "investigate_path" }
+                };
+            }
+
+            return new List<StoryChoiceOption>
+            {
+                new() { label = "Tiến lên phía trước", description = "Tiếp tục khám phá khu vực", nextNodeId = "explore_path" },
+                new() { label = "Kiểm tra xung quanh", description = "Tìm kiếm dấu vết bí ẩn", nextNodeId = "investigate_path" },
+                new() { label = "Nghỉ ngơi quan sát", description = "Tạm dừng để lấy lại sức mạnh", nextNodeId = "rest_path" }
+            };
+        }
+
+        private string BuildQuestItemDirective(IEnumerable<Item>? inventoryItems, string currentLocation, string currentNodeId)
+        {
+            if (currentNodeId.Equals("boss_room", StringComparison.OrdinalIgnoreCase))
+            {
+                 string mobRule = currentLocation.Equals("coral_palace", StringComparison.OrdinalIgnoreCase)
+                     ? " Đồng thời BẮT BUỘC có lựa chọn đánh Oan Hồn Bóng Tối (mob_shadow_spirit) để người chơi có thể luyện cấp thay vì chỉ đánh Boss."
+                     : string.Empty;
+                 return $"[TIẾN VÀO PHÒNG TRÙM] Người chơi đang đứng trước cửa phòng chứa Boss (boss_room). " +
+                        $"BẮT BUỘC cung cấp Lựa chọn (Choice) Tấn công Boss để tiến hành trận đấu Boss cuối cùng của khu vực.{mobRule} " +
+                        $"TUYỆT ĐỐI KHÔNG hướng dẫn người chơi đi tìm Key Item nữa.";
             }
 
             string targetMonster = "một con quái vật mạnh mẽ";
             string targetItem = "Vật Phẩm Nhiệm Vụ";
+            string targetItemId = "item_unknown";
             string nextLocation = "địa điểm tiếp theo";
+            string nextLocationName = "Khu vực tiếp theo";
             
             if (currentLocation.Equals("ancient_cave", StringComparison.OrdinalIgnoreCase))
             {
                 targetMonster = "Nhện Hang Động (Cave Spider)";
                 targetItem = "Chìa Khóa Cổ Xưa";
+                targetItemId = "item_ancient_key";
                 nextLocation = "forgotten_temple";
+                nextLocationName = "Đền Thờ Bị Lãng Quên";
             }
             else if (currentLocation.Equals("forgotten_temple", StringComparison.OrdinalIgnoreCase))
             {
-                targetMonster = "Golem Đền Thờ (Temple Golem) hoặc Oan Hồn Bóng Tối (Shadow Spirit)";
+                targetMonster = "Golem Đền Thờ (Temple Golem)";
                 targetItem = "Lõi Nguyên Tố";
+                targetItemId = "item_elemental_core";
                 nextLocation = "goblin_hideout";
+                nextLocationName = "Sào Huyệt Goblin";
             }
             else if (currentLocation.Equals("sunken_shipwreck", StringComparison.OrdinalIgnoreCase))
             {
-                targetMonster = "Oan Hồn Biển Sâu (Abyssal Spirit)";
-                targetItem = "Mảnh Ghép Đại Dương";
+                targetMonster = "Thủy Thủ Chết Đuối hoặc Cua Đột Biến";
+                targetItem = "Hải Đồ Biển Sâu";
+                targetItemId = "item_sea_compass";
                 nextLocation = "abyssal_trench";
+                nextLocationName = "Rãnh Sâu Vô Tận";
+            }
+            else if (currentLocation.Equals("abyssal_trench", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Tàn Dư Hư Không (Void Remnant)";
+                targetItem = "Pha Lê Hư Không";
+                targetItemId = "item_void_crystal";
+                nextLocation = "coral_palace";
+                nextLocationName = "Cung Điện San Hô";
+            }
+            else if (currentLocation.Equals("coral_palace", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Oan Hồn Bóng Tối (Shadow Spirit)";
+                targetItem = "Pha Lê Hư Không"; // Assuming this is correct from original, although strange that they fight for it again in the palace? Actually wait, it says "dùng mở cổng ngai vàng" in original. Let's keep it.
+                targetItemId = "item_void_crystal";
+                nextLocation = "boss_room";
+                nextLocationName = "Phòng Ngai Vàng";
+            }
+            else if (currentLocation.Equals("sulfur_mines", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Linh Hồn Lửa (Fire Spirit)";
+                targetItem = "Chìa Khóa Hắc Diệu Thạch";
+                targetItemId = "item_obsidian_key";
+                nextLocation = "obsidian_peaks";
+                nextLocationName = "Đỉnh Núi Hắc Diệu Thạch";
+            }
+            else if (currentLocation.Equals("obsidian_peaks", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Vệ Binh Hắc Diệu Thạch (Obsidian Guard)";
+                targetItem = "Chìa Khóa Huyết Long";
+                targetItemId = "item_dragon_blood_key";
+                nextLocation = "dragon_nest";
+                nextLocationName = "Tổ Rồng";
+            }
+            else if (currentLocation.Equals("dragon_nest", StringComparison.OrdinalIgnoreCase))
+            {
+                targetMonster = "Rồng Hắc Ám (Dark Dragon)";
+                targetItem = "Chìa Khóa Huyết Long";
+                targetItemId = "item_dragon_blood_key";
+                nextLocation = "boss_room";
+                nextLocationName = "Phòng Ngai Vàng Rồng";
             }
 
-            return $"[NHIỆM VỤ CỐT TRUYỆN: TÌM {targetItem.ToUpperInvariant()}] Người chơi CHƯA SỞ HỮU {targetItem}. " +
-                   $"Bạn TUYỆT ĐỐI KHÔNG ĐƯỢC tạo lựa chọn cho phép sang khu vực mới ({nextLocation})! " +
-                   $"THAY VÀO ĐÓ, BẠN BẮT BUỘC PHẢI DẪN TRUYỆN BẰNG CÁCH: Tiết lộ hoặc ám chỉ rằng {targetMonster} đang cất giữ {targetItem}. " +
-                   $"Sau đó, cung cấp các Lựa chọn (choices) xoay quanh việc lần theo dấu vết hoặc trực tiếp khiêu chiến {targetMonster} để giành lấy {targetItem}.";
+            bool hasRequiredItem = inventoryItems?.Any(i => i != null && string.Equals(i.itemId, targetItemId, StringComparison.OrdinalIgnoreCase)) == true;
+
+            if (hasRequiredItem)
+            {
+                return $"[NHIỆM VỤ HOÀN THÀNH: ĐÃ CÓ {targetItem.ToUpperInvariant()}] Người chơi ĐÃ SỞ HỮU {targetItem} ({targetItemId}) trong hành trang! " +
+                       $"Bạn BẮT BUỘC phải mô tả lối đi mở ra và cung cấp 1 Lựa chọn (Choice) có nextNodeId='{nextLocation}' để người chơi tiến sang {nextLocationName}.";
+            }
+            else
+            {
+                return $"[NHIỆM VỤ CỐT TRUYỆN: TÌM {targetItem.ToUpperInvariant()}] Người chơi CHƯA SỞ HỮU {targetItem} ({targetItemId}). " +
+                       $"Bạn TUYỆT ĐỐI KHÔNG ĐƯỢC tạo lựa chọn cho phép sang khu vực mới ({nextLocation}) khi chưa thu thập {targetItem}! " +
+                       $"THAY VÀO ĐÓ, BẠN BẮT BUỘC PHẢI DẪN TRUYỆN BẰNG CÁCH: Tiết lộ hoặc ám chỉ rằng {targetMonster} đang cất giữ {targetItem}. " +
+                       $"Sau đó, cung cấp các Lựa chọn (choices) xoay quanh việc thám hiểm hoặc khiêu chiến {targetMonster} để giành lấy {targetItem}. " +
+                       $"KHI TIÊU DIỆT HOẶC TÌM THẤY {targetItem}, HÃY TẠO ITEM NÀY TRONG INVENTORYCHANGES: [{{ \"itemId\": \"{targetItemId}\", \"quantityDelta\": 1 }}].";
+            }
+
         }
 
         private sealed class StoryActionProcessingContext

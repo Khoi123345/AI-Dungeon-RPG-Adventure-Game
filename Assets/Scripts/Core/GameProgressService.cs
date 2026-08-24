@@ -27,6 +27,16 @@ public class GameProgressService : MonoBehaviour
     public StorySession CurrentStorySession { get; private set; }
     public Boss CurrentBoss { get; private set; }
 
+    public event Action<Character> OnCharacterStatsChanged;
+
+    public void NotifyCharacterStatsChanged()
+    {
+        if (CurrentCharacter != null)
+        {
+            OnCharacterStatsChanged?.Invoke(CurrentCharacter);
+        }
+    }
+
     private readonly List<Item> items = new List<Item>();
     private readonly List<Inventory> inventory = new List<Inventory>();
     private readonly List<StoryAction> storyActions = new List<StoryAction>();
@@ -36,6 +46,12 @@ public class GameProgressService : MonoBehaviour
     private readonly List<CharacterTitle> titles = new List<CharacterTitle>();
 
     private bool initialized;
+
+    /// <summary>
+    /// Nếu true: lần gọi story/start tiếp theo sẽ xóa session cũ và bắt đầu lại từ đầu.
+    /// Được set khi người chơi chết và chọn Back to Menu.
+    /// </summary>
+    public bool ShouldForceNewSession { get; set; } = false;
 
     public static GameProgressService EnsureInstance()
     {
@@ -99,10 +115,11 @@ public class GameProgressService : MonoBehaviour
             }
             if (CurrentCharacter == null)
             {
+                string savedCharId = PlayerPrefs.GetString("lastCharacterId", "");
                 CurrentCharacter = new Character
                 {
-                    characterId = "",
-                    name = "",
+                    characterId = !string.IsNullOrEmpty(savedCharId) ? savedCharId : "demo_char_id",
+                    name = "Khoi",
                     level = 1,
                     hp = 100,
                     maxHp = 100,
@@ -113,6 +130,7 @@ public class GameProgressService : MonoBehaviour
                     status = "Alive"
                 };
             }
+
         }
         initialized = true;
     }
@@ -149,7 +167,31 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.gold = 999999;
         }
         Debug.Log($"[GameProgressService] CurrentCharacter set: {character.name} (id={character.characterId})");
+        NotifyCharacterStatsChanged();
     }
+
+    /// <summary>
+    /// Đồng bộ chỉ số nhân vật (Level, HP, MaxHP, Gold, ATK, DEF) từ response của Backend API.
+    /// </summary>
+    public void SyncCharacterFromResponse(GameShared.DTOs.Character.CharacterResponse res)
+    {
+        if (res == null || CurrentCharacter == null) return;
+
+        CurrentCharacter.level = res.level;
+        CurrentCharacter.experience = res.experience;
+        CurrentCharacter.hp = res.hp;
+        CurrentCharacter.maxHp = res.maxHp;
+        CurrentCharacter.attack = res.attack;
+        CurrentCharacter.defense = res.defense;
+        if (CurrentCharacter.name != null && !CurrentCharacter.name.Equals("khoi", StringComparison.OrdinalIgnoreCase))
+        {
+            CurrentCharacter.gold = res.gold;
+        }
+        Debug.Log($"[GameProgressService] Synced Character from backend: {CurrentCharacter.name} (Lv.{CurrentCharacter.level}, Exp={CurrentCharacter.experience}, HP={CurrentCharacter.hp}/{CurrentCharacter.maxHp}, Gold={CurrentCharacter.gold})");
+        NotifyCharacterStatsChanged();
+    }
+
+
 
     /// <summary>
     /// Cập nhật thông tin StorySession từ API response của backend.
@@ -245,7 +287,9 @@ public class GameProgressService : MonoBehaviour
         inventory.Clear();
         SeedDefaultInventoryIfNeeded();
 
-        Debug.Log("[GameProgressService] Đã reset toàn bộ tiến trình game về trạng thái khởi đầu mới (Chương 1).");
+        ShouldForceNewSession = true; // Đánh dấu để story/start tiếp theo sẽ xóa session cũ trên server
+
+        Debug.Log("[GameProgressService] Đã reset toàn bộ tiến trình game về trạng thái khởi đầu mới (Chương 1). ShouldForceNewSession = true.");
     }
 
     /// <summary>
@@ -306,16 +350,17 @@ public class GameProgressService : MonoBehaviour
     }
 
     /// <summary>
-    /// Sinh Boss chính xác theo bossId do AI Bedrock chỉ định.
+    /// Sinh Boss chính xác theo bossId do AI Bedrock chỉ định, cho phép gán Level trực tiếp từ AI.
     /// </summary>
-    public void SpawnBossById(string bossId)
+    public bool SpawnBossById(string bossId, int? targetLevel = null)
     {
         InitializeIfNeeded();
 
         if (string.IsNullOrWhiteSpace(bossId))
         {
-            SpawnRandomBoss();
-            return;
+            CurrentBoss = null;
+            Debug.LogError("[GameProgressService] Từ chối SpawnBossById vì bossId rỗng.");
+            return false;
         }
 
         var cleanId = bossId.StartsWith("boss_") ? bossId[5..] : bossId;
@@ -331,13 +376,15 @@ public class GameProgressService : MonoBehaviour
 
         if (picked == null)
         {
-            Debug.LogWarning($"[GameProgressService] Không tìm thấy bossId '{bossId}' trong BossCatalog, fallback ngẫu nhiên.");
-            SpawnRandomBoss();
-            return;
+            CurrentBoss = null;
+            Debug.LogError($"[GameProgressService] Không tìm thấy bossId authoritative '{bossId}' trong BossCatalog. Không fallback ngẫu nhiên.");
+            return false;
         }
 
         int playerLevel = CurrentCharacter != null ? CurrentCharacter.level : 1;
-        int bossLevel = GameShared.Config.GameConstants.CalculateBossLevel(playerLevel, picked.rarity, picked.bossId);
+        int bossLevel = (targetLevel.HasValue && targetLevel.Value > 0)
+            ? targetLevel.Value
+            : GameShared.Config.GameConstants.CalculateBossLevel(playerLevel, picked.rarity, picked.bossId);
 
         CurrentBoss = new Boss
         {
@@ -350,14 +397,21 @@ public class GameProgressService : MonoBehaviour
             baseDefense  = GameShared.Config.GameConstants.ScaleStat(picked.baseDefense, bossLevel),
             speed        = picked.speed,
             criticalRate = picked.criticalRate,
-            expReward    = picked.expReward,
-            goldReward   = picked.goldReward,
+            expReward    = GameShared.Config.GameConstants.CalculateExpReward(bossLevel, picked.rarity, playerLevel),
+            goldReward   = GameShared.Config.GameConstants.CalculateGoldReward(bossLevel, picked.rarity),
             skillSetJson = "[]",
             imageUrl     = string.Empty
         };
 
-        Debug.Log($"[GameProgressService] SpawnBossById: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Rarity={CurrentBoss.rarity}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp})");
+        Debug.Log($"[GameProgressService] SpawnBossById: {CurrentBoss.name} (bossId={CurrentBoss.bossId}, Level={CurrentBoss.level}, HP={CurrentBoss.baseHp}, ATK={CurrentBoss.baseAttack}, DEF={CurrentBoss.baseDefense})");
+        return true;
     }
+
+    public void ClearCurrentBoss()
+    {
+        CurrentBoss = null;
+    }
+
 
 
     public StoryData CreateStoryDemoData()
@@ -639,7 +693,7 @@ public class GameProgressService : MonoBehaviour
             CurrentCharacter.experience += expEarned;
             HandleLevelUpIfNeeded();
 
-            // Roll ngẫu nhiên vật phẩm từ GameConstants theo rarity của Boss
+            // Roll ngẫu nhiên vật phẩm từ GameConstants theo đúng rarity của Boss
             var droppedItemTemplate = GameShared.Config.GameConstants.RollRandomItemByRarity(CurrentBoss?.rarity ?? "Common")
                                    ?? GameShared.Config.GameConstants.GetItemById("item_rusty_sword");
 
@@ -659,6 +713,41 @@ public class GameProgressService : MonoBehaviour
 
             lootDrops.Add(loot);
             dropped.Add(loot);
+
+            // Tự động rớt Key Item nếu người chơi chưa sở hữu (Parity với Backend)
+            string currentLoc = CurrentStorySession?.currentLocation ?? CurrentCharacter?.currentLocationId ?? "ancient_cave";
+            string keyItemToGrant = currentLoc.ToLowerInvariant() switch
+            {
+                "ancient_cave" => "item_ancient_key",
+                "forgotten_temple" => "item_elemental_core",
+                "sunken_shipwreck" => "item_sea_compass",
+                "abyssal_trench" => "item_void_crystal",
+                "coral_palace" when string.Equals(CurrentBoss?.bossId, "boss_shadow_demon", StringComparison.OrdinalIgnoreCase) => "item_fire_core",
+                "sulfur_mines" => "item_obsidian_key",
+                "obsidian_peaks" => "item_dragon_blood_key",
+                _ => ""
+            };
+
+            if (!string.IsNullOrEmpty(keyItemToGrant))
+            {
+                bool alreadyHasKey = inventory.Any(i => i.itemId.Equals(keyItemToGrant, StringComparison.OrdinalIgnoreCase) && i.quantity > 0);
+                if (!alreadyHasKey)
+                {
+                    LootDrop keyLoot = new LootDrop
+                    {
+                        lootId = Guid.NewGuid().ToString("N"),
+                        battleId = battle.battleId,
+                        itemId = keyItemToGrant,
+                        quantity = 1,
+                        dropRate = 1f,
+                        sourceType = "KeyItem",
+                        isUnique = true,
+                        createdAt = DateTime.UtcNow
+                    };
+                    lootDrops.Add(keyLoot);
+                    dropped.Add(keyLoot);
+                }
+            }
 
             // GHI CHÚ: Không gọi AddItemToInventory ở đây nữa để tránh bị trùng lặp 2 lần! 
             // Vật phẩm đã chọn sẽ được chính thức thêm vào CSDL khi người chơi nhấn nút Confirm ở màn hình Victory.
@@ -690,24 +779,7 @@ public class GameProgressService : MonoBehaviour
             acquiredAt  = DateTime.UtcNow
         });
 
-        var seedItems = new[]
-        {
-            ("item_steel_dagger",    1, false),
-            ("item_shadow_blade",    1, false),
-            ("item_excalibur",       1, false),
-            ("item_leather_vest",    1, false),
-            ("item_iron_shield",     1, false),
-            ("item_dragon_scale",    1, false),
-            ("item_aegis",           1, false),
-            ("item_wooden_ring",     1, false),
-            ("item_silver_amulet",   1, false),
-            ("item_void_ring",       1, false),
-            ("item_ring_of_gods",    1, false),
-            ("item_health_potion_s", 5, false),
-            ("item_health_potion_m", 3, false),
-            ("item_elixir",          2, false),
-            ("item_divine_elixir",   1, false),
-        };
+        var seedItems = new (string, int, bool)[0];
 
         int slot = 1;
         foreach (var (itemId, qty, eq) in seedItems)
@@ -724,6 +796,33 @@ public class GameProgressService : MonoBehaviour
                 acquiredAt  = DateTime.UtcNow
             });
         }
+    }
+
+    public void SetInventory(List<GameShared.DTOs.Inventory.InventorySlot> slots, string characterId)
+    {
+        inventory.Clear();
+        if (slots != null && slots.Count > 0)
+        {
+            foreach (var slot in slots)
+            {
+                inventory.Add(new Inventory
+                {
+                    inventoryId = slot.inventoryId ?? Guid.NewGuid().ToString("N"),
+                    characterId = characterId,
+                    itemId = slot.itemId,
+                    quantity = slot.quantity,
+                    equipped = slot.equipped,
+                    slotIndex = slot.slotIndex,
+                    locked = slot.locked,
+                    acquiredAt = DateTime.UtcNow
+                });
+            }
+        }
+        else
+        {
+            SeedDefaultInventoryIfNeeded();
+        }
+        RecalculateCharacterStats();
     }
 
     public IReadOnlyList<Inventory> GetInventory()
@@ -943,28 +1042,7 @@ public class GameProgressService : MonoBehaviour
         });
 
         // ── Các item CHƯA trang bị (để test lưới inventory bên phải) ──
-        var seedItems = new[]
-        {
-            // Weapon
-            ("item_steel_dagger",    1, false),
-            ("item_shadow_blade",    1, false),
-            ("item_excalibur",       1, false),
-            // Armor
-            ("item_leather_vest",    1, false),
-            ("item_iron_shield",     1, false),
-            ("item_dragon_scale",    1, false),
-            ("item_aegis",           1, false),
-            // Accessory
-            ("item_wooden_ring",     1, false),
-            ("item_silver_amulet",   1, false),
-            ("item_void_ring",       1, false),
-            ("item_ring_of_gods",    1, false),
-            // Consumable (stackable)
-            ("item_health_potion_s", 5, false),
-            ("item_health_potion_m", 3, false),
-            ("item_elixir",          2, false),
-            ("item_divine_elixir",   1, false),
-        };
+        var seedItems = new (string, int, bool)[0];
 
         int slot = 1;
         foreach (var (itemId, qty, eq) in seedItems)
@@ -1167,14 +1245,13 @@ public class GameProgressService : MonoBehaviour
         // Mặc định đọc từ GameConstants. Nếu không có template, tự động cho phép stack nếu là Consumable
         bool isStackable = template != null ? template.stackable : (ItemData.GetItemTypeFromId(itemId) == ItemType.Consumable);
 
-        // NẾU BẠN MUỐN TẤT CẢ VẬT PHẨM (KỂ CẢ VŨ KHÍ, GIÁP) ĐỀU CỘNG DỒN SỐ LƯỢNG KHI RƠI RA,
-        // HÃY BỎ COMMENT DÒNG BÊN DƯỚI ĐỂ ÉP BUỘC LUÔN STACK:
+        // Theo yêu cầu, cho phép cộng dồn TẤT CẢ vật phẩm trong lưới đồ để tiết kiệm không gian
         isStackable = true; 
 
-        // Chỉ cộng dồn với các vật phẩm có tính chất stackable (như Thuốc hồi máu, hoặc nếu bạn bật true ở trên)
         if (isStackable)
         {
-            Inventory existing = inventory.Find(entry => entry.itemId == itemId && entry.equipped == equipped);
+            // Tách biệt: Chỉ gộp vào món đồ CHƯA ĐƯỢC MẶC (nằm trong lưới)
+            Inventory existing = inventory.Find(entry => entry.itemId == itemId && !entry.equipped);
             if (existing != null)
             {
                 existing.quantity += quantity;

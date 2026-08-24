@@ -52,11 +52,6 @@ namespace GameBackend.Core.Services
 			if (!string.IsNullOrWhiteSpace(aiResponse.CurrentNodeId))
 			{
 				session.currentNodeId = aiResponse.CurrentNodeId;
-				var cleanNode = aiResponse.CurrentNodeId.Trim().ToLowerInvariant();
-				if (cleanNode is "ancient_cave" or "forgotten_temple" or "goblin_hideout" or "dragon_nest")
-				{
-					session.currentLocation = cleanNode;
-				}
 			}
 
 			if (!string.IsNullOrWhiteSpace(aiResponse.CurrentLocation))
@@ -68,6 +63,8 @@ namespace GameBackend.Core.Services
 			{
 				session.currentChapterId = aiResponse.CurrentChapterId;
 			}
+
+
 
 			if (!string.IsNullOrWhiteSpace(aiResponse.StorySummary))
 			{
@@ -176,6 +173,7 @@ namespace GameBackend.Core.Services
 				characterId = character.characterId,
 				bossId = boss.bossId,
 				bossLevel = bossLevel,
+				bossRarity = boss.rarity,
 				playerHpBefore = character.hp,
 				playerHpAfter = character.hp,
 				bossHpBefore = GameShared.Config.GameConstants.ScaleStat(boss.baseHp, bossLevel),

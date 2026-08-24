@@ -1,0 +1,460 @@
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.deps.json
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.runtimeconfig.json
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.pdb
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.APIGatewayEvents.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.Core.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.Serialization.SystemTextJson.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.BedrockRuntime.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.CognitoIdentityProvider.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.Core.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.DynamoDBv2.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\BCrypt.Net-Next.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Configuration.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Console.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Options.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Primitives.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Core.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameShared.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Core.pdb
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameShared.pdb
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.csproj.AssemblyReference.cache
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.GeneratedMSBuildEditorConfig.editorconfig
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.AssemblyInfoInputs.cache
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.AssemblyInfo.cs
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.csproj.CoreCompileInputs.cache
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.sourcelink.json
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBack.7522C169.Up2Date
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\refint\GameBackend.Handlers.dll
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.pdb
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.genruntimeconfig.cache
+D:\Unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\ref\GameBackend.Handlers.dll
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.csproj.AssemblyReference.cache
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.GeneratedMSBuildEditorConfig.editorconfig
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.AssemblyInfoInputs.cache
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.AssemblyInfo.cs
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.csproj.CoreCompileInputs.cache
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.sourcelink.json
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.dll
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\refint\GameBackend.Handlers.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.deps.json
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.runtimeconfig.json
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.pdb
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.APIGatewayEvents.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.Core.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.Serialization.SystemTextJson.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.BedrockRuntime.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.CognitoIdentityProvider.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.Core.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.DynamoDBv2.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\BCrypt.Net-Next.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Configuration.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Console.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Options.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Primitives.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Core.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameShared.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Core.pdb
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameShared.pdb
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBack.7522C169.Up2Date
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.pdb
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.genruntimeconfig.cache
+D:\My project\backend\src\GameBackend.Handlers\obj\Release\net8.0\ref\GameBackend.Handlers.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\appsettings.json
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.deps.json
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.runtimeconfig.json
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.pdb
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.APIGatewayEvents.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.Serialization.SystemTextJson.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.BedrockRuntime.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.CognitoIdentityProvider.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.DynamoDBv2.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.Extensions.NETCore.Setup.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\BCrypt.Net-Next.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Console.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Core.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameShared.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Core.pdb
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameShared.pdb
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.csproj.AssemblyReference.cache
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.AssemblyInfoInputs.cache
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.AssemblyInfo.cs
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.csproj.CoreCompileInputs.cache
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.sourcelink.json
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBack.7522C169.Up2Date
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\refint\GameBackend.Handlers.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.pdb
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.genruntimeconfig.cache
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\ref\GameBackend.Handlers.dll
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\dragon_king.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\dragon_king.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\goblin_king.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\goblin_king.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\shadow_demon.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\shadow_demon.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_1.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_1.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_2.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_2.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_3.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_3.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_4.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_4.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_5.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_5.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\ancient_cave.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\ancient_cave.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\dragon_nest.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\dragon_nest.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\forgotten_temple.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\forgotten_temple.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\story_prompt.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\story_prompt.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\summary_prompt.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\summary_prompt.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\system_prompt.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\system_prompt.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\prologue.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\world.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\world.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\dragon_king.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\dragon_king.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\goblin_king.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\goblin_king.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\shadow_demon.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\shadow_demon.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_1.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_1.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_2.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_2.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_3.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_3.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_4.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_4.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_5.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_5.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\ancient_cave.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\ancient_cave.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\dragon_nest.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\dragon_nest.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\forgotten_temple.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\forgotten_temple.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\story_prompt.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\story_prompt.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\summary_prompt.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\summary_prompt.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\system_prompt.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\system_prompt.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\prologue.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\world.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\world.md.meta
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\mob_void_remnant.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\prologue.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\mob_void_remnant.md
+C:\Users\ACER\Documents\aws\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\prologue.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\dragon_king.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\dragon_king.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\goblin_king.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\goblin_king.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\mob_void_remnant.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\shadow_demon.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\shadow_demon.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_1.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_1.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_2.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_2.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_3.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_3.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_4.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_4.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_5.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_5.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\prologue.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\abyssal_trench.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\ancient_cave.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\ancient_cave.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\coral_palace.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\dragon_nest.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\dragon_nest.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\forgotten_temple.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\forgotten_temple.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\obsidian_peaks.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\prologue.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\sulfur_mines.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\sunken_shipwreck.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\story_prompt.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\story_prompt.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\summary_prompt.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\summary_prompt.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\system_prompt.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\prologue.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\world.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\world.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\appsettings.json
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\dragon_king.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\dragon_king.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\goblin_king.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\goblin_king.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\mob_void_remnant.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\shadow_demon.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\shadow_demon.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_1.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_1.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_2.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_2.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_3.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_3.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_4.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_4.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_5.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_5.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\prologue.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\abyssal_trench.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\ancient_cave.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\ancient_cave.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\coral_palace.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\dragon_nest.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\dragon_nest.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\forgotten_temple.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\forgotten_temple.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\obsidian_peaks.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\prologue.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\sulfur_mines.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\sunken_shipwreck.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\story_prompt.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\story_prompt.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\summary_prompt.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\summary_prompt.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\system_prompt.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\prologue.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\world.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\world.md.meta
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\goblin_hideout.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\system_prompt.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\goblin_hideout.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\system_prompt.md
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.Extensions.NETCore.Setup.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Json.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
+D:\My project\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\dragon_king.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\dragon_king.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\goblin_king.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\goblin_king.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\mob_void_remnant.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\shadow_demon.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Bosses\shadow_demon.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_1.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_1.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_2.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_2.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_3.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_3.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_4.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_4.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_5.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\chapter_5.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Chapters\prologue.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\abyssal_trench.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\ancient_cave.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\ancient_cave.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\coral_palace.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\dragon_nest.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\dragon_nest.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\forgotten_temple.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\forgotten_temple.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\goblin_hideout.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\obsidian_peaks.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\prologue.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\sulfur_mines.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Locations\sunken_shipwreck.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\story_prompt.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\story_prompt.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\summary_prompt.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\summary_prompt.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\system_prompt.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\Prompt\system_prompt.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\prologue.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\world.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AIStory\Content\World\world.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\appsettings.json
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\dragon_king.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\dragon_king.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\goblin_king.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\goblin_king.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\mob_void_remnant.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\shadow_demon.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Bosses\shadow_demon.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_1.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_1.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_2.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_2.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_3.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_3.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_4.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_4.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_5.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\chapter_5.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Chapters\prologue.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\abyssal_trench.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\ancient_cave.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\ancient_cave.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\coral_palace.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\dragon_nest.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\dragon_nest.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\forgotten_temple.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\forgotten_temple.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\goblin_hideout.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\obsidian_peaks.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\prologue.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\sulfur_mines.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Locations\sunken_shipwreck.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\story_prompt.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\story_prompt.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\summary_prompt.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\summary_prompt.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\system_prompt.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\Prompt\system_prompt.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\prologue.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\world.md
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Content\World\world.md.meta
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.deps.json
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.runtimeconfig.json
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Handlers.pdb
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.APIGatewayEvents.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.Core.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Amazon.Lambda.Serialization.SystemTextJson.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.BedrockRuntime.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.CognitoIdentityProvider.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.Core.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.DynamoDBv2.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\AWSSDK.Extensions.NETCore.Setup.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\BCrypt.Net-Next.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Configuration.Json.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Configuration.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Logging.Console.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Options.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.Extensions.Primitives.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Core.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameShared.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameBackend.Core.pdb
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\bin\Release\net8.0\GameShared.pdb
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.csproj.AssemblyReference.cache
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.GeneratedMSBuildEditorConfig.editorconfig
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.AssemblyInfoInputs.cache
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.AssemblyInfo.cs
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.csproj.CoreCompileInputs.cache
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.sourcelink.json
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBack.7522C169.Up2Date
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\refint\GameBackend.Handlers.dll
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.pdb
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\GameBackend.Handlers.genruntimeconfig.cache
+D:\NguyenHuuTinh\unity\Project\AI-Dungeon-RPG-Adventure-Game\backend\src\GameBackend.Handlers\obj\Release\net8.0\ref\GameBackend.Handlers.dll

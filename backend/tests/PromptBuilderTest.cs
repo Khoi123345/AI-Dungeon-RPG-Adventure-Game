@@ -86,7 +86,7 @@ public class PromptBuilderTests
             
             if (Directory.Exists(aiStoryPath))
             {
-                return new PromptBuilder(aiStoryPath);
+                return new PromptBuilder(new FileSystemPromptLoader(aiStoryPath));
             }
             
             current = current.Parent;
@@ -105,10 +105,10 @@ public class PromptBuilderTests
         {
             if (Directory.Exists(candidate))
             {
-                return new PromptBuilder(candidate);
+                return new PromptBuilder(new FileSystemPromptLoader(candidate));
             }
         }
 
-        return new PromptBuilder(Directory.GetCurrentDirectory());
+        return new PromptBuilder(new FileSystemPromptLoader(Directory.GetCurrentDirectory()));
     }
 }

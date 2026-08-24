@@ -37,7 +37,15 @@ namespace GameBackend.Core.Services
                 await _characterRepository.SaveAsync(character);
             }
 
-            return MapToResponse(character);
+            int effectiveMaxHp = character.maxHp;
+            if (_inventoryRepository != null)
+            {
+                var equipped = await _inventoryRepository.GetEquippedItemsAsync(characterId);
+                int bonusHp = equipped.Sum(e => GameConstants.GetItemById(e.itemId)?.hpBonus ?? 0);
+                effectiveMaxHp += bonusHp;
+            }
+
+            return MapToResponse(character, effectiveMaxHp);
         }
 
         public async Task<CharacterResponse> CreateCharacterAsync(CreateCharacterRequest request)
@@ -50,7 +58,14 @@ namespace GameBackend.Core.Services
                 {
                     var found = existing[0];
                     _logger.LogInformation("Character already exists for userId {UserId}, returning existing: {CharacterId}", request.userId, found.characterId);
-                    return MapToResponse(found);
+                    int existingEffectiveMaxHp = found.maxHp;
+                    if (_inventoryRepository != null)
+                    {
+                        var equipped = await _inventoryRepository.GetEquippedItemsAsync(found.characterId);
+                        int bonusHp = equipped.Sum(e => GameConstants.GetItemById(e.itemId)?.hpBonus ?? 0);
+                        existingEffectiveMaxHp += bonusHp;
+                    }
+                    return MapToResponse(found, existingEffectiveMaxHp);
                 }
             }
 
@@ -82,10 +97,7 @@ namespace GameBackend.Core.Services
             {
                 var starterItems = new[]
                 {
-                    ("item_rusty_sword", 1, true, 0),
-                    ("item_leather_vest", 1, true, 1),
-                    ("item_wooden_ring", 1, true, 2),
-                    ("item_health_potion_s", 5, false, 3)
+                    ("item_rusty_sword", 1, true, 0)
                 };
 
                 foreach (var (itemId, qty, eq, slot) in starterItems)
@@ -111,7 +123,7 @@ namespace GameBackend.Core.Services
             }
 
             _logger.LogInformation("Character created: {CharacterId} for user: {UserId}", character.characterId, character.userId);
-            return MapToResponse(character);
+            return MapToResponse(character, character.maxHp);
         }
 
         // =====================================================================
@@ -193,20 +205,28 @@ namespace GameBackend.Core.Services
 
             if (character.status != "Dead") return; // Đang Alive — không cần làm gì
 
-            // Khôi phục nhân vật về trạng thái Alive với 100% Máu tối đa
+            int effectiveMaxHp = character.maxHp > 0 ? character.maxHp : 100;
+            if (_inventoryRepository != null)
+            {
+                var equipped = await _inventoryRepository.GetEquippedItemsAsync(characterId);
+                int bonusHp = equipped.Sum(e => GameConstants.GetItemById(e.itemId)?.hpBonus ?? 0);
+                effectiveMaxHp += bonusHp;
+            }
+
+            // Khôi phục nhân vật về trạng thái Alive với 100% Máu tối đa (Effective)
             character.status = "Alive";
-            character.hp = character.maxHp > 0 ? character.maxHp : 100;
+            character.hp = effectiveMaxHp;
             await _characterRepository.SaveAsync(character);
 
             _logger.LogInformation("Character {CharacterId} revived with 100% HP ({Hp}/{MaxHp})",
-                character.characterId, character.hp, character.maxHp);
+                character.characterId, character.hp, effectiveMaxHp);
         }
 
         // =====================================================================
         // MAPPING
         // =====================================================================
 
-        private static CharacterResponse MapToResponse(Character c)
+        private static CharacterResponse MapToResponse(Character c, int effectiveMaxHp)
         {
             return new CharacterResponse
             {
@@ -215,7 +235,7 @@ namespace GameBackend.Core.Services
                 level = c.level,
                 experience = c.experience,
                 hp = c.hp,
-                maxHp = c.maxHp,
+                maxHp = effectiveMaxHp,
                 attack = c.attack,
                 defense = c.defense,
                 criticalRate = c.criticalRate,

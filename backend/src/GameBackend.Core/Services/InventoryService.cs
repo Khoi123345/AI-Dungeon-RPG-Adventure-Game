@@ -40,8 +40,28 @@ namespace GameBackend.Core.Services
             {
                 characterId = characterId,
                 totalSlots = GameConstants.MaxInventorySlots,
-                slots = items.Select(i => BuildInventorySlot(i)).ToList()
+                slots = items
+                    .Where(i => i != null && i.quantity > 0)
+                    .Select(BuildInventorySlot)
+                    .ToList()
             };
+        }
+
+        public async Task ClearInventoryAsync(string characterId)
+        {
+            if (string.IsNullOrWhiteSpace(characterId)) return;
+
+            var items = await _inventoryRepository.GetByCharacterIdAsync(characterId);
+            foreach (var item in items)
+            {
+                if (item == null || string.IsNullOrWhiteSpace(item.inventoryId)) continue;
+                await _inventoryRepository.DeleteAsync(item.inventoryId);
+            }
+
+            _logger.LogInformation(
+                "Cleared {ItemCount} inventory records for character {CharacterId}.",
+                items.Count,
+                characterId);
         }
 
         // =====================================================================
@@ -80,11 +100,14 @@ namespace GameBackend.Core.Services
 
         public async Task AddItemToInventoryAsync(string characterId, string itemId, int quantity)
         {
-            var existing = await _inventoryRepository.FindByCharacterAndItemAsync(characterId, itemId);
+            var existingItems = await _inventoryRepository.GetByCharacterIdAsync(characterId);
+            
+            // Tìm món đồ giống vậy nhưng CHƯA ĐƯỢC MẶC (để gộp chung vào lưới đồ)
+            var existing = existingItems.FirstOrDefault(i => i.itemId == itemId && !i.equipped);
 
             if (existing != null)
             {
-                // Item đã có trong kho — cộng dồn số lượng (không tốn thêm ô)
+                // Item đã có trong kho và chưa mặc — cộng dồn số lượng
                 existing.quantity += quantity;
                 await _inventoryRepository.SaveAsync(existing);
                 return;
@@ -162,8 +185,28 @@ namespace GameBackend.Core.Services
                 }
             }
 
-            invRecord.equipped = true;
-            await _inventoryRepository.SaveAsync(invRecord);
+            if (invRecord.quantity > 1)
+            {
+                invRecord.quantity -= 1;
+                await _inventoryRepository.SaveAsync(invRecord);
+
+                var equippedClone = new Inventory
+                {
+                    inventoryId = Guid.NewGuid().ToString("N"),
+                    characterId = characterId,
+                    itemId = invRecord.itemId,
+                    quantity = 1,
+                    equipped = true,
+                    acquiredAt = DateTime.UtcNow
+                };
+                await _inventoryRepository.SaveAsync(equippedClone);
+            }
+            else
+            {
+                invRecord.equipped = true;
+                await _inventoryRepository.SaveAsync(invRecord);
+            }
+
             _logger.LogInformation("Equipped item {ItemId} for character {CharId}", invRecord.itemId, characterId);
 
             return await GetInventoryAsync(characterId);
@@ -183,8 +226,20 @@ namespace GameBackend.Core.Services
             var invRecord = await _inventoryRepository.GetByInventoryIdAsync(inventoryId);
             if (invRecord != null)
             {
-                invRecord.equipped = false;
-                await _inventoryRepository.SaveAsync(invRecord);
+                var existingItems = await _inventoryRepository.GetByCharacterIdAsync(characterId);
+                var gridStack = existingItems.FirstOrDefault(i => i.itemId == invRecord.itemId && !i.equipped && i.inventoryId != invRecord.inventoryId);
+
+                if (gridStack != null)
+                {
+                    gridStack.quantity += invRecord.quantity;
+                    await _inventoryRepository.SaveAsync(gridStack);
+                    await _inventoryRepository.DeleteAsync(invRecord.inventoryId);
+                }
+                else
+                {
+                    invRecord.equipped = false;
+                    await _inventoryRepository.SaveAsync(invRecord);
+                }
                 _logger.LogInformation("Unequipped item {InvId} for character {CharId}", inventoryId, characterId);
             }
 
@@ -232,7 +287,11 @@ namespace GameBackend.Core.Services
                 await _inventoryRepository.SaveAsync(invRecord);
 
             // 6. Apply effect từ effectJson (mục 2.4 bước 3)
-            ApplyConsumableEffect(item.effectJson, character, quantityToUse);
+            var equipped = await _inventoryRepository.GetEquippedItemsAsync(characterId);
+            int bonusHp = equipped.Sum(e => GameConstants.GetItemById(e.itemId)?.hpBonus ?? 0);
+            int effectiveMaxHp = character.maxHp + bonusHp;
+
+            ApplyConsumableEffect(item.effectJson, character, quantityToUse, effectiveMaxHp);
             await _characterRepository.SaveAsync(character);
 
             _logger.LogInformation("Character {CharId} used {ItemName} x{Qty}. Deleted={Deleted}",
@@ -248,7 +307,7 @@ namespace GameBackend.Core.Services
                 updatedStats      = new UpdatedCharacterStats
                 {
                     hp           = character.hp,
-                    maxHp        = character.maxHp,
+                    maxHp        = effectiveMaxHp,
                     attack       = character.attack,
                     defense      = character.defense,
                     criticalRate = character.criticalRate,
@@ -261,18 +320,26 @@ namespace GameBackend.Core.Services
         // GRANT LOOT DROP (Mục 5.2 logic doc)
         // =====================================================================
 
-        public async Task<List<LootItemDTO>> GrantLootDropAsync(string characterId, string bossRarity, string battleId)
+        public async Task<List<LootItemDTO>> GrantLootDropAsync(string characterId, string bossRarity, string battleId, string bossId = "")
         {
             var results = new List<LootItemDTO>();
 
-            // 1. Roll item rarity từ boss rarity (weighted random theo bảng loot)
-            string itemRarity = GameConstants.RollItemRarity(bossRarity);
+            // 1. Roll item rarity từ boss rarity có áp trần MaxRarityCap (mobs mob_* max Common)
+            string maxCap = GameConstants.GetMaxRarityCap(bossId, bossRarity);
+            string itemRarity = GameConstants.RollItemRarity(bossRarity, maxCap);
 
             // 2. Roll ngẫu nhiên item trong rarity đó (chỉ Equipment, không Consumable)
             var item = GameConstants.RollRandomItemByRarity(itemRarity);
             if (item == null)
             {
                 _logger.LogWarning("No item found for rarity {Rarity} in catalog.", itemRarity);
+                return results;
+            }
+
+            if (!GameShared.Config.GameConstants.IsRarityAtOrBelow(item.rarity, maxCap))
+            {
+                _logger.LogError("Rejected invalid loot {ItemId} ({ItemRarity}) above enemy cap {MaxRarity} for {BossId}.",
+                    item.itemId, item.rarity, maxCap, bossId);
                 return results;
             }
 
@@ -341,7 +408,7 @@ namespace GameBackend.Core.Services
         /// Áp dụng hiệu ứng từ effectJson lên nhân vật (mục 2.4 bước 3).
         /// Ví dụ effectJson: {"hp": 50} | {"hp_full": true}
         /// </summary>
-        private static void ApplyConsumableEffect(string effectJson, Character character, int timesUsed)
+        private static void ApplyConsumableEffect(string effectJson, Character character, int timesUsed, int effectiveMaxHp)
         {
             if (string.IsNullOrWhiteSpace(effectJson)) return;
 
@@ -353,7 +420,7 @@ namespace GameBackend.Core.Services
                 // Hồi HP đầy
                 if (root.TryGetProperty("hp_full", out var hpFull) && hpFull.GetBoolean())
                 {
-                    character.hp = character.maxHp;
+                    character.hp = effectiveMaxHp;
                     return;
                 }
 
@@ -361,7 +428,7 @@ namespace GameBackend.Core.Services
                 if (root.TryGetProperty("hp", out var hpEl))
                 {
                     int restore = hpEl.GetInt32() * timesUsed;
-                    character.hp = Math.Min(character.hp + restore, character.maxHp);
+                    character.hp = Math.Min(character.hp + restore, effectiveMaxHp);
                 }
 
                 // Tăng Attack tạm thời (ghi thẳng vào base stat — đơn giản hóa cho MVP)

@@ -229,8 +229,9 @@ public class AuthManager : MonoBehaviour
                     GameProgressService.Instance.SetCurrentCharacter(model);
                     // Lưu characterId để auto-restore session sau này không cần gọi API lại
                     UnityEngine.PlayerPrefs.SetString("lastCharacterId", model.characterId);
-                    UnityEngine.PlayerPrefs.Save();
-                    Debug.Log($"[AuthManager] Character loaded/created từ AWS: {model.name} (id={model.characterId}, gold={model.gold}, lv={model.level})");
+                    // Lấy inventory sau khi lấy character thành công
+                    await LoadInventoryForCharacterAsync(model.characterId);
+                    
                     return;
                 }
             }
@@ -239,6 +240,28 @@ public class AuthManager : MonoBehaviour
         catch (System.Exception ex)
         {
             Debug.LogWarning($"[AuthManager] Không thể load/tạo nhân vật từ AWS: {ex.Message}");
+        }
+    }
+
+    private async Task LoadInventoryForCharacterAsync(string characterId)
+    {
+        try
+        {
+            var inventoryApi = new InventoryApiService();
+            string invJson = await inventoryApi.GetInventoryAsync(characterId);
+            if (!string.IsNullOrEmpty(invJson))
+            {
+                var container = JsonUtility.FromJson<ApiResponseContainer<GameShared.DTOs.Inventory.InventoryResponse>>(invJson);
+                if (container != null && container.success && container.data != null && container.data.slots != null)
+                {
+                    GameProgressService.Instance.SetInventory(container.data.slots, characterId);
+                    Debug.Log($"[AuthManager] Đã tải {container.data.slots.Count} items cho character {characterId}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"[AuthManager] Lỗi tải inventory: {ex.Message}");
         }
     }
 

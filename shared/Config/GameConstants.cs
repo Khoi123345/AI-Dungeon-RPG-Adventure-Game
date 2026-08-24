@@ -40,7 +40,14 @@ namespace GameShared.Config
             new Boss { bossId = "mob_abyssal_spirit",  name = "Abyssal Spirit",   rarity = "Common",    baseHp = 50,  baseAttack = 9,  baseDefense = 3,  speed = 8,  criticalRate = 0.08f, expReward = 25, goldReward = 22  },
             new Boss { bossId = "mob_drowned_sailor",  name = "Drowned Sailor",   rarity = "Common",    baseHp = 65,  baseAttack = 7,  baseDefense = 4,  speed = 5,  criticalRate = 0.04f, expReward = 20, goldReward = 18  },
             new Boss { bossId = "mob_mutated_crab",    name = "Mutated Crab",     rarity = "Common",    baseHp = 40,  baseAttack = 8,  baseDefense = 10, speed = 4,  criticalRate = 0.02f, expReward = 18, goldReward = 15  },
+
+            // --- Chapter 3 Mobs ---
+            new Boss { bossId = "mob_young_dragon",   name = "Young Dragon",     rarity = "Rare",      baseHp = 90,  baseAttack = 14, baseDefense = 6,  speed = 8,  criticalRate = 0.08f, expReward = 45, goldReward = 35  },
+            new Boss { bossId = "mob_fire_lizard",    name = "Fire Lizard",      rarity = "Common",    baseHp = 60,  baseAttack = 10, baseDefense = 4,  speed = 7,  criticalRate = 0.05f, expReward = 30, goldReward = 25  },
+            new Boss { bossId = "mob_fire_raptor",    name = "Fire Raptor",      rarity = "Rare",      baseHp = 100, baseAttack = 16, baseDefense = 5,  speed = 11, criticalRate = 0.10f, expReward = 55, goldReward = 45  },
+            new Boss { bossId = "mob_adult_dragon",   name = "Adult Dragon",     rarity = "Epic",      baseHp = 180, baseAttack = 24, baseDefense = 12, speed = 9,  criticalRate = 0.12f, expReward = 100, goldReward = 90  },
         };
+
 
         // =====================================================================
         // ITEM CATALOG
@@ -51,6 +58,13 @@ namespace GameShared.Config
             // --- Quest Items ---
             new Item { itemId = "item_ancient_key",     name = "Ancient Key",           rarity = "Common",    itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 1,  description = "Chiếc chìa khóa cổ xưa dùng để mở cổng Đền thờ bị lãng quên.", effectJson = "" },
             new Item { itemId = "item_elemental_core",  name = "Elemental Core",        rarity = "Epic",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 1,  description = "Mảnh vỡ Lõi Nguyên Tố đầu tiên chứa đựng sức mạnh kỳ bí.", effectJson = "" },
+            new Item { itemId = "item_sea_compass",     name = "Sea Compass",           rarity = "Rare",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 5,  description = "Hải đồ biển sâu dùng để chỉ đường lặn xuống Rãnh Sâu Vô Tận.", effectJson = "" },
+            new Item { itemId = "item_void_crystal",    name = "Void Crystal",          rarity = "Epic",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 10, description = "Pha lê hư không dùng để giải giải bẫy ma thuật và mở cổng Cung Điện San Hô.", effectJson = "" },
+            new Item { itemId = "item_fire_core",       name = "Fire Core",             rarity = "Epic",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 15, description = "Lõi lửa kháng nhiệt nhận được sau khi tiêu diệt Shadow Demon, mở đường sang Vùng Đất Hoang Tàn.", effectJson = "" },
+            new Item { itemId = "item_obsidian_key",   name = "Obsidian Key",          rarity = "Rare",      itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 18, description = "Chìa khóa Hắc Diệu Thạch dùng để trèo lên Đỉnh Núi Hắc Diệu Thạch.", effectJson = "" },
+            new Item { itemId = "item_dragon_blood_key",name = "Dragon Blood Key",      rarity = "Legendary", itemType = "Quest",      slotType = "",         attackBonus = 0,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 0,    buyPrice = 0,    requiredLevel = 20, description = "Chìa khóa Long Huyết dùng để mở cổng Tổ Rồng.", effectJson = "" },
+
+
 
             // --- Common ---
             new Item { itemId = "item_rusty_sword",      name = "Rusty Sword",           rarity = "Common",    itemType = "Weapon",     slotType = "MainHand", attackBonus = 3,  defenseBonus = 0,  hpBonus = 0,  criticalBonus = 0f,    stackable = false, sellPrice = 10,   buyPrice = 30,   requiredLevel = 1,  description = "Một thanh kiếm gỉ sét, vẫn còn có thể chiến đấu.", effectJson = "" },
@@ -186,14 +200,12 @@ namespace GameShared.Config
             }
 
             // 2. Dynamic Player Level Scaling cho Mobs:
-            // Từ Level 3 trở lên, quái xuất hiện luôn có cấp độ chênh lệch ngẫu nhiên cao hơn (+1 đến +4 level)!
-            int minOffset = playerLevel >= 3 ? 1 : 0;
-            int maxBonus = Math.Max(2, playerLevel / 3 + 2);
-            int randomLevelOffset = _random.Next(minOffset, maxBonus + 1);
-
-            int rarityMod = GetBossRarityLevelModifier(rarity); // Common=0, Rare=2, Epic=4, Legendary=6
+            // Cấp độ quái vật dao động ngẫu nhiên quanh Level người chơi (-1, 0, +1, +2 level) để tạo sự đa dạng
+            int randomLevelOffset = _random.Next(-1, 3); // [-1, 0, 1, 2]
+            int rarityMod = GetBossRarityLevelModifier(rarity); // Common=0, Rare=1, Epic=2
             return Math.Max(1, playerLevel + rarityMod + randomLevelOffset);
         }
+
 
         public static Boss GetBossTemplateByRarity(string rarity)
         {
@@ -205,23 +217,63 @@ namespace GameShared.Config
         public static Item? GetItemById(string itemId)
             => ItemCatalog.FirstOrDefault(i => i.itemId == itemId);
 
-        public static string RollItemRarity(string bossRarity)
+        public static string GetMaxRarityCap(string bossId, string bossRarity)
         {
-            if (!LootDropTable.TryGetValue(bossRarity, out var table))
-                table = LootDropTable["Common"];
+            if (string.IsNullOrWhiteSpace(bossId)) return "Common";
+            if (bossId.StartsWith("mob_", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.IsNullOrWhiteSpace(bossRarity) ? "Common" : bossRarity;
+            }
+            return string.IsNullOrWhiteSpace(bossRarity) ? "Common" : bossRarity;
+        }
 
-            int roll = _random.Next(0, 100);
-            if (roll < table.Common)    return "Common";
-            if (roll < table.Common + table.Rare)   return "Rare";
-            if (roll < table.Common + table.Rare + table.Epic) return "Epic";
-            return "Legendary";
+        public static string RollItemRarity(string bossRarity, string maxCap = "Legendary")
+        {
+            if (string.IsNullOrWhiteSpace(bossRarity)) return "Common";
+
+            string normalized = bossRarity.Trim();
+            string rolled = "Common";
+            if (normalized.Equals("Mythic", StringComparison.OrdinalIgnoreCase))
+                rolled = "Legendary";
+            else if (normalized.Equals("Common", StringComparison.OrdinalIgnoreCase) ||
+                     normalized.Equals("Rare", StringComparison.OrdinalIgnoreCase) ||
+                     normalized.Equals("Epic", StringComparison.OrdinalIgnoreCase) ||
+                     normalized.Equals("Legendary", StringComparison.OrdinalIgnoreCase))
+            {
+                rolled = normalized;
+            }
+
+            int rolledWeight = GetRarityWeight(rolled);
+            int maxCapWeight = GetRarityWeight(maxCap);
+
+            return rolledWeight > maxCapWeight ? maxCap : rolled;
+        }
+
+        public static bool IsRarityAtOrBelow(string rarity, string maxRarity)
+            => GetRarityWeight(rarity) <= GetRarityWeight(maxRarity);
+
+        private static int GetRarityWeight(string rarity)
+        {
+            return (rarity ?? "").Trim().ToLowerInvariant() switch
+            {
+                "common" => 1,
+                "rare" => 2,
+                "epic" => 3,
+                "legendary" => 4,
+                "mythic" => 5,
+                _ => 1
+            };
         }
 
         public static Item? RollRandomItemByRarity(string itemRarity)
         {
             var candidates = ItemCatalog
-                .Where(i => i.rarity == itemRarity && i.itemType != "Consumable")
+                .Where(i => i.rarity.Equals(itemRarity, StringComparison.OrdinalIgnoreCase) && i.itemType != "Consumable" && i.itemType != "Quest")
                 .ToList();
+            if (candidates.Count == 0)
+            {
+                return null;
+            }
             if (candidates.Count == 0) return null;
             return candidates[_random.Next(candidates.Count)];
         }

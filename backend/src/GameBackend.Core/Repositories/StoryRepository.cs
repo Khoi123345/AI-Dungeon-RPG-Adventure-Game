@@ -81,5 +81,27 @@ namespace GameBackend.Core.Repositories
 
             return results;
         }
+
+        public async Task DeleteSessionByCharacterIdAsync(string characterId)
+        {
+            if (string.IsNullOrWhiteSpace(characterId)) return;
+
+            // 1. Tìm session Active của nhân vật
+            var session = await GetSessionByCharacterIdAsync(characterId);
+            if (session == null) return;
+
+            // 2. Xóa tất cả StoryActions của session đó
+            var actions = await GetActionsBySessionIdAsync(session.sessionId);
+            foreach (var action in actions)
+            {
+                if (!string.IsNullOrWhiteSpace(action.actionId))
+                {
+                    await ActionTable.DeleteItemAsync(action.actionId);
+                }
+            }
+
+            // 3. Xóa session
+            await SessionTable.DeleteItemAsync(session.sessionId);
+        }
     }
 }
